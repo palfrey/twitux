@@ -1,0 +1,21 @@
+Mon, 13 Aug 2007 21:27:56 -0300 Daniel Morales <daniel@suruware.com>
+	* Bugfixes
+	* Added new featues:
+		* Notification area icon
+		* Gui notifications
+		* Auto reload timelines
+
+Wed, 01 Aug 2007 22:14:22 -0300  Daniel Morales <daniel@suruware.com>
+
+	* Added new featues:
+		* Expand statuses
+		* URL render
+		* Expander animated :)
+		* URL Tinyzer (using the tinyurl.com service)
+		* Added Swedish translation - (thanks to Daniel Nylander!)
+		* Added Portuguese translation - (thanks to Neto Cury!)
+		* Various bugfixes
+
+Sun, 29 Jul 2007 16:42:57 -0300  Daniel Morales <daniel@suruware.com>
+
+	* Initial release
