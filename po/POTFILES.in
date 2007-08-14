@@ -1,0 +1,10 @@
+# List of source files containing translatable strings.
+[encoding: UTF-8]
+src/main.c
+src/callbacks.c
+src/common.c
+src/conf.c
+src/gcommon.c
+src/gui.c
+src/network.c
+src/twitter.c

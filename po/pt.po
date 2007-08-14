@@ -1,0 +1,359 @@
+# translation of PACKAGE.
+# Copyright (C) 2007 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# <>, 2007.
+# , fuzzy
+# <>, 2007.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-08-13 09:03-0300\n"
+"PO-Revision-Date: 2007-08-02 14:52-0300\n"
+"Last-Translator: Neto Cury <netocury@gmail.com>\n"
+"Language-Team: Portuguese/Brazil <gnome-l10n-br@listas.cipsga.org.br>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/callbacks.c:199
+#, fuzzy
+msgid "Ok, logged out."
+msgstr "Ok, você está autenticado."
+
+#: ../src/callbacks.c:232
+msgid "Ok, new home timeline saved."
+msgstr "Ok, nova cronologia padrão salva."
+
+#: ../src/callbacks.c:603
+msgid "Compressing URL..."
+msgstr "Comprimindo URL..."
+
+#: ../src/callbacks.c:644 ../src/gui.c:301
+msgid "What are you doing?"
+msgstr "O que você está fazendo?"
+
+#. Atrasos de horas respecto al servo
+#: ../src/common.c:211
+msgid "1 second ago"
+msgstr "1 segundo atrás"
+
+#: ../src/common.c:216
+msgid "1 minute ago"
+msgstr "1 minuto atrás"
+
+#: ../src/common.c:220
+#, c-format
+msgid "%i seconds ago"
+msgstr "%i segundos atrás"
+
+#: ../src/common.c:228
+msgid "1 hour ago"
+msgstr "1 hora atrás"
+
+#: ../src/common.c:232
+#, c-format
+msgid "%i minutes ago"
+msgstr "%i minutos atrás"
+
+#: ../src/common.c:240
+msgid "1 day ago"
+msgstr "1 dia atrás"
+
+#: ../src/common.c:244
+#, c-format
+msgid "%i hours ago"
+msgstr "%i horas atrás"
+
+#: ../src/common.c:252
+msgid "1 month ago"
+msgstr "1 mês atrás"
+
+#: ../src/common.c:256
+#, c-format
+msgid "%i days ago"
+msgstr "%i dias atrás"
+
+#: ../src/common.c:260
+#, c-format
+msgid "%i months ago"
+msgstr "%i meses atrás"
+
+#. Menu Twitter
+#: ../src/gui.c:289
+msgid "_Twitter"
+msgstr "_Twitter"
+
+#: ../src/gui.c:306
+msgid "Send a direct message..."
+msgstr "Envie uma mensagem direta..."
+
+#: ../src/gui.c:312
+msgid "Set as home timeline"
+msgstr "Define como cronologia padrão"
+
+#. Menu ver
+#: ../src/gui.c:331
+msgid "_View"
+msgstr ""
+
+#: ../src/gui.c:335
+msgid "Home timeline"
+msgstr "Cronologia padrão"
+
+#: ../src/gui.c:339
+msgid "Public timeline"
+msgstr "Cronologia pública"
+
+#: ../src/gui.c:343
+msgid "Friends timeline"
+msgstr "Cronologia dos Amigos"
+
+#. Sub menu amigos
+#: ../src/gui.c:351
+msgid "Friends"
+msgstr "Amigos"
+
+#: ../src/gui.c:358
+msgid "Direct messages"
+msgstr "Mensagens diretas"
+
+#: ../src/gui.c:363
+msgid "Replies"
+msgstr "Respostas"
+
+#: ../src/gui.c:368
+msgid "My timeline"
+msgstr "Minha cronologia"
+
+#. Submenu opciones avanzadas
+#: ../src/gui.c:376
+msgid "Set advanced options"
+msgstr ""
+
+#: ../src/gui.c:380
+msgid "Expand messages"
+msgstr "Expandir mensagens"
+
+#: ../src/gui.c:383
+msgid "Show gui notifications"
+msgstr ""
+
+#: ../src/gui.c:386
+#, fuzzy
+msgid "Auto reload timelines"
+msgstr "Cronologia dos Amigos"
+
+#: ../src/gui.c:391
+msgid "Status bar"
+msgstr "Barra de status"
+
+#. Menu ayuda
+#: ../src/gui.c:395
+msgid "H_elp"
+msgstr "_Ajuda"
+
+#: ../src/gui.c:402
+msgid "Report bugs..."
+msgstr "Reporte bugs..."
+
+#: ../src/gui.c:507
+#, c-format
+msgid "%s - Log in"
+msgstr "%s - Autentique-se"
+
+#: ../src/gui.c:557
+msgid "<b>Username or e-mail:</b>"
+msgstr "<b>Nome de usuário ou e-mail:</b>"
+
+#: ../src/gui.c:571
+msgid "<b>Password:</b>"
+msgstr "<b>Senha:</b>"
+
+#: ../src/gui.c:586
+msgid "Remember user data"
+msgstr "Lembrar dados de usuário"
+
+#: ../src/gui.c:592
+msgid "Twitter login"
+msgstr "Autenticação no Twitter"
+
+#: ../src/gui.c:612
+msgid ""
+"This program is free software; you can redistribute it \n"
+"and/or modify it under the terms of the GNU General Public License\n"
+"as published by the Free Software Foundation; either version 2 of\n"
+"the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details. You should have\n"
+"received a copy of the GNU General Public License along with\n"
+"this program; if not, write to the Free Software Foundation, Inc., \n"
+"59 Temple Place, Suite 330, \n"
+"Boston, MA  02111-1307  USA"
+msgstr ""
+
+#: ../src/gui.c:633
+msgid "A Twitter client for the Gnome desktop"
+msgstr "Um cliente Twitter para Gnome desktop"
+
+#: ../src/gui.c:636
+msgid "Visit Twitux web site"
+msgstr "Visite o website do Twitux"
+
+#: ../src/gui.c:638
+msgid "translator-credits"
+msgstr "Neto Cury <netocury@gmail.com>"
+
+#: ../src/gui.c:663
+#, c-format
+msgid "%s - What are you doing?"
+msgstr "%s - O que você está fazendo?"
+
+#: ../src/gui.c:706
+msgid "<b>What are you doing?</b>"
+msgstr "<b>O que você está fazendo?</b>"
+
+#: ../src/gui.c:755
+#, c-format
+msgid "%s - Send a direct message"
+msgstr "%s - Enviar uma mensagem direta"
+
+#: ../src/gui.c:798
+msgid "<b>Select a friend:</b>"
+msgstr "<b>Selecione um amigo:</b>"
+
+#: ../src/gui.c:807
+msgid "<b>Write the message:</b>"
+msgstr "<b>Escreva a mensagem:</b>"
+
+#: ../src/gui.c:854
+msgid "Url to tinyze:"
+msgstr "URL para comprimir:"
+
+#: ../src/gui.c:869
+msgid "Ok"
+msgstr "Ok"
+
+#: ../src/network.c:75
+msgid "Loading: Direct messages..."
+msgstr "Carregando: Mensagens diretas..."
+
+#: ../src/network.c:92
+msgid "Loading: Timeline..."
+msgstr "Carregando: Cronologia..."
+
+#: ../src/network.c:148
+msgid "Conecting..."
+msgstr "Conectando..."
+
+#: ../src/network.c:172
+msgid "Sending status..."
+msgstr "Enviando status..."
+
+#: ../src/network.c:196
+msgid "Sending message..."
+msgstr "Enviando mensagem..."
+
+#: ../src/network.c:214
+msgid "Ok, displaying direct messages."
+msgstr "Ok, mostrando mensagens diretas."
+
+#: ../src/network.c:222
+msgid "Messages parser error."
+msgstr "Erro de análise em Mensagens."
+
+#: ../src/network.c:256
+msgid "Ok, connected :)"
+msgstr "Ok, conectado :)"
+
+#: ../src/network.c:270
+msgid "Friends parser error."
+msgstr "Erro de análise em Amigos."
+
+#: ../src/network.c:290
+msgid "Ok, parsing..."
+msgstr "Ok, analisando..."
+
+#: ../src/network.c:301
+msgid "Ok, timeline loaded."
+msgstr "Ok, cronologia carregada."
+
+#: ../src/network.c:305
+msgid "Timeline parser error."
+msgstr "Erro de análise de cronologia."
+
+#: ../src/network.c:332
+msgid "Fail, wrong response."
+msgstr "Falha, erro de resposta."
+
+#: ../src/network.c:379
+msgid "Ok, status sent! :)"
+msgstr "Ok, status enviado! :)"
+
+#: ../src/network.c:398
+msgid "Ok, message sent! :)"
+msgstr "Ok, mensagem enviada! :)"
+
+#: ../src/network.c:531
+msgid "Stopped."
+msgstr "Parado."
+
+#: ../src/network.c:537
+msgid "Access denied. Please login."
+msgstr "Acesso negado. Favor autenticar."
+
+#: ../src/network.c:543
+msgid "HTTP communication error."
+msgstr "Erro de comunicação HTTP."
+
+#: ../src/twitter.c:476
+#, c-format
+msgid "you have %i new tweet(s) to read!"
+msgstr ""
+
+#~ msgid "No config"
+#~ msgstr "Não configurado"
+
+#~ msgid "Cannot save the configuration"
+#~ msgstr "Não foi possível salvar a configuração"
+
+#~ msgid "Loading image: %s: %s\n"
+#~ msgstr "Carregando imagem: %s: %s\n"
+
+#~ msgid "<b>Autor</b> - sometime ago"
+#~ msgstr "<b>Autor</b> - algum tempo atrás"
+
+#~ msgid "Parser:unknown user node %s => %s"
+#~ msgstr "Parser:usuário desconhecido %s·=>·%s"
+
+#~ msgid "Parser:unknown status node: %s => %s"
+#~ msgstr "Parser:status desconhecido: %s => %s"
+
+#~ msgid "Parser:parsear_direct_message:unknown node: %s => %s"
+#~ msgstr "Parser:parsear_direct_message:desconhecido: %s·=>·%s"
+
+#~ msgid "Parser:parsear_statuses:unknown node: %s"
+#~ msgstr "Parser:parsear_statuses:desconhecido: %s"
+
+#~ msgid "Parser:parsear_direct_messages:unknown node: %s"
+#~ msgstr "Parser:parsear_direct_messages:desconhecido: %s"
+
+#~ msgid "Parser:parsear_users:unknown node: %s"
+#~ msgstr "Parser:parsear_users:desconhecido: %s"
+
+#~ msgid "parser_twitter:file not exists: %s"
+#~ msgstr "parser_twitter:aquivo não existente: %s"
+
+#~ msgid "parser_twitter:xmlReadFile: %s"
+#~ msgstr "parser_twitter:xmlReadFile: %s"
+
+#~ msgid "parser_twitter:xmlDocGetRootElement: %s"
+#~ msgstr "parser_twitter:xmlDocGetRootElement: %s"
+
+#~ msgid "parser_twitter:unknown parser"
+#~ msgstr "parser_twitter:análise desconhecida"
