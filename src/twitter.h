@@ -44,8 +44,8 @@
 
 #define TWITTER_TWITUX_TIMELINE "http://twitter.com/statuses/user_timeline/twitux.xml"
 
-#define TWITTER_HEADER_CLIENT PACKAGE
-#define TWITTER_HEADER_VERSION VERSION
+#define TWITTER_HEADER_CLIENT PACKAGE_NAME
+#define TWITTER_HEADER_VERSION PACKAGE_VERSION
 #define TWITTER_HEADER_URL "http://twitux.sourceforge.net/client.xml"
 
 #define TWITTER_ABOUT_URL "http://live.gnome.org/DanielMorales/Twitux"

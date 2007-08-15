@@ -218,7 +218,7 @@ msgstr "Besuche die Twitux-Webseite"
 
 #: ../src/gui.c:638
 msgid "translator-credits"
-msgstr "Übersetzerdanksagungen"
+msgstr "Julian Tobias Saraceni <julian@saraceni.de>"
 
 #: ../src/gui.c:663
 #, c-format

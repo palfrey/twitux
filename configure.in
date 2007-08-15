@@ -1,7 +1,12 @@
-AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(twitux, 0.50)
-AM_CONFIG_HEADER(config.h)
-AC_PROG_INTLTOOL([0.23])
+AC_INIT([Twitux], [0.50], [http://sourceforge.net/tracker/?func=add&group_id=198704&atid=966542], [twitux])
+AC_PREREQ(2.59)
+AC_COPYRIGHT([Copyright (C) 2007 Daniel Morales])
+
+AC_CONFIG_SRCDIR([src/main.c])
+AC_CONFIG_HEADERS(config.h)
+AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-bzip2])
+
+IT_PROG_INTLTOOL([0.35.0])
 
 AM_MAINTAINER_MODE
 
@@ -28,3 +33,7 @@ src/Makefile
 po/Makefile.in
 pixmaps/Makefile
 ])
+
+echo
+echo "Twitux prefix: $prefix"
+echo

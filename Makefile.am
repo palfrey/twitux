@@ -1,15 +1,28 @@
-SUBDIRS = src po pixmaps
+SUBDIRS = pixmaps src po
 
-EXTRA_DIST = AUTHORS ChangeLog NEWS README \
-	twitux.desktop \
-	intltool-extract.in \
-	intltool-merge.in \
+desktop_in_files=twitux.desktop.in
+desktop_files=$(desktop_in_files:.desktop.in=.desktop)
+@INTLTOOL_DESKTOP_RULE@
+
+Applicationsdir = $(datadir)/applications
+Applications_DATA = $(desktop_files)
+
+INTLTOOL = 			\
+	intltool-extract.in 	\
+	intltool-merge.in 	\
 	intltool-update.in
 
-twituxappdir = $(datadir)/applications
-twituxapp_DATA = twitux.desktop
+EXTRA_DIST = 			\
+	ChangeLog               \
+	README                  \
+	AUTHORS			\
+	NEWS			\
+	$(desktop_in_files)	\
+	$(desktop_files)	\
+	$(INTLTOOL)
 
-CLEANFILES = \
-	intltool-extract \
-	intltool-merge \
-	intltool-update
+DISTCLEANFILES = 		\
+	intltool-extract	\
+	intltool-merge		\
+	intltool-update		\
+	$(desktop_files)

@@ -1,17 +1,22 @@
---- Authors 
+--- Author:
 
  * Daniel Morales <daniel@suruware.com>
 
 
+--- Contributors/Big thanks to:
 
---- Translators
+ * Brian Pepple  <bpepple@fedoraproject.org>
+
+
+--- Translators:
 
  * Swedish - Daniel Nylander <po@danielnylander.se>
  * Portuguese - Neto Cury <netocury@gmail.com>
+ * German - Julian Tobias Saraceni <julian@saraceni.de>
 
 
+--- Packaging help:
 
---- Packages (i'm looking for packagers, contact me!)
-
- * Debian i386 package - Daniel Morales <daniel@suruware.com>
- * Ubuntu 64bits package - Marcos Rodriguez <marcosrdz@gmail.com>
+ * GetDeb - Marcos Rodriguez <marcosrdz@gmail.com>
+ * Jorge Alberto <jorgealberto@auroracomunicacion.com>
+ * German - Julian Tobias Saraceni <julian@saraceni.de>
