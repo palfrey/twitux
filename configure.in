@@ -20,11 +20,13 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
-GETTEXT_PACKAGE=twitux
+dnl -----------------------------------------------------------
+dnl Language Support
+dnl -----------------------------------------------------------
+GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package.])
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
 
-ALL_LINGUAS="es sv pt de"
 AM_GLIB_GNU_GETTEXT
 
 AC_OUTPUT([
