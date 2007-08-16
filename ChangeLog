@@ -1,3 +1,10 @@
+2007-08-15  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* libtwitux/Makefile.am: 
+	* libtwitux/twitux-conf.[ch]:
+	* libtwitux/twituc-debug.[ch]:
+	Add some libraries to handle gconf & debugging.
+
 2007-08-14  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* COPYING:
