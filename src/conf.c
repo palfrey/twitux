@@ -28,49 +28,54 @@
 #include "conf.h"
 
 
+// Load config
 void tt_gconf_cargar ( TwiTuxConfig *conf )
 {
 	conf->client = gconf_client_get_default ();
 	
 	if ( gconf_client_dir_exists ( conf->client, TT_GCONF_DIR, NULL ) ) {
 
-		conf->user_login = gconf_client_get_string ( conf->client, TT_GCONF_DIR "/usuario", NULL );
+		//-- User
+		conf->user_login = gconf_client_get_string ( conf->client, TT_GCONF_DIR "/twitter_user", NULL );
 
-		conf->user_passwd = gconf_client_get_string ( conf->client, TT_GCONF_DIR "/clave", NULL );
+		conf->user_passwd = gconf_client_get_string ( conf->client, TT_GCONF_DIR "/twitter_password", NULL );
 
+		conf->user_remember = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/remember_login", NULL );
+
+		//-- Initial timeline to load
 		conf->home_timeline = gconf_client_get_string ( conf->client, TT_GCONF_DIR "/home_timeline", NULL );
 
-		conf->user_remember = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/recordar", NULL );
 
+		//-- Gui keys
 		conf->ver_estado = TRUE;
 
-		if ( gconf_client_dir_exists ( conf->client, TT_GCONF_DIR "/ver_estado", NULL ) ){
+		if ( gconf_client_dir_exists ( conf->client, TT_GCONF_DIR "/show_statusbar", NULL ) ){
 
-			conf->ver_estado = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/ver_estado", NULL );
+			conf->ver_estado = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/show_statusbar", NULL );
 
 		}
 
 		conf->expandir_mensajes = TRUE;
 
-		if ( gconf_client_dir_exists ( conf->client, TT_GCONF_DIR "/expandir_mensajes", NULL ) ){
+		if ( gconf_client_dir_exists ( conf->client, TT_GCONF_DIR "/expand_messages", NULL ) ){
 
-			conf->expandir_mensajes = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/expandir_mensajes", NULL );
+			conf->expandir_mensajes = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/expand_messages", NULL );
 
 		}
 
 		conf->ver_burbujas = TRUE;
 
-		if ( gconf_client_dir_exists ( conf->client, TT_GCONF_DIR "/ver_burbujas", NULL ) ){
+		if ( gconf_client_dir_exists ( conf->client, TT_GCONF_DIR "/show_notifications", NULL ) ){
 
-			conf->ver_burbujas = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/ver_burbujas", NULL );
+			conf->ver_burbujas = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/show_notifications", NULL );
 
 		}
 
 		conf->recargar_timelines = TRUE;
 
-		if ( gconf_client_dir_exists ( conf->client, TT_GCONF_DIR "/recargar_timelines", NULL ) ){
+		if ( gconf_client_dir_exists ( conf->client, TT_GCONF_DIR "/autoreload_timelines", NULL ) ){
 
-			conf->recargar_timelines = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/recargar_timelines", NULL );
+			conf->recargar_timelines = gconf_client_get_bool ( conf->client, TT_GCONF_DIR "/autoreload_timelines", NULL );
 
 		}
 
@@ -95,6 +100,7 @@ void tt_gconf_cargar ( TwiTuxConfig *conf )
 }
 
 
+// Store config
 void tt_gconf_guardar ( TwiTuxConfig *conf )
 {
 	if ( gconf_client_key_is_writable ( conf->client, TT_GCONF_DIR, NULL ) ) {
@@ -103,33 +109,34 @@ void tt_gconf_guardar ( TwiTuxConfig *conf )
 
 		if ( !conf->user_login || !conf->user_remember ) conf->user_passwd = "";
 
-		// Datos de usuario
+		// User data
 		if (conf->user_remember) {
 
-			gconf_client_set_string ( conf->client, TT_GCONF_DIR "/usuario", conf->user_login, NULL );
+			gconf_client_set_string ( conf->client, TT_GCONF_DIR "/twitter_user", conf->user_login, NULL );
 
-			gconf_client_set_string ( conf->client, TT_GCONF_DIR "/clave", conf->user_passwd, NULL );
+			gconf_client_set_string ( conf->client, TT_GCONF_DIR "/twitter_password", conf->user_passwd, NULL );
 
 		} else {
 
-			gconf_client_set_string (conf->client, TT_GCONF_DIR "/usuario", "", NULL);
+			gconf_client_set_string (conf->client, TT_GCONF_DIR "/twitter_user", "", NULL);
 
-			gconf_client_set_string (conf->client, TT_GCONF_DIR "/clave", "", NULL);
+			gconf_client_set_string (conf->client, TT_GCONF_DIR "/twitter_password", "", NULL);
 
 		}
 
+		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/remember_login", conf->user_remember, NULL );
+
+		//-- Initial timeline to load
 		gconf_client_set_string ( conf->client, TT_GCONF_DIR "/home_timeline", conf->home_timeline, NULL );
 
-		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/recordar", conf->user_remember, NULL );
+		// GUI
+		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/show_statusbar", conf->ver_estado, NULL );
 
-		// Cosas GUI
-		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/ver_estado", conf->ver_estado, NULL );
-
-		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/expandir_mensajes", conf->expandir_mensajes, NULL );
+		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/expand_messages", conf->expandir_mensajes, NULL );
 		
-		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/ver_burbujas", conf->ver_burbujas, NULL );
+		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/show_notifications", conf->ver_burbujas, NULL );
 		
-		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/recargar_timelines", conf->recargar_timelines, NULL );
+		gconf_client_set_bool ( conf->client, TT_GCONF_DIR "/autoreload_timelines", conf->recargar_timelines, NULL );
 		
 	} else {
 
@@ -140,6 +147,7 @@ void tt_gconf_guardar ( TwiTuxConfig *conf )
 }
 
 
+// Free config data
 void tt_gconf_free ( TwiTuxConfig *conf )
 {
 	if ( conf->user_login ) g_free ( conf->user_login );
