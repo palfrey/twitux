@@ -95,16 +95,10 @@ char* xml_decode_alloc (const char* str) {
 	while(*str) {
 
 		if ( !memcmp ( str, "&amp;lt;", 8 ) ) {
-			strcat ( (char*)pbuf++, "&" );
-			strcat ( (char*)pbuf++, "l" );
-			strcat ( (char*)pbuf++, "t" );
-			strcat ( (char*)pbuf++, ";" );
+			strcat ( (char*)pbuf++, "<" );
 			str += 8;
 		} else if ( !memcmp ( str, "&amp;gt;", 8 ) ) {
-			strcat ( (char*)pbuf++, "&" );
-			strcat ( (char*)pbuf++, "g" );
-			strcat ( (char*)pbuf++, "t" );
-			strcat ( (char*)pbuf++, ";" );
+			strcat ( (char*)pbuf++, ">" );
 			str += 8;
 		} else if ( !memcmp ( str, "\n", 1 ) ) {
 			strcat ( (char*)pbuf++, "." );
