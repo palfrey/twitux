@@ -78,10 +78,11 @@ AM_GLIB_GNU_GETTEXT
 
 AC_OUTPUT([
 Makefile
+data/Makefile
+data/twitux.desktop.in
 src/Makefile
 libtwitux/Makefile
 po/Makefile.in
-pixmaps/Makefile
 ])
 
 echo
