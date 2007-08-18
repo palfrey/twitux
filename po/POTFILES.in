@@ -7,7 +7,6 @@ twitux.schemas.in
 src/main.c
 src/callbacks.c
 src/common.c
-src/conf.c
 src/gcommon.c
 src/gui.c
 src/network.c

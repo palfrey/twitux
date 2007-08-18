@@ -1,5 +1,10 @@
 2007-08-18  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* po/POTFILES: remove src/conf.c, so that make distcheck
+	works again.
+	
+2007-08-18  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* configure.in:
 	* twitux.schemas.in:
 	* Makefile.am: Add missing bits for gconf, and
