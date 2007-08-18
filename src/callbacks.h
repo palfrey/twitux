@@ -1,5 +1,3 @@
-#if !defined TWITUX_MAIN_CALLBACKS_H
-#define TWITUX_MAIN_CALLBACKS_H
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
  * Copyright (C) 2007 - Alvaro Daniel Morales - <daniel@suruware.com>
@@ -19,6 +17,9 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#ifndef __TWITUX_CALLBACKS_H__
+#define __TWITUX_CALLBACKS_H__
 
 #include <gtk/gtk.h>
 
@@ -84,4 +85,4 @@ void tt_on_recargar_timelines ( GtkCheckMenuItem *checkmenuitem, gpointer user_d
 
 void tt_on_ver_burbujas ( GtkCheckMenuItem *checkmenuitem, gpointer user_data );
 
-#endif
+#endif /* __TWITUX_CALLBACKS_H__ */

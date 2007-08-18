@@ -18,15 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
+#include <config.h>
 
 #include <string.h>
-
 #include <gtk/gtk.h>
-
+#include <libgnomevfs/gnome-vfs.h>
 #include <libsexy/sexy.h>
+
+#include <libtwitux/twitux-conf.h>
 
 #include "network.h"
 #include "main.h"
@@ -35,7 +34,7 @@
 #include "gcommon.h"
 #include "gui.h"
 #include "twitter.h"
-
+#include "twitux-preferences.h"
 
 #define TT_ANIMATION_STEP 100
 #define TT_ANIMATION_STEP_INC 20
@@ -81,11 +80,10 @@ void tt_on_cerrar ( GtkMenuItem *menuitem, gpointer user_data )
 //-- Al pedir el dialogo Acerca de
 void tt_on_acerca_de ( GtkMenuItem *menuitem, gpointer user_data )
 {
-	TwiTuxConfig *cfg = TWITUX_CONFIG ( user_data );
-	GtkWidget *dialogo = tt_gui_create_dialogo_acerca ( cfg );
+	GtkWidget *dialog = tt_gui_create_dialogo_acerca ();
 
-	gtk_dialog_run ( GTK_DIALOG ( dialogo ) );
-	gtk_object_destroy ( GTK_OBJECT (dialogo) );
+	gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_object_destroy (GTK_OBJECT (dialog));
 
 }
 
@@ -93,87 +91,85 @@ void tt_on_acerca_de ( GtkMenuItem *menuitem, gpointer user_data )
 //-- Al hacer click en el link de 'Ver sitio de Twitux' en 'Acerca de..'
 void tt_on_acerca_link ( GtkAboutDialog *dialog, const gchar *link, gpointer user_data )
 {
-	TwiTuxConfig *cfg = TWITUX_CONFIG ( user_data );
+	GnomeVFSResult result;
 
-	tt_open_web_browser ( cfg->client, link );
-
+	result = gnome_vfs_url_show (link);
+	if (result != GNOME_VFS_OK) {
+		g_warning ("Couldn't show URL: '%s'", link);
+	}
 }
 
 
 //-- Al seleccionar conectarse
-void tt_on_conectar ( GtkMenuItem *menuitem, gpointer user_data )
+void tt_on_conectar (GtkMenuItem *menuitem, gpointer user_data)
 {
-	TwiTux *twitter;
+	TwiTux    *twitter;
 	GtkWidget *dialog;
-	gint respuesta;
-	GtkWidget *entry_usuario;
+	gint       response;
+	GtkWidget *entry_user;
 	GtkWidget *entry_password;
 	GtkWidget *check_remember;
 
-	twitter = TWITUX_TWITUX ( user_data );
+	twitter = TWITUX_TWITUX (user_data);
 
-	// Ya hay un proceso
-	if ( twitter->processing ) return;
+	if (twitter->processing)
+		return;
 
-	// Creo el dialogo
-	dialog = tt_gui_create_dialogo_login ( &entry_usuario, &entry_password, &check_remember , twitter );
+	dialog = tt_gui_create_dialogo_login (&entry_user,
+										  &entry_password,
+										  &check_remember,
+										  twitter);
 
-	// Lo muestro y eso
-	respuesta = gtk_dialog_run ( GTK_DIALOG  ( dialog ) );
+	response = gtk_dialog_run (GTK_DIALOG (dialog));
 
-	if ( respuesta == GTK_RESPONSE_ACCEPT ) {
+	if (response == GTK_RESPONSE_ACCEPT) {
+		TwituxConf *conf;
 
-		TwiTuxConfig *conf = twitter->gconf;
+		conf = twitux_conf_get ();
 
-		const gchar *tmpuser = gtk_entry_get_text ( GTK_ENTRY ( entry_usuario ) );
+		twitux_conf_set_string (conf,
+								TWITUX_PREFS_AUTH_USER_ID,
+								gtk_entry_get_text (GTK_ENTRY (entry_user)));
 
-		const gchar *tmppass = gtk_entry_get_text ( GTK_ENTRY ( entry_password ) );
+		twitux_conf_set_string (conf,
+								TWITUX_PREFS_AUTH_PASSWORD,
+								gtk_entry_get_text (GTK_ENTRY (entry_password)));
 
-		// Checkeo si completó los campos
-		if ( !g_str_equal ( tmpuser, "" ) && !g_str_equal ( tmppass, "" ) ) {
-
-			conf->user_passwd = g_strdup ( tmppass );
-
-			conf->user_login = g_strdup ( tmpuser );
-
-			conf->user_remember = gtk_toggle_button_get_active ( GTK_TOGGLE_BUTTON ( check_remember ) );
-			
-			// Inicio session (pido lista de amigos)
-			tt_network_login ( twitter );
-
-		}
-
+		twitux_conf_set_bool (conf,
+							  TWITUX_PREFS_AUTH_REMEMBER,
+							  gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (check_remember)));
+		
+		/* TODO: Verify that twitter object should be passed */
+		tt_network_login (twitter);
 	}
-
 	gtk_widget_destroy ( dialog );
-
 }
 
 
 //-- Al cambiar la opcion ver barra de estado
-void tt_on_ver_estado ( GtkCheckMenuItem *checkmenuitem, gpointer user_data )
+void tt_on_ver_estado (GtkCheckMenuItem *checkmenuitem, gpointer user_data)
 {
-	TwiTux *twitter = TWITUX_TWITUX ( user_data );
-	gboolean ver = gtk_check_menu_item_get_active ( checkmenuitem );
+	TwiTux *twitter = TWITUX_TWITUX (user_data);
+	gboolean ver = gtk_check_menu_item_get_active (checkmenuitem);
 
-	tt_ver_ocultar_widget ( GTK_WIDGET ( twitter->principal->barra_estado ),  ver );
+	tt_ver_ocultar_widget (GTK_WIDGET (twitter->principal->barra_estado), ver);
 
-	// Recordar en configuracion;
-	twitter->gconf->ver_estado = ver;
-
+	twitux_conf_set_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_STATUSBAR,
+						  ver);
 }
 
 
 //-- Al cambiar la opcion expandir mensajes
-void tt_on_ver_expandir_mensajes ( GtkCheckMenuItem *checkmenuitem, gpointer user_data )
+void tt_on_ver_expandir_mensajes (GtkCheckMenuItem *checkmenuitem, gpointer user_data)
 {
-	TwiTux *twitter = TWITUX_TWITUX ( user_data );
+	TwiTux *twitter = TWITUX_TWITUX (user_data);
 
-	gboolean ver = gtk_check_menu_item_get_active ( checkmenuitem );
+	gboolean ver = gtk_check_menu_item_get_active (checkmenuitem);
 
-	// Recordar en configuracion;
-	twitter->gconf->expandir_mensajes = ver;
-
+	twitux_conf_set_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_EXPAND_MESSAGES,
+						  ver);
 }
 
 
@@ -219,31 +215,34 @@ void tt_on_desconectar ( GtkMenuItem *menuitem, gpointer user_data )
 
 
 //-- Al seleccionar 'Establecer como home timeline'
-void tt_on_establecer_home ( GtkMenuItem *menuitem, gpointer user_data )
+void tt_on_establecer_home (GtkMenuItem *menuitem, gpointer user_data)
 {
-	TwiTux *twitter = TWITUX_TWITUX ( user_data );
+	TwiTux *twitter = TWITUX_TWITUX (user_data);
 
-	if ( twitter->gconf->home_timeline ) {
-		g_free ( twitter->gconf->home_timeline );
-	}	
+	twitux_conf_set_string (twitux_conf_get (),
+							TWITUX_PREFS_TWEETS_HOME_TIMELINE,
+							twitter->current_timeline);
 
-	twitter->gconf->home_timeline = g_strdup ( twitter->current_timeline );
-
-	tt_cambiar_mensaje_estado ( twitter, _("Ok, new home timeline saved.") );
+	tt_cambiar_mensaje_estado (twitter, _("Ok, new home timeline saved."));
 }
 
 
 //-- Al ir al Home Timeline
-void tt_on_ver_home_timeline ( GtkCheckMenuItem *checkmenuitem, gpointer user_data )
+void tt_on_ver_home_timeline (GtkCheckMenuItem *checkmenuitem, gpointer user_data)
 {
-	TwiTux *twitter = TWITUX_TWITUX ( user_data );
+	TwiTux   *twitter = TWITUX_TWITUX (user_data);
+	gboolean  ver = gtk_check_menu_item_get_active (checkmenuitem);
+	gchar    *timeline;
 
-	gboolean ver = gtk_check_menu_item_get_active ( checkmenuitem );
+	if (twitter->processing || !ver)
+		return;
 
-	if ( twitter->processing || !ver ) return;
+	twitux_conf_get_string (twitux_conf_get (),
+							TWITUX_PREFS_TWEETS_HOME_TIMELINE,
+							&timeline);
 
-	tt_network_get_timeline ( twitter, twitter->gconf->home_timeline, TRUE );
-
+	tt_network_get_timeline (twitter, timeline, TRUE);
+	g_free (timeline);
 }
 
 
@@ -414,13 +413,15 @@ void tt_on_twitux ( GtkMenuItem *menuitem, gpointer user_data )
 }
 
 
-//-- Al reportar bugs
+/* Open the bug page at Sourceforge for the user */
 void tt_on_bugs ( GtkMenuItem *menuitem, gpointer user_data )
 {
-	TwiTuxConfig *cfg = TWITUX_CONFIG ( user_data );
+	GnomeVFSResult result;
 
-	tt_open_web_browser ( cfg->client, TWITTER_ABOUT_BUGZILLA );
-
+	result = gnome_vfs_url_show (TWITTER_ABOUT_BUGZILLA);
+	if (result != GNOME_VFS_OK) {
+		g_warning ("Couldn't show URL: '%s'", TWITTER_ABOUT_BUGZILLA);
+	}
 }
 
 
@@ -499,34 +500,32 @@ void tt_on_close_expand ( GtkButton *button, gpointer user_data )
 
 
 //-- Al hacer click en una url del expander
-void tt_on_url_expand ( GtkWidget *url_label, gchar *url, gpointer user_data )
+void tt_on_url_expand (GtkWidget *url_label, gchar *url, gpointer user_data)
 {
-	TwiTux *twitter = TWITUX_TWITUX ( user_data );
+	TwiTux *twitter = TWITUX_TWITUX (user_data);
 
 	gchar *timeline;
 
-	//-- Abro la URL en el navegador
-	if ( !strncmp (url, "http://", 7 ) || !strncmp( url, "ftp://", 6 ) ) {
+	if (!strncmp (url, "http://", 7) || !strncmp(url, "ftp://", 6)) {
+		GnomeVFSResult result;
 
-		tt_open_web_browser ( twitter->gconf->client, url );
-
+		result = gnome_vfs_url_show (url);
+		if (result != GNOME_VFS_OK) {
+			g_warning ("Couldn't show URL: '%s'", url);
+		}
 		return;
-
 	}
 
-	//-- Abro el timeline del usuario
-	timeline = g_strdup_printf ( TWITTER_USER_TIMELINE, url );
+	timeline = g_strdup_printf (TWITTER_USER_TIMELINE, url);
 
-	// Cargo el timeline de usuario
-	tt_network_get_timeline ( twitter, timeline, TRUE );
+	tt_network_get_timeline (twitter, timeline, TRUE);
 
 	g_free (timeline);
-	
 }
 
 
 //-- Al seleccionar un estado en la lista
-void tt_on_status_changed ( GtkTreeView *treeview, gpointer user_data )
+void tt_on_status_changed (GtkTreeView *treeview, gpointer user_data)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model;
@@ -534,59 +533,66 @@ void tt_on_status_changed ( GtkTreeView *treeview, gpointer user_data )
 	TwiTuxWindow *window;
 	gchar *tmp;
 	gchar *msg_status;
+	gboolean expand_msg;
 	TwiTuxStatus *status;
 
-	GtkTreeSelection *sel = gtk_tree_view_get_selection ( treeview );
+	GtkTreeSelection *sel = gtk_tree_view_get_selection (treeview);
 
-	twitter = TWITUX_TWITUX ( user_data );
+	twitter = TWITUX_TWITUX (user_data);
 
-	if ( !twitter->gconf->expandir_mensajes ) return;
+	twitux_conf_get_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_EXPAND_MESSAGES,
+						  &expand_msg);
 
-	if ( !gtk_tree_selection_get_selected ( sel, &model, &iter ) ) return;
+	if (!expand_msg)
+		return;
+
+	if (!gtk_tree_selection_get_selected (sel, &model, &iter))
+		return;
 
 	window = twitter->principal;
 
-	window  = twitter->principal;
-
-	gtk_tree_model_get ( model, &iter, OBJECT_COLUMN, &status, -1 );
+	gtk_tree_model_get (model, &iter, OBJECT_COLUMN, &status, -1);
 
 	//-- Cambio el autor
-	tmp = g_strdup_printf ( "<b>%s</b>", status->user->name );
+	tmp = g_strdup_printf ("<b>%s</b>", status->user->name);
 
-	gtk_label_set_markup ( GTK_LABEL ( window->expand->label_autor ), tmp );
+	gtk_label_set_markup (GTK_LABEL (window->expand->label_autor), tmp);
 
-	g_free ( tmp );
+	g_free (tmp);
 
 	//-- Cambio el mensaje
-	tmp = g_strdup ( status->text );
+	tmp = g_strdup (status->text);
 
-	msg_status = xml_decode_alloc ( tmp );
+	msg_status = xml_decode_alloc (tmp);
 
-	g_free ( tmp );
+	g_free (tmp);
 
-	tmp = tt_parse_urls_alloc ( msg_status );
+	tmp = tt_parse_urls_alloc (msg_status);
 
-	sexy_url_label_set_markup ( SEXY_URL_LABEL ( window->expand->sexy_label ), tmp );
+	sexy_url_label_set_markup (SEXY_URL_LABEL (window->expand->sexy_label), tmp);
 
-	g_free ( tmp );
+	g_free (tmp);
 
-	g_free ( msg_status );
+	g_free (msg_status);
 
 	// -- Expandir y animar panel
-	if ( en_timeout ) return;
+	if (en_timeout)
+		return;
 
 	// Hago que el SexyLabel se redibuje y obtener el .height nuevo
-	gtk_widget_queue_draw ( window->expand->sexy_label );
+	gtk_widget_queue_draw (window->expand->sexy_label);
 
-	while (gtk_events_pending ()) gtk_main_iteration ();
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 
-	gtk_widget_realize ( window->expand->sexy_label );
+	gtk_widget_realize (window->expand->sexy_label);
 
-	llevar_a = ( GTK_WIDGET ( window->expand->sexy_label )->allocation.height ) + TT_EXPAND_OFFSET;
+	llevar_a = (GTK_WIDGET (window->expand->sexy_label)->allocation.height) + TT_EXPAND_OFFSET;
 
 	en_timeout = TRUE;
 
-	g_timeout_add ( TT_ANIMATION_STEP, resize_timeout, window->expand->frame_expand );
+	g_timeout_add (TT_ANIMATION_STEP, resize_timeout, window->expand->frame_expand);
 	
 }
 
@@ -646,9 +652,8 @@ void on_icon_menu (GtkStatusIcon *status_icon, guint button,
 	g_signal_connect ( menu_item, "activate", G_CALLBACK ( tt_on_what ), twitter );
 
 	crear_menu_separador ( menu );
-
 	menu_item = crear_stock_mi ( "gtk-about", menu, NULL );
-	g_signal_connect ( menu_item, "activate", G_CALLBACK ( tt_on_acerca_de ), twitter->gconf );
+	g_signal_connect ( menu_item, "activate", G_CALLBACK ( tt_on_acerca_de ), NULL);
 
 	crear_menu_separador ( menu );
 
@@ -684,41 +689,36 @@ gboolean tt_on_window_close_clicked ( GtkWidget *widget, GdkEvent *event, gpoint
 
 
 //-- Al cambiar la opcion de recargar timelines
-void tt_on_recargar_timelines ( GtkCheckMenuItem *checkmenuitem, gpointer user_data )
+void tt_on_recargar_timelines (GtkCheckMenuItem *checkmenuitem, gpointer user_data)
 {
-	TwiTux *twitter = TWITUX_TWITUX ( user_data );
-	gboolean ver = gtk_check_menu_item_get_active ( checkmenuitem );
+	TwiTux *twitter = TWITUX_TWITUX (user_data);
+	gboolean ver = gtk_check_menu_item_get_active (checkmenuitem);
 
-	// Recordar en configuracion;
-	twitter->gconf->recargar_timelines = ver;
+	twitux_conf_set_bool (twitux_conf_get (),
+						  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
+						  ver);
 
 	// Si no quiero mas recargas, quito el timeout actual
-	if ( !ver ) {
-
-		tt_timeout_remove ( twitter );
-
+	if (!ver) {
+		tt_timeout_remove (twitter);
 	} else {
-
 		// Si quiero timeouts, y NO estoy esperando alguna timeline
-		if ( ! twitter->processing ) {
-
-			tt_timeout_start ( twitter );
-
+		if (! twitter->processing) {
+			tt_timeout_start (twitter);
 		}
-
 	}
-
 }
 
 
-//-- Al cambiar la opcion de ver notificaciones
+/* Save in gconf whether the user wants screen notifications of new tweets */
 void tt_on_ver_burbujas ( GtkCheckMenuItem *checkmenuitem, gpointer user_data )
 {
 	TwiTux *twitter = TWITUX_TWITUX ( user_data );
 	gboolean ver = gtk_check_menu_item_get_active ( checkmenuitem );
 
-	// Recordar en configuracion;
-	twitter->gconf->ver_burbujas = ver;
+	twitux_conf_set_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_NOTIFICATION,
+						  ver);
 }
 
 

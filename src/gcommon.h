@@ -1,5 +1,3 @@
-#if !defined TWITUX_G_COMMON_H
-#define TWITUX_G_COMMON_H
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
  * Copyright (C) 2007 - Alvaro Daniel Morales - <daniel@suruware.com>
@@ -20,12 +18,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef __TWITUX_G_COMMON_H__
+#define __TWITUX_G_COMMON_H__
+
 #include <gtk/gtk.h>
-#include <gconf/gconf-client.h>
 
 #include "main.h"
 
-#define TT_BROWSER_COMMAND_KEY "/desktop/gnome/url-handlers/http/command"
 
 void tt_ver_ocultar_widget ( GtkWidget *widget, gboolean ver );
 
@@ -47,12 +46,10 @@ void tt_clear_list ( GtkWidget *lista_tree );
 
 void tt_enable_disable_widgets ( gboolean flag, TwiTuxWindow *window );
 
-void tt_open_web_browser (GConfClient *client, const char *url );
-
 void tt_clear_friends ( GList *friends );
 
 void tt_set_networking ( TwiTux *twitter, gboolean flag );
 
 gchar *get_ruta_imagen ( const gchar *file );
 
-#endif
+#endif /* __TWITUX_G_COMMON_H__ */

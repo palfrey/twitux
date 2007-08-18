@@ -1,3 +1,29 @@
+2007-08-18  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* configure.in:
+	* twitux.schemas.in:
+	* Makefile.am: Add missing bits for gconf, and
+	libtwitux.
+
+	* libtwitux/twitux-paths.[ch]: Add helper library.
+
+	* po/POTFILES.in: Add schemas to list of files that need
+	to be translated.
+	
+	* src/twitux-preferences.h: Add header with gconf keys.
+	* src/gcommon.[ch]: remove open_web_browser function.
+	
+	* src/Makefile.am:
+	* src/callbacks.[ch]:
+	* src/gui.[ch]:
+	* src/main.[ch]:
+	* src/network.[ch]
+	* src/twitter.c: used twitux-conf.[ch], instead of 
+	TwiTuxConfig.
+	
+	* src/conf.[ch]: REMOVED files, since we're using
+	libtwitux/twitux-conf.[ch] instead.
+
 2007-08-15  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* libtwitux/Makefile.am: 

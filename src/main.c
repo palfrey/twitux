@@ -18,30 +18,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
+
+#include "config.h"
 
 #include <string.h>
 #include <gtk/gtk.h>
+
+#include <libtwitux/twitux-conf.h>
 
 #include "main.h"
 #include "gui.h"
 #include "callbacks.h"
 #include "gcommon.h"
 #include "common.h"
-#include "conf.h"
 #include "network.h"
+#include "twitux-preferences.h"
 
 int main ( int argc, char *argv[] )
 {
 	TwiTux *twitter;
+	gchar  *localedir;
+	gchar  *home_timeline;
 
-#ifdef ENABLE_NLS
-	bindtextdomain ( GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR );
-	bind_textdomain_codeset ( GETTEXT_PACKAGE, "UTF-8" );
-	textdomain ( GETTEXT_PACKAGE );
-#endif
+	localedir = twitux_paths_get_locale_path ();
+	bindtextdomain (GETTEXT_PACKAGE, localedir);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
+	g_free (localedir);
 
 	// Un amigo de #gnome me dijo que hiciera esto ^^
 	g_type_init ();
@@ -61,14 +64,10 @@ int main ( int argc, char *argv[] )
 	// Inicio Twitux! :)
 	twitter = g_new0 (TwiTux, 1);
 	twitter->principal = g_new0 (TwiTuxWindow, 1);
-	twitter->gconf = g_new0 (TwiTuxConfig, 1);
 	twitter->principal->expand = g_new0 (TwiTuxExpand, 1);
 
 	// Setear el last id por defecto
 	twitter->last_id = TT_NO_LAST_ID;
-
-	//Cargar configuracion
-	tt_gconf_cargar ( twitter->gconf );
 
 	// Inicio libsoup
 	tt_network_load ( twitter );
@@ -121,14 +120,15 @@ int main ( int argc, char *argv[] )
 	// Miscelanega
 	twitter->processing = FALSE;
 
-	// Cargo el home timeline
-	if ( !twitter->gconf->home_timeline || g_str_equal ( twitter->gconf->home_timeline, "" ) ){
-
-		twitter->gconf->home_timeline = g_strdup ( TWITTER_PUBLIC_TIMELINE );
-
+	// Let's get the home timeline
+	if (!(twitux_conf_get_string (twitux_conf_get(),
+								  TWITUX_PREFS_TWEETS_HOME_TIMELINE,
+								  &home_timeline))) {
+		home_timeline = g_strdup (TWITTER_PUBLIC_TIMELINE);
 	}
 
-	tt_network_get_timeline ( twitter, twitter->gconf->home_timeline, TRUE );
+	tt_network_get_timeline ( twitter, home_timeline, TRUE );
+	g_free (home_timeline);
 
 	// Bucle principal
 	gtk_main ();
@@ -138,12 +138,6 @@ int main ( int argc, char *argv[] )
 
 	// Termino multitarea
 	gdk_threads_leave ();
-
-	// Guardo la configuracion
-	tt_gconf_guardar ( twitter->gconf );
-
-	// Cierro la conexion con gconf
-	tt_gconf_free ( twitter->gconf );
 
 	// Borro lista de amigos
 	tt_clear_friends ( twitter->friends );
@@ -161,7 +155,6 @@ int main ( int argc, char *argv[] )
 	g_free ( twitter->current_timeline );
 	
 	g_free ( twitter->principal );
-	g_free ( twitter->gconf );
 	g_free ( twitter );
 
 	return 0; 

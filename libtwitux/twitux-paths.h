@@ -1,8 +1,6 @@
-#if !defined TWITUX_GCONF_H
-#define TWITUX_GCONF_H
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
- * Copyright (C) 2007 - Alvaro Daniel Morales - <daniel@suruware.com>
+ * Copyright (C) 2006 Imendio AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,42 +17,18 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
-#include <gtk/gtk.h>
-#include <gconf/gconf-client.h>
 
-#define TT_GCONF_DIR "/apps/twitux"
+#ifndef __TWITUX_PATHS_H__
+#define __TWITUX_PATHS_H__
 
+#include <glib.h>
 
-typedef struct _TwiTuxConfig TwiTuxConfig;
+G_BEGIN_DECLS
 
-struct _TwiTuxConfig
-{
-	GConfClient *client;
+gchar *twitux_paths_get_glade_path  (const gchar *filename);
+gchar *twitux_paths_get_image_path  (const gchar *filename);
+gchar *twitux_paths_get_locale_path (void);
 
-	gchar *user_login;
-	gchar *user_passwd;
+G_END_DECLS
 
-	gboolean user_remember;
-
-	gboolean ver_estado;
-	
-	gboolean expandir_mensajes;
-
-	gchar *home_timeline;
-	
-	gboolean ver_burbujas;
-
-	gboolean recargar_timelines;
-
-};
-
-#define TWITUX_CONFIG(obj) ((TwiTuxConfig *)obj)
-
-void tt_gconf_cargar (TwiTuxConfig *conf);
-
-void tt_gconf_free (TwiTuxConfig *conf);
-
-void tt_gconf_guardar (TwiTuxConfig *conf);
-
-#endif
+#endif /* __TWITUX_PATHS_H__ */

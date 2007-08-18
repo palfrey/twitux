@@ -23,10 +23,10 @@
 #endif
 
 #include <string.h>
-
 #include <libsoup/soup.h>
-
 #include <libsexy/sexy.h>
+
+#include <libtwitux/twitux-conf.h>
 
 #include "main.h"
 #include "twitter.h"
@@ -34,6 +34,7 @@
 #include "gcommon.h"
 #include "network.h"
 #include "gui.h"
+#include "twitux-preferences.h"
 
 static void tt_on_get_timeline ( SoupMessage *msg, gpointer user_data );
 static void tt_on_get_imagen ( SoupMessage *msg, gpointer user_data );
@@ -405,13 +406,36 @@ static void tt_on_send_message ( SoupMessage *msg, gpointer user_data )
 
 
 // Pidiendo datos para conectarse
-static void tt_on_auth (SoupSession *session, SoupMessage *msg, const char *auth_type, const char *auth_realm, char **username, char **password, gpointer user_data)
+static void tt_on_auth (SoupSession  *session,
+						SoupMessage  *msg,
+						const char   *auth_type,
+						const char   *auth_realm,
+						char        **username,
+						char        **password,
+						gpointer      user_data)
 {
-	TwiTux *data = TWITUX_TWITUX ( user_data );
+	TwituxConf *conf;
+	gchar      *user_id;
+	gchar      *user_passwd;
 
-	*username = g_strdup ( data->gconf->user_login );
-	*password = g_strdup ( data->gconf->user_passwd );
+	conf = twitux_conf_get ();
+	
+	/*
+	 * TODO: Add check to verify that user id & password has
+	 *       been set.
+	 */
+	twitux_conf_get_string (conf,
+							TWITUX_PREFS_AUTH_USER_ID,
+							&user_id);
+	twitux_conf_get_string (conf,
+							TWITUX_PREFS_AUTH_PASSWORD,
+							&user_passwd);
 
+	*username = g_strdup (user_id);
+	*password = g_strdup (user_passwd);
+
+	g_free (user_id);
+	g_free (user_passwd);
 }
 
 
@@ -436,19 +460,20 @@ gboolean tt_timeout_remove ( TwiTux *twitter )
 
 
 // Inicia un el timeout de actualizacion
-gboolean tt_timeout_start ( TwiTux *twitter )
+gboolean tt_timeout_start (TwiTux *twitter)
 {
+	gboolean reload;
 
-	if ( twitter->gconf->recargar_timelines ) {
+	twitux_conf_get_bool (twitux_conf_get (),
+						  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
+						  &reload);
 
-		twitter->timeout_id = g_timeout_add ( TT_TIMEOUT_STEP, tt_update_timeout, twitter );
+	if (reload) {
+		twitter->timeout_id = g_timeout_add (TT_TIMEOUT_STEP, tt_update_timeout, twitter);
 
 		return TRUE;
-
 	}
-
 	return FALSE;
-
 }
 
 

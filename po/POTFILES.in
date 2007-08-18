@@ -1,6 +1,9 @@
 # List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
 [encoding: UTF-8]
 twitux.desktop.in
+twitux.schemas.in
+
 src/main.c
 src/callbacks.c
 src/common.c

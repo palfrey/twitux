@@ -1,5 +1,3 @@
-#if !defined TWITUX_GUI_H
-#define TWITUX_GUI_H
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
  * Copyright (C) 2007 - Alvaro Daniel Morales - <daniel@suruware.com>
@@ -20,10 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef __TWITUX_GUI_H__
+#define __TWITUX_GUI_H__
+
 #include <gtk/gtk.h>
 
 #include "main.h"
-#include "gui.h"
 #include "twitter.h"
 
 GtkWidget *tt_gui_ventana_principal ( TwiTux *twitter );
@@ -50,4 +50,4 @@ GtkStatusIcon *tt_gui_create_notify_icon ( TwiTux *twitter );
 
 void tt_gui_show_bubble ( TwiTux *twitter, const char *mensaje );
 
-#endif
+#endif /* __TWITUX_GUI_H__ */

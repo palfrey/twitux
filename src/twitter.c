@@ -25,9 +25,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
-
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+
+#include <libtwitux/twitux-conf.h>
 
 #include "main.h"
 #include "twitter.h"
@@ -35,6 +36,7 @@
 #include "gcommon.h"
 #include "gui.h"
 #include "network.h"
+#include "twitux-preferences.h"
 
 // Tipos de Parsers
 enum {
@@ -459,34 +461,39 @@ static gboolean parser_twitter ( const gchar *file, TwiTux *twitter, gint xml_ty
 }
 
 
-void check_view_bubble ( TwiTux *twitter, gboolean show_bubble, gint nTwitts, gint lastTweet )
+void check_view_bubble (TwiTux *twitter,
+						gboolean show_bubble,
+						gint nTwitts,
+						gint lastTweet)
 {
 	GtkWidget *window;
+	gboolean   statusbar;
 
-	// No mostrar bubble su ventana está oculta o con foco
 	window = twitter->principal->ventana;
+	
+	twitux_conf_get_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_STATUSBAR,
+						  &statusbar);
+	
 
-	if ( !(GTK_WIDGET_VISIBLE ( window ) && gtk_window_is_active ( GTK_WINDOW ( window ) )) && twitter->gconf->ver_burbujas ) {
+	if (!(GTK_WIDGET_VISIBLE (window) &&
+		  gtk_window_is_active (GTK_WINDOW (window)))
+		&& statusbar) {
 
 		// Mostrar la burbuja de notificacion solo si hay tweets nuevos
-		if ( show_bubble && ( nTwitts > 0 ) && ( twitter->last_id != lastTweet ) ) {
-
+		if (show_bubble && (nTwitts > 0) &&
+			(twitter->last_id != lastTweet)) {
 			gchar *tmp;
 
-			tmp = g_strdup_printf ( _("you have %i new tweet(s) to read!"), nTwitts );
+			tmp = g_strdup_printf (_("you have %i new tweet(s) to read!"),
+								   nTwitts );
 
-			tt_gui_show_bubble ( twitter, tmp );
-
-			g_free ( tmp );
-
+			tt_gui_show_bubble (twitter, tmp);
+			g_free (tmp);
 		}
-
 	}
 
-	if ( lastTweet > 0 ) {
-
+	if (lastTweet > 0) {
 		twitter->last_id = lastTweet;
-
 	}
-
 }

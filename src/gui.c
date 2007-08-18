@@ -32,6 +32,8 @@
 #include <libsexy/sexy.h>
 #include <libnotify/notify.h>
 
+#include <libtwitux/twitux-conf.h>
+
 #include "main.h"
 #include "gui.h"
 #include "common.h"
@@ -39,6 +41,7 @@
 #include "callbacks.h"
 #include "network.h"
 #include "twitter.h"
+#include "twitux-preferences.h"
 
 static GType g_iminfo_pointer_register (void);
 static TwiTuxStatus *g_iminfo_pointer_copy ( gpointer *status );
@@ -255,6 +258,12 @@ GtkWidget *tt_gui_ventana_principal ( TwiTux *twit )
 
 	TwiTuxExpand *expand;
 
+	TwituxConf *conf;
+	gboolean expand_msg = FALSE;
+	gboolean notify = FALSE;
+	gboolean reload = FALSE;
+	gboolean statusbar_visible = FALSE;
+
 	// Atajos del teclados extra
 	accel_group = gtk_accel_group_new ();
 
@@ -376,19 +385,34 @@ GtkWidget *tt_gui_ventana_principal ( TwiTux *twit )
 	misc = crear_menu ( _("Set advanced options"), mi_menu );
 	submenu = gtk_menu_new ();
 	gtk_menu_item_set_submenu ( GTK_MENU_ITEM ( misc ), submenu );
-	
-	mi = crear_menu_check ( submenu, _("Expand messages"), twit->gconf->expandir_mensajes );
+
+	/* Let's get the gconf client. */
+	conf = twitux_conf_get ();
+
+	twitux_conf_get_bool (conf,
+						  TWITUX_PREFS_UI_EXPAND_MESSAGES,
+						  &expand_msg);	
+	mi = crear_menu_check ( submenu, _("Expand messages"), expand_msg);
 	g_signal_connect ( mi, "toggled", G_CALLBACK ( tt_on_ver_expandir_mensajes ), twit );
 
-	mi = crear_menu_check ( submenu, _("Show gui notifications"), twit->gconf->ver_burbujas );
+	twitux_conf_get_bool (conf,
+						  TWITUX_PREFS_UI_NOTIFICATION,
+						  &notify);
+	mi = crear_menu_check ( submenu, _("Show gui notifications"), notify);
 	g_signal_connect ( mi, "toggled", G_CALLBACK ( tt_on_ver_burbujas ), twit );
 
-	mi = crear_menu_check ( submenu, _("Auto reload timelines"), twit->gconf->recargar_timelines );
+	twitux_conf_get_bool (conf,
+						  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
+						  &reload);
+	mi = crear_menu_check ( submenu, _("Auto reload timelines"), reload);
 	g_signal_connect ( mi, "toggled", G_CALLBACK ( tt_on_recargar_timelines ), twit );
 
 	misc = crear_menu_separador ( mi_menu );
-
-	mi = crear_menu_check ( mi_menu, _("Status bar"), twit->gconf->ver_estado );
+	
+	twitux_conf_get_bool (conf,
+						  TWITUX_PREFS_UI_STATUSBAR,
+						  &statusbar_visible);
+	mi = crear_menu_check ( mi_menu, _("Status bar"), statusbar_visible);
 	g_signal_connect ( mi, "toggled", G_CALLBACK ( tt_on_ver_estado ), twit );
 
 	// Menu ayuda
@@ -400,13 +424,13 @@ GtkWidget *tt_gui_ventana_principal ( TwiTux *twit )
 	g_signal_connect ( mi, "activate", G_CALLBACK ( tt_on_twitux ), twit );
 
 	mi = crear_menu ( _("Report bugs..."), mi_menu );
-	g_signal_connect ( mi, "activate", G_CALLBACK ( tt_on_bugs ), twit->gconf );
+	g_signal_connect ( mi, "activate", G_CALLBACK ( tt_on_bugs ), NULL );
 
 	misc = crear_menu_separador ( mi_menu );
 
 	mi = crear_stock_mi ( "gtk-about", mi_menu, accel_group );
 	gtk_widget_add_accelerator ( mi, "activate", accel_group, GDK_F1, (GdkModifierType) 0, GTK_ACCEL_VISIBLE );
-	g_signal_connect ( mi, "activate", G_CALLBACK ( tt_on_acerca_de ), twit->gconf );
+	g_signal_connect ( mi, "activate", G_CALLBACK ( tt_on_acerca_de ), NULL);
 
 	// Scroll vertical para la lista
 	lista_scroll = gtk_scrolled_window_new ( NULL, NULL );
@@ -473,7 +497,8 @@ GtkWidget *tt_gui_ventana_principal ( TwiTux *twit )
 
 	// Barra de estado
 	twitter->barra_estado = gtk_statusbar_new ();
-	if ( twit->gconf->ver_estado ) {
+
+	if (statusbar_visible) {
 		gtk_widget_show ( twitter->barra_estado );
 	}
 	gtk_box_pack_start ( GTK_BOX ( twitter->panel_principal ), twitter->barra_estado, FALSE, FALSE, 0 );
@@ -504,10 +529,15 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 	GtkWidget *label_clave;
 	GtkWidget *label1;
 
+	TwituxConf *conf;
+	gchar *user_id;
+	gchar *user_passwd;
+	gboolean auth_remember = FALSE;
+
 	gchar *titulo = g_strdup_printf ( _("%s - Log in"), TWITTER_HEADER_CLIENT );
 	gchar *tmp_ruta;
 
-	TwiTuxConfig *conf = twitter->gconf;
+	conf = twitux_conf_get ();
 
 	dialogo_login = gtk_dialog_new_with_buttons ( titulo ,
 											GTK_WINDOW ( twitter->principal->ventana ),
@@ -564,8 +594,11 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 	*entry_user = gtk_entry_new ();
 	gtk_widget_show ( *entry_user );
 	gtk_box_pack_start ( GTK_BOX ( box_datos ), *entry_user, FALSE, FALSE, 0 );
-	if ( conf->user_login ){
-		gtk_entry_set_text ( GTK_ENTRY ( *entry_user ), conf->user_login );
+	/* get the user login id from gconf if available */
+	if (twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_USER_ID,
+								&user_id)) {
+		gtk_entry_set_text (GTK_ENTRY (*entry_user), user_id);
+		g_free (user_id);
 	}
 
 	label_clave = gtk_label_new ( _("<b>Password:</b>") );
@@ -579,15 +612,22 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 	gtk_widget_show ( *entry_passwd );
 	gtk_box_pack_start ( GTK_BOX ( box_datos ), *entry_passwd, FALSE, FALSE, 0 );
 	gtk_entry_set_visibility (GTK_ENTRY ( *entry_passwd ), FALSE );
-	if ( conf->user_passwd ){
-		gtk_entry_set_text ( GTK_ENTRY ( *entry_passwd ), conf->user_passwd );
+	/* Get the user's password from gconf if it's available */
+	if (twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_PASSWORD,
+								&user_passwd)) {
+		gtk_entry_set_text (GTK_ENTRY (*entry_passwd ), user_passwd);
+		g_free (user_passwd);
 	}
 
 	*check_remember = gtk_check_button_new_with_mnemonic ( _("Remember user data") );
 	gtk_widget_show ( *check_remember );
 	gtk_box_pack_start (GTK_BOX ( box_datos ), *check_remember, FALSE, FALSE, 0 );
 	gtk_container_set_border_width ( GTK_CONTAINER ( *check_remember ), 11 );
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON( *check_remember ), conf->user_remember );
+	/* Check gconf to see if we should remember the login.  Default is FALSE. */
+	twitux_conf_get_bool (conf,
+						  TWITUX_PREFS_AUTH_REMEMBER,
+						  &auth_remember);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (*check_remember), auth_remember);
 
 	label1 = gtk_label_new ( _("Twitter login") );
 	gtk_widget_show ( label1 );
@@ -601,7 +641,7 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 
 
 // Crear dialogo Acerca de..
-GtkWidget *tt_gui_create_dialogo_acerca ( TwiTuxConfig *config )
+GtkWidget *tt_gui_create_dialogo_acerca (void)
 {
 	GtkWidget *dialogo_acerca;
 	const gchar *authors[] = {
@@ -625,7 +665,7 @@ GtkWidget *tt_gui_create_dialogo_acerca ( TwiTuxConfig *config )
 	gchar *tmp_ruta = get_ruta_imagen ( "twitux-top.png" );
 
 	dialogo_acerca = gtk_about_dialog_new ();
-	gtk_about_dialog_set_url_hook ( (GtkAboutDialogActivateLinkFunc) tt_on_acerca_link, config, NULL );
+	gtk_about_dialog_set_url_hook ( (GtkAboutDialogActivateLinkFunc) tt_on_acerca_link, NULL, NULL );
 	gtk_about_dialog_set_logo ( GTK_ABOUT_DIALOG ( dialogo_acerca ), gdk_pixbuf_new_from_file ( tmp_ruta, NULL ) );
 	gtk_about_dialog_set_version ( GTK_ABOUT_DIALOG ( dialogo_acerca ), TWITTER_HEADER_VERSION );
 	gtk_about_dialog_set_name ( GTK_ABOUT_DIALOG ( dialogo_acerca ), TWITTER_HEADER_CLIENT );

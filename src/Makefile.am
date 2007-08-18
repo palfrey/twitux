@@ -1,21 +1,24 @@
-## Process this file with automake to produce Makefile.in
-
-INCLUDES = \
-	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
-	-DPACKAGE_LOCALE_DIR=\""$(datadir)/locale"\" \
-	@PACKAGE_CFLAGS@
+AM_CPPFLAGS=						\
+	-I$(top_srcdir)                          	\
+	-DPREFIX="\"$(prefix)"\"			\
+	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
+	-DDATADIR=\""$(datadir)"\"              	\
+	-DLIBDIR=\""$(libdir)"\"			\
+	$(TWITUX_CFLAGS)
 
 bin_PROGRAMS = twitux
 
-twitux_SOURCES = \
-	main.c main.h \
-	callbacks.c callbacks.h \
-	common.c common.h \
-	conf.c conf.h \
-	gcommon.c gcommon.h \
-	gui.c gui.h \
-	network.c network.h \
-	twitter.c twitter.h
+twitux_SOURCES = 					\
+	main.c 				main.h 		\
+	callbacks.c			callbacks.h	\
+	common.c			common.h	\
+	gcommon.c			gcommon.h	\
+	gui.c				gui.h		\
+	network.c			network.h	\
+	twitter.c			twitter.h	\
+	twitux-preferences.h
 
-twitux_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
+twitux_LDADD=						\
+	$(top_builddir)/libtwitux/libtwitux.la		\
+	$(TWITUX_LIBS)
 

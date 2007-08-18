@@ -1,0 +1,149 @@
+<gconfschemafile>
+  <schemalist>
+    
+    <schema>
+       <key>/schemas/apps/twitux/auth/user_id</key>
+       <applyto>/apps/twitux/auth/user_id</applyto>
+       <owner>twitux</owner>
+       <type>string</type>
+       <default></default>
+       <locale name="C">
+          <short>Twitter username</short>
+          <long>User's Twitter account username.</long>
+       </locale>
+    </schema>
+
+    <schema>
+       <key>/schemas/apps/twitux/auth/password</key>
+       <applyto>/apps/twitux/auth/password</applyto>
+       <owner>twitux</owner>
+       <type>string</type>
+       <default></default>
+       <locale name="C">
+          <short>Twitter password</short>
+          <long>User's Twitter account password.</long>
+       </locale>
+    </schema>
+    
+    <schema>
+    	<key>/schemas/apps/twitux/auth/remember_login</key>
+    	<applyto>/apps/twitux/auth/remember_login</applyto>
+    	<owner>twitux</owner>
+    	<type>bool</type>
+    	<default>false</default>
+    	<locale name="C">
+    	   <short>Remember login information</short>
+    	   <long>Remember the Twitter login information.</long>
+    	</locale>
+    </schema>
+    
+    <schema>
+    	<key>/schemas/apps/twitux/tweets/home_timeline</key>
+    	<applyto>/apps/twitux/tweets/home_timeline</applyto>
+    	<owner>twitux</owner>
+    	<type>string</type>
+    	<default></default>
+    	<locale name="C">
+    	   <short>User's home timeline</short>
+    	   <long>User's home timeline.</long>
+    	</locale>
+    </schema>
+    
+    <schema>
+    	<key>/schemas/apps/twitux/tweets/reload_timeline</key>
+    	<applyto>/apps/twitux/tweets/reload_timeline</applyto>
+    	<owner>twitux</owner>
+    	<type>bool</type>
+    	<default>false</default>
+    	<locale name="C">
+    	   <short>Reload timeline</short>
+    	   <long>Reload timeline.</long>
+    	</locale>
+    </schema>
+
+    <schema>
+	<key>/schemas/apps/twitux/ui/main_window_height</key>
+	<applyto>/apps/twitux/ui/main_window_height</applyto>
+	<owner>twitux</owner>
+	<type>int</type>
+	<default>0</default>
+	<locale name="C">
+	   <short>Main window height</short>
+	   <long>Main window height.</long>
+	</locale>
+     </schema>
+
+     <schema>
+	<key>/schemas/apps/twitux/ui/main_window_width</key>
+	<applyto>/apps/twitux/ui/main_window_width</applyto>
+	<owner>twitux</owner>
+	<type>int</type>
+	<default>0</default>
+	<locale name="C">
+	   <short>Main window width</short>
+	   <long>Main window width.</long>
+	</locale>
+     </schema>
+
+     <schema>
+	<key>/schemas/apps/twitux/ui/main_window_position_x</key>
+	<applyto>/apps/twitux/ui/main_window_position_x</applyto>
+	<owner>twitux</owner>
+	<type>int</type>
+	<default>0</default>
+	<locale name="C">
+	   <short>Main window X position</short>
+	   <long>Main window X position.</long>
+	</locale>
+     </schema>
+
+     <schema>
+	<key>/schemas/apps/twitux/ui/main_window_position_y</key>
+	<applyto>/apps/twitux/ui/main_window_position_y</applyto>
+	<owner>twitux</owner>
+	<type>int</type>
+	<default>0</default>
+	<locale name="C">
+	   <short>Main window Y position</short>
+	   <long>Main window Y position.</long>
+	</locale>
+     </schema>
+     
+     <schema>
+	<key>/schemas/apps/twitux/ui/expand_messages</key>
+	<applyto>/apps/twitux/ui/expand_messages</applyto>
+	<owner>twitux</owner>
+	<type>bool</type>
+	<default>false</default>
+	<locale name="C">
+	   <short>Expand messages</short>
+	   <long>Expand messages</long>
+	</locale>
+     </schema>
+     
+     <schema>
+	<key>/schemas/apps/twitux/ui/notify</key>
+	<applyto>/apps/twitux/ui/notify</applyto>
+	<owner>twitux</owner>
+	<type>bool</type>
+	<default>false</default>
+	<locale name="C">
+	   <short>Show notification of new Twitter messages</short>
+	   <long>Show notification of new Twitter messages.</long>
+	</locale>
+     </schema>
+     
+     <schema>
+	<key>/schemas/apps/twitux/ui/statusbar</key>
+	<applyto>/apps/twitux/ui/statusbar</applyto>
+	<owner>twitux</owner>
+	<type>bool</type>
+	<default>true</default>
+	<locale name="C">
+	   <short>Show the statusbar</short>
+	   <long>Show the statusbar.</long>
+	</locale>
+     </schema>
+
+  </schemalist>  
+</gconfschemafile>

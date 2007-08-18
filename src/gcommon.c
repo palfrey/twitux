@@ -18,12 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
+#include <config.h>
 
 #include <gtk/gtk.h>
-#include <gconf/gconf-client.h>
 
 #include "main.h"
 #include "twitter.h"
@@ -192,26 +189,6 @@ void tt_enable_disable_widgets ( gboolean flag, TwiTuxWindow *window )
 }
 
 
-void tt_open_web_browser  ( GConfClient *client, const char *url )
-{
-	gchar *app;
-	gchar *command;
-
-	app = gconf_client_get_string ( client, TT_BROWSER_COMMAND_KEY, NULL );
-
-	if ( !app ){
-		app = "epiphany %s";
-	}
-
-	command = g_strdup_printf ( app, url );
-
-	g_spawn_command_line_async ( command, NULL );
-
-	g_free( command );
-
-}
-
-
 static void friend_list_remove ( gpointer data, gpointer userdata )
 {
 	TwiTuxUser *user;
@@ -255,5 +232,5 @@ void tt_set_networking ( TwiTux *twitter, gboolean flag )
 
 gchar *get_ruta_imagen ( const gchar *file )
 {
-	return g_build_path ( G_DIR_SEPARATOR_S, PACKAGE_DATA_DIR, "pixmaps", file, NULL );
+	return g_build_path ( G_DIR_SEPARATOR_S, DATADIR, "pixmaps", file, NULL );
 }

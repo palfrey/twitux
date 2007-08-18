@@ -1,5 +1,3 @@
-#if !defined TWITUX_MAIN_H
-#define TWITUX_MAIN_H
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
  * Copyright (C) 2007 - Alvaro Daniel Morales - <daniel@suruware.com>
@@ -19,6 +17,9 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+ 
+#ifndef __TWITUX_MAIN_H__
+#define __TWITUX_MAIN_H__
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -27,8 +28,6 @@
 #include <gtk/gtk.h>
 #include <libsoup/soup.h>
 #include <libnotify/notify.h>
-
-#include "conf.h"
 
 #define TT_CACHE_DIR "cache"
 #define TT_IMAGE_DIR "images"
@@ -101,8 +100,6 @@ typedef struct _TwiTux TwiTux;
 struct _TwiTux
 {
 	TwiTuxWindow *principal;
-
-	TwiTuxConfig *gconf;
 
 	SoupSession *conexion;
 
