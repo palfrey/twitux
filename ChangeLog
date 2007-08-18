@@ -1,5 +1,9 @@
 2007-08-18  Brian Pepple  <bpepple@fedoraproject.org>
-
+	
+	* src/main.c (main): let's remember to shutdown gconf.
+	
+2007-08-18  Brian Pepple  <bpepple@fedoraproject.org>
+ 
 	* data/Makefile.am:
 	* data/twitux.png:
 	* data/twitux-side.png:

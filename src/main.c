@@ -148,6 +148,9 @@ int main ( int argc, char *argv[] )
 	// Cierro dbus
 	notify_uninit ();
 
+	/* Let's shutdown gconf */
+	twitux_conf_shutdown ();
+
 	// Libero memoria y me voy
 	g_free ( twitter->cache_images_dir );
 	g_free ( twitter->cache_files_dir );
