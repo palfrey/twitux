@@ -1,5 +1,26 @@
 2007-08-18  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* data/Makefile.am:
+	* data/twitux.png:
+	* data/twitux-side.png:
+	* data/twitux-loading.png:
+	* data/twitux-top.png:
+	* data/twitux.desktop.in.in:
+	* data/twitux.schemas.in:
+	* po/POTFILES.in:
+	* po/POTFILES.skop: Consolidate misc data files
+	into one directory.
+
+	* cofigure.in:
+	* Makefile.am: Modify fixes necessary for directory 
+	changes.
+
+	* twitux.desktop.in:
+	* twitux.schemas.in:
+	* pixmaps/*: remove unnecessary files & directory.	
+	
+2007-08-18  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* po/POTFILES: remove src/conf.c, so that make distcheck
 	works again.
 	
