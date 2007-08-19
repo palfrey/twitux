@@ -539,6 +539,8 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 
 	conf = twitux_conf_get ();
 
+	twitux_conf_get_bool (conf, TWITUX_PREFS_AUTH_REMEMBER, &auth_remember);
+
 	dialogo_login = gtk_dialog_new_with_buttons ( titulo ,
 											GTK_WINDOW ( twitter->principal->ventana ),
 											GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -595,10 +597,12 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 	gtk_widget_show ( *entry_user );
 	gtk_box_pack_start ( GTK_BOX ( box_datos ), *entry_user, FALSE, FALSE, 0 );
 	/* get the user login id from gconf if available */
-	twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_USER_ID, &user_id);
-	if (user_id) {
-		gtk_entry_set_text (GTK_ENTRY (*entry_user), user_id);
-		g_free (user_id);
+	if ( auth_remember ) {
+		twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_USER_ID, &user_id);
+		if (user_id) {
+			gtk_entry_set_text (GTK_ENTRY (*entry_user), user_id);
+			g_free (user_id);
+		}
 	}
 
 	label_clave = gtk_label_new ( _("<b>Password:</b>") );
@@ -613,11 +617,13 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 	gtk_box_pack_start ( GTK_BOX ( box_datos ), *entry_passwd, FALSE, FALSE, 0 );
 	gtk_entry_set_visibility (GTK_ENTRY ( *entry_passwd ), FALSE );
 	/* Get the user's password from gconf if it's available */
-	twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_PASSWORD,
+	if( auth_remember ) {
+		twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_PASSWORD,
 								&user_passwd);
-	if (user_passwd) {
-		gtk_entry_set_text (GTK_ENTRY (*entry_passwd ), user_passwd);
-		g_free (user_passwd);
+		if (user_passwd) {
+			gtk_entry_set_text (GTK_ENTRY (*entry_passwd ), user_passwd);
+			g_free (user_passwd);
+		}
 	}
 
 	*check_remember = gtk_check_button_new_with_mnemonic ( _("Remember user data") );
@@ -625,9 +631,6 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 	gtk_box_pack_start (GTK_BOX ( box_datos ), *check_remember, FALSE, FALSE, 0 );
 	gtk_container_set_border_width ( GTK_CONTAINER ( *check_remember ), 11 );
 	/* Check gconf to see if we should remember the login.  Default is FALSE. */
-	twitux_conf_get_bool (conf,
-						  TWITUX_PREFS_AUTH_REMEMBER,
-						  &auth_remember);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (*check_remember), auth_remember);
 
 	label1 = gtk_label_new ( _("Twitter login") );
