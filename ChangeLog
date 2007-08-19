@@ -1,3 +1,13 @@
+2007-08-19  Daniel Morales <daniel@suruware.com>
+	
+	* src/main.c (main): checking if home_timeline isn't NULL
+	* src/gui.c (tt_gui_create_dialogo_login): checking if user and password
+	are not NULL before set_text
+	* src/network.c (tt_on_get_timeline && tt_network_get_data): bugfix when
+	setting	current_timeline.
+	* src/gui.c (tt_gui_ventana_principal): Defaults settings are TRUE
+
+
 2007-08-18  Brian Pepple  <bpepple@fedoraproject.org>
 	
 	* src/main.c (main): let's remember to shutdown gconf.

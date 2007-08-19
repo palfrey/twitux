@@ -259,10 +259,10 @@ GtkWidget *tt_gui_ventana_principal ( TwiTux *twit )
 	TwiTuxExpand *expand;
 
 	TwituxConf *conf;
-	gboolean expand_msg = FALSE;
-	gboolean notify = FALSE;
-	gboolean reload = FALSE;
-	gboolean statusbar_visible = FALSE;
+	gboolean expand_msg = TRUE;
+	gboolean notify = TRUE;
+	gboolean reload = TRUE;
+	gboolean statusbar_visible = TRUE;
 
 	// Atajos del teclados extra
 	accel_group = gtk_accel_group_new ();
@@ -595,8 +595,8 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 	gtk_widget_show ( *entry_user );
 	gtk_box_pack_start ( GTK_BOX ( box_datos ), *entry_user, FALSE, FALSE, 0 );
 	/* get the user login id from gconf if available */
-	if (twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_USER_ID,
-								&user_id)) {
+	twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_USER_ID, &user_id);
+	if (user_id) {
 		gtk_entry_set_text (GTK_ENTRY (*entry_user), user_id);
 		g_free (user_id);
 	}
@@ -613,8 +613,9 @@ GtkWidget *tt_gui_create_dialogo_login ( GtkWidget **entry_user, GtkWidget **ent
 	gtk_box_pack_start ( GTK_BOX ( box_datos ), *entry_passwd, FALSE, FALSE, 0 );
 	gtk_entry_set_visibility (GTK_ENTRY ( *entry_passwd ), FALSE );
 	/* Get the user's password from gconf if it's available */
-	if (twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_PASSWORD,
-								&user_passwd)) {
+	twitux_conf_get_string (conf, TWITUX_PREFS_AUTH_PASSWORD,
+								&user_passwd);
+	if (user_passwd) {
 		gtk_entry_set_text (GTK_ENTRY (*entry_passwd ), user_passwd);
 		g_free (user_passwd);
 	}

@@ -56,6 +56,9 @@ gboolean tt_network_check_status ( TwiTux *twitter, SoupMessage *msg );
 gboolean tt_update_timeout ( gpointer data );
 
 
+static gchar *current_timeline = NULL;
+
+
 // Inicio libsoup
 void tt_network_load ( TwiTux *twitter  )
 {
@@ -282,11 +285,28 @@ static void tt_on_get_timeline ( SoupMessage *msg, gpointer user_data )
 {
 	TwiTux *twitter = TWITUX_TWITUX ( user_data );
 	gchar *tmp_file = NULL;
+	gchar *ctimeline = NULL;
+	
+	if ( current_timeline ){
+
+		ctimeline = g_strdup ( current_timeline );
+
+		g_free (current_timeline);
+
+		current_timeline = NULL;
+
+	}
 
 	tt_set_networking ( twitter, FALSE );
 
 	// Checkeo la respuesta HTTP
-	if ( !tt_network_check_status ( twitter, msg ) ) return;
+	if ( !tt_network_check_status ( twitter, msg ) ) {
+
+		g_free (ctimeline);
+
+		return;
+
+	}
 
 	tt_cambiar_mensaje_estado ( twitter, _("Ok, parsing...") );
 
@@ -301,9 +321,23 @@ static void tt_on_get_timeline ( SoupMessage *msg, gpointer user_data )
 
 		tt_cambiar_mensaje_estado ( twitter, _("Ok, timeline loaded.") );
 
+		if ( ctimeline ){
+
+			if ( twitter->current_timeline ){
+
+				g_free ( twitter->current_timeline );
+
+			}
+
+			twitter->current_timeline = ctimeline;
+
+		}
+
 	} else {
 
 		tt_cambiar_mensaje_estado ( twitter, _("Timeline parser error.") );
+		
+		g_free (ctimeline);
 
 	}
 	
@@ -477,10 +511,9 @@ gboolean tt_timeout_start (TwiTux *twitter)
 }
 
 
-gboolean tt_network_get_data ( TwiTux *twitter, const gchar *url, SoupMessageCallbackFn callback, gboolean flag_current )
+gboolean tt_network_get_data ( TwiTux *twitter, const gchar *url, SoupMessageCallbackFn callback, gboolean fcurrent )
 {
 	SoupMessage *msg;
-	gchar *purl;
 
 	if ( twitter->processing ) return FALSE;
 
@@ -489,24 +522,13 @@ gboolean tt_network_get_data ( TwiTux *twitter, const gchar *url, SoupMessageCal
 
 	tt_set_networking ( twitter, TRUE );
 
-	purl = g_strdup ( url );
-
-	if ( flag_current ){
-
-		if ( twitter->current_timeline ){
-
-			g_free ( twitter->current_timeline );
-
-		}
-
-		twitter->current_timeline = purl;
+	if (fcurrent) {
+		current_timeline = g_strdup ( url );
 	}
 
-	msg = soup_message_new ( "GET", purl );
+	msg = soup_message_new ( "GET", url );
 
 	soup_session_queue_message (twitter->conexion, msg, callback, twitter);
-
-	if ( !flag_current ) g_free ( purl );
 
 	return TRUE;
 }

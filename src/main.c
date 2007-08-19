@@ -121,9 +121,10 @@ int main ( int argc, char *argv[] )
 	twitter->processing = FALSE;
 
 	// Let's get the home timeline
-	if (!(twitux_conf_get_string (twitux_conf_get(),
+	twitux_conf_get_string (twitux_conf_get(),
 								  TWITUX_PREFS_TWEETS_HOME_TIMELINE,
-								  &home_timeline))) {
+								  &home_timeline);
+	if (!home_timeline) {
 		home_timeline = g_strdup (TWITTER_PUBLIC_TIMELINE);
 	}
 
