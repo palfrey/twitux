@@ -178,6 +178,7 @@ void tt_enable_disable_widgets ( gboolean flag, TwiTuxWindow *window )
 		gtk_widget_set_sensitive ( window->menuitem_desconectar, FALSE );
 	}
 
+	gtk_widget_set_sensitive ( window->menuitem_recargar, flag );
 	gtk_widget_set_sensitive ( window->menuitem_enviar_estado, flag );
 	gtk_widget_set_sensitive ( window->menuitem_amigos_timeline, flag );
 	gtk_widget_set_sensitive ( window->menuitem_amigos, flag );

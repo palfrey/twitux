@@ -87,6 +87,7 @@ struct _TwiTuxWindow
 	GtkWidget *menuitem_enviar_estado;
 	GtkWidget *menuitem_detener;
 	GtkWidget *menuitem_enviar_mensaje;
+	GtkWidget *menuitem_recargar;
 
 	GtkWidget *lista_tree;
 

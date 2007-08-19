@@ -323,9 +323,9 @@ GtkWidget *tt_gui_ventana_principal ( TwiTux *twit )
 
 	misc = crear_menu_separador ( mi_menu );
 
-	mi = crear_stock_mi ( "gtk-refresh", mi_menu, accel_group );
-	gtk_widget_add_accelerator ( mi, "activate", accel_group, GDK_F5, (GdkModifierType) 0, GTK_ACCEL_VISIBLE );
-	g_signal_connect ( mi, "activate", G_CALLBACK ( tt_on_recargar ), twit );
+	twitter->menuitem_recargar = crear_stock_mi ( "gtk-refresh", mi_menu, accel_group );
+	gtk_widget_add_accelerator ( twitter->menuitem_recargar, "activate", accel_group, GDK_F5, (GdkModifierType) 0, GTK_ACCEL_VISIBLE );
+	g_signal_connect ( twitter->menuitem_recargar, "activate", G_CALLBACK ( tt_on_recargar ), twit );
 
 	twitter->menuitem_detener = crear_stock_mi ( "gtk-stop", mi_menu, accel_group );
 	gtk_widget_set_sensitive ( twitter->menuitem_detener, FALSE );
