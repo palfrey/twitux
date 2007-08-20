@@ -39,6 +39,8 @@ void tt_network_send_message ( TwiTux *twitter, gchar *friend, gchar *text );
 
 void tt_network_tinyze ( TwiTuxTinyzer *tinyzer, const char *url );
 
+void tt_network_add_friend ( TwiTux *twitter, const char *username );
+
 // Funciones del timeout que actualiza el timeline actual
 gboolean tt_timeout_remove ( TwiTux *twitter );
 

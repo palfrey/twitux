@@ -43,6 +43,7 @@ static void tt_on_get_mensajes_directos ( SoupMessage *msg, gpointer user_data )
 static void tt_on_post_status ( SoupMessage *msg, gpointer user_data );
 static void tt_on_send_message ( SoupMessage *msg, gpointer user_data );
 static void tt_on_auth ( SoupSession *session, SoupMessage *msg, const char *auth_type, const char *auth_realm, char **username, char **password, gpointer data );
+static void tt_on_add_friend ( SoupMessage *msg, gpointer user_data );
 
 void tt_on_get_tinyurl ( SoupMessage *msg, gpointer user_data );
 
@@ -201,6 +202,41 @@ void tt_network_send_message ( TwiTux *twitter, gchar *friend, gchar *text )
 
 	}
 
+}
+
+
+// Add a user to follow
+void tt_network_add_friend ( TwiTux *twitter, const char *username )
+{
+	gchar *url;
+
+	if ( !(username) || (strcmp(username, "")==0) ) return;
+
+	url = g_strdup_printf ( TWITTER_FRIEND_ADD, username );
+
+	if ( tt_network_get_data ( twitter, url, tt_on_add_friend, FALSE ) ) {
+
+		tt_cambiar_mensaje_estado ( twitter, _("Adding friend...") );
+
+	}
+
+	g_free ( url );
+
+}
+
+// Callback al recibir los mensajes directos
+static void tt_on_add_friend ( SoupMessage *msg, gpointer user_data )
+{
+	TwiTux *twitter = TWITUX_TWITUX ( user_data );
+	gchar *tmp_file = NULL;
+
+	tt_set_networking ( twitter, FALSE );
+
+	// Checkeo la respuesta HTTP
+	if ( !tt_network_check_status ( twitter, msg ) ) return;
+
+	tt_cambiar_mensaje_estado ( twitter, _("Friend added!") );
+	
 }
 
 

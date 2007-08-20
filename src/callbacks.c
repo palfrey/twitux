@@ -724,6 +724,41 @@ void tt_on_ver_burbujas ( GtkCheckMenuItem *checkmenuitem, gpointer user_data )
 }
 
 
+// adding a new person to follow
+void tt_on_agregar_amigo ( GtkMenuItem *menuitem, gpointer user_data )
+{
+	GtkWidget *dialog;
+	GtkWidget *entry;
+	gint response;
+
+	TwiTux *twitter = TWITUX_TWITUX ( user_data );
+
+	dialog = tt_gui_create_dialog_add_fiend ( twitter, &entry );
+	
+	response = gtk_dialog_run (GTK_DIALOG (dialog));
+
+	if (response == GTK_RESPONSE_ACCEPT) {
+
+		tt_network_add_friend ( twitter, gtk_entry_get_text (GTK_ENTRY (entry) ) );
+
+	}
+
+	gtk_widget_destroy ( dialog );
+
+}
+
+
+// right click on the tree view
+gboolean tt_on_tree_view_button_press ( GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+	if ( event->button != 3 ) return FALSE;
+
+	//g_debug ( "TODO: Right click -> Show popup menu!" );
+
+	return TRUE;
+}
+											
+
 
 static gboolean resize_timeout ( gpointer data )
 {

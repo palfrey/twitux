@@ -44,6 +44,8 @@
 
 #define TWITTER_TWITUX_TIMELINE "http://twitter.com/statuses/user_timeline/twitux.xml"
 
+#define TWITTER_FRIEND_ADD "http://twitter.com/friendships/create/%s.xml"
+
 #define TWITTER_HEADER_CLIENT PACKAGE_NAME
 #define TWITTER_HEADER_VERSION PACKAGE_VERSION
 #define TWITTER_HEADER_URL "http://twitux.sourceforge.net/client.xml"

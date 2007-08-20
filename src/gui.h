@@ -50,4 +50,6 @@ GtkStatusIcon *tt_gui_create_notify_icon ( TwiTux *twitter );
 
 void tt_gui_show_bubble ( TwiTux *twitter, const char *mensaje );
 
+GtkWidget *tt_gui_create_dialog_add_fiend ( TwiTux *twitter, GtkWidget **entry_user );
+
 #endif /* __TWITUX_GUI_H__ */

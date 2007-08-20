@@ -35,6 +35,8 @@ void tt_on_desconectar ( GtkMenuItem *menuitem, gpointer user_data );
 
 void tt_on_recargar ( GtkMenuItem *menuitem, gpointer user_data );
 
+void tt_on_agregar_amigo ( GtkMenuItem *menuitem, gpointer user_data );
+
 void tt_on_ver_estado ( GtkCheckMenuItem *checkmenuitem, gpointer user_data );
 
 void tt_on_establecer_home ( GtkMenuItem *menuitem, gpointer user_data );
@@ -84,5 +86,7 @@ gboolean tt_on_window_close_clicked ( GtkWidget *widget, GdkEvent *event, gpoint
 void tt_on_recargar_timelines ( GtkCheckMenuItem *checkmenuitem, gpointer user_data );
 
 void tt_on_ver_burbujas ( GtkCheckMenuItem *checkmenuitem, gpointer user_data );
+
+gboolean tt_on_tree_view_button_press ( GtkWidget *widget, GdkEventButton *event, gpointer user_data);
 
 #endif /* __TWITUX_CALLBACKS_H__ */

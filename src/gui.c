@@ -209,6 +209,7 @@ GtkWidget *crear_list_twitter ( TwiTux *twitter ) {
 	tree_view = gtk_tree_view_new ();
 	gtk_tree_view_set_headers_visible ( GTK_TREE_VIEW ( tree_view ), FALSE );
 	g_signal_connect ( tree_view, "cursor-changed", G_CALLBACK ( tt_on_status_changed ), twitter );
+	g_signal_connect ( tree_view, "button-press-event", G_CALLBACK ( tt_on_tree_view_button_press ), twitter );
 
 	gtk_tree_view_set_model ( GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (store_tree) );
 
@@ -330,6 +331,12 @@ GtkWidget *tt_gui_ventana_principal ( TwiTux *twit )
 	twitter->menuitem_detener = crear_stock_mi ( "gtk-stop", mi_menu, accel_group );
 	gtk_widget_set_sensitive ( twitter->menuitem_detener, FALSE );
 	g_signal_connect ( twitter->menuitem_detener, "activate", G_CALLBACK ( tt_on_detener ), twit );
+
+	misc = crear_menu_separador ( mi_menu );
+	
+	twitter->menuitem_agregar_amigo = crear_menu ( _("Add a user to follow..."), mi_menu );
+	gtk_widget_set_sensitive ( twitter->menuitem_agregar_amigo, FALSE );
+	g_signal_connect ( twitter->menuitem_agregar_amigo, "activate", G_CALLBACK ( tt_on_agregar_amigo ), twit );
 
 	misc = crear_menu_separador ( mi_menu );
 
@@ -996,6 +1003,48 @@ void tt_gui_show_bubble ( TwiTux *twitter, const char *mensaje )
 
 }
 
+
+// Dialogo para enviar mensajes directos
+GtkWidget *tt_gui_create_dialog_add_fiend ( TwiTux *twitter, GtkWidget **entry_user )
+{
+	GtkWidget *dialog1;
+	GtkWidget *vbox1;
+	GtkWidget *label;
+	GtkWidget *entry;
+
+	gchar *titulo = g_strdup_printf ( _("%s - Add a user to follow"), TWITTER_HEADER_CLIENT ); 
+
+	gchar *tmp_ruta;
+
+	dialog1 = gtk_dialog_new_with_buttons ( titulo ,
+											GTK_WINDOW ( twitter->principal->ventana ),
+											GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+											GTK_STOCK_CANCEL,
+											GTK_RESPONSE_REJECT,
+											GTK_STOCK_OK,
+											GTK_RESPONSE_ACCEPT,
+											NULL );
+
+	g_free ( titulo );
+
+	gtk_window_set_resizable ( GTK_WINDOW ( dialog1 ), FALSE );
+
+	vbox1 = GTK_DIALOG ( dialog1 )->vbox;
+	gtk_widget_show ( vbox1 );	
+
+	label = gtk_label_new ( _("Type the username to add to your list: ") );
+	gtk_widget_show ( label );
+	gtk_box_pack_start ( GTK_BOX(vbox1), label, FALSE, FALSE, 3 );
+
+	entry = gtk_entry_new ();
+	gtk_widget_show ( entry );
+	gtk_box_pack_start ( GTK_BOX(vbox1), entry, FALSE, FALSE, 3 );
+
+	*entry_user = entry;
+
+	return dialog1;
+
+}
 
 static void g_iminfo_pointer_free ( gpointer *status )
 {

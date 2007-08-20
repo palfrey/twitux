@@ -185,6 +185,8 @@ void tt_enable_disable_widgets ( gboolean flag, TwiTuxWindow *window )
 	gtk_widget_set_sensitive ( window->menuitem_respuestas, flag );
 	gtk_widget_set_sensitive ( window->menuitem_mi_timeline, flag );
 	gtk_widget_set_sensitive ( window->menuitem_enviar_mensaje, flag );
+	
+	gtk_widget_set_sensitive ( window->menuitem_agregar_amigo, flag );
 
 }
 
