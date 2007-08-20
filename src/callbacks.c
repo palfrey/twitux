@@ -180,8 +180,10 @@ void tt_on_recargar ( GtkMenuItem *menuitem, gpointer user_data )
 
 	if ( twitter->processing ) return;
 
+	if ( !twitter->current_timeline ) return;
+
 	tt_timeout_remove ( twitter );
-	
+
 	tt_network_get_timeline ( twitter, twitter->current_timeline, FALSE );
 
 }
