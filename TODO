@@ -4,6 +4,10 @@
 
 * To-do
 -- Proxy support
--- Change from configure.in to configure.ac
+-- Memory profiling of Twitux, it was leaking pretty bad.
+
+* Wishlist Items
+-- NetworkManager DBus support
+-- Gnome-Keyring support for password
 
 

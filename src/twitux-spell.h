@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
- * Copyright (C) 2007 - Brian Pepple <bpepple@fedoraproject.org)
+ * Copyright (C) 2004-2007 Imendio AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -16,13 +16,25 @@
  * License along with this program; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
+ * Authors: Martyn Russell <martyn@imendio.com>
+ *          Richard Hult <richard@imendio.com>
+ *          Brian Pepple <bpepple@fedoraproject.org>
  */
 
-#ifndef __TWITUX_PREFERENCES_H__
-#define __TWITUX_PREFERENCES_H__
+#ifndef __TWITUX_SPELL_H__
+#define __TWITUX_SPELL_H__
 
-#include <gtk/gtkwindow.h>
+G_BEGIN_DECLS
 
-void twitux_preferences_dialog_show (GtkWindow *parent);
+gboolean     twitux_spell_supported           (void);
+const gchar *twitux_spell_get_language_name   (const gchar *code);
+GList       *twitux_spell_get_language_codes  (void);
+void         twitux_spell_free_language_codes (GList       *codes);
+gboolean     twitux_spell_check               (const gchar *word);
+GList *      twitux_spell_get_suggestions     (const gchar *word);
+void         twitux_spell_free_suggestions    (GList       *suggestions);
 
-#endif /* __TWITUX_PREFERENCES_H__ */
+G_END_DECLS
+
+#endif /* __TWITUX_SPELL_H__ */

@@ -199,6 +199,8 @@ twitux_conf_get_bool (TwituxConf  *conf,
 	TwituxConfPriv *priv;
 	GError         *error = NULL;
 
+	*value = FALSE;
+
 	g_return_val_if_fail (TWITUX_IS_CONF (conf), FALSE);
 	g_return_val_if_fail (value != NULL, FALSE);
 

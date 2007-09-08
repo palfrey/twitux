@@ -1,16 +1,378 @@
-2007-08-20  Daniel Morales <daniel@suruware.com>
-	* Added a small feature: add other users to follow.
+2007-09-07  Brian Pepple  <bpepple@fedoraproject.org>
 
-2007-08-19  Daniel Morales <daniel@suruware.com>
+	* src/twitux-dbus.c:
+	* src/twitux-network.c:
+	* src/twitux-app.[ch] (twitux_app_state_on_connection): Minor tweaks.
+
+2007-09-04  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-send-message-dialog.c (message_set_characters_available): limit
+	messages sent to Twitter to a maximum of 140 characters.
+
+2007-09-03  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/main.glade:
+	* src/twitux-app.c (app_connection_items_setup): 
+	Handle the widgets state more sanely, and remove the
+	stop network function from the ui.
 	
-	* src/main.c (main): checking if home_timeline isn't NULL
-	* src/gui.c (tt_gui_create_dialogo_login): checking if user and password
-	are not NULL before set_text
-	* src/network.c (tt_on_get_timeline && tt_network_get_data): bugfix when
-	setting	current_timeline.
-	* src/gui.c (tt_gui_ventana_principal): Defaults settings are TRUE
-	* src/gui.c (tt_gui_create_dialogo_login): auth_remember data fixes.
+2007-09-03  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* configure.in:
+	* Makefile.am:
+	* src/twitux-app.c: Add initial Network Manager dbus
+	support.
+
+2007-09-02  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-app.[c]: Add code to show gui-notifications
+	using libnotify.
+
+2007-09-02  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.c:
+	* src/twitux-app.c: Login code review. Bugfixes. Check if
+	friends are loaded before request them.
+
+2007-09-01  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-dbus.[ch]: Add files for NetworkManager dbus support.
+
+2007-08-31  Daniel Morales <daniminas@gmail.com>
+
+	* src/twitux-app.c: Nicer loading for friend's menu.
+
+2007-08-31  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-parser.c (parser_twitux_node_status): fix encoding
+	of status messages, so they show correctly in the list view.
+
+	* data/Makefile.am: 
+	* src/twitux-app.c (app_status_icon_create): Use icon name
+	for status icon, instead of using hard-coded pixmap. Don't
+	bother to install pixmap into datadir.
+
+2007-08-31  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/main.glade:
+	* src/twitux-app.c: Add function to retrieve the default time,
+	and remove view home timeline from menu.  Also added function
+	to handle network login.
+
+2007-08-30  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-preferences.c (preferences_timeline_setup): Fix the 
+	combo box, so that it correctly displays the default timeline options.
+
+	* src/twitux-app.c: minor formatting change.
+
+2007-08-30  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-app.c: Load friend's timelines from menu.
+
+2007-08-30  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.[ch]: Add support to retrive user's timelines.
+	* src/twitux-app.c: Load current user timeline. 'My timeline'.
+
+2007-08-29  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-app.c:
+	* src/twitux-network.[ch]: Initial code to view the new friends 
+	menu. Fix Friends Timeline.
+
+2007-08-29  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/twitux.png:
+	* data/twitux.svg:
+	* data/Makefile.am:
+	* src/twitux-about.c: Add an icon that isn't trademarked,
+	and credit the artist.  Would be nice to have someone create
+	a tango-ized icon for Twitux sometime in the future.
+
+	* src/twitux-app.c (app_setup, app_twitter_connect_cb): 
+	* src/twitux-network.c (network_cb_on_auth): Use G_STR_EMPTY macro.
+
+2007-08-28  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/main.glade:
+	* po/POTFILES.in:
+	* src/Makefile.am:
+	* src/twitux-send-message-dialog.c:
+	* src/twitux-spell.c:
+	* src/twitux-spell-dialog.[ch]: Add the spell dialog, and 
+	we are finished implementing spell-checking.  Yeah.
+
+2007-08-28  Brian Pepple  <bpepple@fedoraproject.org>
+	
+	* src/twitux.h:
+	* src/twitux-send-message-dialog.c: create popup menu for
+	misspelled words.
+
+2007-08-27  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-network.c (twitux_network_login): fix a spelling error.
+
+	* src/twitux-preferences.c (preferences_destroy_cb): Free a GList when
+	destroying the dialog.
+
+	* src/twitux-send-message-dialog.c: Have misspelled words be
+	underline.
+
+2007-08-27  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.[ch]:
+	* src/twitux-app.c: Add reload function
+
+2007-08-27  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.[ch]: Add Stop loading timeline.
+	* src/twitux-app.c: Load timelines
+
+2007-08-27  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-preferences.c: remove some unneeded functions.
+	
+2007-08-27  Brian Pepple  <bpepple@fedoraproject.org>
+ 
+	* data/main.glade:
+	* src/twitux.h:
+	* src/twitux-app.c:
+	* src/twitux-network.h:
+	* src/twitux-preferences.c: move the set home timeline to the
+	preferences dialog.
+
+2007-08-27  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/main.glade: Add spell checker dialog to glade file.
+
+2007-08-27  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.[ch]:
+	* src/twitux-app.[ch]: Add initial code to load timelines
+	and populating the list view. Add code to check and create
+	twitux cache dirs. Add load public timeline. Add initial code
+	to setup the list view columns.
+
+2007-08-26  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* configure.in:
+	* data/main.glade:
+	* data/twitux.schemas.in:
+	* po/ChangeLog:
+	* po/POTFILES.in:
+	* src/Makefile.am:
+	* src/twitux.h:
+	* src/twitux-preferences.c:
+	* src/twitux-spell.[ch]: Start to add spell checking
+	support, and display languages available in the 
+	preferences dialog.
+	
+2007-08-26  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/main.glade:
+	* data/twitux.schemas.in: 
+	* src/Makefile.am:
+	* src/twitux-account-dialog.c:
+	* src/twitux-app.c:
+	* src/twitux-network.c:
+	* src/twitux-parser.c:
+	* src/twitux-preferences.[ch]:
+	* src/twitux.h:Add the preference dialog, and 
+	move the gconf setting to the twitter.h.
+	
+2007-08-26  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-app.[ch]:
+	* src/twitux-network.c: integrate some more widget sensitivity
+	with network state.
+
+2007-08-25  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-app.c (app_widgets_state_on_connection): Add function
+	to set the widgets state based on whether app is connected.
+
+2007-08-25  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.[ch]:
+	* src/twitux-parser.[ch]: Add function to add users to 
+	follow, parse new user response and add it to list.
+
+2007-08-24  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-send-message-dialog.c: add intial code to post
+	status to Twitter.
+
+	* src/Makefile.am:
+	* src/twitux-app.c:
+	* src/twitux-main.c: Add basic network connection & login code
+	to ui.
+
+	* src/twitux-network.c: Make statusbar messages more concise. 
+
+2007-08-24  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.[ch]
+	* src/twitux-parser.[ch]: Add functions to retrive list of
+	users: followers, and following. Add function to delete
+	a user.
+
+2007-08-23  Daniel Morales <daniminas@gmail.com>
+
+	* src/twitux-network.[ch]: Add functions to get timelines
+	and user avatars. Debugging.
+
+	* src/twitux-parser.[ch]: More code cleanup
+
+2007-08-23  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-app.c: Add function framework for viewing 
+	different timelines.
+
+2007-08-22  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-send-message-dialog.c (url_encode_message): Add function
+	to url-encode text to be sent to Twitter.
+
+	* src/Makefile.am: 
+	* data/main.glade:
+	* src/twitux-app.c:
+	* src/twitux-send-message-dialog.[ch]: Add intial
+	code for the send message dialog.
+
+2007-08-22  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.[ch]: First revision of network code,
+	rewrited some functions and added proxy support.
+
+	* src/twitux-preferences.h: added definitions: headers to
+	send to Twitter, gconf keys with proxy info
+
+2007-08-22  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/twitux.schemas.in: have the keys for window position
+	actually match the definitions in twitux-preferences.h.
+
+	* src/twitux-geometry.c (twitux_geometry_load_for_main_window):
+	Have the app actually use the saved window geometry on startup.
+
+2007-08-22  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-app.[ch]: added functions to: set the model of the
+	TreeView, update statusbar text.
+
+	* src/twitux-preferences.h: Added #defines to get the Twitux
+	directories. (cache and files).
+
+2007-08-21  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-parser.[ch]: Added support to generate a GtkTreeStore
+	of tweets and Glist of friends when parsing. Droped GBoxed type.
+
+	* src/twitux-preferences.h: No more pointers on treemodel,
+	only strings.
+
+2007-08-21  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/main.glade:
+	* src/twitux-app.c: Add the popup menu to the 
+	tray status icon.
+
+2007-08-21  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-preferences.h: Added enum for GtkListStore columns
+	* src/twitux-parser.[ch]: Rewrited old parsing functions
+
+2007-08-21  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-parser.[ch]: First review and cleanup of parsing code.
+
+2007-08-20  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/twitux-schemas.in:
+	* src/twitux-app.c:
+	* src/twitux-preferences.h: Add intial support for 
+	GtkStatusIcon.  Still need to add support for the 
+	tray menu.
+
+2007-08-20  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/Makefile.am:
+	* src/twitux-app.c:
+	* src/twitux-geometry.[ch]: Add some functions to save main
+	window geometry.
+	
+2007-08-20  Brian Pepple  <bpepple@fedoraproject.org> 
+
+	* src/twitux-app.c (app_setup): Check to see if user account
+	info is set, and if not open the accounts dialog.
+	
+2007-08-20  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/twitux.schemas.in:
+	* data/main.glade:
+	* src/twitux-account-dialog.c: 
+	* src/twitux-preferences.h (TWITUX_PREFS_AUTH_AUTO_LOGIN): Massage the
+	accounts dialog some more.  Add preferences to show the password, and
+	whether to auto login.
+
+2007-08-19  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/main.glade:
+	* src/Makefile.am: 
+	* src/twitux-account-dialog.[ch]:
+	* src/twitux-app.c: Add account dialog code.
+
+2007-08-19  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/Makefile.am: 
+	* src/twitux-app.c: 
+	* src/twitux-glade.[ch]:
+	* src/twitux-ui-utils.[ch]: Split out glade functions from
+	the ui-utils.
+	
+2007-08-19  Brian Pepple  <bpepple@fedoraproject.org> 
+
+	* configure.in:
+	* po/POTFILES.in: update so distcheck passes.
+
+2007-08-19  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-about.c (twitux_about_dialog_new): 
+	* src/twitux-main.c (main): 
+	* data/twitux.desktop.in.in (Icon):
+	* data/Makefile.am (icondir):  Make application icon
+	themeable.
+
+	* data/twitux-loading.png:
+	* data/twitux-side.png:
+	* data/twitux-top.png: Remove unused pixmaps.
+
+	* data/main.glade: make only one item in the menu
+	selected.
+	
+2007-08-19  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* configure.in:
+	* src/Makefile.am:
+	* src/twitux-main.c: Start rewrite of main,
+	by excluding all code not dealing with the gui.
+	Will add functionality back as the gui is built.
+	
+2007-08-19  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/main.glade: rename widget.
+	
+	* src/twitux-about.[ch]: 
+	* src/twitux-app.[ch]:
+	* src/twitux-ui-utils.[ch]: Add new files to
+	project.
+	
+2007-08-19  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* configure.in: 
+	* data/main.glade:
+	* data/Makefile.am (glade_DATA): Add glade file to project.
 
 2007-08-18  Brian Pepple  <bpepple@fedoraproject.org>
 	

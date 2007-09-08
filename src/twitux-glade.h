@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
- * Copyright (C) 2007 - Brian Pepple <bpepple@fedoraproject.org)
+ * Copyright (C) 2002-2007 Imendio AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,11 +18,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __TWITUX_PREFERENCES_H__
-#define __TWITUX_PREFERENCES_H__
+#ifndef __TWITUX_GLADE_H__
+#define __TWITUX_GLADE_H__
 
-#include <gtk/gtkwindow.h>
+#include <gtk/gtkwidget.h>
+#include <glade/glade.h>
 
-void twitux_preferences_dialog_show (GtkWindow *parent);
+/* Glade */
+GladeXML *   twitux_glade_get_file                 (const gchar      *filename,
+													const gchar      *root,
+													const gchar      *domain,
+													const gchar      *first_required_widget,
+													...);
+void         twitux_glade_connect                  (GladeXML         *gui,
+													gpointer          user_data,
+													gchar            *first_widget,
+													...);
 
-#endif /* __TWITUX_PREFERENCES_H__ */
+#endif /*  __TWITUX_GLADE_H__ */

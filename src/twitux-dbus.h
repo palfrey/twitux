@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
- * Copyright (C) 2007 - Brian Pepple <bpepple@fedoraproject.org)
+ * Copyright (C) 2007 Brian Pepple <bpepple@fedoraproject.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,11 +18,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __TWITUX_PREFERENCES_H__
-#define __TWITUX_PREFERENCES_H__
+#ifndef __TWITUX_DBUS_H__
+#define __TWITUX_DBUS_H__
 
-#include <gtk/gtkwindow.h>
+#include <glib/gtypes.h>
 
-void twitux_preferences_dialog_show (GtkWindow *parent);
+gboolean twitux_dbus_nm_init      (void);
+void     twitux_dbus_nm_finalize  (void);
+gboolean twitux_dbus_nm_get_state (gboolean *connected);
 
-#endif /* __TWITUX_PREFERENCES_H__ */
+#endif /* __TWITUX_DBUS_H__ */

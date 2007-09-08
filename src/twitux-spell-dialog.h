@@ -1,8 +1,6 @@
-#if !defined TWITUX_COMMON_H
-#define TWITUX_COMMON_H
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
- * Copyright (C) 2007 - Alvaro Daniel Morales - <daniel@suruware.com>
+ * Copyright (C) 2007 Brian Pepple <bpepple@fedoraproject.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,28 +18,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <glib.h>
+#ifndef __TWITUX_SPELL_DIALOG_H__
+#define __TWITUX_SPELL_DIALOG_H__
 
-int tt_is_dir_exist ( const char *dir );
+G_BEGIN_DECLS
 
-void tt_crear_dir ( const char *dir );
+void twitux_spell_dialog_show (GtkWidget   *window,
+							   GtkTextIter  start,
+							   GtkTextIter  end,
+							   const gchar *word);
 
-int tt_is_file_exist ( const char *file );
+G_END_DECLS
 
-char *tt_get_home_dir ();
-
-char *xml_decode_alloc ( const char* str );
-
-char *tt_md5 ( const char* str, int length );
-
-int tt_unlink ( const char *file );
-
-gchar *tt_get_time ( const char *time );
-
-char *tt_parse_urls_alloc ( const char* message );
-
-char *tt_create_href_alloc ( const char* url );
-
-char* url_encode_alloc (const char* str);
-
-#endif
+#endif /* __TWITUX_SPELL_DIALOG_H__ */

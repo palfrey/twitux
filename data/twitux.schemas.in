@@ -26,14 +26,14 @@
     </schema>
     
     <schema>
-    	<key>/schemas/apps/twitux/auth/remember_login</key>
-    	<applyto>/apps/twitux/auth/remember_login</applyto>
+    	<key>/schemas/apps/twitux/auth/auto_login</key>
+    	<applyto>/apps/twitux/auth/auto_login</applyto>
     	<owner>twitux</owner>
     	<type>bool</type>
-    	<default>false</default>
+    	<default>true</default>
     	<locale name="C">
-    	   <short>Remember login information</short>
-    	   <long>Remember the Twitter login information.</long>
+    	   <short>Log automatically into Twitter</short>
+    	   <long>Log automatically into Twitter.</long>
     	</locale>
     </schema>
     
@@ -86,8 +86,8 @@
      </schema>
 
      <schema>
-	<key>/schemas/apps/twitux/ui/main_window_position_x</key>
-	<applyto>/apps/twitux/ui/main_window_position_x</applyto>
+	<key>/schemas/apps/twitux/ui/main_window_pos_x</key>
+	<applyto>/apps/twitux/ui/main_window_pos_x</applyto>
 	<owner>twitux</owner>
 	<type>int</type>
 	<default>0</default>
@@ -98,14 +98,26 @@
      </schema>
 
      <schema>
-	<key>/schemas/apps/twitux/ui/main_window_position_y</key>
-	<applyto>/apps/twitux/ui/main_window_position_y</applyto>
+	<key>/schemas/apps/twitux/ui/main_window_pos_y</key>
+	<applyto>/apps/twitux/ui/main_window_pos_y</applyto>
 	<owner>twitux</owner>
 	<type>int</type>
 	<default>0</default>
 	<locale name="C">
 	   <short>Main window Y position</short>
 	   <long>Main window Y position.</long>
+	</locale>
+     </schema>
+     
+     <schema>
+	<key>/schemas/apps/twitux/ui/hide</key>
+	<applyto>/apps/twitux/ui/hide</applyto>
+	<owner>twitux</owner>
+	<type>bool</type>
+	<default>false</default>
+	<locale name="C">
+	   <short>Is the main window hidden</short>
+	   <long>Is the main window hidden</long>
 	</locale>
      </schema>
      
@@ -130,6 +142,32 @@
 	<locale name="C">
 	   <short>Show notification of new Twitter messages</short>
 	   <long>Show notification of new Twitter messages.</long>
+	</locale>
+     </schema>
+
+     <schema>
+      <key>/schemas/apps/twitux/ui/spell_checker_languages</key>
+      <applyto>/apps/twitux/ui/spell_checker_languages</applyto>
+      <owner>twitux</owner>
+      <type>string</type>
+      <default>en</default>
+      <locale name="C">
+	<short>Spell checking languages</short>
+	<long>
+	  Comma separated list of spell checker languages to use (e.g. en, fr, nl).
+	</long>
+      </locale>
+     </schema>
+
+     <schema>
+	<key>/schemas/apps/twitux/ui/spell</key>
+	<applyto>/apps/twitux/ui/spell</applyto>
+	<owner>twitux</owner>
+	<type>bool</type>
+	<default>false</default>
+	<locale name="C">
+	   <short>Enable spell checking</short>
+	   <long>Enable spell checking.</long>
 	</locale>
      </schema>
      

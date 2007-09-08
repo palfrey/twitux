@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
- * Copyright (C) 2007 - Brian Pepple <bpepple@fedoraproject.org)
+ * Copyright (C) 2007 - Daniel Morales <daniminas@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,12 +17,29 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#ifndef __TWITUX_PARSER_H__
+#define __TWITUX_PARSER_H__
 
-#ifndef __TWITUX_PREFERENCES_H__
-#define __TWITUX_PREFERENCES_H__
+#include <gtk/gtk.h>
 
-#include <gtk/gtkwindow.h>
+typedef struct {
+	gchar	*screen_name;
+	gchar	*name;
+	gchar	*image_url;
+} TwituxUser;
 
-void twitux_preferences_dialog_show (GtkWindow *parent);
 
-#endif /* __TWITUX_PREFERENCES_H__ */
+/* Returns a liststore for the main treeview to show tweets */
+GtkListStore *twitux_parser_timeline (const gchar *cache_file_uri);
+
+/* Returns a Glist with friends. Can be used to 
+   build the friends menu, on direct messages dialog, etc.. */
+GList *twitux_parser_users_list (const gchar *cache_file_uri);
+
+/* Parse a xml user node. Ex: add/del users responses */
+TwituxUser *twitux_parser_single_user (const gchar *cache_file_uri);
+
+/* To free a User struct */
+void parser_free_user (TwituxUser *user);
+
+#endif /*  __TWITUX_PARSER_H__ */

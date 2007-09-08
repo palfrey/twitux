@@ -1,13 +1,15 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 [encoding: UTF-8]
+data/main.glade
 data/twitux.desktop.in.in
 data/twitux.schemas.in
 
-src/main.c
-src/callbacks.c
-src/common.c
-src/gcommon.c
-src/gui.c
-src/network.c
-src/twitter.c
+src/twitux-about.c
+src/twitux-app.c
+src/twitux-main.c
+src/twitux-preferences.c
+src/twitux-send-message-dialog.c
+src/twitux-spell.c
+src/twitux-spell-dialog.c
+

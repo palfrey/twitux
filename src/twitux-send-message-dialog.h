@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
- * Copyright (C) 2007 - Brian Pepple <bpepple@fedoraproject.org)
+ * Copyright (C) 2007 Brian Pepple <bpepple@fedoraproject.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,11 +18,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __TWITUX_PREFERENCES_H__
-#define __TWITUX_PREFERENCES_H__
+#ifndef __TWITUX_SEND_MESSAGE_DIALOG_H__
+#define __TWITUX_SEND_MESSAGE_DILAOG_H__
 
 #include <gtk/gtkwindow.h>
 
-void twitux_preferences_dialog_show (GtkWindow *parent);
+void twitux_send_message_dialog_show (GtkWindow   *parent);
+void twitux_message_correct_word     (GtkWidget   *textview,
+									  GtkTextIter  start,
+									  GtkTextIter  end,
+									  const gchar *new_word);
 
-#endif /* __TWITUX_PREFERENCES_H__ */
+#endif /* __TWITUX_SEND_MESSAGE_DIALOG_H__ */
