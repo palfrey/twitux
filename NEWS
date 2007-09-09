@@ -1,1 +1,6 @@
-See ChangeLog
+NEW in 0.6:
+==============
+- Fixed #1773179, UI doesn't remember position.
+- Fixed #1775052, add spell checking support.
+- Fixed #1775053, add NetworkManager support.
+- Fixed #1777286, option to log in on start up.
