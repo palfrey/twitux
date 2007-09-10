@@ -209,6 +209,11 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 								STRING_TIME, status->created_at,
 								-1);
 
+			/* Get Image */
+			twitux_network_get_image (status->user->image_url,
+									  status->user->screen_name,
+									  iter);
+
 			/* Free struct */
 			parser_free_user (status->user);
 			if (status->text)

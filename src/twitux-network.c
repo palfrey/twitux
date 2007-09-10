@@ -36,6 +36,10 @@
 #define DEBUG_DOMAIN_SETUP	"Network" 
 #define DEBUG_QUIT
 
+typedef struct {
+	gchar *src;
+	GtkTreeIter iter;
+} TwituxImage;
 
 static void network_get_data		(const gchar *url,
 				 	 SoupMessageCallbackFn callback,
@@ -338,11 +342,14 @@ twitux_network_get_followers ()
 /* Get an image from servers */
 void
 twitux_network_get_image (const gchar *url_image,
-			  const gchar *username)
+						  const gchar *username,
+						  GtkTreeIter iter)
 {
 	gchar	*images_dir;
 	gchar	*image_file;
 	gchar	**split_url;
+
+	TwituxImage *image;
 
 	/* Build image file */
 	split_url = g_strsplit (url_image, "?", 2);
@@ -369,8 +376,12 @@ twitux_network_get_image (const gchar *url_image,
 		return;
 	}
 
-	/* Note: 'image_file' will be freed in 'network_cb_on_image' */
-	network_get_data (url_image, network_cb_on_image, image_file);
+	image = g_new0 (TwituxImage, 1);
+	image->src = image_file;
+	image->iter = iter;
+
+	/* Note: 'image' will be freed in 'network_cb_on_image' */
+	network_get_data (url_image, network_cb_on_image, image);
 }
 
 
@@ -724,14 +735,15 @@ static void
 network_cb_on_image (SoupMessage *msg,
 		     gpointer user_data)
 {
+	TwituxImage *image = (TwituxImage *)user_data;
+
 	twitux_debug (DEBUG_DOMAIN_SETUP,
 		"Image response: %i", msg->status_code);
 
 	/* check response */
 	if (network_check_http (msg->status_code)) {
-		gchar *image_file = (gchar *)user_data;
 		/* Save image data */
-		if (g_file_set_contents (image_file,
+		if (g_file_set_contents (image->src,
 				 msg->response.body,
 				 msg->response.length,
 				 NULL)){
@@ -739,7 +751,8 @@ network_cb_on_image (SoupMessage *msg,
 		}
 	}
 
-	g_free (user_data);
+	g_free (image->src);
+	g_free (image);
 }
 
 
