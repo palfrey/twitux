@@ -73,11 +73,8 @@ G_BEGIN_DECLS
 
 /* ListStore columns */
 enum {
-	STRING_AUTHOR,
-	STRING_NAME,
 	STRING_AVATAR,
 	STRING_TEXT,
-	STRING_TIME,
 	N_COLUMNS
 };
 

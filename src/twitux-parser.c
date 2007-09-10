@@ -184,9 +184,6 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 	/* Create a ListStore */
 	store = gtk_list_store_new (N_COLUMNS,
 								G_TYPE_STRING,
-								G_TYPE_STRING,
-								G_TYPE_STRING,
-								G_TYPE_STRING,
 								G_TYPE_STRING);
 
 	/* get tweets or direct messages */
@@ -196,18 +193,25 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 		/* Timelines and direct messages */
 		if (g_str_equal (cur_node->name, "status") ||
 		    g_str_equal (cur_node->name, "direct_message")) {
+			gchar *tweet;
+
 			/* Parse node */
 			status = parser_twitux_node_status (cur_node->children);
+
+			/* Create string for text column */
+			/* TODO: More formatting of string, and convert time */
+			tweet = g_strconcat ("<b>", status->user->name, "</b> - ",
+								 status->created_at, "\n", status->text, NULL);
 
 			/* Append to ListStore */
 			gtk_list_store_append (store, &iter);
 			gtk_list_store_set (store, &iter,
-								STRING_AUTHOR, status->user->screen_name,
-								STRING_NAME, status->user->name,
-								STRING_AVATAR, status->user->image_url,
-								STRING_TEXT, status->text,
-								STRING_TIME, status->created_at,
+								STRING_AVATAR, "*Image*",
+								STRING_TEXT, tweet,
 								-1);
+			
+			/* Free the text column string */
+			g_free (tweet);
 
 			/* Get Image */
 			twitux_network_get_image (status->user->image_url,

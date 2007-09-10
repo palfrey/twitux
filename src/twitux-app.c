@@ -621,9 +621,8 @@ app_list_view_setup (void)
 {
 	TwituxAppPriv		*priv;
 	GtkCellRenderer		*renderer;
-	GtkTreeViewColumn	*author_column;
+	GtkTreeViewColumn	*avatar_column;
 	GtkTreeViewColumn   *tweet_column;
-	GtkTreeViewColumn   *time_column;
 
 	priv = GET_PRIV (app);
 
@@ -634,24 +633,27 @@ app_list_view_setup (void)
 				  NULL);
 
 	renderer = gtk_cell_renderer_text_new ();
-	author_column = gtk_tree_view_column_new_with_attributes (NULL,
+	avatar_column = gtk_tree_view_column_new_with_attributes (NULL,
 															  renderer,
-															  "text", STRING_NAME,
+															  "text", STRING_AVATAR,
 															  NULL);
+
+	gtk_tree_view_append_column (GTK_TREE_VIEW (priv->listview), avatar_column);
 	
 	tweet_column = gtk_tree_view_column_new_with_attributes (NULL,
 															 renderer,
-															 "text", STRING_TEXT,
+															 "markup", STRING_TEXT,
 															 NULL);
-   
-	time_column = gtk_tree_view_column_new_with_attributes (NULL,
-															renderer,
-															"text", STRING_TIME,
-															NULL);
 
-	gtk_tree_view_append_column (GTK_TREE_VIEW (priv->listview), author_column);
+	g_object_set (renderer,
+				  "ypad", 0,
+				  "xpad", 5,
+				  "yalign", 0.0,
+				  "wrap-mode", PANGO_WRAP_WORD_CHAR,
+				  "wrap-width", 257, /* TODO: Have this set based on window geometry */
+				  NULL);
+
 	gtk_tree_view_append_column (GTK_TREE_VIEW (priv->listview), tweet_column);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (priv->listview), time_column);
 }
 
 void

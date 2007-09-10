@@ -1,5 +1,9 @@
 2007-09-10  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* src/twitux-app.c:
+	* src/twitux-parser.c (twitux_parser_timeline): Intial work
+	to get liststore in corect format for the ui.
+
 	* src/Makefile.am:
 	* src/twitux-avatar.[ch]: add functions to roundify
 	user's avatar if it's opaque.
