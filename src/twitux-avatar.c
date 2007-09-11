@@ -24,8 +24,8 @@
 
 #define AVATAR_SIZE 32
 
-gboolean
-twitux_avatar_pixbuf_is_opaque (GdkPixbuf *pixbuf)
+static gboolean
+avatar_pixbuf_is_opaque (GdkPixbuf *pixbuf)
 {
 	int            width;
 	int            height;
@@ -68,8 +68,8 @@ twitux_avatar_pixbuf_is_opaque (GdkPixbuf *pixbuf)
 }
 
 /* From Pidgin */
-void
-twitux_avatar_pixbuf_roundify (GdkPixbuf *pixbuf)
+static void
+avatar_pixbuf_roundify (GdkPixbuf *pixbuf)
 {
 	int     width;
 	int     height;
@@ -126,7 +126,7 @@ twitux_avatar_get_gtype (void)
 	if (!type_id) {
 		type_id = g_boxed_type_register_static ("TwituxAvatar",
 												(GBoxedCopyFunc) twitux_avatar_ref,
-												(GBoxedFreeFunc) tiwtux_avatar_unref);
+												(GBoxedFreeFunc) twitux_avatar_unref);
 	}
 
 	return type_id;
@@ -144,7 +144,7 @@ twitux_avatar_new (guchar *data,
 	g_return_val_if_fail (format != NULL, NULL);
 
 	avatar = g_slice_new0 (TwituxAvatar);
-	avatar->data = g_mendup (data, len);
+	avatar->data = g_memdup (data, len);
 	avatar->len = len;
 	avatar->format = g_strdup (format);
 	avatar->refcount = 1;
@@ -181,7 +181,7 @@ avatar_create_pixbuf (TwituxAvatar *avatar, gint size)
 
 	gdk_pixbuf_loader_close (loader, NULL);
 
-	tmp_pixbuf = gdk_pixbuf_get_pixbuf (loader);
+	tmp_pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 	scale_width = orig_width = gdk_pixbuf_get_width (tmp_pixbuf);
 	scale_height = orig_height = gdk_pixbuf_get_height (tmp_pixbuf);
 	if (scale_height > scale_width) {
