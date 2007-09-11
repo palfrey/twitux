@@ -49,6 +49,7 @@ G_BEGIN_DECLS
 #define TWITUX_PREFS_UI_WINDOW_HIDE           TWITUX_PREFS_PATH "/ui/hide"
 #define TWITUX_PREFS_UI_EXPAND_MESSAGES       TWITUX_PREFS_PATH "/ui/expand_messages"
 #define TWITUX_PREFS_UI_NOTIFICATION          TWITUX_PREFS_PATH "/ui/notify"
+#define TWITUX_PREFS_UI_AUTO_RELOAD           TWITUX_PREFS_PATH "/ui/reload"
 #define TWITUX_PREFS_UI_SPELL_LANGUAGES       TWITUX_PREFS_PATH "/ui/spell_checker_languages"
 #define TWITUX_PREFS_UI_SPELL                 TWITUX_PREFS_PATH "/ui/spell"
 #define TWITUX_PREFS_UI_STATUSBAR             TWITUX_PREFS_PATH "/ui/statusbar"

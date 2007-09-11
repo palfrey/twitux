@@ -1,3 +1,11 @@
+2007-09-22  Daniel Morales  <daniminas@gmail.com>
+
+	* data/main.glade:
+	* data/twitux-schemas.in:
+	* src/twitux.h:
+	* src/twitux-preferences.[ch]: Add 'autoupdate' timelines
+	preference.
+
 2007-09-10  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-app.[ch]:
