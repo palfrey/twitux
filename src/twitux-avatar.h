@@ -21,12 +21,34 @@
 #ifndef __TWITUX_AVATAR_H__
 #define __TWITUX_AVATAR_H__
 
+#include <glib-object.h>
+
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
-gboolean twitux_avatar_pixbuf_is_opaque (GdkPixbuf *pixbuf);
-void     twitux_avatar_pixbuf_roundify  (GdkPixbuf *pixbuf);
+#define TWITUX_TYPE_AVATAR (twitux_avatar_get_gtype ())
+
+typedef struct _TwituxAvatar TwituxAvatar;
+
+struct _TwituxAvatar {
+	guchar    *data;
+	gsize      len;
+	gchar     *format;
+	GdkPixbuf *pixbuf;
+	guint      refcount;
+};
+
+GType          twitux_avatar_get_gtype               (void) G_GNUC_CONST;
+TwituxAvatar * twitux_avatar_new                     (guchar *avatar,
+													  gsize len,
+													  gchar *format);
+GdkPixbuf    * twitux_avatar_get_pixbuf              (TwituxAvatar *avatar);
+GdkPixbuf    * twitux_avatar_create_pixbuf_with_size (TwituxAvatar *avatar,
+													  gint          size);
+
+TwituxAvatar * twitux_avatar_ref                     (TwituxAvatar *avatar);
+void           twitux_avatar_unref                   (TwituxAvatar *avatar);
 
 G_END_DECLS
 
