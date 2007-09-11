@@ -253,11 +253,11 @@ twitux_network_send_message (const gchar *friend,
 void
 twitux_network_refresh ()
 {
-	if (!current_timeline) return;
+	if (!current_timeline || processing) return;
 
 	/* UI */
 	twitux_app_set_statusbar_msg (_("Loading timeline..."));
-	twitux_app_state_on_network (TRUE, twitux_app_get ());
+	twitux_app_state_on_network (TRUE);
 
 	processing = TRUE;
 	network_get_data (current_timeline, network_cb_on_timeline, NULL);
@@ -271,7 +271,7 @@ twitux_network_get_timeline (const gchar *url_timeline)
 
 	/* UI */
 	twitux_app_set_statusbar_msg (_("Loading timeline..."));
-	twitux_app_state_on_network (TRUE, twitux_app_get ());
+	twitux_app_state_on_network (TRUE);
 
 	processing = TRUE;
 	network_get_data (url_timeline, network_cb_on_timeline, g_strdup(url_timeline));
@@ -666,7 +666,7 @@ network_cb_on_timeline (SoupMessage *msg,
 	processing = FALSE;
 
 	/* UI */
-	twitux_app_state_on_network (FALSE, twitux_app_get ());
+	twitux_app_state_on_network (FALSE);
 
 	/* Check response */
 	if (!network_check_http (msg->status_code)){
@@ -828,7 +828,7 @@ network_timeout (gpointer user_data)
 
 	/* UI */
 	twitux_app_set_statusbar_msg (_("Reloading timeline..."));
-	twitux_app_state_on_network (TRUE, twitux_app_get ());
+	twitux_app_state_on_network (TRUE);
 
 	processing = TRUE;
 	network_get_data (current_timeline, network_cb_on_timeline, NULL);

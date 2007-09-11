@@ -876,8 +876,7 @@ twitux_app_state_on_connection (gboolean   connected)
 }
 
 void
-twitux_app_state_on_network (gboolean   loading,
-							 TwituxApp *app)
+twitux_app_state_on_network (gboolean loading)
 {
 	TwituxAppPriv *priv;
 
