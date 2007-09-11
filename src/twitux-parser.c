@@ -326,7 +326,8 @@ parser_twitux_node_status (xmlNode *a_node)
 									NULL,
 									NULL);
 
-			status->text = g_strdup (tmp);
+			status->text = g_markup_escape_text (tmp,-1);
+
 			g_free (tmp);
 
 		} else if (g_str_equal(cur_node->name, "sender") ||
