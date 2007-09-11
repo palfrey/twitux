@@ -82,12 +82,15 @@ static void network_cb_on_auth		(SoupSession *session,
 					 char **password,
 					 gpointer data);
 
+/* Auto reload timeout */
+gboolean network_timeout (gpointer user_data);
 
 static SoupSession			*soup_connection = NULL;
 static GList				*user_friends = NULL;
 static GList				*user_followers = NULL;
 static gboolean				processing = FALSE;
 static gchar				*current_timeline = NULL;
+static guint				timeout_id;
 
 /* This function must be called at startup */
 void
@@ -815,4 +818,22 @@ network_cb_on_del (SoupMessage *msg,
 		user_friends = g_list_remove (user_friends, user);
 		parser_free_user (user);
 	}
+}
+
+
+gboolean
+network_timeout (gpointer user_data)
+{
+	if (!current_timeline || processing) return FALSE;
+
+	/* UI */
+	twitux_app_set_statusbar_msg (_("Reloading timeline..."));
+	twitux_app_state_on_network (TRUE, twitux_app_get ());
+
+	processing = TRUE;
+	network_get_data (current_timeline, network_cb_on_timeline, NULL);
+
+	timeout_id = 0;
+
+	return FALSE;
 }
