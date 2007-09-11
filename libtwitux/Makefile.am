@@ -8,6 +8,7 @@ AM_CPPFLAGS =                                           \
 noinst_LTLIBRARIES = libtwitux.la
 
 libtwitux_la_SOURCES =             			\
+	twitux-avatar.c		twitux-avatar.h		\
 	twitux-conf.c		twitux-conf.h		\
 	twitux-debug.c		twitux-debug.h		\
 	twitux-paths.c 		twitux-paths.h
