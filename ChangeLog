@@ -1,3 +1,10 @@
+2007-09-10  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-app.[ch]:
+	* src/twitux-network.[ch]:
+	* src/twitux-parser.[ch]: Add code to load avatars into
+	liststore. 
+
 2007-09-10  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-app.c:

@@ -62,6 +62,11 @@ void				twitux_app_show_notification			(gint		   tweets);
 void                twitux_app_state_on_connection          (gboolean   connected);
 void                twitux_app_state_on_network             (gboolean   loading,
 								                             TwituxApp  *app);
+
+void                twitux_app_set_image                    (const gchar  *file,
+                                                             GtkListStore *store,
+                                                             GtkTreeIter iter);
+
 G_END_DECLS
 
 #endif /*_TWITUX_APP_H_*/

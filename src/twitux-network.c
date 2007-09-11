@@ -37,8 +37,9 @@
 #define DEBUG_QUIT
 
 typedef struct {
-	gchar *src;
-	GtkTreeIter iter;
+	gchar        *src;
+	GtkTreeIter  iter;
+	GtkListStore *store;
 } TwituxImage;
 
 static void network_get_data		(const gchar *url,
@@ -343,7 +344,8 @@ twitux_network_get_followers ()
 void
 twitux_network_get_image (const gchar *url_image,
 						  const gchar *username,
-						  GtkTreeIter iter)
+						  GtkTreeIter iter,
+						  GtkListStore *store)
 {
 	gchar	*images_dir;
 	gchar	*image_file;
@@ -370,8 +372,9 @@ twitux_network_get_image (const gchar *url_image,
 		twitux_debug (DEBUG_DOMAIN_SETUP,
 				"Loading image from cache: %s", image_file);
 		
-		/* TODO: UI sets image from file here */
-		
+		/* Set image from file here */
+		twitux_app_set_image (image_file, store, iter);
+
 		g_free (image_file);
 		return;
 	}
@@ -379,10 +382,12 @@ twitux_network_get_image (const gchar *url_image,
 	image = g_new0 (TwituxImage, 1);
 	image->src = image_file;
 	image->iter = iter;
+	image->store = store;
 
 	/* Note: 'image' will be freed in 'network_cb_on_image' */
 	network_get_data (url_image, network_cb_on_image, image);
 }
+
 
 
 /* Add a user to follow */
@@ -747,7 +752,8 @@ network_cb_on_image (SoupMessage *msg,
 				 msg->response.body,
 				 msg->response.length,
 				 NULL)){
-			/* TODO: UI sets image from file here (image_file) */
+			/* Set image from file here (image_file) */
+			twitux_app_set_image (image->src, image->store, image->iter);
 		}
 	}
 

@@ -632,14 +632,14 @@ app_list_view_setup (void)
 				  "headers-visible", FALSE,
 				  NULL);
 
-	renderer = gtk_cell_renderer_text_new ();
+	renderer = gtk_cell_renderer_pixbuf_new ();
 	avatar_column = gtk_tree_view_column_new_with_attributes (NULL,
 															  renderer,
-															  "text", STRING_AVATAR,
+															  "pixbuf", PIXBUF_AVATAR,
 															  NULL);
-
 	gtk_tree_view_append_column (GTK_TREE_VIEW (priv->listview), avatar_column);
-	
+
+	renderer = gtk_cell_renderer_text_new ();
 	tweet_column = gtk_tree_view_column_new_with_attributes (NULL,
 															 renderer,
 															 "markup", STRING_TEXT,
@@ -999,4 +999,25 @@ twitux_app_show_notification (gint tweets)
 	notify_notification_show (priv->notification, NULL);
 	
 	g_free (msg);
+}
+
+void
+twitux_app_set_image (const gchar *file,
+					  GtkListStore *store,
+                      GtkTreeIter iter)
+{
+	GdkPixbuf *pixbuf;
+	GError *error = NULL;
+
+	pixbuf = gdk_pixbuf_new_from_file (file, &error);
+
+	if (!pixbuf){
+		twitux_debug (DEBUG_DOMAIN_SETUP, "Image error: %s: %s",
+					                       file, error->message);
+		g_error_free (error);
+		return;
+	}
+
+	gtk_list_store_set (store, &iter,
+						PIXBUF_AVATAR, pixbuf, -1);
 }

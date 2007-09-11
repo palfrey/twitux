@@ -73,7 +73,7 @@ G_BEGIN_DECLS
 
 /* ListStore columns */
 enum {
-	STRING_AVATAR,
+	PIXBUF_AVATAR,
 	STRING_TEXT,
 	N_COLUMNS
 };

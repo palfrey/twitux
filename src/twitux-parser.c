@@ -183,7 +183,7 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 
 	/* Create a ListStore */
 	store = gtk_list_store_new (N_COLUMNS,
-								G_TYPE_STRING,
+								GDK_TYPE_PIXBUF,
 								G_TYPE_STRING);
 
 	/* get tweets or direct messages */
@@ -206,7 +206,6 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 			/* Append to ListStore */
 			gtk_list_store_append (store, &iter);
 			gtk_list_store_set (store, &iter,
-								STRING_AVATAR, "*Image*",
 								STRING_TEXT, tweet,
 								-1);
 			
@@ -216,7 +215,8 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 			/* Get Image */
 			twitux_network_get_image (status->user->image_url,
 									  status->user->screen_name,
-									  iter);
+									  iter,
+									  store);
 
 			/* Free struct */
 			parser_free_user (status->user);
