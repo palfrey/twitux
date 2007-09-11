@@ -875,15 +875,6 @@ twitux_app_state_on_connection (gboolean   connected)
 	}
 }
 
-void
-twitux_app_state_on_network (gboolean loading)
-{
-	TwituxAppPriv *priv;
-
-	priv = GET_PRIV (app);
-
-}
-
 GtkWidget *
 twitux_app_get_window (void)
 {

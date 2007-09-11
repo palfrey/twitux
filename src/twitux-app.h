@@ -60,7 +60,6 @@ void				twitux_app_set_friends	                (GList        *friends);
 void				twitux_app_show_notification			(gint		   tweets);
 
 void                twitux_app_state_on_connection          (gboolean   connected);
-void                twitux_app_state_on_network             (gboolean   loading);
 
 void                twitux_app_set_image                    (const gchar  *file,
                                                              GtkListStore *store,
