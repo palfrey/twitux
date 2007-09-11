@@ -6,6 +6,9 @@
 	* src/twitux-preferences.c: Add 'autoupdate' timelines
 	preference.
 
+	* src/twitux-network.[ch]:
+	* src/twitux.h: Add auto reload current timeline.
+
 2007-09-10  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-app.[ch]:

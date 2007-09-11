@@ -664,6 +664,9 @@ network_cb_on_timeline (SoupMessage *msg,
 
 	processing = FALSE;
 
+	/* Timeout */
+	network_timeout_new ();
+
 	/* Check response */
 	if (!network_check_http (msg->status_code)){
 		if (new_timeline) g_free (new_timeline);
@@ -825,8 +828,18 @@ network_timeout_new ()
 						  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
 						  &reload);
 
+	if (timeout_id > 0){
+		twitux_debug (DEBUG_DOMAIN_SETUP,
+					  "Stopping timeout id: %i", timeout_id);
+		g_source_remove (timeout_id);
+		timeout_id = 0;
+	}
+
 	if (reload) {
 		timeout_id = g_timeout_add (TWITUX_TIMEOUT, network_timeout, NULL);
+
+		twitux_debug (DEBUG_DOMAIN_SETUP,
+					  "Starting timeout id: %i", timeout_id);
 	}
 }
 
@@ -837,6 +850,9 @@ network_timeout (gpointer user_data)
 
 	/* UI */
 	twitux_app_set_statusbar_msg (_("Reloading timeline..."));
+
+	twitux_debug (DEBUG_DOMAIN_SETUP,
+					  "Auto reloading. Timeout: %i", timeout_id);
 
 	processing = TRUE;
 	network_get_data (current_timeline, network_cb_on_timeline, NULL);
