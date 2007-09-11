@@ -82,8 +82,9 @@ static void network_cb_on_auth		(SoupSession *session,
 					 char **password,
 					 gpointer data);
 
-/* Auto reload timeout */
-gboolean network_timeout (gpointer user_data);
+/* Autoreload timeout functions */
+static gboolean 	network_timeout		(gpointer user_data);
+static void			network_timeout_new	(void);
 
 static SoupSession			*soup_connection = NULL;
 static GList				*user_friends = NULL;
@@ -815,8 +816,21 @@ network_cb_on_del (SoupMessage *msg,
 	}
 }
 
+static void
+network_timeout_new ()
+{
+	gboolean reload;
 
-gboolean
+	twitux_conf_get_bool (twitux_conf_get (),
+						  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
+						  &reload);
+
+	if (reload) {
+		timeout_id = g_timeout_add (TWITUX_TIMEOUT, network_timeout, NULL);
+	}
+}
+
+static gboolean
 network_timeout (gpointer user_data)
 {
 	if (!current_timeline || processing) return FALSE;

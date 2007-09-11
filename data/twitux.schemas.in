@@ -146,18 +146,6 @@
      </schema>
 
      <schema>
-	<key>/schemas/apps/twitux/ui/reload</key>
-	<applyto>/apps/twitux/ui/reload</applyto>
-	<owner>twitux</owner>
-	<type>bool</type>
-	<default>false</default>
-	<locale name="C">
-	   <short>Auto update Twitter timelines.</short>
-	   <long>Auto update Twitter timelines.</long>
-	</locale>
-     </schema>
-
-     <schema>
       <key>/schemas/apps/twitux/ui/spell_checker_languages</key>
       <applyto>/apps/twitux/ui/spell_checker_languages</applyto>
       <owner>twitux</owner>

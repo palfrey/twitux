@@ -120,7 +120,7 @@ preferences_setup_widgets (TwituxPrefs *prefs)
 									  prefs->notify);
 
 	preferences_hookup_toggle_button (prefs,
-									  TWITUX_PREFS_UI_AUTO_RELOAD,
+									  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
 									  prefs->reload);
 
 	preferences_hookup_toggle_button (prefs,
