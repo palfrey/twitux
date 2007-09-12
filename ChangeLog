@@ -1,3 +1,8 @@
+2007-09-12  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-network.c: remove network_timeout_stop
+	function.
+
 2007-09-12  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-parser.[ch]:

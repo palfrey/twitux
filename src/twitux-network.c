@@ -83,7 +83,6 @@ static void network_cb_on_auth		(SoupSession           *session,
 /* Autoreload timeout functions */
 static gboolean 	network_timeout			(gpointer user_data);
 static void			network_timeout_new		(void);
-static void			network_timeout_stop	(void);
 
 static SoupSession			*soup_connection = NULL;
 static GList				*user_friends = NULL;
@@ -859,23 +858,19 @@ network_cb_on_del (SoupMessage *msg,
 static void
 network_timeout_new (void)
 {
-	network_timeout_stop ();
+	if (timeout_id) {
+		twitux_debug (DEBUG_DOMAIN,
+					  "Stopping timeout id: %i", timeout_id);
 
-	timeout_id = g_timeout_add (TWITUX_TIMEOUT, network_timeout, NULL);
+		g_source_remove (timeout_id);
+	}
+
+	timeout_id = g_timeout_add (TWITUX_TIMEOUT,
+								network_timeout,
+								NULL);
 
 	twitux_debug (DEBUG_DOMAIN,
 				  "Starting timeout id: %i", timeout_id);
-}
-
-static void
-network_timeout_stop (void)
-{
-	if (timeout_id > 0){
-		twitux_debug (DEBUG_DOMAIN,
-					  "Stopping timeout id: %i", timeout_id);
-		g_source_remove (timeout_id);
-		timeout_id = 0;
-	}
 }
 
 static gboolean
