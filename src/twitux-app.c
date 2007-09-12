@@ -955,13 +955,19 @@ twitux_app_set_friends (GList *friends)
 void
 twitux_app_show_notification (gint tweets)
 {
-	TwituxAppPriv *priv;
-	gchar *msg;
-	gchar *s;
+	TwituxAppPriv	*priv;
+	gchar			*msg;
+	gchar			*s;
+	gboolean		notify;
 
 	priv = GET_PRIV (app);
 
-	if (!gtk_status_icon_is_embedded (priv->status_icon))
+	/* Check preferences */
+	twitux_conf_get_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_NOTIFICATION,
+						  &notify);
+
+	if (!notify || !gtk_status_icon_is_embedded (priv->status_icon))
 		return;
 
 	if (tweets > 1) {
