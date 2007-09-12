@@ -29,6 +29,7 @@
 
 #include "twitux.h"
 #include "twitux-parser.h"
+#include "twitux-app.h"
 
 #define DEBUG_DOMAIN_SETUP       "Parser" 
 
@@ -37,6 +38,7 @@ typedef struct
 	TwituxUser	*user;
 	gchar		*text;
 	gchar		*created_at;
+	gchar		*id;
 } TwituxStatus;
 
 
@@ -173,7 +175,11 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 
 	TwituxStatus 	*status;
 
-	/* TODO: This function should count new tweets */
+	/* Count new tweets */
+	gboolean show_notification = (last_id > 0);
+	gint nTwitts = 0;
+	gint lastTweet = 0;
+	gboolean count = TRUE;
 
 	/* parse the xml */
 	doc = parser_twitux_parse (cache_file_uri, &root_element);
@@ -196,9 +202,27 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 		if (g_str_equal (cur_node->name, "status") ||
 		    g_str_equal (cur_node->name, "direct_message")) {
 			gchar *tweet;
+			gint sid;
 
 			/* Parse node */
 			status = parser_twitux_node_status (cur_node->children);
+
+			sid = atoi (status->id);
+			
+			/* the first tweet parsed is the 'newest' */
+			if (lastTweet == 0){
+				lastTweet = sid;
+			}
+
+			/* Last tweet showed */
+			if (sid == last_id) {
+				count = FALSE;
+			}
+
+			/* Count new tweets */
+			if (count) {
+				nTwitts++;
+			}
 
 			/* Create string for text column */
 			/* TODO: More formatting of string, and convert time */
@@ -226,6 +250,9 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 				g_free (status->text);
 			if (status->created_at)
 				g_free (status->created_at);
+			if (status->id)
+				g_free (status->id);
+			
 			g_free (status);
 
 		} else if (g_str_equal (cur_node->name, "statuses") ||
@@ -236,7 +263,16 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 
 	} /* end of loop */
 
-	/* TODO: Show notification bubble here like previous version (?) */
+	/* Show UI notification */
+	if (show_notification && (nTwitts > 0) &&
+				(last_id != lastTweet)) {
+		twitux_app_show_notification (nTwitts);
+	}
+
+	/* Remember last id showed */
+	if (lastTweet > 0) {
+		last_id = lastTweet;
+	}
 
 	/* Free memory */
 	xmlFreeDoc (doc);
@@ -316,6 +352,11 @@ parser_twitux_node_status (xmlNode *a_node)
 			tmp = xmlBufferContent(buffer);
 			/* TODO : Convert time to: 'time ago' */
 			status->created_at = g_strdup ((const gchar *)tmp);
+		} else if (g_str_equal (cur_node->name, "id")) {
+			const xmlChar *tmp;
+
+			tmp = xmlBufferContent(buffer);
+			status->id = g_strdup ((const gchar *)tmp);
 		} else if (g_str_equal (cur_node->name, "text")) {
 			const xmlChar *msg;
 			gchar         *tmp;
@@ -365,4 +406,11 @@ parser_free_user (TwituxUser *user)
 		g_free (user->image_url);
 
 	g_free (user);
+}
+
+
+void
+parser_reset_lastid ()
+{
+	last_id = 0;
 }

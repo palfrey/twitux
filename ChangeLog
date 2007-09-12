@@ -1,4 +1,10 @@
-2007-09-22  Daniel Morales  <daniminas@gmail.com>
+2007-09-12  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-parser.[ch]:
+	* src/twitux-network.c: Add show UI notifications when reload
+	timelines.
+
+2007-09-11  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-network.c:
 	* src/twitux.h: Add auto reload current timeline.

@@ -42,4 +42,7 @@ TwituxUser *twitux_parser_single_user (const gchar *cache_file_uri);
 /* To free a User struct */
 void parser_free_user (TwituxUser *user);
 
+/* Restet the ID of the last tweet showed */
+void parser_reset_lastid (void);
+
 #endif /*  __TWITUX_PARSER_H__ */

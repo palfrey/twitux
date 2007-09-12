@@ -83,8 +83,9 @@ static void network_cb_on_auth		(SoupSession *session,
 					 gpointer data);
 
 /* Autoreload timeout functions */
-static gboolean 	network_timeout		(gpointer user_data);
-static void			network_timeout_new	(void);
+static gboolean 	network_timeout			(gpointer user_data);
+static void			network_timeout_new		(void);
+static void			network_timeout_stop	();
 
 static SoupSession			*soup_connection = NULL;
 static GList				*user_friends = NULL;
@@ -268,6 +269,8 @@ void
 twitux_network_get_timeline (const gchar *url_timeline)
 {
 	if (processing) return;
+
+	parser_reset_lastid ();
 
 	/* UI */
 	twitux_app_set_statusbar_msg (_("Loading timeline..."));
@@ -822,24 +825,22 @@ network_cb_on_del (SoupMessage *msg,
 static void
 network_timeout_new ()
 {
-	gboolean reload;
+	network_timeout_stop ();
 
-	twitux_conf_get_bool (twitux_conf_get (),
-						  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
-						  &reload);
+	timeout_id = g_timeout_add (TWITUX_TIMEOUT, network_timeout, NULL);
 
+	twitux_debug (DEBUG_DOMAIN_SETUP,
+					 "Starting timeout id: %i", timeout_id);
+}
+
+static void
+network_timeout_stop ()
+{
 	if (timeout_id > 0){
 		twitux_debug (DEBUG_DOMAIN_SETUP,
 					  "Stopping timeout id: %i", timeout_id);
 		g_source_remove (timeout_id);
 		timeout_id = 0;
-	}
-
-	if (reload) {
-		timeout_id = g_timeout_add (TWITUX_TIMEOUT, network_timeout, NULL);
-
-		twitux_debug (DEBUG_DOMAIN_SETUP,
-					  "Starting timeout id: %i", timeout_id);
 	}
 }
 
