@@ -40,7 +40,6 @@ typedef struct {
 	/* Checkbuttons */
 	GtkWidget *expand;
 	GtkWidget *notify;
-	GtkWidget *reload;
 	GtkWidget *spell;
 
 	GList     *notify_ids;
@@ -118,10 +117,6 @@ preferences_setup_widgets (TwituxPrefs *prefs)
 	preferences_hookup_toggle_button (prefs,
 									  TWITUX_PREFS_UI_NOTIFICATION,
 									  prefs->notify);
-
-	preferences_hookup_toggle_button (prefs,
-									  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
-									  prefs->reload);
 
 	preferences_hookup_toggle_button (prefs,
 									  TWITUX_PREFS_UI_SPELL,
@@ -659,7 +654,6 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 								   "combobox_timeline", &prefs->combo_default_timeline,
 								   "expand_checkbutton", &prefs->expand,
 								   "notify_checkbutton", &prefs->notify,
-								   "autoupdate_checkbutton", &prefs->reload,
 								   "spell_checkbutton", &prefs->spell,
 								   "spell_treeview", &prefs->treeview_spell_checker,
 								   NULL);

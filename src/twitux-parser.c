@@ -46,6 +46,8 @@ static TwituxStatus	*parser_twitux_node_status (xmlNode     *a_node);
 static xmlDoc		*parser_twitux_parse       (const char  *cache_file,
 												xmlNode    **first_element);
 
+/* id of the newest tweet showed */
+static gint			last_id = 0;
 
 static xmlDoc*
 parser_twitux_parse (const char  *cache_file,
