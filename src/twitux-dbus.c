@@ -87,6 +87,7 @@ dbus_nm_state_cb (DBusGProxy *proxy,
 	switch (state) {
 	case NM_STATE_ASLEEP:
 	case NM_STATE_DISCONNECTED:
+	case NM_STATE_CONNECTING:
 	case NM_STATE_UNKNOWN:
 		twitux_app_state_on_connection (FALSE);
 		break;
