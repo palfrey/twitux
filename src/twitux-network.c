@@ -33,7 +33,10 @@
 #include "twitux-parser.h"
 #include "twitux-app.h"
 
-#define DEBUG_DOMAIN_SETUP	"Network" 
+#define DEBUG_DOMAIN_SETUP	"Network"
+
+/* Auto update timeout (3 minutes in milliseconds) */
+#define TWITUX_TIMEOUT      3 * 60 * 1000
 
 typedef struct {
 	gchar        *src;

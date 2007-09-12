@@ -71,9 +71,6 @@ G_BEGIN_DECLS
 /* Client information for Twitter servers */
 #define TWITUX_HEADER_URL                     "http://twitux.sourceforge.net/client.xml"
 
-/* Auto update timeout (3min) */
-#define TWITUX_TIMEOUT                        180000
-
 /* ListStore columns */
 enum {
 	PIXBUF_AVATAR,
