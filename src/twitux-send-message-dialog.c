@@ -73,7 +73,7 @@ static void message_response_cb                 (GtkWidget          *widget,
 											     gint                response,
 											     TwituxSendMessage  *send_message);
 
-gchar *
+static gchar *
 url_encode_message (gchar *text)
 {
 	const char        *good;
