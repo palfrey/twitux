@@ -633,6 +633,13 @@ app_list_view_setup (void)
 				  NULL);
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
+	g_object_set (renderer,
+				  "xpad", 0,
+				  "ypad", 0,
+				  "visible", TRUE,
+				  "width", 48,
+				  "height", 48,
+				  NULL);
 	avatar_column = gtk_tree_view_column_new_with_attributes (NULL,
 															  renderer,
 															  "pixbuf", PIXBUF_AVATAR,
