@@ -35,9 +35,6 @@
 
 #define DEBUG_DOMAIN	"Network"
 
-/* Auto update timeout (3 minutes in milliseconds) */
-#define TWITUX_TIMEOUT      3 * 60 * 1000
-
 typedef struct {
 	gchar        *src;
 	GtkTreeIter  iter;
@@ -858,6 +855,9 @@ network_cb_on_del (SoupMessage *msg,
 static void
 network_timeout_new (void)
 {
+	gint minutes;
+	guint reload_time;
+
 	if (timeout_id) {
 		twitux_debug (DEBUG_DOMAIN,
 					  "Stopping timeout id: %i", timeout_id);
@@ -865,7 +865,14 @@ network_timeout_new (void)
 		g_source_remove (timeout_id);
 	}
 
-	timeout_id = g_timeout_add (TWITUX_TIMEOUT,
+	twitux_conf_get_int (twitux_conf_get (),
+						 TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
+						 &minutes);
+
+	/* This should be the number of milliseconds */
+	reload_time = minutes * 60 * 1000;
+
+	timeout_id = g_timeout_add (reload_time,
 								network_timeout,
 								NULL);
 

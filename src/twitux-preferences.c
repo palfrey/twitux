@@ -36,6 +36,7 @@ typedef struct {
 	GtkWidget *notebook;
 	GtkWidget *treeview_spell_checker;
 	GtkWidget *combo_default_timeline;
+	GtkWidget *combo_reload;
 
 	/* Checkbuttons */
 	GtkWidget *expand;
@@ -44,6 +45,20 @@ typedef struct {
 
 	GList     *notify_ids;
 } TwituxPrefs;
+
+typedef struct _reload_time {
+	gint   minutes;
+	gchar *display_text;
+} reload_time;
+
+reload_time reload_list[] = {
+	{3, N_("3 minutes")},
+	{5, N_("5 minutes")},
+	{15, N_("15 minutes")},
+	{30, N_("30 minutes")},
+	{60, N_("hour")},
+	{0, NULL}
+};
 
 enum {
 	COL_LANG_ENABLED,
@@ -79,10 +94,15 @@ static void     preferences_widget_sync_bool       (const gchar            *key,
 													GtkWidget              *widget);
 static void   preferences_widget_sync_string_combo (const gchar            *key,
 													GtkWidget              *widget);
+static void   preferences_widget_sync_int_combo    (const gchar            *key,
+													GtkWidget              *widget);
 static void     preferences_notify_bool_cb         (TwituxConf             *conf,
 													const gchar            *key,
 													gpointer                user_data);
 static void     preferences_notify_string_combo_cb (TwituxConf             *conf,
+													const gchar            *key,
+													gpointer                user_data);
+static void     preferences_notify_int_combo_cb    (TwituxConf             *conf,
 													const gchar            *key,
 													gpointer                user_data);
 static void     preferences_notify_sensitivity_cb  (TwituxConf             *conf,
@@ -94,6 +114,9 @@ static void     preferences_hookup_toggle_button   (TwituxPrefs            *pref
 static void     preferences_hookup_string_combo    (TwituxPrefs            *prefs,
 													const gchar            *key,
 													GtkWidget              *widget);
+static void     preferences_hookup_int_combo       (TwituxPrefs            *prefs,
+													const gchar            *key,
+													GtkWidget              *widget);
 static void     preferences_hookup_sensitivity     (TwituxPrefs            *prefs,
 													const gchar            *key,
 													GtkWidget              *widget);
@@ -103,6 +126,8 @@ static void preferences_response_cb                (GtkWidget              *widg
 static void preferences_toggle_button_toggled_cb   (GtkWidget              *button,
 													gpointer                user_data);
 static void preferences_string_combo_changed_cb    (GtkWidget              *button,
+													gpointer                user_data);
+static void preferences_int_combo_changed_cb       (GtkWidget              *combo,
 													gpointer                user_data);
 static void preferences_destroy_cb                 (GtkWidget              *widget,
 													TwituxPrefs            *prefs);
@@ -129,6 +154,10 @@ preferences_setup_widgets (TwituxPrefs *prefs)
 	preferences_hookup_string_combo (prefs,
 									 TWITUX_PREFS_TWEETS_HOME_TIMELINE,
 									 prefs->combo_default_timeline);
+
+	preferences_hookup_int_combo (prefs,
+								  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
+								  prefs->combo_reload);
 }
 static void
 preferences_languages_setup (TwituxPrefs *prefs)
@@ -418,6 +447,42 @@ preferences_timeline_setup (TwituxPrefs *prefs)
 }
 
 static void
+preferences_reload_setup (TwituxPrefs *prefs)
+{
+	GtkListStore    *model;
+	GtkTreeIter      iter;
+	GtkCellRenderer *renderer;
+	gint             i;
+	reload_time     *options;
+
+	options = reload_list;
+
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (prefs->combo_reload),
+								renderer, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (prefs->combo_reload),
+									renderer, "text", COL_COMBO_VISIBLE_NAME, NULL);
+
+	model = gtk_list_store_new (COL_COMBO_COUNT,
+								G_TYPE_STRING,
+								G_TYPE_INT);
+
+	gtk_combo_box_set_model (GTK_COMBO_BOX (prefs->combo_reload),
+							 GTK_TREE_MODEL (model));
+
+	while (options->display_text != NULL) {
+		gtk_list_store_append (model, &iter);
+		gtk_list_store_set (model, &iter,
+							COL_COMBO_VISIBLE_NAME, _(options->display_text),
+							COL_COMBO_NAME, options->minutes,
+							-1);
+		options++;
+	}
+
+	g_object_unref (model);
+}
+
+static void
 preferences_widget_sync_bool (const gchar *key, GtkWidget *widget)
 {
 	gboolean value;
@@ -473,11 +538,61 @@ preferences_widget_sync_string_combo (const gchar *key, GtkWidget *widget)
 }
 
 static void
+preferences_widget_sync_int_combo (const gchar *key, GtkWidget *widget)
+{
+	gint          value;
+	GtkTreeModel *model;
+	GtkTreeIter   iter;
+	gboolean      found;
+
+	if (!twitux_conf_get_int (twitux_conf_get (), key, &value)) {
+		return;
+	}
+
+	model = gtk_combo_box_get_model (GTK_COMBO_BOX (widget));
+
+	found = FALSE;
+	if (value && gtk_tree_model_get_iter_first (model, &iter)) {
+		gint minutes;
+
+		do {
+			gtk_tree_model_get (model, &iter,
+								COL_COMBO_NAME, &minutes,
+								-1);
+
+			if (minutes == value) {
+				found = TRUE;
+				gtk_combo_box_set_active_iter (GTK_COMBO_BOX (widget), &iter);
+				break;
+			} else {
+				found = FALSE;
+			}
+
+		} while (gtk_tree_model_iter_next (model, &iter));
+	}
+
+	/* Fallback to the first one. */
+	if (!found) {
+		if (gtk_tree_model_get_iter_first (model, &iter)) {
+			gtk_combo_box_set_active_iter (GTK_COMBO_BOX (widget), &iter);
+		}
+	}
+}
+
+static void
 preferences_notify_string_combo_cb (TwituxConf  *conf,
 									const gchar *key,
 									gpointer     user_data)
 {
 	preferences_widget_sync_string_combo (key, user_data);
+}
+
+static void
+preferences_notify_int_combo_cb (TwituxConf  *conf,
+								 const gchar *key,
+								 gpointer     user_data)
+{
+	preferences_widget_sync_int_combo (key, user_data);
 }
 
 static void
@@ -528,8 +643,8 @@ preferences_hookup_toggle_button (TwituxPrefs *prefs,
 
 static void
 preferences_hookup_string_combo (TwituxPrefs *prefs,
-								 const gchar       *key,
-								 GtkWidget         *widget)
+								 const gchar *key,
+								 GtkWidget   *widget)
 {
 	guint id;
 
@@ -547,6 +662,33 @@ preferences_hookup_string_combo (TwituxPrefs *prefs,
 								 key,
 								 preferences_notify_string_combo_cb,
 								 widget);
+	if (id) {
+		preferences_add_id (prefs, id);
+	}
+}
+
+static void
+preferences_hookup_int_combo (TwituxPrefs *prefs,
+								 const gchar *key,
+								 GtkWidget   *widget)
+{
+	guint id;
+
+	preferences_widget_sync_int_combo (key, widget);
+
+	g_object_set_data_full (G_OBJECT (widget), "key",
+							g_strdup (key), g_free);
+
+	g_signal_connect (widget,
+					  "changed",
+					  G_CALLBACK (preferences_int_combo_changed_cb),
+					  NULL);
+
+	id = twitux_conf_notify_add (twitux_conf_get (),
+								 key,
+								 preferences_notify_int_combo_cb,
+								 widget);
+
 	if (id) {
 		preferences_add_id (prefs, id);
 	}
@@ -610,6 +752,28 @@ preferences_string_combo_changed_cb (GtkWidget *combo,
 }
 
 static void
+preferences_int_combo_changed_cb (GtkWidget *combo,
+								  gpointer   user_data)
+{
+	const gchar  *key;
+	GtkTreeModel *model;
+	GtkTreeIter   iter;
+	gint          minutes;
+
+	key = g_object_get_data (G_OBJECT (combo), "key");
+
+	if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (combo), &iter)) {
+		model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo));
+
+		gtk_tree_model_get (model, &iter,
+							COL_COMBO_NAME, &minutes,
+							-1);
+
+		twitux_conf_set_int (twitux_conf_get (), key, minutes);
+	}
+}
+
+static void
 preferences_response_cb (GtkWidget   *widget,
 						 gint         response,
 						 TwituxPrefs *prefs)
@@ -652,6 +816,7 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 								   "preferences_dialog", &prefs->dialog,
 								   "preferences_notebook", &prefs->notebook,
 								   "combobox_timeline", &prefs->combo_default_timeline,
+								   "combobox_reload", &prefs->combo_reload,
 								   "expand_checkbutton", &prefs->expand,
 								   "notify_checkbutton", &prefs->notify,
 								   "spell_checkbutton", &prefs->spell,
@@ -669,6 +834,7 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 	g_object_add_weak_pointer (G_OBJECT (prefs->dialog), (gpointer) &prefs);
 
 	preferences_timeline_setup (prefs);
+	preferences_reload_setup (prefs);
 
 	preferences_setup_widgets (prefs);
 

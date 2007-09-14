@@ -1,3 +1,11 @@
+2007-09-14  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/main.glade:
+	* data/twitux.schemas.in:
+	* src/twitux-network.c (network_timeout_new): : 
+	* src/twitux-preferences.c: Add ability for user to set interval
+	between timeline retrievals.
+
 2007-09-12  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-network.c: remove network_timeout_stop

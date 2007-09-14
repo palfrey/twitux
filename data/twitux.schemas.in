@@ -53,11 +53,11 @@
     	<key>/schemas/apps/twitux/tweets/reload_timeline</key>
     	<applyto>/apps/twitux/tweets/reload_timeline</applyto>
     	<owner>twitux</owner>
-    	<type>bool</type>
-    	<default>false</default>
+    	<type>int</type>
+    	<default>5</default>
     	<locale name="C">
-    	   <short>Reload timeline</short>
-    	   <long>Reload timeline.</long>
+    	   <short>Minutes between timeline retrievals</short>
+    	   <long>Minutes between timeline retrievals. Values supported are 3, 5, 15, 30, and 60</long>
     	</locale>
     </schema>
 
