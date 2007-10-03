@@ -106,7 +106,6 @@ AC_SUBST(LIBTWITUX_LIBS)
 PKG_CHECK_MODULES(TWITUX,
 [
 	libsexy
-	libssl
 	gtk+-2.0 >= $GTK_REQUIRED
 	libglade-2.0 >= $LIBGLADE_REQUIRED
 	glib-2.0 >= $GLIB_REQUIRED
