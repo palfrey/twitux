@@ -38,7 +38,6 @@
 typedef struct {
 	gchar        *src;
 	GtkTreeIter  iter;
-	GtkListStore *store;
 } TwituxImage;
 
 static void network_get_data		(const gchar           *url,
@@ -365,8 +364,7 @@ twitux_network_get_followers (void)
 void
 twitux_network_get_image (const gchar  *url_image,
 						  const gchar  *username,
-						  GtkTreeIter   iter,
-						  GtkListStore *store)
+						  GtkTreeIter   iter)
 {
 	gchar	*images_dir;
 	gchar	*image_file;
@@ -390,7 +388,7 @@ twitux_network_get_image (const gchar  *url_image,
 	/* check if image already exists */
 	if(g_file_test (image_file, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)) {		
 		/* Set image from file here */
-		twitux_app_set_image (image_file, store, iter);
+		twitux_app_set_image (image_file, iter);
 
 		g_free (image_file);
 		return;
@@ -399,7 +397,6 @@ twitux_network_get_image (const gchar  *url_image,
 	image = g_new0 (TwituxImage, 1);
 	image->src = image_file;
 	image->iter = iter;
-	image->store = store;
 
 	/* Note: 'image' will be freed in 'network_cb_on_image' */
 	network_get_data (url_image, network_cb_on_image, image);
@@ -675,7 +672,6 @@ network_cb_on_timeline (SoupMessage *msg,
 						gpointer     user_data)
 {
 	gchar        *file;
-	GtkListStore *store;
 	gchar        *new_timeline = NULL;
 	
 	if (user_data){
@@ -705,10 +701,7 @@ network_cb_on_timeline (SoupMessage *msg,
 	twitux_debug (DEBUG_DOMAIN, "Parsing timeline: %s",file);
 
 	/* Parse and set ListStore */
-	store = twitux_parser_timeline (file);
-
-	if (store) {
-		twitux_app_set_liststore (store);
+	if (twitux_parser_timeline (file)) {
 		twitux_app_set_statusbar_msg (_("Timeline Loaded"));
 
 		if (new_timeline){
@@ -786,7 +779,7 @@ network_cb_on_image (SoupMessage *msg,
 								 msg->response.length,
 								 NULL)) {
 			/* Set image from file here (image_file) */
-			twitux_app_set_image (image->src, image->store, image->iter);
+			twitux_app_set_image (image->src,image->iter);
 		}
 	}
 

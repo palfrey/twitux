@@ -158,3 +158,4 @@ twitux_tweet_list_get_store (void)
 	
 	return priv->store;
 }
+

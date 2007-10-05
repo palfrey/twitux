@@ -54,7 +54,6 @@ GType               twitux_app_get_type                     (void) G_GNUC_CONST;
 void                twitux_app_create                       (void);
 TwituxApp *	        twitux_app_get                          (void);
 GtkWidget *         twitux_app_get_window                   (void);
-void                twitux_app_set_liststore                (GtkListStore *list);
 void				twitux_app_set_statusbar_msg	        (gchar        *message);
 void				twitux_app_set_friends	                (GList        *friends);
 void				twitux_app_show_notification			(gint		   tweets);
@@ -62,7 +61,6 @@ void				twitux_app_show_notification			(gint		   tweets);
 void                twitux_app_state_on_connection          (gboolean   connected);
 
 void                twitux_app_set_image                    (const gchar  *file,
-                                                             GtkListStore *store,
                                                              GtkTreeIter iter);
 
 G_END_DECLS

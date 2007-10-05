@@ -30,6 +30,7 @@
 #include "twitux.h"
 #include "twitux-parser.h"
 #include "twitux-app.h"
+#include "twitux-tweet-list.h"
 
 #define DEBUG_DOMAIN_SETUP       "Parser" 
 
@@ -163,7 +164,7 @@ twitux_parser_single_user (const gchar *cache_file_uri)
 
 
 /* Parse a timeline XML file */
-GtkListStore *
+gboolean
 twitux_parser_timeline (const gchar *cache_file_uri)
 {
 	xmlDoc		    *doc = NULL;
@@ -186,13 +187,12 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 
 	if (!doc) {
 		xmlCleanupParser ();
-		return NULL;
+		return FALSE;
 	}
 
-	/* Create a ListStore */
-	store = gtk_list_store_new (N_COLUMNS,
-								GDK_TYPE_PIXBUF,
-								G_TYPE_STRING);
+	/* Get the twitux ListStore and clear previous */
+	store = twitux_tweet_list_get_store ();
+	gtk_list_store_clear (store);
 
 	/* get tweets or direct messages */
 	for (cur_node = root_element; cur_node; cur_node = cur_node->next) {
@@ -241,8 +241,7 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 			/* Get Image */
 			twitux_network_get_image (status->user->image_url,
 									  status->user->screen_name,
-									  iter,
-									  store);
+									  iter);
 
 			/* Free struct */
 			parser_free_user (status->user);
@@ -278,7 +277,7 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 	xmlFreeDoc (doc);
 	xmlCleanupParser ();
 
-	return store;
+	return TRUE;
 }
 
 

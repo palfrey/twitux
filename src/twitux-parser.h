@@ -30,7 +30,7 @@ typedef struct {
 
 
 /* Returns a liststore for the main treeview to show tweets */
-GtkListStore *twitux_parser_timeline (const gchar *cache_file_uri);
+gboolean twitux_parser_timeline (const gchar *cache_file_uri);
 
 /* Returns a Glist with friends. Can be used to 
    build the friends menu, on direct messages dialog, etc.. */

@@ -39,6 +39,7 @@
 #include "twitux-preferences.h"
 #include "twitux-send-message-dialog.h"
 #include "twitux-ui-utils.h"
+#include "twitux-tweet-list.h"
 
 #ifdef HAVE_DBUS
 #include "twitux-dbus.h"
@@ -52,7 +53,7 @@
 struct _TwituxAppPriv {
 	/* Main widgets */
 	GtkWidget         *window;
-	GtkWidget         *listview;
+	TwituxTweetList   *listview;
 	GtkWidget         *statusbar;
 
 	/* Widgets that are enabled when we're connected/disconnected */
@@ -135,7 +136,6 @@ static void     app_login                        (void);
 static void     app_retrieve_default_timeline    (void);
 static void     app_status_icon_create_menu      (void);
 static void     app_status_icon_create           (void);
-static void     app_list_view_setup              (void);
 static void     app_check_dir                    ();
 static gboolean configure_event_timeout_cb       (GtkWidget             *widget);
 static gboolean app_window_configure_event_cb    (GtkWidget             *widget,
@@ -203,6 +203,7 @@ app_setup (void)
 	TwituxAppPriv    *priv;
 	TwituxConf       *conf;
 	GladeXML         *glade;
+	GtkWidget        *scrolled_window;
 	gboolean          login;
 
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Beginning....");
@@ -215,7 +216,7 @@ app_setup (void)
 								   "main_window",
 								   NULL,
 								   "main_window", &priv->window,
-								   "main_listview", &priv->listview,
+								   "main_scrolledwindow", &scrolled_window,
 								   "main_statusbar", &priv->statusbar,
 								   "view_public_timeline", &priv->menu_public,
 								   "view_friends_timeline", &priv->menu_friends,
@@ -260,7 +261,10 @@ app_setup (void)
 	app_status_icon_create ();
 
 	/* Set-up list view */
-	app_list_view_setup ();
+	priv->listview = twitux_tweet_list_new ();
+	gtk_widget_show ( GTK_WIDGET (priv->listview));
+	gtk_container_add (GTK_CONTAINER (scrolled_window),
+					   GTK_WIDGET (priv->listview));
 
 	/* Initial status of widgets */
 	twitux_app_state_on_connection (FALSE);
@@ -616,53 +620,6 @@ app_status_icon_create (void)
 	gtk_status_icon_set_visible (priv->status_icon, TRUE);
 }
 
-static void
-app_list_view_setup (void)
-{
-	TwituxAppPriv		*priv;
-	GtkCellRenderer		*renderer;
-	GtkTreeViewColumn	*avatar_column;
-	GtkTreeViewColumn   *tweet_column;
-
-	priv = GET_PRIV (app);
-
-	g_object_set (GTK_TREE_VIEW (priv->listview),
-				  "rules-hint", TRUE,
-				  "reorderable", FALSE,
-				  "headers-visible", FALSE,
-				  NULL);
-
-	renderer = gtk_cell_renderer_pixbuf_new ();
-	g_object_set (renderer,
-				  "xpad", 0,
-				  "ypad", 0,
-				  "visible", TRUE,
-				  "width", 48,
-				  "height", 48,
-				  NULL);
-	avatar_column = gtk_tree_view_column_new_with_attributes (NULL,
-															  renderer,
-															  "pixbuf", PIXBUF_AVATAR,
-															  NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (priv->listview), avatar_column);
-
-	renderer = gtk_cell_renderer_text_new ();
-	tweet_column = gtk_tree_view_column_new_with_attributes (NULL,
-															 renderer,
-															 "markup", STRING_TEXT,
-															 NULL);
-
-	g_object_set (renderer,
-				  "ypad", 0,
-				  "xpad", 5,
-				  "yalign", 0.0,
-				  "wrap-mode", PANGO_WRAP_WORD_CHAR,
-				  "wrap-width", 257, /* TODO: Have this set based on window geometry */
-				  NULL);
-
-	gtk_tree_view_append_column (GTK_TREE_VIEW (priv->listview), tweet_column);
-}
-
 void
 twitux_app_create (void)
 {
@@ -893,17 +850,6 @@ twitux_app_get_window (void)
 }
 
 void
-twitux_app_set_liststore (GtkListStore *list)
-{
-	TwituxAppPriv  *priv;
-
-	priv = GET_PRIV (app);
-
-	gtk_tree_view_set_model (GTK_TREE_VIEW (priv->listview), 
-							 GTK_TREE_MODEL (list));
-}
-
-void
 twitux_app_set_statusbar_msg (gchar *message)
 {
 	TwituxAppPriv *priv;
@@ -983,7 +929,6 @@ twitux_app_show_notification (gint tweets)
 		s = _("tweet");
 	}
 
-
 	msg = g_strdup_printf (_("You have %i new %s."), tweets, s);
 
 	if (priv->notification!= NULL) {
@@ -1006,13 +951,14 @@ twitux_app_show_notification (gint tweets)
 
 void
 twitux_app_set_image (const gchar *file,
-					  GtkListStore *store,
                       GtkTreeIter iter)
 {
+	GtkListStore *store;
 	GdkPixbuf *pixbuf;
 	GError *error = NULL;
 
 	pixbuf = gdk_pixbuf_new_from_file (file, &error);
+	store = twitux_tweet_list_get_store ();
 
 	if (!pixbuf){
 		twitux_debug (DEBUG_DOMAIN_SETUP, "Image error: %s: %s",
