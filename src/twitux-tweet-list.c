@@ -32,7 +32,10 @@
 #define GET_PRIV(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TWITUX_TYPE_TWEET_LIST, TwituxTweetListPriv))
 
 struct _TwituxTweetListPriv {
-	GtkListStore *store;
+	GtkListStore      *store;
+	
+	GtkTreeViewColumn *text_column;
+	GtkCellRenderer   *text_renderer;
 };
 
 static void   twitux_tweet_list_class_init (TwituxTweetListClass *klass);
@@ -40,6 +43,10 @@ static void   twitux_tweet_list_init       (TwituxTweetList      *tweet);
 static void   tweet_list_finalize          (GObject              *obj);
 static void   tweet_list_create_model      (TwituxTweetList      *list);
 static void   tweet_list_setup_view        (TwituxTweetList      *list);
+
+static void   tweet_list_size_cb           (GtkWidget            *widget,
+                                            GtkAllocation        *allocation,
+                                            gpointer              user_data);
 
 static TwituxTweetList *list = NULL;
 
@@ -67,6 +74,11 @@ twitux_tweet_list_init (TwituxTweetList *tweet)
 
 	tweet_list_create_model (list);
 	tweet_list_setup_view (list);
+
+	g_signal_connect (tweet,
+					  "size_allocate",
+					  G_CALLBACK (tweet_list_size_cb),
+					  NULL);
 
 	/* TODO: Add signals */
 }
@@ -108,10 +120,13 @@ tweet_list_create_model (TwituxTweetList *list)
 static void
 tweet_list_setup_view (TwituxTweetList *list)
 {
+	TwituxTweetListPriv *priv;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn	*avatar_column;
 	GtkTreeViewColumn   *tweet_column;
 
+	priv = GET_PRIV (list);
+	
 	g_object_set (list,
 				  "rules-hint", TRUE,
 				  "reorderable", FALSE,
@@ -141,6 +156,26 @@ tweet_list_setup_view (TwituxTweetList *list)
 				  NULL);
 
 	gtk_tree_view_append_column (GTK_TREE_VIEW (list), tweet_column);
+	
+	priv->text_column = tweet_column;
+	priv->text_renderer = renderer;
+}
+
+static void
+tweet_list_size_cb (GtkWidget *widget,
+                    GtkAllocation *allocation,
+                    gpointer user_data)
+{
+	TwituxTweetListPriv *priv;
+	gint w;
+	
+	priv = GET_PRIV (list);
+
+	w = gtk_tree_view_column_get_width (priv->text_column);
+
+	g_object_set (priv->text_renderer,
+				  "wrap-width", w,
+				  NULL);
 }
 
 TwituxTweetList *

@@ -856,6 +856,10 @@ twitux_app_set_statusbar_msg (gchar *message)
 
 	priv = GET_PRIV (app);
 
+	/* Avoid some warnings */
+	if (!priv->statusbar || !GTK_IS_STATUSBAR (priv->statusbar))
+		return;
+
 	/* conext ID will be always 1 */
 	gtk_statusbar_pop (GTK_STATUSBAR (priv->statusbar), 1);
 	gtk_statusbar_push (GTK_STATUSBAR (priv->statusbar), 1, message);

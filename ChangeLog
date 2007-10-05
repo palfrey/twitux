@@ -1,5 +1,10 @@
 2007-10-05  Daniel Morales  <daniminas@gmail.com>
 
+	* src/twitux-tweet-list.c: Add initial code to handle window
+	size and list view wrap.
+
+2007-10-05  Daniel Morales  <daniminas@gmail.com>
+
 	* data/main.glade:
 	* src/twitux-app.[ch]:
 	* src/twitux-network.[ch]:
