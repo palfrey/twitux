@@ -21,6 +21,7 @@
 #include <config.h>
 #include <gtk/gtk.h>
 #include <glib/gstdio.h>
+#include <glib/gi18n.h>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -48,6 +49,8 @@ static TwituxStatus	*parser_twitux_node_status (xmlNode     *a_node);
 
 static xmlDoc		*parser_twitux_parse       (const char  *cache_file,
 												xmlNode    **first_element);
+
+static gchar		*parser_convert_time       (const char	*datetime);
 
 /* id of the newest tweet showed */
 static gint			last_id = 0;
@@ -202,6 +205,7 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 		if (g_str_equal (cur_node->name, "status") ||
 		    g_str_equal (cur_node->name, "direct_message")) {
 			gchar *tweet;
+			gchar *datetime;
 			gint sid;
 
 			/* Parse node */
@@ -225,9 +229,9 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 			}
 
 			/* Create string for text column */
-			/* TODO: More formatting of string, and convert time */
-			tweet = g_strconcat ("<b>", status->user->name, "</b> - ",
-								 status->created_at, "\n", status->text, NULL);
+			datetime = parser_convert_time (status->created_at);
+			tweet = g_strconcat ("<b>", status->user->name, "</b> - ", datetime, "\n",
+								 "<small>", status->text, "</small>", NULL);
 
 			/* Append to ListStore */
 			gtk_list_store_append (store, &iter);
@@ -253,7 +257,7 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 				g_free (status->id);
 			
 			g_free (status);
-
+			g_free (datetime);
 		} else if (g_str_equal (cur_node->name, "statuses") ||
 			g_str_equal (cur_node->name, "direct-messages")) {
 
@@ -347,9 +351,7 @@ parser_twitux_node_status (xmlNode *a_node)
 			continue;
 		if (g_str_equal (cur_node->name, "created_at")) {
 			const xmlChar *tmp;
-
 			tmp = xmlBufferContent(buffer);
-			/* TODO : Convert time to: 'time ago' */
 			status->created_at = g_strdup ((const gchar *)tmp);
 		} else if (g_str_equal (cur_node->name, "id")) {
 			const xmlChar *tmp;
@@ -389,6 +391,64 @@ parser_twitux_node_status (xmlNode *a_node)
 	return status;
 }
 
+static gchar *
+parser_convert_time (const char *datetime)
+{
+	struct tm	*ta;
+	struct tm	 post;
+	int			 seconds_local;
+	int			 seconds_post;
+	int 		 diff;
+	time_t		 t = time(NULL);
+
+	tzset ();
+	ta = gmtime (&t);
+	ta->tm_isdst = -1;
+	seconds_local = mktime (ta);
+
+	strptime (datetime, "%a %b %d %T +0000 %Y", &post);
+	post.tm_isdst = -1;
+	seconds_post =  mktime (&post);
+
+	diff = seconds_local-seconds_post;
+
+	if (diff < 0) {
+		return g_strdup (_("1 second ago"));
+	}
+	/* Seconds */
+	if (diff == 60) {
+		return g_strdup (_("1 minute ago"));
+	} else if (diff < 60 ) {
+		return g_strdup_printf (_("%i seconds ago"), diff);
+	} else {
+		/* Minutes */
+		diff = diff/60;
+		if (diff == 60) {
+			return g_strdup (_("1 hour ago"));
+		} else if (diff < 60) {
+			return g_strdup_printf (_("%i minutes ago"), diff);
+		} else {
+			/* Hours */
+			diff = diff/60;
+			if (diff == 24) {
+				return g_strdup (_("1 day ago"));
+			} else if (diff < 24) {
+				return g_strdup_printf (_("%i hours ago"), diff);
+			} else {
+				/* Days */
+				diff = diff/24;
+				if (diff == 30) {
+					return g_strdup (_("1 month ago"));
+				} else if (diff < 30) {
+					return g_strdup_printf (_("%i days ago"), diff);
+				} else {
+					return g_strdup_printf (_("%i months ago"), (diff/30));
+				}
+			}
+		}
+	}
+	return NULL;
+}
 
 /* Free a user struct */
 void

@@ -1,3 +1,7 @@
+2007-10-11  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-parser.c: Add convert time.
+
 2007-10-05  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-tweet-list.c: Add initial code to handle window
