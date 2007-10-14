@@ -33,7 +33,8 @@
 #include "twitux-parser.h"
 #include "twitux-app.h"
 
-#define DEBUG_DOMAIN	"Network"
+#define DEBUG_DOMAIN	  "Network"
+#define TWITUX_HEADER_URL "http://twitux.sourceforge.net/client.xml"
 
 typedef struct {
 	gchar        *src;

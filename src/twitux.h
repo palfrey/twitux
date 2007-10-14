@@ -68,9 +68,6 @@ G_BEGIN_DECLS
 #define TWITUX_CACHE_USERS                    TWITUX_DIRECTORY "/userslist.xml"
 #define TWITUX_CACHE_IMAGES                   TWITUX_DIRECTORY "/avatars"
 
-/* Client information for Twitter servers */
-#define TWITUX_HEADER_URL                     "http://twitux.sourceforge.net/client.xml"
-
 /* ListStore columns */
 enum {
 	PIXBUF_AVATAR,
