@@ -914,11 +914,7 @@ twitux_app_set_friends (GList *friends)
 		priv->friends_loaded = TRUE;
 		for (list = friends; list; list = list->next) {
 			user = (TwituxUser *)list->data;
-			item = gtk_menu_item_new_with_label (user->name);
-			g_signal_connect (item, "activate",
-							  G_CALLBACK (app_twitter_view_friend_cb), user);
-			gtk_widget_show (item);
-			gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+			twitux_app_add_friend (user);
 		}
 	}
 
