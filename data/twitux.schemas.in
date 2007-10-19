@@ -170,18 +170,6 @@
 	   <long>Enable spell checking.</long>
 	</locale>
      </schema>
-     
-     <schema>
-	<key>/schemas/apps/twitux/ui/statusbar</key>
-	<applyto>/apps/twitux/ui/statusbar</applyto>
-	<owner>twitux</owner>
-	<type>bool</type>
-	<default>true</default>
-	<locale name="C">
-	   <short>Show the statusbar</short>
-	   <long>Show the statusbar.</long>
-	</locale>
-     </schema>
 
   </schemalist>  
 </gconfschemafile>
