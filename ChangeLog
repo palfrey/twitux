@@ -1,3 +1,15 @@
+2007-20-18  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-add-dialog.[ch]:
+	* src/twitux-app.[ch]:
+	* src/twitux-network.c:
+	* src/Makefile.am: Add friends functions.
+
+	* data/main.glade: Add friend Dialog.
+
+	* src/twitux-about.c: Updated my broken e-mail
+	address.
+
 2007-10-11  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-parser.c: Add convert time.

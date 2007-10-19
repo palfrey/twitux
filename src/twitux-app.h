@@ -29,6 +29,8 @@
 
 #include <libtwitux/twitux-paths.h>
 
+#include "twitux-parser.h"
+
 G_BEGIN_DECLS
 
 #define TWITUX_TYPE_APP             (twitux_app_get_type ())
@@ -56,6 +58,7 @@ TwituxApp *	        twitux_app_get                          (void);
 GtkWidget *         twitux_app_get_window                   (void);
 void				twitux_app_set_statusbar_msg	        (gchar        *message);
 void				twitux_app_set_friends	                (GList        *friends);
+void				twitux_app_add_friend                   (TwituxUser   *user);
 void				twitux_app_show_notification			(gint		   tweets);
 
 void                twitux_app_state_on_connection          (gboolean   connected);

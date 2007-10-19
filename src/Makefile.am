@@ -18,6 +18,7 @@ twitux_SOURCES = 							\
 	twitux-main.c							\
 	twitux-about.c			twitux-about.h			\
 	twitux-account-dialog.c 	twitux-account-dialog.h		\
+	twitux-add-dialog.c 		twitux-add-dialog.h		\
 	twitux-app.c			twitux-app.h			\
 	twitux-geometry.c		twitux-geometry.h		\
 	twitux-glade.c			twitux-glade.h			\

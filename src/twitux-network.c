@@ -411,7 +411,7 @@ twitux_network_add_user (const gchar *username)
 {
 	gchar *url;
 	
-	if (!username)
+	if (G_STR_EMPTY (username))
 		return;
 	
 	url = g_strdup_printf (TWITUX_API_FOLLOWING_ADD, username);
@@ -817,6 +817,7 @@ network_cb_on_add (SoupMessage *msg,
 	if (user) {
 		user_friends = g_list_append ( user_friends, user );
 		twitux_app_set_statusbar_msg (_("Friend Added"));
+		twitux_app_add_friend (user);
 	} else {
 		twitux_app_set_statusbar_msg (_("Failed to add user"));
 	}

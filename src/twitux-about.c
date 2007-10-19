@@ -29,7 +29,7 @@
 #define WEB_SITE "http://twitux.sourceforge.net/"
 
 const gchar *authors[] = {
-	"Daniel Morales <daniel@suruware.com>",
+	"Daniel Morales <daniminas@gmail.com>",
 	"Brian Pepple <bpepple@fedoraproject.org>",
 	NULL
 };

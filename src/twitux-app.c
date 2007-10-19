@@ -40,6 +40,7 @@
 #include "twitux-send-message-dialog.h"
 #include "twitux-ui-utils.h"
 #include "twitux-tweet-list.h"
+#include "twitux-add-dialog.h"
 
 #ifdef HAVE_DBUS
 #include "twitux-dbus.h"
@@ -131,6 +132,8 @@ static void     app_status_icon_popup_menu_cb    (GtkStatusIcon         *status_
 												  TwituxApp             *app);
 static void     app_twitter_view_friend_cb       (GtkMenuItem           *menuitem,
 												  TwituxUser            *user);
+static void     app_twitter_add_friend_cb         (GtkMenuItem          *menuitem,
+												  TwituxApp             *app);
 static void     app_connection_items_setup       (GladeXML              *glade);
 static void     app_login                        (void);
 static void     app_retrieve_default_timeline    (void);
@@ -235,6 +238,7 @@ app_setup (void)
 						  "twitter_new_message", "activate", app_twitter_new_msg_cb,
 						  "twitter_refresh", "activate", app_twitter_refresh_cb,
 						  "twitter_quit", "activate", app_twitter_quit_cb,
+						  "twitter_add_friend", "activate", app_twitter_add_friend_cb,
 						  "settings_account", "activate", app_settings_account_cb,
 						  "settings_preferences", "activate", app_settings_preferences_cb,
 						  "view_public_timeline", "toggled", app_view_public_timeline_cb,
@@ -519,7 +523,7 @@ app_settings_preferences_cb (GtkWidget *widget,
 }
 
 static void
-app_help_about_cb (GtkWidget  *widget,
+app_help_about_cb (GtkWidget *widget,
 				   TwituxApp *app)
 {
 	TwituxAppPriv *priv;
@@ -527,6 +531,17 @@ app_help_about_cb (GtkWidget  *widget,
 	priv = GET_PRIV (app);
 
 	twitux_about_dialog_new (GTK_WINDOW (priv->window));
+}
+
+static void
+app_twitter_add_friend_cb (GtkMenuItem *menuitem,
+						   TwituxApp *app)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	twitux_add_dialog_show (GTK_WINDOW (priv->window));
 }
 
 static void
@@ -792,6 +807,7 @@ app_connection_items_setup (GladeXML *glade)
 		"twitter_new_message",
 		"twitter_send_direct_message",
 		"twitter_refresh",
+		"twitter_add_friend",
 		"view1"
 	};
 
@@ -907,6 +923,26 @@ twitux_app_set_friends (GList *friends)
 	}
 
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (priv->view_friends), menu);
+}
+
+void
+twitux_app_add_friend (TwituxUser *user)
+{
+	TwituxAppPriv *priv;
+	GtkWidget *menu;
+	GtkWidget *item;
+
+	priv = GET_PRIV (app);
+
+	menu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (priv->view_friends));
+
+	if (menu) {
+		item = gtk_menu_item_new_with_label (user->name);
+		g_signal_connect (item, "activate",
+						  G_CALLBACK (app_twitter_view_friend_cb), user);
+		gtk_widget_show (item);
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+	}
 }
 
 void
