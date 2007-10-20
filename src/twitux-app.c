@@ -730,11 +730,9 @@ app_login (void)
 	if (G_STR_EMPTY (username)) {
 		password = NULL;
 	} else {
-		twitux_account_get_password (username,
-									 &password);
-
-		if (G_STR_EMPTY (password))
+		if (!(twitux_account_get_password (username, &password))) {
 			password = NULL;
+		}
 	}
 #else
 	twitux_conf_get_string (conf,
