@@ -27,6 +27,9 @@
 
 #include <libtwitux/twitux-debug.h>
 #include <libtwitux/twitux-conf.h>
+#ifdef HAVE_GNOME_KEYRING
+#include <libtwitux/twitux-keyring.h>
+#endif
 
 #include "twitux.h"
 #include "twitux-network.h"
@@ -593,15 +596,24 @@ network_cb_on_auth (SoupSession  *session,
 	twitux_conf_get_string (conf,
 							TWITUX_PREFS_AUTH_USER_ID,
 							&user_id);
+	/* Don't bother to continue if there is no user_id */
+	if (G_STR_EMPTY (user_id)) {
+		return;
+	}
+
+#ifdef HAVE_GNOME_KEYRING
+	twitux_account_get_password (user_id,
+								 &user_passwd);
+#else
 	twitux_conf_get_string (conf,
 							TWITUX_PREFS_AUTH_PASSWORD,
 							&user_passwd);
+#endif
 
-	/* verify that user id & password has been set */
-	if (!(G_STR_EMPTY (user_id)) && !(G_STR_EMPTY (user_passwd))) {
+	/* verify that the password has been set */
+	if (!G_STR_EMPTY (user_passwd)) {
 		*username = g_strdup (user_id);
 		*password = g_strdup (user_passwd);
-		return;
 	}
 	
 	if (user_id)

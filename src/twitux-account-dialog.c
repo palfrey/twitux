@@ -23,7 +23,10 @@
 #include <gtk/gtk.h>
 #include <glade/glade.h>
 
-#include "libtwitux/twitux-conf.h"
+#include <libtwitux/twitux-conf.h>
+#ifdef HAVE_GNOME_KEYRING
+#include <libtwitux/twitux-keyring.h>
+#endif
 
 #include "twitux.h"
 #include "twitux-account-dialog.h"
@@ -59,9 +62,14 @@ account_response_cb (GtkWidget     *widget,
 								TWITUX_PREFS_AUTH_USER_ID,
 								gtk_entry_get_text (GTK_ENTRY (account->username)));
 
+#ifdef HAVE_GNOME_KEYRING
+		twitux_account_set_password (gtk_entry_get_text (GTK_ENTRY (account->username)),
+									 gtk_entry_get_text (GTK_ENTRY (account->password)));
+#else
 		twitux_conf_set_string (conf,
 								TWITUX_PREFS_AUTH_PASSWORD,
 								gtk_entry_get_text (GTK_ENTRY (account->password)));
+#endif
 
 		twitux_conf_set_bool (conf,
 							  TWITUX_PREFS_AUTH_AUTO_LOGIN,
@@ -136,13 +144,26 @@ twitux_account_dialog_show (GtkWindow *parent)
 	twitux_conf_get_string (conf,
 							TWITUX_PREFS_AUTH_USER_ID,
 							&username);
-	gtk_entry_set_text (GTK_ENTRY (account->username), username);
-	g_free (username);
+	gtk_entry_set_text (GTK_ENTRY (account->username), username ? username : "");
 
+#ifdef HAVE_GNOME_KEYRING
+	/* If there is no username, don't bother searching for the password */
+	if (G_STR_EMPTY (username)) {
+		username = NULL;
+		password = NULL;
+	} else {
+		twitux_account_get_password (username, &password);
+		if (G_STR_EMPTY (password))
+			password = NULL;
+	}
+#else
 	twitux_conf_get_string (conf,
 							TWITUX_PREFS_AUTH_PASSWORD,
 							&password);
-	gtk_entry_set_text (GTK_ENTRY (account->password), password);
+#endif
+
+	gtk_entry_set_text (GTK_ENTRY (account->password), password ? password : "");
+	g_free (username);
 	g_free (password);
 
 	twitux_conf_get_bool (conf,

@@ -29,6 +29,9 @@
 #include <libtwitux/twitux-debug.h>
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-paths.h>
+#ifdef HAVE_GNOME_KEYRING
+#include <libtwitux/twitux-keyring.h>
+#endif
 
 #include "twitux.h"
 #include "twitux-about.h"
@@ -723,9 +726,21 @@ app_login (void)
 							TWITUX_PREFS_AUTH_USER_ID,
 							&username);
 
+#ifdef HAVE_GNOME_KEYRING
+	if (G_STR_EMPTY (username)) {
+		password = NULL;
+	} else {
+		twitux_account_get_password (username,
+									 &password);
+
+		if (G_STR_EMPTY (password))
+			password = NULL;
+	}
+#else
 	twitux_conf_get_string (conf,
 							TWITUX_PREFS_AUTH_PASSWORD,
 							&password);
+#endif
 
 	if (G_STR_EMPTY (username) || G_STR_EMPTY (password)) {
 		twitux_account_dialog_show (GTK_WINDOW (priv->window));

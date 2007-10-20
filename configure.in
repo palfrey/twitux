@@ -88,6 +88,34 @@ fi
 AM_CONDITIONAL(HAVE_DBUS, test x$have_dbus = xyes)
 
 dnl -----------------------------------------------------------
+dnl GNOME Keyring
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE(gnome_keyring,
+	      AS_HELP_STRING([--enable-gnome-keyring=@<:@no/yes/auto@:>@],
+		             [compile with Gnome Keyring support]), ,
+              enable_gnome_keyring=auto)
+
+if test "x$enable_gnome_keyring" != "xno"; then
+	gnome_keyring_pkgconfig_tmp="gnome-keyring-1"
+	PKG_CHECK_MODULES(GNOME_KEYRING, $gnome_keyring_pkgconfig_tmp, have_gnome_keyring=yes, have_gnome_keyring=no)
+	if test x$have_gnome_keyring = xyes; then
+		AC_DEFINE(HAVE_GNOME_KEYRING, 1, [gnome keyring support])
+		gnome_keyring_pkgconfig=$gnome_keyring_pkgconfig_tmp
+	fi
+else
+	have_gnome_keyring=no
+	gnome_keyring_pkgconfig=
+fi
+
+if test "x$enable_gnome_keyring" = "xyes"; then
+	if test "x$have_gnome_keyring" != "xyes"; then
+		AC_MSG_ERROR([Couldn't find GNOME Keyring.])
+	fi
+fi
+
+AM_CONDITIONAL(HAVE_GNOME_KEYRING, test x$have_gnome_keyring = xyes)
+
+dnl -----------------------------------------------------------
 dnl Pkg-Config dependency checks
 dnl -----------------------------------------------------------
 PKG_CHECK_MODULES(LIBTWITUX,
@@ -97,6 +125,7 @@ PKG_CHECK_MODULES(LIBTWITUX,
 	gtk+-2.0 >= $GTK_REQUIRED
 	gobject-2.0
 	gconf-2.0 >= $GCONF_REQUIRED
+	$gnome_keyring_pkgconfig
 ])
 
 AC_SUBST(LIBTWITUX_CFLAGS)
@@ -167,7 +196,8 @@ po/Makefile.in
 ])
 
 echo
-echo "Prefix: $prefix"
-echo "ASpell: $have_aspell"
-echo "DBUS:   $have_dbus"
+echo "Prefix:        $prefix"
+echo "ASpell:        $have_aspell"
+echo "DBUS:          $have_dbus"
+echo "GNOME Keyring: $have_gnome_keyring"
 echo

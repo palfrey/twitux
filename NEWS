@@ -4,6 +4,7 @@ NEW in 0.6:
 - Fixed #1775052, add spell checking support.
 - Fixed #1775053, add NetworkManager support.
 - Fixed #1777286, option to log in on start up.
+- Added gnome-keyring support.
 - Removed trademarked icons, and replaced with icon with CC license.
 - Install theme friendly icons. http://live.gnome.org/GnomeGoals/AppIcon
 - Simplify the support of a new language for translators. http://live.gnome.org/GnomeGoals/PoLinguas

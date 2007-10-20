@@ -4,10 +4,6 @@
 
 * To-do
 -- Proxy support
--- Memory profiling of Twitux, it was leaking pretty bad.
-
-* Wishlist Items
--- NetworkManager DBus support
--- Gnome-Keyring support for password
+-- Memory profiling of Twitux, it's leaking pretty bad.
 
 
