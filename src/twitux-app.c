@@ -257,19 +257,23 @@ app_setup (void)
 	app_connection_items_setup (glade);
 	g_object_unref (glade);
 
+	/* Let's hide the main window */
+	gtk_widget_hide (GTK_WIDGET (priv->window));
+
 #ifdef HAVE_DBUS
 	/* Initialize NM */
 	twitux_dbus_nm_init ();
 #endif
 
 	/* Set-up the notification area */
-	twitux_debug (DEBUG_DOMAIN_SETUP, "Configuring notification area widget...");
+	twitux_debug (DEBUG_DOMAIN_SETUP,
+				  "Configuring notification area widget...");
 	app_status_icon_create_menu ();
 	app_status_icon_create ();
 
 	/* Set-up list view */
 	priv->listview = twitux_tweet_list_new ();
-	gtk_widget_show ( GTK_WIDGET (priv->listview));
+	gtk_widget_show (GTK_WIDGET (priv->listview));
 	gtk_container_add (GTK_CONTAINER (scrolled_window),
 					   GTK_WIDGET (priv->listview));
 
@@ -281,6 +285,9 @@ app_setup (void)
 
 	/* Set the main window geometry */ 	 
 	app_restore_main_window_geometry (priv->window);
+
+	/* Show the main window */
+	gtk_widget_show (GTK_WIDGET (priv->window));
 
 	/*Check to see if we should automatically login */
 	twitux_conf_get_bool (twitux_conf_get (),
@@ -898,10 +905,10 @@ void
 twitux_app_set_friends (GList *friends)
 {
 	TwituxAppPriv *priv;
-	GtkWidget *menu;
-	GtkWidget *item;
-	GList *list;
-	TwituxUser *user;
+	GtkWidget     *menu;
+	GtkWidget     *item;
+	GList         *list;
+	TwituxUser    *user;
 
 	priv = GET_PRIV (app);
 
@@ -920,8 +927,8 @@ twitux_app_set_friends (GList *friends)
 		/* Temp. menu */
 		priv->friends_loaded = FALSE;
 		item = gtk_menu_item_new_with_label (_("Fetching friends..."));
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 		gtk_widget_show (item);
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu),item);
 	} else {
 		/* Load friends menu from list */
 		priv->friends_loaded = TRUE;

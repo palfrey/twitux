@@ -152,7 +152,6 @@ tweet_list_setup_view (TwituxTweetList *list)
 				  "xpad", 5,
 				  "yalign", 0.0,
 				  "wrap-mode", PANGO_WRAP_WORD_CHAR,
-				  "wrap-width", 257, /* TODO: Have this set based on window geometry */
 				  NULL);
 
 	gtk_tree_view_append_column (GTK_TREE_VIEW (list), tweet_column);
