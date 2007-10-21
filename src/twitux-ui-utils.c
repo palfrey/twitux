@@ -19,7 +19,7 @@
  */
 
 #include <config.h>
-#include <gtk/gtk.h>
+#include <gtk/gtkwindow.h>
 
 #include "twitux-ui-utils.h"
 

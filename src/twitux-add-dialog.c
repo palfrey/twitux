@@ -20,8 +20,8 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
 #include <glade/glade.h>
+#include <gtk/gtkdialog.h>
 
 #include "twitux.h"
 #include "twitux-add-dialog.h"
