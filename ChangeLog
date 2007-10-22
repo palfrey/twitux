@@ -1,3 +1,10 @@
+2007-10-21  Daniel Morales  <daniminas@gmail.com>
+
+	* data/main.glade:
+	* src/twitux-send-message-dialog.[ch]:
+	* src/twitux-app.c:
+	* src/twitux-network.c: Add initial code to send Direct Messages
+
 2007-10-20  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* configure.in: 

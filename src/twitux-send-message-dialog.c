@@ -43,6 +43,9 @@ typedef struct {
 	GtkWidget *textview;
 	GtkWidget *label;
 	GtkWidget *send_button;
+	
+	GtkWidget *friends_combo;
+	GtkWidget *friends_label;
 } TwituxSendMessage;
 
 typedef struct {
@@ -72,6 +75,8 @@ static void message_destroy_cb                  (GtkWidget          *widget,
 static void message_response_cb                 (GtkWidget          *widget,
 											     gint                response,
 											     TwituxSendMessage  *send_message);
+static void message_toogle_friends              (TwituxSendMessage   *send_message,
+												 gboolean     		  show_friends);
 
 static gchar *
 url_encode_message (gchar *text)
@@ -323,6 +328,8 @@ message_response_cb (GtkWidget          *widget,
 				text = gtk_text_buffer_get_text (buffer, &start_iter, &end_iter, TRUE);
 				good_msg = url_encode_message (text);
 
+				/* TODO: check if we are sending a direct message.
+				 * Retrive selected user and call twitux_network_send_message */
 				twitux_network_post_status (good_msg);
 
 				g_free (text);
@@ -339,8 +346,33 @@ message_destroy_cb (GtkWidget         *widget,
 	g_free (send_message);
 }
 
+static void
+message_toogle_friends (TwituxSendMessage *send_message,
+						gboolean           show_friends)
+{
+	if (show_friends){
+		GList *followers;
+		gtk_widget_show (send_message->friends_combo);
+		gtk_widget_show (send_message->friends_label);
+		
+		/* Let's populate the combobox */
+		followers = twitux_network_get_followers ();
+		if (followers){
+			twitux_debug (DEBUG_DOMAIN, "Loading previous followers list");
+			twitux_message_set_followers (followers);
+		} else {
+			/*TODO: Add message to combobox */
+			twitux_debug (DEBUG_DOMAIN, "Fetching followers..");
+		}
+		return;
+	}
+	gtk_widget_hide (send_message->friends_combo);
+	gtk_widget_hide (send_message->friends_label);
+}
+
 void
-twitux_send_message_dialog_show (GtkWindow *parent)
+twitux_send_message_dialog_show (GtkWindow *parent,
+								 gboolean   show_friends)
 {
 	static TwituxSendMessage *send_message;
 	GladeXML                 *glade;
@@ -350,6 +382,7 @@ twitux_send_message_dialog_show (GtkWindow *parent)
 
 	if (send_message) {
 		gtk_window_present (GTK_WINDOW (send_message->dialog));
+		message_toogle_friends (send_message, show_friends);
 		return;
 	}
 
@@ -363,6 +396,8 @@ twitux_send_message_dialog_show (GtkWindow *parent)
 								   "send_message_dialog", &send_message->dialog,
 								   "send_message_textview", &send_message->textview,
 								   "char_label", &send_message->label,
+								   "friends_combo", &send_message->friends_combo,
+								   "friends_label", &send_message->friends_label,
 								   "send_button", &send_message->send_button,
 								   NULL);
 
@@ -401,6 +436,9 @@ twitux_send_message_dialog_show (GtkWindow *parent)
 
 	gtk_window_set_transient_for (GTK_WINDOW (send_message->dialog), parent);
 
+	/* Setup dialog to post a tweet, or send a direct message */
+	message_toogle_friends (send_message, show_friends);
+
 	gtk_widget_show (send_message->dialog);
 }
 
@@ -421,4 +459,20 @@ twitux_message_correct_word (GtkWidget   *textview,
 	gtk_text_buffer_insert (buffer, &start,
 							new_word,
 							-1);
+}
+
+void
+twitux_message_set_followers (GList *followers)
+{
+	GList       *list;
+	TwituxUser  *user;
+
+	for (list = followers; list; list = list->next) {
+		user = (TwituxUser *)list->data;
+		twitux_debug (DEBUG_DOMAIN, "Add follower user: %s",
+					  user->screen_name);
+		/* TODO: populate comobox here. 
+	 	 * We need the send_message->friends_combo. hm..
+	 	 * */
+	}
 }

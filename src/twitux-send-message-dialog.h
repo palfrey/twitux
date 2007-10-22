@@ -23,7 +23,9 @@
 
 #include <gtk/gtkwindow.h>
 
-void twitux_send_message_dialog_show (GtkWindow   *parent);
+void twitux_send_message_dialog_show (GtkWindow   *parent,
+									  gboolean     show_friends);
+void twitux_message_set_followers    (GList       *followers);
 void twitux_message_correct_word     (GtkWidget   *textview,
 									  GtkTextIter  start,
 									  GtkTextIter  end,
