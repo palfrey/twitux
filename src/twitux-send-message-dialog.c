@@ -46,6 +46,7 @@ typedef struct {
 	
 	GtkWidget *friends_combo;
 	GtkWidget *friends_label;
+	gboolean   show_friends;
 } TwituxSendMessage;
 
 typedef struct {
@@ -77,6 +78,8 @@ static void message_response_cb                 (GtkWidget          *widget,
 											     TwituxSendMessage  *send_message);
 static void message_toogle_friends              (TwituxSendMessage   *send_message,
 												 gboolean     		  show_friends);
+/* Model to the Followers GtkComboBox */
+static GtkListStore    *model_followers;
 
 static gchar *
 url_encode_message (gchar *text)
@@ -328,9 +331,26 @@ message_response_cb (GtkWidget          *widget,
 				text = gtk_text_buffer_get_text (buffer, &start_iter, &end_iter, TRUE);
 				good_msg = url_encode_message (text);
 
-				/* TODO: check if we are sending a direct message.
-				 * Retrive selected user and call twitux_network_send_message */
-				twitux_network_post_status (good_msg);
+				if (send_message->show_friends)
+				{
+					GtkTreeIter iter;
+					gchar      *to_user;
+					GtkComboBox *combo = GTK_COMBO_BOX (send_message->friends_combo);
+					/* Send a direct message  */
+					if (gtk_combo_box_get_active_iter (combo, &iter)){
+						/* Get friend username */
+						gtk_tree_model_get (GTK_TREE_MODEL (model_followers),
+											&iter,
+											0, &to_user,
+											-1);
+						/* Send the message */
+						twitux_network_send_message (to_user, good_msg);
+						g_free (to_user);
+					}
+				} else {
+					/* Post a tweet */
+					twitux_network_post_status (good_msg);
+				}
 
 				g_free (text);
 				g_free (good_msg);
@@ -350,6 +370,8 @@ static void
 message_toogle_friends (TwituxSendMessage *send_message,
 						gboolean           show_friends)
 {
+	send_message->show_friends = show_friends;
+
 	if (show_friends){
 		GList *followers;
 		gtk_widget_show (send_message->friends_combo);
@@ -358,11 +380,10 @@ message_toogle_friends (TwituxSendMessage *send_message,
 		/* Let's populate the combobox */
 		followers = twitux_network_get_followers ();
 		if (followers){
-			twitux_debug (DEBUG_DOMAIN, "Loading previous followers list");
+			twitux_debug (DEBUG_DOMAIN, "Loaded previous followers list");
 			twitux_message_set_followers (followers);
 		} else {
-			/*TODO: Add message to combobox */
-			twitux_debug (DEBUG_DOMAIN, "Fetching followers..");
+			twitux_debug (DEBUG_DOMAIN, "Fetching followers...");
 		}
 		return;
 	}
@@ -379,6 +400,7 @@ twitux_send_message_dialog_show (GtkWindow *parent,
 	GtkTextBuffer            *buffer;
 	const gchar              *standard_msg;
 	gchar                    *character_count;
+	GtkCellRenderer		     *renderer;
 
 	if (send_message) {
 		gtk_window_present (GTK_WINDOW (send_message->dialog));
@@ -436,6 +458,16 @@ twitux_send_message_dialog_show (GtkWindow *parent,
 
 	gtk_window_set_transient_for (GTK_WINDOW (send_message->dialog), parent);
 
+	/* Setup followers combobox's model */
+	model_followers = gtk_list_store_new (1, G_TYPE_STRING);
+	gtk_combo_box_set_model (GTK_COMBO_BOX (send_message->friends_combo),
+							 GTK_TREE_MODEL (model_followers));
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (send_message->friends_combo),
+								renderer, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (send_message->friends_combo),
+									renderer, "text", 0, NULL);
+
 	/* Setup dialog to post a tweet, or send a direct message */
 	message_toogle_friends (send_message, show_friends);
 
@@ -465,14 +497,15 @@ void
 twitux_message_set_followers (GList *followers)
 {
 	GList       *list;
+	GtkTreeIter  iter;
 	TwituxUser  *user;
 
+	gtk_list_store_clear (model_followers);
 	for (list = followers; list; list = list->next) {
 		user = (TwituxUser *)list->data;
-		twitux_debug (DEBUG_DOMAIN, "Add follower user: %s",
-					  user->screen_name);
-		/* TODO: populate comobox here. 
-	 	 * We need the send_message->friends_combo. hm..
-	 	 * */
+		gtk_list_store_append (model_followers, &iter);
+		gtk_list_store_set (model_followers, &iter,
+							0, user->screen_name,
+							-1);
 	}
 }
