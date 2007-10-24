@@ -65,7 +65,7 @@ account_response_cb (GtkWidget     *widget,
 								gtk_entry_get_text (GTK_ENTRY (account->username)));
 
 #ifdef HAVE_GNOME_KEYRING
-		twitux_account_set_password (gtk_entry_get_text (GTK_ENTRY (account->username)),
+		twitux_keyring_set_password (gtk_entry_get_text (GTK_ENTRY (account->username)),
 									 gtk_entry_get_text (GTK_ENTRY (account->password)));
 #else
 		twitux_conf_set_string (conf,
@@ -154,7 +154,7 @@ twitux_account_dialog_show (GtkWindow *parent)
 		username = NULL;
 		password = NULL;
 	} else {
-		if (!(twitux_account_get_password (username, &password))) {
+		if (!(twitux_keyring_get_password (username, &password))) {
 			password = NULL;
 		}
 	}

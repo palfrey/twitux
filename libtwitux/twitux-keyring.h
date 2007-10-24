@@ -25,9 +25,9 @@
 
 G_BEGIN_DECLS
 
-gboolean twitux_account_get_password (gchar        *username,
+gboolean twitux_keyring_get_password (gchar        *username,
 									  gchar       **password);
-gboolean twitux_account_set_password (const gchar  *username,
+gboolean twitux_keyring_set_password (const gchar  *username,
 									  const gchar  *password);
 
 G_END_DECLS

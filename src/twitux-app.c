@@ -768,7 +768,7 @@ app_login (void)
 	if (G_STR_EMPTY (username)) {
 		password = NULL;
 	} else {
-		if (!(twitux_account_get_password (username, &password))) {
+		if (!(twitux_keyring_get_password (username, &password))) {
 			password = NULL;
 		}
 	}

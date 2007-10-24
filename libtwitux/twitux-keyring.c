@@ -57,7 +57,7 @@ account_gnome_keyring_result_to_string (GnomeKeyringResult result)
 }
 
 gboolean
-twitux_account_get_password (gchar  *username,
+twitux_keyring_get_password (gchar  *username,
 							 gchar **password)
 {
 	GnomeKeyringNetworkPasswordData *data;
@@ -97,7 +97,7 @@ twitux_account_get_password (gchar  *username,
 }
 
 gboolean
-twitux_account_set_password (const gchar *username,
+twitux_keyring_set_password (const gchar *username,
 							 const gchar *password)
 {
 	GnomeKeyringResult result;
