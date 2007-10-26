@@ -1,3 +1,8 @@
+2007-10-26  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.c: Minor correction on network code.
+	* src/twitux-app.c: Retrieve Twitux timeline.
+
 2007-10-20  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* configure.in: 

@@ -765,7 +765,9 @@ network_cb_on_users (SoupMessage *msg,
 		user_friends = users;
 		twitux_app_set_friends (users);
 	} else if (users){
-		/* TODO: some UI here. Followers timeline retrived */
+		/* Followers lisy retrived */
+		user_followers = users;
+		/* TODO: some UI code here. */
 	} else {
 		twitux_app_set_statusbar_msg (_("Users parser error."));
 	}

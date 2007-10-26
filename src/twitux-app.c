@@ -123,6 +123,8 @@ static void     app_view_direct_messages_cb      (GtkCheckMenuItem      *item,
 												  TwituxApp             *app);
 static void     app_view_direct_replies_cb       (GtkCheckMenuItem      *item,
 												  TwituxApp             *app);
+static void      app_view_twitux_timeline_cb     (GtkCheckMenuItem      *item,
+												  TwituxApp             *app);
 static void     app_view_select_friends          (GtkItem               *item,
 												  TwituxApp             *app);
 static void     app_help_about_cb                (GtkWidget             *window,
@@ -249,6 +251,7 @@ app_setup (void)
 						  "view_my_timeline", "toggled", app_view_my_timeline_cb,
 						  "view_direct_messages", "toggled", app_view_direct_messages_cb,
 						  "view_direct_replies", "toggled", app_view_direct_replies_cb,
+						  "view_twitux_timeline", "toggled", app_view_twitux_timeline_cb,
 						  "view_friends", "select", app_view_select_friends,
 						  "help_about", "activate", app_help_about_cb,
 						  NULL);
@@ -488,6 +491,20 @@ app_view_direct_replies_cb (GtkCheckMenuItem *item,
 		return;
 
 	twitux_network_get_timeline (TWITUX_API_REPLIES);
+}
+
+static void
+app_view_twitux_timeline_cb (GtkCheckMenuItem *item, 	 
+	                         TwituxApp        *app) 	 
+{ 	 
+	gboolean  current;
+
+	current = gtk_check_menu_item_get_active (item);
+	  	 
+	if (!current)
+		return;
+	  	 
+	twitux_network_get_timeline (TWITUX_API_TIMELINE_TWITUX); 	 
 }
 
 static void
