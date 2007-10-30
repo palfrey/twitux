@@ -105,6 +105,8 @@ static void     app_twitter_disconnect_cb        (GtkWidget             *window,
 												  TwituxApp             *app);
 static void     app_twitter_new_msg_cb           (GtkWidget             *window,
 												  TwituxApp             *app);
+static void     app_twitter_send_msg_cb          (GtkWidget             *window,
+												  TwituxApp             *app);
 static void     app_twitter_quit_cb              (GtkWidget             *window,
 												  TwituxApp             *app);
 static void     app_twitter_refresh_cb           (GtkWidget             *window,
@@ -241,6 +243,7 @@ app_setup (void)
 						  "twitter_connect", "activate", app_twitter_connect_cb,
 						  "twitter_disconnect", "activate", app_twitter_disconnect_cb,
 						  "twitter_new_message", "activate", app_twitter_new_msg_cb,
+						  "twitter_send_direct_message", "activate", app_twitter_send_msg_cb,
 						  "twitter_refresh", "activate", app_twitter_refresh_cb,
 						  "twitter_quit", "activate", app_twitter_quit_cb,
 						  "twitter_add_friend", "activate", app_twitter_add_friend_cb,
@@ -403,6 +406,19 @@ app_twitter_new_msg_cb (GtkWidget *widget,
 	priv = GET_PRIV (app);
 
 	twitux_send_message_dialog_show (GTK_WINDOW (priv->window));
+	twitux_message_show_friends (FALSE);
+}
+
+static void
+app_twitter_send_msg_cb (GtkWidget *widget,
+						 TwituxApp *app)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	twitux_send_message_dialog_show (GTK_WINDOW (priv->window));
+	twitux_message_show_friends (TRUE);
 }
 
 static void

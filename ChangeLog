@@ -1,5 +1,12 @@
 2007-10-26  Daniel Morales  <daniminas@gmail.com>
 
+	* data/main.glade:
+	* src/twitux-send-direct-messages.[ch]:
+	* src/twitux-network.c:
+	* src/twitux-app.c: Add support to send direct messages.
+
+2007-10-26  Daniel Morales  <daniminas@gmail.com>
+
 	* src/twitux-network.c: Minor correction on network code.
 	* src/twitux-app.c: Retrieve Twitux timeline.
 

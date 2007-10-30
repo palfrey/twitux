@@ -33,17 +33,13 @@
 #include "twitux-glade.h"
 #include "twitux-network.h"
 
-#define DEBUG_DOMAIN    "SendMessage"
+#define DEBUG_DOMAIN_SETUP    "SendMessage"
+#define DEBUG_QUIT
 
 /* Let's use the preferred maximum character count */
 #define MAX_CHARACTER_COUNT 140
 
-typedef struct {
-	GtkWidget *dialog;
-	GtkWidget *textview;
-	GtkWidget *label;
-	GtkWidget *send_button;
-} TwituxSendMessage;
+#define GET_PRIV(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TWITUX_TYPE_MESSAGE, TwituxMsgDialogPriv))
 
 typedef struct {
 	GtkWidget         *textview;
@@ -53,25 +49,224 @@ typedef struct {
 	GtkTextIter        end;
 } TwituxMessageSpell;
 
-static void message_set_characters_available    (GtkTextBuffer      *buffer,
-												 TwituxSendMessage  *send_message);
-static void message_text_buffer_changed_cb      (GtkTextBuffer      *buffer,
-											     TwituxSendMessage  *send_message);
-static void message_text_populate_popup_cb      (GtkTextView        *view,
-												 GtkMenu            *menu,
-												 TwituxSendMessage  *send_message);
-static void message_text_check_word_spelling_cb (GtkMenuItem *menuitem,
-												 TwituxMessageSpell *message_spell);
-static TwituxMessageSpell *message_spell_new    (GtkWidget          *window,
-											     const gchar        *word,
-											     GtkTextIter         start,
-											     GtkTextIter         end);
-static void message_spell_free                  (TwituxMessageSpell *message_spell);
-static void message_destroy_cb                  (GtkWidget          *widget,
-											     TwituxSendMessage  *send_message);
-static void message_response_cb                 (GtkWidget          *widget,
-											     gint                response,
-											     TwituxSendMessage  *send_message);
+struct _TwituxMsgDialogPriv {
+	/* Main widgets */
+	GtkWidget         *dialog;
+	GtkWidget         *textview;
+	GtkWidget         *label;
+	GtkWidget         *send_button;
+	
+	GtkWidget         *friends_combo;
+	GtkWidget         *friends_label;
+	gboolean           show_friends;
+};
+
+static void	twitux_message_class_init		     (TwituxMsgDialogClass *klass);
+static void twitux_message_init			         (TwituxMsgDialog      *dialog);
+static void message_finalize                     (GObject              *object);
+static void message_setup                        (GtkWindow            *parent);
+static void message_set_characters_available    (GtkTextBuffer         *buffer,
+												 TwituxMsgDialog       *dialog);
+static void message_text_buffer_changed_cb      (GtkTextBuffer         *buffer,
+											     TwituxMsgDialog       *dialog);
+static void message_text_populate_popup_cb      (GtkTextView           *view,
+												 GtkMenu               *menu,
+												 TwituxMsgDialog       *dialog);
+static void message_text_check_word_spelling_cb (GtkMenuItem           *menuitem,
+												 TwituxMessageSpell    *message_spell);
+static TwituxMessageSpell *message_spell_new    (GtkWidget             *window,
+											     const gchar           *word,
+											     GtkTextIter            start,
+											     GtkTextIter            end);
+static void message_spell_free                  (TwituxMessageSpell    *message_spell);
+static void message_destroy_cb                  (GtkWidget             *widget,
+											     TwituxMsgDialog       *dialog);
+static void message_response_cb                 (GtkWidget             *widget,
+											     gint                   response,
+											     TwituxMsgDialog       *dialog);
+
+static TwituxMsgDialog  *dialog = NULL;
+
+G_DEFINE_TYPE (TwituxMsgDialog, twitux_message, G_TYPE_OBJECT);
+
+static void
+twitux_message_class_init (TwituxMsgDialogClass *klass)
+{
+	GObjectClass  *object_class = G_OBJECT_CLASS (klass);
+
+	object_class->finalize = message_finalize;
+
+	g_type_class_add_private (object_class, sizeof (TwituxMsgDialogPriv));
+}
+
+static void
+twitux_message_init (TwituxMsgDialog *singleton_message)
+{
+	dialog = singleton_message;
+}
+
+static void
+message_finalize (GObject *object)
+{	
+	G_OBJECT_CLASS (twitux_message_parent_class)->finalize (object);
+}
+
+static void
+message_setup (GtkWindow  *parent)
+{
+	TwituxMsgDialogPriv   *priv;
+	GladeXML         	  *glade;
+	GtkTextBuffer         *buffer;
+	const gchar           *standard_msg;
+	gchar                 *character_count;
+	GtkCellRenderer		  *renderer;
+	GtkListStore          *model_followers;
+	
+	priv = GET_PRIV (dialog);
+
+	/* Set up interface */
+	twitux_debug (DEBUG_DOMAIN_SETUP, "Initialising message dialog");
+	glade = twitux_glade_get_file ("main.glade",
+								   "send_message_dialog",
+								   NULL,
+								   "send_message_dialog", &priv->dialog,
+								   "send_message_textview", &priv->textview,
+								   "char_label", &priv->label,
+								   "friends_combo", &priv->friends_combo,
+								   "friends_label", &priv->friends_label,
+								   "send_button", &priv->send_button,
+								   NULL);
+
+	twitux_glade_connect (glade,
+						  dialog,
+						  "send_message_dialog", "destroy", message_destroy_cb,
+						  "send_message_dialog", "response", message_response_cb,
+						  "send_message_textview", "populate_popup", message_text_populate_popup_cb,
+						  NULL);
+
+	/* Set up connected related widgets */
+	g_object_unref (glade);
+
+	/* Set the label */
+	standard_msg = _("Characters Available");
+	character_count =
+		g_markup_printf_escaped ("<span size=\"small\">%s: <span foreground=\"black\">%i</span></span>",
+								 standard_msg, MAX_CHARACTER_COUNT);
+	gtk_label_set_markup (GTK_LABEL (priv->label), character_count);
+	g_free (character_count);
+
+	/* Connect the signal to the textview */
+	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->textview));
+	g_signal_connect (buffer,
+					  "changed",
+					  G_CALLBACK (message_text_buffer_changed_cb),
+					  dialog);
+
+	/* Create misspelt words identification tag */
+	gtk_text_buffer_create_tag (buffer,
+								"misspelled",
+								"underline", PANGO_UNDERLINE_ERROR,
+								NULL);
+
+	gtk_window_set_transient_for (GTK_WINDOW (priv->dialog), parent);
+
+	/* Setup followers combobox's model */
+	model_followers = gtk_list_store_new (1, G_TYPE_STRING);
+	gtk_combo_box_set_model (GTK_COMBO_BOX (priv->friends_combo),
+							 GTK_TREE_MODEL (model_followers));
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (priv->friends_combo),
+								renderer, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (priv->friends_combo),
+									renderer, "text", 0, NULL);
+
+	/* Show the dialog */
+	gtk_widget_show (GTK_WIDGET (priv->dialog));
+}
+
+void
+twitux_send_message_dialog_show (GtkWindow *parent)
+{
+	TwituxMsgDialogPriv   *priv;
+	
+	if (dialog){
+		priv = GET_PRIV (dialog);
+		gtk_window_present (GTK_WINDOW (priv->dialog));
+		return;
+	}
+
+	g_object_new (TWITUX_TYPE_MESSAGE, NULL);
+
+	message_setup (parent);
+}
+
+void
+twitux_message_correct_word (GtkWidget   *textview,
+							 GtkTextIter  start,
+							 GtkTextIter  end,
+							 const gchar *new_word)
+{
+	GtkTextBuffer *buffer;
+
+	g_return_if_fail (textview != NULL);
+	g_return_if_fail (new_word != NULL);
+
+	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview));
+
+	gtk_text_buffer_delete (buffer, &start, &end);
+	gtk_text_buffer_insert (buffer, &start,
+							new_word,
+							-1);
+}
+
+void
+twitux_message_set_followers (GList *followers)
+{
+	TwituxMsgDialogPriv *priv;
+	GList               *list;
+	GtkTreeIter          iter;
+	TwituxUser          *user;
+	GtkListStore        *model_followers;
+
+	priv = GET_PRIV (dialog);
+
+	model_followers = GTK_LIST_STORE (
+						gtk_combo_box_get_model (
+							GTK_COMBO_BOX (priv->friends_combo)));
+
+	for (list = followers; list; list = list->next) {
+		user = (TwituxUser *)list->data;
+		gtk_list_store_append (model_followers, &iter);
+		gtk_list_store_set (model_followers, &iter,
+							0, user->screen_name,
+							-1);
+	}
+}
+
+void
+twitux_message_show_friends (gboolean show_friends)
+{
+	TwituxMsgDialogPriv *priv = GET_PRIV (dialog);
+	priv->show_friends = show_friends;
+
+	if (show_friends){
+		GList *followers;
+		gtk_widget_show (priv->friends_combo);
+		gtk_widget_show (priv->friends_label);
+		
+		/* Let's populate the combobox */
+		followers = twitux_network_get_followers ();
+		if (followers){
+			twitux_debug (DEBUG_DOMAIN_SETUP, "Loaded previous followers list");
+			twitux_message_set_followers (followers);
+		} else {
+			twitux_debug (DEBUG_DOMAIN_SETUP, "Fetching followers...");
+		}
+		return;
+	}
+	gtk_widget_hide (priv->friends_combo);
+	gtk_widget_hide (priv->friends_label);
+}
 
 static gchar *
 url_encode_message (gchar *text)
@@ -104,12 +299,15 @@ url_encode_message (gchar *text)
 
 static void
 message_set_characters_available (GtkTextBuffer     *buffer,
-								  TwituxSendMessage *send_message)
+								  TwituxMsgDialog   *dialog)
 {
+	TwituxMsgDialogPriv *priv;
 	gint i;
 	gint count;
 	const gchar *standard_msg;
 	gchar *character_count;
+
+	priv = GET_PRIV (dialog);
 
 	i = gtk_text_buffer_get_char_count (buffer);
 
@@ -124,29 +322,31 @@ message_set_characters_available (GtkTextBuffer     *buffer,
 		character_count =
 			g_markup_printf_escaped ("<span size=\"small\">%s: <span foreground=\"red\">%i</span></span>",
 									 standard_msg, count);
-		gtk_widget_set_sensitive (send_message->send_button, FALSE);
+		gtk_widget_set_sensitive (priv->send_button, FALSE);
 	} else {
 		character_count =
 			g_markup_printf_escaped ("<span size=\"small\">%s: <span foreground=\"black\">%i</span></span>",
 									 standard_msg, count);
-		gtk_widget_set_sensitive (send_message->send_button, TRUE);
+		gtk_widget_set_sensitive (priv->send_button, TRUE);
 	}
 
-	gtk_label_set_markup (GTK_LABEL (send_message->label), character_count);
+	gtk_label_set_markup (GTK_LABEL (priv->label), character_count);
 	g_free (character_count);
 }
 
 static void
-message_text_buffer_changed_cb (GtkTextBuffer     *buffer,
-								TwituxSendMessage *send_message)
+message_text_buffer_changed_cb (GtkTextBuffer    *buffer,
+                                TwituxMsgDialog  *dialog)
 {
-	GtkTextIter  start;
-	GtkTextIter  end;
-	gchar       *str;
-	gboolean     spell_checker = FALSE;
+	TwituxMsgDialogPriv   *priv;
+	GtkTextIter            start;
+	GtkTextIter            end;
+	gchar                 *str;
+	gboolean               spell_checker = FALSE;
 
+	priv = GET_PRIV (dialog);
 
-	message_set_characters_available (buffer, send_message);
+	message_set_characters_available (buffer, dialog);
 
 	twitux_conf_get_bool (twitux_conf_get (),
 						  TWITUX_PREFS_UI_SPELL,
@@ -208,19 +408,22 @@ message_text_buffer_changed_cb (GtkTextBuffer     *buffer,
 static void
 message_text_populate_popup_cb (GtkTextView        *view,
 								GtkMenu            *menu,
-								TwituxSendMessage  *send_message)
+								TwituxMsgDialog    *dialog)
 {
-	GtkTextBuffer      *buffer;
-	GtkTextTagTable    *table;
-	GtkTextTag         *tag;
-	gint                x,y;
-	GtkTextIter         iter, start, end;
-	GtkWidget          *item;
-	gchar              *str = NULL;
-	TwituxMessageSpell *message_spell;
+	TwituxMsgDialogPriv   *priv;
+	GtkTextBuffer         *buffer;
+	GtkTextTagTable       *table;
+	GtkTextTag            *tag;
+	gint                   x,y;
+	GtkTextIter            iter, start, end;
+	GtkWidget             *item;
+	gchar                 *str = NULL;
+	TwituxMessageSpell    *message_spell;
+
+	priv = GET_PRIV (dialog);
 
 	/* Add the spell check menu item */
-	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (send_message->textview));
+	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->textview));
 	table = gtk_text_buffer_get_tag_table (buffer);
 
 	tag = gtk_text_tag_table_lookup (table, "misspelled");
@@ -246,7 +449,7 @@ message_text_populate_popup_cb (GtkTextView        *view,
 		return;
 	}
 
-	message_spell = message_spell_new (send_message->textview, str, start, end);
+	message_spell = message_spell_new (priv->textview, str, start, end);
 
 	g_object_set_data_full (G_OBJECT (menu),
 							"message_spell", message_spell,
@@ -303,16 +506,20 @@ message_spell_free (TwituxMessageSpell *message_spell)
 static void
 message_response_cb (GtkWidget          *widget,
 					 gint                response,
-					 TwituxSendMessage  *send_message)
+					 TwituxMsgDialog    *dialog)
 {
+	TwituxMsgDialogPriv   *priv;
+
 	if (response == GTK_RESPONSE_OK) {	  
 		GtkTextBuffer  *buffer;
 		GtkTextIter     start_iter;
 		GtkTextIter     end_iter;
 
-		twitux_debug (DEBUG_DOMAIN, "Posting message to Twitter");
+		priv = GET_PRIV (dialog);
 
-		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (send_message->textview));
+		twitux_debug (DEBUG_DOMAIN_SETUP, "Posting message to Twitter");
+
+		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->textview));
 		gtk_text_buffer_get_start_iter (buffer, &start_iter);
 		gtk_text_buffer_get_end_iter (buffer, &end_iter);
 
@@ -322,8 +529,28 @@ message_response_cb (GtkWidget          *widget,
 
 				text = gtk_text_buffer_get_text (buffer, &start_iter, &end_iter, TRUE);
 				good_msg = url_encode_message (text);
-
-				twitux_network_post_status (good_msg);
+				
+				if (priv->show_friends)
+				{
+					GtkTreeIter   iter;
+					gchar        *to_user;
+					GtkComboBox  *combo = GTK_COMBO_BOX (priv->friends_combo);
+					GtkTreeModel *model = gtk_combo_box_get_model (combo);
+					/* Send a direct message  */
+					if (gtk_combo_box_get_active_iter (combo, &iter)){
+						/* Get friend username */
+						gtk_tree_model_get (model,
+											&iter,
+											0, &to_user,
+											-1);
+						/* Send the message */
+						twitux_network_send_message (to_user, good_msg);
+						g_free (to_user);
+					}
+				} else {
+					/* Post a tweet */
+					twitux_network_post_status (good_msg);
+				}
 
 				g_free (text);
 				g_free (good_msg);
@@ -334,91 +561,14 @@ message_response_cb (GtkWidget          *widget,
 
 static void
 message_destroy_cb (GtkWidget         *widget,
-					TwituxSendMessage *send_message)
+					TwituxMsgDialog   *dialoga)
 {
-	g_free (send_message);
-}
+	TwituxMsgDialogPriv *priv;
 
-void
-twitux_send_message_dialog_show (GtkWindow *parent)
-{
-	static TwituxSendMessage *send_message;
-	GladeXML                 *glade;
-	GtkTextBuffer            *buffer;
-	const gchar              *standard_msg;
-	gchar                    *character_count;
+	priv = GET_PRIV (dialog);
 
-	if (send_message) {
-		gtk_window_present (GTK_WINDOW (send_message->dialog));
-		return;
-	}
-
-	twitux_debug (DEBUG_DOMAIN, "Creating send message dialog...");
-
-	send_message = g_new0 (TwituxSendMessage, 1);
-
-	glade = twitux_glade_get_file ("main.glade",
-								   "send_message_dialog",
-								   NULL,
-								   "send_message_dialog", &send_message->dialog,
-								   "send_message_textview", &send_message->textview,
-								   "char_label", &send_message->label,
-								   "send_button", &send_message->send_button,
-								   NULL);
-
-	twitux_glade_connect (glade,
-						  send_message,
-						  "send_message_dialog", "destroy", message_destroy_cb,
-						  "send_message_dialog", "response", message_response_cb,
-						  "send_message_textview", "populate_popup", message_text_populate_popup_cb,
-						  NULL);
-
-	g_object_unref (glade);
-
-	/* Set the label */
-	standard_msg = _("Characters Available");
-	character_count =
-		g_markup_printf_escaped ("<span size=\"small\">%s: <span foreground=\"black\">%i</span></span>",
-								 standard_msg, MAX_CHARACTER_COUNT);
-	gtk_label_set_markup (GTK_LABEL (send_message->label), character_count);
-	g_free (character_count);
-
-	/* Connect the signal to the textview */
-	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (send_message->textview));
-	g_signal_connect (buffer,
-					  "changed",
-					  G_CALLBACK (message_text_buffer_changed_cb),
-					  send_message);
-
-	/* Create misspelt words identification tag */
-	gtk_text_buffer_create_tag (buffer,
-								"misspelled",
-								"underline", PANGO_UNDERLINE_ERROR,
-								NULL);
-
-	g_object_add_weak_pointer (G_OBJECT (send_message->dialog),
-							   (gpointer) &send_message);
-
-	gtk_window_set_transient_for (GTK_WINDOW (send_message->dialog), parent);
-
-	gtk_widget_show (send_message->dialog);
-}
-
-void
-twitux_message_correct_word (GtkWidget   *textview,
-							 GtkTextIter  start,
-							 GtkTextIter  end,
-							 const gchar *new_word)
-{
-	GtkTextBuffer *buffer;
-
-	g_return_if_fail (textview != NULL);
-	g_return_if_fail (new_word != NULL);
-
-	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview));
-
-	gtk_text_buffer_delete (buffer, &start, &end);
-	gtk_text_buffer_insert (buffer, &start,
-							new_word,
-							-1);
+	/* Add any clean-up code here */
+	
+	g_object_unref (dialog);
+	dialog = NULL;
 }
