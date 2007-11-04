@@ -35,7 +35,6 @@
 #include "twitux-network.h"
 #include "twitux-parser.h"
 #include "twitux-app.h"
-#include "twitux-send-message-dialog.h"
 
 #define DEBUG_DOMAIN	  "Network"
 #define TWITUX_HEADER_URL "http://twitux.sourceforge.net/client.xml"
@@ -768,7 +767,7 @@ network_cb_on_users (SoupMessage *msg,
 	} else if (users){
 		/* Followers lisy retrived */
 		user_followers = users;
-		twitux_message_set_followers (user_followers);
+		/* TODO: some UI code here. */
 	} else {
 		twitux_app_set_statusbar_msg (_("Users parser error."));
 	}

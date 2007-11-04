@@ -73,6 +73,7 @@ main (int argc, char *argv[])
 
 	/* Clean up the ui */
 	g_object_unref (twitux_app_get ());
+	g_object_unref (program);
 
 	return 0;
 }

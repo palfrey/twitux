@@ -23,35 +23,10 @@
 
 #include <gtk/gtkwindow.h>
 
-G_BEGIN_DECLS
-
-#define TWITUX_TYPE_MESSAGE         	(twitux_message_get_type ())
-#define TWITUX_MESSAGE(o)		    	(G_TYPE_CHECK_INSTANCE_CAST ((o), TWITUX_TYPE_MESSAGE, TwituxMsgDialog))
-#define TWITUX_MESSAGE_CLASS(k)	   	 	(G_TYPE_CHECK_CLASS_CAST((k), TWITUX_TYPE_MESSAGE, TwituxMsgDialogClass))
-#define TWITUX_IS_MESSAGE(o)	    	(G_TYPE_CHECK_INSTANCE_TYPE ((o), TWITUX_TYPE_MESSAGE))
-#define TWITUX_IS_MESSAGE_CLASS(k)  	(G_TYPE_CHECK_CLASS_TYPE ((k), TWITUX_TYPE_MESSAGE))
-#define TWITUX_IS_MESSAGE_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), TWITUX_TYPE_MESSAGE, TwituxMsgDialogClass))
-
-typedef struct _TwituxMsgDialog      	TwituxMsgDialog;
-typedef struct _TwituxMsgDialogClass 	TwituxMsgDialogClass;
-typedef struct _TwituxMsgDialogPriv  	TwituxMsgDialogPriv;
-
-struct _TwituxMsgDialog {
-        GObject        parent;
-};
-
-struct _TwituxMsgDialogClass {
-        GObjectClass parent_class;
-};
-
-void              twitux_send_message_dialog_show (GtkWindow   *parent);
-void              twitux_message_correct_word     (GtkWidget   *textview,
-									               GtkTextIter  start,
-									               GtkTextIter  end,
-									               const gchar *new_word);
-void              twitux_message_set_followers    (GList       *followers);
-void              twitux_message_show_friends     (gboolean     show_friends);
-
-G_END_DECLS
+void twitux_send_message_dialog_show (GtkWindow   *parent);
+void twitux_message_correct_word     (GtkWidget   *textview,
+									  GtkTextIter  start,
+									  GtkTextIter  end,
+									  const gchar *new_word);
 
 #endif /* __TWITUX_SEND_MESSAGE_DIALOG_H__ */
