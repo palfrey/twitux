@@ -1,3 +1,10 @@
+2007-12-10  Daniel Morales  <daniminas@gmail.com>
+
+	* data/main.glade:
+	* src/twitux-send-direct-messages.[ch]:
+	* src/twitux-network.c:
+	* src/twitux-app.c: Add support to send direct messages.
+
 2007-11-08  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-label.[ch]: Add initial code to support URLs and @nicknames
