@@ -12,10 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #include <config.h>
@@ -48,7 +48,7 @@ static TwituxUser	*parser_twitux_node_user   (xmlNode     *a_node);
 static TwituxStatus	*parser_twitux_node_status (xmlNode     *a_node);
 
 static xmlDoc		*parser_twitux_parse       (const char  *cache_file,
-												xmlNode    **first_element);
+						   xmlNode    **first_element);
 
 static gchar		*parser_convert_time       (const char	*datetime);
 
@@ -57,14 +57,14 @@ static gint			last_id = 0;
 
 static xmlDoc*
 parser_twitux_parse (const char  *cache_file,
-					 xmlNode    **first_element)
+		     xmlNode     **first_element)
 {
 	xmlDoc	*doc = NULL;
 	xmlNode	*root_element = NULL;
 
 	/* Check if file exists (and  if is a file) */
 	if(!g_file_test (cache_file,
-					 G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)){
+			 G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)){
 		twitux_debug (DEBUG_DOMAIN_SETUP,
 					  "file doesn't exists: %s",
 					  cache_file);
@@ -84,8 +84,8 @@ parser_twitux_parse (const char  *cache_file,
 	root_element = xmlDocGetRootElement (doc);
 	if (root_element == NULL) {
 		twitux_debug (DEBUG_DOMAIN_SETUP,
-					  "failed getting first element of file: %s",
-					  cache_file);
+				  "failed getting first element of file: %s",
+				  cache_file);
 		xmlFreeDoc (doc);
 		return NULL;
 	} else {
@@ -230,22 +230,32 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 
 			/* Create string for text column */
 			datetime = parser_convert_time (status->created_at);
-			tweet = g_strconcat ("<b>", status->user->name, "</b> - ", datetime, "\n",
-								 "<small>", status->text, "</small>", NULL);
+			tweet = g_strconcat ("<b>",
+					     status->user->name,
+					     "</b> - ",
+					     datetime, "\n",
+					     "<small>",
+					     status->text,
+					     "</small>",
+					     NULL);
 
 			/* Append to ListStore */
 			gtk_list_store_append (store, &iter);
 			gtk_list_store_set (store, &iter,
-								STRING_TEXT, tweet,
-								-1);
+					STRING_TEXT, tweet,
+					STRING_AUTHOR, status->user->name,
+					STRING_DATE, datetime,
+					STRING_TWEET, status->text,
+					STRING_USER, status->user->screen_name,
+					-1);
 			
 			/* Free the text column string */
 			g_free (tweet);
 
 			/* Get Image */
 			twitux_network_get_image (status->user->image_url,
-									  status->user->screen_name,
-									  iter);
+						  status->user->screen_name,
+						  iter);
 
 			/* Free struct */
 			parser_free_user (status->user);
@@ -365,10 +375,10 @@ parser_twitux_node_status (xmlNode *a_node)
 			msg = xmlBufferContent (buffer);
 
 			tmp = g_locale_to_utf8 ((const gchar *)msg,
-									-1,
-									NULL,
-									NULL,
-									NULL);
+						-1,
+						NULL,
+						NULL,
+						NULL);
 
 			status->text = g_markup_escape_text (tmp,-1);
 

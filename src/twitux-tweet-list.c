@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
  * Copyright (C) 2007 Brian Pepple <bpepple@fedoraproject.org>
+ *                    Daniel Morales <daniminas@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -12,10 +13,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #include "config.h"
@@ -26,6 +27,8 @@
 
 #include "twitux.h"
 #include "twitux-tweet-list.h"
+#include "twitux-label.h"
+#include "twitux-app.h"
 
 #define DEBUG_DOMAIN "TweetList"
 
@@ -46,6 +49,8 @@ static void   tweet_list_setup_view        (TwituxTweetList      *list);
 
 static void   tweet_list_size_cb           (GtkWidget            *widget,
                                             GtkAllocation        *allocation,
+                                            gpointer              user_data);
+static void   tweet_list_changed_cb        (GtkWidget            *widget,
                                             gpointer              user_data);
 
 static TwituxTweetList *list = NULL;
@@ -79,6 +84,10 @@ twitux_tweet_list_init (TwituxTweetList *tweet)
 					  "size_allocate",
 					  G_CALLBACK (tweet_list_size_cb),
 					  NULL);
+	g_signal_connect (tweet,
+					  "cursor-changed",
+					  G_CALLBACK (tweet_list_changed_cb),
+					  NULL);
 
 	/* TODO: Add signals */
 }
@@ -109,7 +118,11 @@ tweet_list_create_model (TwituxTweetList *list)
 
 	priv->store = gtk_list_store_new (N_COLUMNS,
 									  GDK_TYPE_PIXBUF,  /* Avatar pixbuf */
-									  G_TYPE_STRING);   /* Tweet string */
+									  G_TYPE_STRING,    /* Display string */
+									  G_TYPE_STRING,    /* Author name string */
+									  G_TYPE_STRING,    /* Date string */
+									  G_TYPE_STRING,    /* Tweet string */
+									  G_TYPE_STRING);   /* Username string */
 
 	/* save normal model */
 	model = GTK_TREE_MODEL (priv->store);
@@ -158,6 +171,44 @@ tweet_list_setup_view (TwituxTweetList *list)
 	
 	priv->text_column = tweet_column;
 	priv->text_renderer = renderer;
+}
+
+static void
+tweet_list_changed_cb (GtkWidget *widget,
+                       gpointer user_data)
+{
+	GtkTreeSelection    *sel;
+	gboolean             expand;
+	GtkTreeIter          iter;
+	TwituxTweetListPriv *priv;
+	gchar               *name, *tweet, *date;
+	GdkPixbuf           *pixbuf;
+
+	twitux_conf_get_bool (twitux_conf_get (),
+				TWITUX_PREFS_UI_EXPAND_MESSAGES, &expand);
+	if (!expand)
+		return;
+	
+	priv = GET_PRIV (list);
+	
+	/* Get selected Iter */
+	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
+	
+	if (!gtk_tree_selection_get_selected (sel, NULL, &iter))
+		return;
+
+	gtk_tree_model_get (GTK_TREE_MODEL (priv->store), &iter,
+						STRING_AUTHOR, &name,
+						STRING_TWEET, &tweet,
+						STRING_DATE, &date,
+						PIXBUF_AVATAR, &pixbuf,
+						-1);
+
+	twitux_app_expand_message (name, date, tweet, pixbuf);
+
+	g_free (name);
+	g_free (tweet);
+	g_free (date);
 }
 
 static void

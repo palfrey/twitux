@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
  * Copyright (C) 2007 Brian Pepple <bpepple@fedoraproject.org>
+ *                    Daniel Morales <daniminas@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -12,10 +13,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
  */
 
 #include <config.h>
@@ -44,6 +45,7 @@
 #include "twitux-ui-utils.h"
 #include "twitux-tweet-list.h"
 #include "twitux-add-dialog.h"
+#include "twitux-label.h"
 
 #ifdef HAVE_DBUS
 #include "twitux-dbus.h"
@@ -87,6 +89,12 @@ struct _TwituxAppPriv {
 	/* Misc */
 	guint              size_timeout_id;
 	gboolean           friends_loaded;
+	
+	/* Expand messages widgets */
+	GtkWidget         *expand_box;
+	GtkWidget         *expand_image;
+	GtkWidget         *expand_title;
+	GtkWidget         *expand_label;
 };
 
 static void	    twitux_app_class_init			 (TwituxAppClass        *klass);
@@ -214,6 +222,7 @@ app_setup (void)
 	TwituxConf       *conf;
 	GladeXML         *glade;
 	GtkWidget        *scrolled_window;
+	GtkWidget        *expand_vbox;
 	gboolean          login;
 
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Beginning....");
@@ -234,6 +243,10 @@ app_setup (void)
 								   "view_twitux_timeline", &priv->menu_twitux,
 								   "view_direct_messages", &priv->menu_direct_messages,
 								   "view_friends", &priv->view_friends,
+								   "expand_box", &priv->expand_box,
+								   "expand_vbox", &expand_vbox,
+								   "expand_image", &priv->expand_image,
+								   "expand_title", &priv->expand_title,
 								   NULL);
 
 	twitux_glade_connect (glade,
@@ -282,6 +295,14 @@ app_setup (void)
 	gtk_widget_show (GTK_WIDGET (priv->listview));
 	gtk_container_add (GTK_CONTAINER (scrolled_window),
 					   GTK_WIDGET (priv->listview));
+
+	/* Set-up expand messages panel */
+	priv->expand_label = twitux_label_new ();
+	gtk_widget_show (GTK_WIDGET (priv->expand_label));
+	gtk_box_pack_end (GTK_BOX (expand_vbox),
+					   GTK_WIDGET (priv->expand_label),
+					   TRUE, TRUE, 0);
+	gtk_widget_hide (GTK_WIDGET (priv->expand_box));
 
 	/* Initial status of widgets */
 	twitux_app_state_on_connection (FALSE);
@@ -1058,4 +1079,25 @@ twitux_app_set_image (const gchar *file,
 
 	gtk_list_store_set (store, &iter,
 						PIXBUF_AVATAR, pixbuf, -1);
+}
+
+void
+twitux_app_expand_message (const gchar *name,
+                           const gchar *date,
+                           const gchar *tweet,
+                           GdkPixbuf   *pixbuf)
+{
+	TwituxAppPriv *priv = GET_PRIV (app);
+	gchar *title_text;
+
+	gtk_widget_show (GTK_WIDGET (priv->expand_box));
+
+	title_text = g_strdup_printf ("<b>%s</b> - %s", name, date);
+		
+	twitux_label_set_text (TWITUX_LABEL (priv->expand_label), tweet);
+	gtk_label_set_markup (GTK_LABEL (priv->expand_title), title_text);
+	if (pixbuf) {
+		gtk_image_set_from_pixbuf (GTK_IMAGE (priv->expand_image), pixbuf);
+	}
+	g_free (title_text);
 }

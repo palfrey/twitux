@@ -1,3 +1,11 @@
+2007-12-17  Daniel Morales  <daniminas@gmail.com>
+
+	* data/main.glade
+	* src/twitux-app.[ch]:
+	* src/twitux-tweet-list.c:
+	* src/twitux-label.[ch]: Expand tweets in the libsexy label.
+	* Close Bug #1781507: Wrong address for the FSF in license statements
+
 2007-12-10  Daniel Morales  <daniminas@gmail.com>
 
 	* data/main.glade:
