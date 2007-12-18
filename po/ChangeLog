@@ -1,3 +1,7 @@
+2007-08-18  Daniel Morales  <daniminas@gmail.com>
+
+	* es.po: Updated translation to v0.60
+
 2007-08-26  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* POTFILES.in: Add twitux-spell.c & twitux-preferences.c
