@@ -1,359 +1,453 @@
-# translation of PACKAGE.
-# Copyright (C) 2007 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# <>, 2007.
+# LANGUAGE translation of Twitux.
+# Copyright (C) 2007 THE Twitux'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Twitux package.
+# netocury <EMAIL@ADDRESS>, 2007.
 # , fuzzy
-# <>, 2007.
+# netocury <EMAIL@ADDRESS>, 2007.
 # 
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Twitux VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-13 09:03-0300\n"
-"PO-Revision-Date: 2007-08-02 14:52-0300\n"
+"POT-Creation-Date: 2007-12-18 01:36-0200\n"
+"PO-Revision-Date: 2007-12-19 12:11-0200\n"
 "Last-Translator: Neto Cury <netocury@gmail.com>\n"
 "Language-Team: Portuguese/Brazil <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
-#: ../src/callbacks.c:199
-#, fuzzy
-msgid "Ok, logged out."
-msgstr "Ok, você está autenticado."
+#: ../data/main.glade.h:1
+msgid "<b>General</b>"
+msgstr "<b>Geral</b>"
 
-#: ../src/callbacks.c:232
-msgid "Ok, new home timeline saved."
-msgstr "Ok, nova cronologia padrão salva."
+#: ../data/main.glade.h:2
+msgid "<b>Languages</b>"
+msgstr "<b>Linguagens</b>"
 
-#: ../src/callbacks.c:603
-msgid "Compressing URL..."
-msgstr "Comprimindo URL..."
+#: ../data/main.glade.h:3
+msgid "<b>Options</b>"
+msgstr "<b>Opções</b>"
 
-#: ../src/callbacks.c:644 ../src/gui.c:301
-msgid "What are you doing?"
-msgstr "O que você está fazendo?"
+#: ../data/main.glade.h:4
+msgid "<b>Timelines</b>"
+msgstr "<b>Linhas de Tempo</b>"
 
-#. Atrasos de horas respecto al servo
-#: ../src/common.c:211
-msgid "1 second ago"
-msgstr "1 segundo atrás"
-
-#: ../src/common.c:216
-msgid "1 minute ago"
-msgstr "1 minuto atrás"
-
-#: ../src/common.c:220
-#, c-format
-msgid "%i seconds ago"
-msgstr "%i segundos atrás"
-
-#: ../src/common.c:228
-msgid "1 hour ago"
-msgstr "1 hora atrás"
-
-#: ../src/common.c:232
-#, c-format
-msgid "%i minutes ago"
-msgstr "%i minutos atrás"
-
-#: ../src/common.c:240
-msgid "1 day ago"
-msgstr "1 dia atrás"
-
-#: ../src/common.c:244
-#, c-format
-msgid "%i hours ago"
-msgstr "%i horas atrás"
-
-#: ../src/common.c:252
-msgid "1 month ago"
-msgstr "1 mês atrás"
-
-#: ../src/common.c:256
-#, c-format
-msgid "%i days ago"
-msgstr "%i dias atrás"
-
-#: ../src/common.c:260
-#, c-format
-msgid "%i months ago"
-msgstr "%i meses atrás"
-
-#. Menu Twitter
-#: ../src/gui.c:289
-msgid "_Twitter"
-msgstr "_Twitter"
-
-#: ../src/gui.c:306
-msgid "Send a direct message..."
-msgstr "Envie uma mensagem direta..."
-
-#: ../src/gui.c:312
-msgid "Set as home timeline"
-msgstr "Define como cronologia padrão"
-
-#. Menu ver
-#: ../src/gui.c:331
-msgid "_View"
+#: ../data/main.glade.h:5
+msgid ""
+"<small>The list of languages reflects only the languages for which you have "
+"a dictionary installed.</small>"
 msgstr ""
+"<small>A lista de linguagens refletem apenas as linguagens que você instalou dicionários.</small>"
 
-#: ../src/gui.c:335
-msgid "Home timeline"
-msgstr "Cronologia padrão"
+#: ../data/main.glade.h:6
+msgid "<span size=\"small\">Characters Available: 160</span>"
+msgstr "<span size=\"small\">Caracteres Diponíveis: 160</span>"
 
-#: ../src/gui.c:339
-msgid "Public timeline"
-msgstr "Cronologia pública"
+#: ../data/main.glade.h:7
+msgid "Add a friend"
+msgstr "Adicionar um(a) amigo(a)"
 
-#: ../src/gui.c:343
-msgid "Friends timeline"
-msgstr "Cronologia dos Amigos"
+#: ../data/main.glade.h:8
+msgid "Add a friend..."
+msgstr "Adicionando um(a) amigo(a)..."
 
-#. Sub menu amigos
-#: ../src/gui.c:351
+#: ../data/main.glade.h:9
+msgid "Automatic Login?"
+msgstr "Autenticação Automática?"
+
+#: ../data/main.glade.h:10
+msgid "C_onnect"
+msgstr "C_onectar"
+
+#: ../data/main.glade.h:11
+msgid "Choose a friend:"
+msgstr "Escolha um(a) amigo(a)"
+
+#: ../data/main.glade.h:12
+msgid "Default _Timeline:"
+msgstr "Linha de _Tempo Padrão:"
+
+#: ../data/main.glade.h:13
+msgid "Direct Messages"
+msgstr "Mensagens Diretas"
+
+#: ../data/main.glade.h:14
+msgid "Direct Replies"
+msgstr "Repostas Diretas"
+
+#: ../data/main.glade.h:15 ../src/twitux-preferences.c:414
 msgid "Friends"
 msgstr "Amigos"
 
-#: ../src/gui.c:358
-msgid "Direct messages"
-msgstr "Mensagens diretas"
+#: ../data/main.glade.h:16
+msgid "Friends Timeline"
+msgstr "Linha de Tempo de Amigos"
 
-#: ../src/gui.c:363
-msgid "Replies"
-msgstr "Respostas"
+#: ../data/main.glade.h:17
+msgid "General"
+msgstr "Geral"
 
-#: ../src/gui.c:368
-msgid "My timeline"
-msgstr "Minha cronologia"
+#: ../data/main.glade.h:18
+msgid "My Timeline"
+msgstr "Minha Linha de Tempo"
 
-#. Submenu opciones avanzadas
-#: ../src/gui.c:376
-msgid "Set advanced options"
+#: ../data/main.glade.h:19
+msgid "New Message"
+msgstr "Nova Mensagem"
+
+#: ../data/main.glade.h:20
+msgid "Preferences"
+msgstr "Preferências"
+
+#: ../data/main.glade.h:21
+msgid "Public Timeline"
+msgstr "Linha de Tempo Pública"
+
+#: ../data/main.glade.h:22
+msgid "Send Direct Message"
+msgstr "Enviar Mensagem Direta"
+
+#: ../data/main.glade.h:23
+msgid "Send Message"
+msgstr "Enviar Mensagem"
+
+#: ../data/main.glade.h:24
+msgid "Show Password"
+msgstr "Mostrar Senha"
+
+#: ../data/main.glade.h:25
+msgid "Spell Checker"
+msgstr "Corretor Ortográfico"
+
+#: ../data/main.glade.h:26
+msgid "Spell Checking"
+msgstr "Corrigindo Ortografia"
+
+#: ../data/main.glade.h:27
+msgid "Suggestions for the word:"
+msgstr "Sugestões para a palavra:"
+
+#: ../data/main.glade.h:28
+msgid ""
+"This will show the full status message of the item selected in the list view."
+msgstr "Isto mostrará a situação da mensagem do item selecionado na lista atual."
+
+#: ../data/main.glade.h:29
+msgid "Twitter Account"
+msgstr "Conta Twitter"
+
+#: ../data/main.glade.h:30 ../data/twitux.desktop.in.in.h:2
+#: ../src/twitux-main.c:46 ../src/twitux-preferences.c:416
+msgid "Twitux"
+msgstr "Twitux"
+
+#: ../data/main.glade.h:31
+msgid "Twitux Timeline"
+msgstr "Linha de Tempo do Twitux"
+
+#: ../data/main.glade.h:32
+msgid "_Account"
+msgstr "_Conta"
+
+#: ../data/main.glade.h:33
+msgid "_Disconnect"
+msgstr "_Desconectar"
+
+#: ../data/main.glade.h:34
+msgid "_Display notifications when message recieved"
+msgstr "_Mostrar notificações quando receber uma mensagem"
+
+#: ../data/main.glade.h:35
+msgid "_Enable spell checking"
+msgstr "_Habilitar verificação ortográfica"
+
+#: ../data/main.glade.h:36
+msgid "_Expand messages"
+msgstr "_Expandir mensagens"
+
+#: ../data/main.glade.h:37
+msgid "_Help"
+msgstr "_Ajuda"
+
+#: ../data/main.glade.h:38
+msgid "_New Message"
+msgstr "_Nova Mensagem"
+
+#: ../data/main.glade.h:39
+msgid "_Password:"
+msgstr "_Senha:"
+
+#: ../data/main.glade.h:40
+msgid "_Refresh"
+msgstr "_Atualizar"
+
+#: ../data/main.glade.h:41
+msgid "_Replace"
+msgstr "_Substituir"
+
+#: ../data/main.glade.h:42
+msgid "_Retrieve every:"
+msgstr "_Recuperar todos:"
+
+#: ../data/main.glade.h:43
+msgid "_Send"
+msgstr "_Enviar"
+
+#: ../data/main.glade.h:44
+msgid "_Settings"
+msgstr "_Configurações"
+
+#: ../data/main.glade.h:45
+msgid "_Show Twitux"
+msgstr "_Mostrar Twitux"
+
+#: ../data/main.glade.h:46
+msgid "_Twitter"
+msgstr "_Twitter"
+
+#: ../data/main.glade.h:47
+msgid "_Username:"
+msgstr "_Usuário"
+
+#: ../data/main.glade.h:48
+msgid "_View"
+msgstr "_Ver"
+
+#: ../data/main.glade.h:49
+msgid "gtk-about"
+msgstr "gtk-about"
+
+#: ../data/main.glade.h:50
+msgid "gtk-preferences"
+msgstr "gtk-preferences"
+
+#: ../data/main.glade.h:51
+msgid "gtk-quit"
+msgstr "gtk-quit"
+
+#: ../data/twitux.desktop.in.in.h:1
+msgid "A Twitter client"
+msgstr "Um cliente Twitter"
+
+#: ../data/twitux.schemas.in.h:1
+msgid ""
+"Comma separated list of spell checker languages to use (e.g. en, fr, nl)."
 msgstr ""
+"Lista separada por vírgula das linguagens de verificadores ortográficos para usar (ex.: en, fr, es)."
 
-#: ../src/gui.c:380
+#: ../data/twitux.schemas.in.h:2
+msgid "Enable spell checking"
+msgstr "Habilitar verificação ortográfica"
+
+#: ../data/twitux.schemas.in.h:3
+msgid "Enable spell checking."
+msgstr "Habilitar verificação ortográfica."
+
+#: ../data/twitux.schemas.in.h:4
 msgid "Expand messages"
 msgstr "Expandir mensagens"
 
-#: ../src/gui.c:383
-msgid "Show gui notifications"
-msgstr ""
+#: ../data/twitux.schemas.in.h:5
+msgid "Is the main window hidden"
+msgstr "Janela principal está escondida"
 
-#: ../src/gui.c:386
-#, fuzzy
-msgid "Auto reload timelines"
-msgstr "Cronologia dos Amigos"
+#: ../data/twitux.schemas.in.h:6
+msgid "Log automatically into Twitter"
+msgstr "Autentica automaticamente no Twitter"
 
-#: ../src/gui.c:391
-msgid "Status bar"
-msgstr "Barra de status"
+#: ../data/twitux.schemas.in.h:7
+msgid "Log automatically into Twitter."
+msgstr "Autentica automaticamente no Twitter."
 
-#. Menu ayuda
-#: ../src/gui.c:395
-msgid "H_elp"
-msgstr "_Ajuda"
+#: ../data/twitux.schemas.in.h:8
+msgid "Main window X position"
+msgstr "Janela principal posição X"
 
-#: ../src/gui.c:402
-msgid "Report bugs..."
-msgstr "Reporte bugs..."
+#: ../data/twitux.schemas.in.h:9
+msgid "Main window X position."
+msgstr "Janela principal posição X."
 
-#: ../src/gui.c:507
-#, c-format
-msgid "%s - Log in"
-msgstr "%s - Autentique-se"
+#: ../data/twitux.schemas.in.h:10
+msgid "Main window Y position"
+msgstr "Janela principal posição Y"
 
-#: ../src/gui.c:557
-msgid "<b>Username or e-mail:</b>"
-msgstr "<b>Nome de usuário ou e-mail:</b>"
+#: ../data/twitux.schemas.in.h:11
+msgid "Main window Y position."
+msgstr "Janela principal posição Y."
 
-#: ../src/gui.c:571
-msgid "<b>Password:</b>"
-msgstr "<b>Senha:</b>"
+#: ../data/twitux.schemas.in.h:12
+msgid "Main window height"
+msgstr "Altura da janela principal"
 
-#: ../src/gui.c:586
-msgid "Remember user data"
-msgstr "Lembrar dados de usuário"
+#: ../data/twitux.schemas.in.h:13
+msgid "Main window height."
+msgstr "Altura da janela principal."
 
-#: ../src/gui.c:592
-msgid "Twitter login"
-msgstr "Autenticação no Twitter"
+#: ../data/twitux.schemas.in.h:14
+msgid "Main window width"
+msgstr "Largura da Janela principal"
 
-#: ../src/gui.c:612
+#: ../data/twitux.schemas.in.h:15
+msgid "Main window width."
+msgstr "Largura da janela principal."
+
+#: ../data/twitux.schemas.in.h:16
+msgid "Minutes between timeline retrievals"
+msgstr "Minutos entre recuperações de linha de tempo"
+
+#: ../data/twitux.schemas.in.h:17
 msgid ""
-"This program is free software; you can redistribute it \n"
-"and/or modify it under the terms of the GNU General Public License\n"
-"as published by the Free Software Foundation; either version 2 of\n"
-"the License, or (at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details. You should have\n"
-"received a copy of the GNU General Public License along with\n"
-"this program; if not, write to the Free Software Foundation, Inc., \n"
-"59 Temple Place, Suite 330, \n"
-"Boston, MA  02111-1307  USA"
+"Minutes between timeline retrievals. Values supported are 3, 5, 15, 30, and "
+"60"
+msgstr "Minutos entre recuperações de linha de tempo. Valores suportados são 3, 5, 15, 30, e 60"
+
+#: ../data/twitux.schemas.in.h:18
+msgid "Show notification of new Twitter messages"
+msgstr "Mostrar notificações de novas mensagens do Twitter"
+
+#: ../data/twitux.schemas.in.h:19
+msgid "Show notification of new Twitter messages."
+msgstr "Mostrar notificações de novas mensagens do Twitter."
+
+#: ../data/twitux.schemas.in.h:20
+msgid "Spell checking languages"
+msgstr "Linguagens do verificador ortográfico"
+
+#: ../data/twitux.schemas.in.h:21
+msgid "Twitter password"
+msgstr "Senha no Twitter"
+
+#: ../data/twitux.schemas.in.h:22
+msgid "Twitter username"
+msgstr "Nome de usuário Twitter"
+
+#: ../data/twitux.schemas.in.h:23
+msgid "User's Twitter account password."
+msgstr "Senhas de usuários no Twitter"
+
+#: ../data/twitux.schemas.in.h:24
+msgid "User's Twitter account username."
+msgstr "Nomes de usuários no Twitter"
+
+#: ../data/twitux.schemas.in.h:25
+msgid "User's home timeline"
+msgstr "Linhas de tempo do usuário"
+
+#: ../data/twitux.schemas.in.h:26
+msgid "User's home timeline."
+msgstr "Linhas de tempo do usuário."
+
+#: ../src/twitux-about.c:43
+msgid ""
+"Twitux is free software; you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version."
 msgstr ""
+"Twitux é um software livre; você pode redistribuir e/ou modificar sob os "
+"termos GNU General Public License como publicado pela Free Software "
+"Foundation; quer pela versão 2 da Licença, ou (opcionalmente) qulaquer "
+"versão posterior."
 
-#: ../src/gui.c:633
-msgid "A Twitter client for the Gnome desktop"
-msgstr "Um cliente Twitter para Gnome desktop"
+#: ../src/twitux-about.c:47
+msgid ""
+"Twitux is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Twitux é distribuído na esperaça de ser útil, mas SEM QUALQUER GARATIA;"
+" sem também nenhuma garantia implícita de COMERCIALIZAÇÃO ou AJUSTES "
+"PARA PROPÓSITOS PARTICULARES.  Veja a Licença Pública Geral GNU para mais "
+"detalhes."
 
-#: ../src/gui.c:636
-msgid "Visit Twitux web site"
-msgstr "Visite o website do Twitux"
+#: ../src/twitux-about.c:51
+msgid ""
+"You should have received a copy of the GNU Lesser General Public License "
+"along with this library; if not, write to the Free Software Foundation, "
+"Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr "Você deve ter recebido uma cópia da GNU Lesser General Public License "
+"juntamente com esta biblioteca, se não, escreva para a Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/gui.c:638
+#: ../src/twitux-about.c:84
+msgid "A GNOME client for Twitter."
+msgstr "Um cliente GNOME para Twitter."
+
+#: ../src/twitux-about.c:85
+msgid "Copyright © 2007 Daniel Morales"
+msgstr "Copyright © 2007 Daniel Morales"
+
+#: ../src/twitux-about.c:87
 msgid "translator-credits"
 msgstr "Neto Cury <netocury@gmail.com>"
 
-#: ../src/gui.c:663
+#: ../src/twitux-app.c:983
+msgid "Fetching friends..."
+msgstr "Coletando amigos..."
+
+#: ../src/twitux-app.c:1037
+msgid "tweets"
+msgstr "tweets"
+
+#: ../src/twitux-app.c:1039
+msgid "tweet"
+msgstr "tweet"
+
+#: ../src/twitux-app.c:1042
 #, c-format
-msgid "%s - What are you doing?"
-msgstr "%s - O que você está fazendo?"
+msgid "You have %i new %s."
+msgstr "Você tem %i nova(s) %(ns)."
 
-#: ../src/gui.c:706
-msgid "<b>What are you doing?</b>"
-msgstr "<b>O que você está fazendo?</b>"
+#: ../src/twitux-preferences.c:55
+msgid "3 minutes"
+msgstr "3 minutos"
 
-#: ../src/gui.c:755
-#, c-format
-msgid "%s - Send a direct message"
-msgstr "%s - Enviar uma mensagem direta"
+#: ../src/twitux-preferences.c:56
+msgid "5 minutes"
+msgstr "5 minutos"
 
-#: ../src/gui.c:798
-msgid "<b>Select a friend:</b>"
-msgstr "<b>Selecione um amigo:</b>"
+#: ../src/twitux-preferences.c:57
+msgid "15 minutes"
+msgstr "15 minutos"
 
-#: ../src/gui.c:807
-msgid "<b>Write the message:</b>"
-msgstr "<b>Escreva a mensagem:</b>"
+#: ../src/twitux-preferences.c:58
+msgid "30 minutes"
+msgstr "30 minutos"
 
-#: ../src/gui.c:854
-msgid "Url to tinyze:"
-msgstr "URL para comprimir:"
+#: ../src/twitux-preferences.c:59
+msgid "hour"
+msgstr "hora"
 
-#: ../src/gui.c:869
-msgid "Ok"
-msgstr "Ok"
+#: ../src/twitux-preferences.c:201
+msgid "Language"
+msgstr "Linguagem"
 
-#: ../src/network.c:75
-msgid "Loading: Direct messages..."
-msgstr "Carregando: Mensagens diretas..."
+#: ../src/twitux-preferences.c:413
+msgid "Public"
+msgstr "Pública"
 
-#: ../src/network.c:92
-msgid "Loading: Timeline..."
-msgstr "Carregando: Cronologia..."
+#: ../src/twitux-preferences.c:415
+msgid "Mine"
+msgstr "Minha"
 
-#: ../src/network.c:148
-msgid "Conecting..."
-msgstr "Conectando..."
+#. Set the label
+#: ../src/twitux-send-message-dialog.c:152
+#: ../src/twitux-send-message-dialog.c:320
+msgid "Characters Available"
+msgstr "Caracteres Disponíveis"
 
-#: ../src/network.c:172
-msgid "Sending status..."
-msgstr "Enviando status..."
+#: ../src/twitux-send-message-dialog.c:463
+msgid "_Check Word Spelling..."
+msgstr "_Checando Verificação de Palavra..."
 
-#: ../src/network.c:196
-msgid "Sending message..."
-msgstr "Enviando mensagem..."
+#: ../src/twitux-spell-dialog.c:85
+msgid "Word"
+msgstr "Palavra"
 
-#: ../src/network.c:214
-msgid "Ok, displaying direct messages."
-msgstr "Ok, mostrando mensagens diretas."
+#: ../src/twitux-spell-dialog.c:256
+msgid "Suggestions for the word"
+msgstr "Sugestões para a palavra"
 
-#: ../src/network.c:222
-msgid "Messages parser error."
-msgstr "Erro de análise em Mensagens."
-
-#: ../src/network.c:256
-msgid "Ok, connected :)"
-msgstr "Ok, conectado :)"
-
-#: ../src/network.c:270
-msgid "Friends parser error."
-msgstr "Erro de análise em Amigos."
-
-#: ../src/network.c:290
-msgid "Ok, parsing..."
-msgstr "Ok, analisando..."
-
-#: ../src/network.c:301
-msgid "Ok, timeline loaded."
-msgstr "Ok, cronologia carregada."
-
-#: ../src/network.c:305
-msgid "Timeline parser error."
-msgstr "Erro de análise de cronologia."
-
-#: ../src/network.c:332
-msgid "Fail, wrong response."
-msgstr "Falha, erro de resposta."
-
-#: ../src/network.c:379
-msgid "Ok, status sent! :)"
-msgstr "Ok, status enviado! :)"
-
-#: ../src/network.c:398
-msgid "Ok, message sent! :)"
-msgstr "Ok, mensagem enviada! :)"
-
-#: ../src/network.c:531
-msgid "Stopped."
-msgstr "Parado."
-
-#: ../src/network.c:537
-msgid "Access denied. Please login."
-msgstr "Acesso negado. Favor autenticar."
-
-#: ../src/network.c:543
-msgid "HTTP communication error."
-msgstr "Erro de comunicação HTTP."
-
-#: ../src/twitter.c:476
-#, c-format
-msgid "you have %i new tweet(s) to read!"
-msgstr ""
-
-#~ msgid "No config"
-#~ msgstr "Não configurado"
-
-#~ msgid "Cannot save the configuration"
-#~ msgstr "Não foi possível salvar a configuração"
-
-#~ msgid "Loading image: %s: %s\n"
-#~ msgstr "Carregando imagem: %s: %s\n"
-
-#~ msgid "<b>Autor</b> - sometime ago"
-#~ msgstr "<b>Autor</b> - algum tempo atrás"
-
-#~ msgid "Parser:unknown user node %s => %s"
-#~ msgstr "Parser:usuário desconhecido %s·=>·%s"
-
-#~ msgid "Parser:unknown status node: %s => %s"
-#~ msgstr "Parser:status desconhecido: %s => %s"
-
-#~ msgid "Parser:parsear_direct_message:unknown node: %s => %s"
-#~ msgstr "Parser:parsear_direct_message:desconhecido: %s·=>·%s"
-
-#~ msgid "Parser:parsear_statuses:unknown node: %s"
-#~ msgstr "Parser:parsear_statuses:desconhecido: %s"
-
-#~ msgid "Parser:parsear_direct_messages:unknown node: %s"
-#~ msgstr "Parser:parsear_direct_messages:desconhecido: %s"
-
-#~ msgid "Parser:parsear_users:unknown node: %s"
-#~ msgstr "Parser:parsear_users:desconhecido: %s"
-
-#~ msgid "parser_twitter:file not exists: %s"
-#~ msgstr "parser_twitter:aquivo não existente: %s"
-
-#~ msgid "parser_twitter:xmlReadFile: %s"
-#~ msgstr "parser_twitter:xmlReadFile: %s"
-
-#~ msgid "parser_twitter:xmlDocGetRootElement: %s"
-#~ msgstr "parser_twitter:xmlDocGetRootElement: %s"
-
-#~ msgid "parser_twitter:unknown parser"
-#~ msgstr "parser_twitter:análise desconhecida"
