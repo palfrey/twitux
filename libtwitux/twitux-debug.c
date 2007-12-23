@@ -18,7 +18,7 @@
  * Boston, MA 02110-1301, USA.
  *
  * Authors: Richard Hult <richard@imendio.com>
- * Authors: Brian Pepple <bpepple@fedoraproject.org>
+ *			Brian Pepple <bpepple@fedoraproject.org>
  */
 
 

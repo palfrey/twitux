@@ -77,7 +77,6 @@ twitux_about_dialog_new (GtkWindow *parent)
 	license_trans = g_strconcat (_(license[0]), "\n\n", _(license[1]), "\n\n",
 								 _(license[2]), "\n\n", NULL);
 
-	/* TODO: Add the logo once we get a new icon */
 	gtk_show_about_dialog (parent,
 						   "authors", authors,
 						   "artists", artists,
