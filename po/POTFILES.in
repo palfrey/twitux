@@ -8,6 +8,8 @@ data/twitux.schemas.in
 src/twitux-about.c
 src/twitux-app.c
 src/twitux-main.c
+src/twitux-network.c
+src/twitux-parser.c
 src/twitux-preferences.c
 src/twitux-send-message-dialog.c
 src/twitux-spell.c

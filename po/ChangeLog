@@ -1,3 +1,7 @@
+2007-12-23  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* POTFILES.in: Add twitux-network.c & twitux-parser.c
+	
 2007-08-18  Daniel Morales  <daniminas@gmail.com>
 
 	* es.po: Updated translation to v0.60
