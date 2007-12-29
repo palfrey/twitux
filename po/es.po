@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-18 01:36-0200\n"
-"PO-Revision-Date: 2007-12-18 01:59-0200\n"
+"POT-Creation-Date: 2007-12-29 19:56-0200\n"
+"PO-Revision-Date: 2007-12-29 20:03-0200\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,8 @@ msgid ""
 "<small>The list of languages reflects only the languages for which you have "
 "a dictionary installed.</small>"
 msgstr ""
-"<small>La lista de idiomas muesta solo aquellos para los cuales tienes el dirccionario instalado.</small>"
+"<small>La lista de idiomas muesta solo aquellos para los cuales tienes el "
+"dirccionario instalado.</small>"
 
 #: ../data/main.glade.h:6
 msgid "<span size=\"small\">Characters Available: 160</span>"
@@ -76,7 +77,7 @@ msgstr "Mensajes Directos"
 msgid "Direct Replies"
 msgstr "Respuestas Directas"
 
-#: ../data/main.glade.h:15 ../src/twitux-preferences.c:414
+#: ../data/main.glade.h:15 ../src/twitux-preferences.c:420
 msgid "Friends"
 msgstr "Amigos"
 
@@ -138,7 +139,7 @@ msgid "Twitter Account"
 msgstr "Cuenta Twitter"
 
 #: ../data/main.glade.h:30 ../data/twitux.desktop.in.in.h:2
-#: ../src/twitux-main.c:46 ../src/twitux-preferences.c:416
+#: ../src/twitux-main.c:46 ../src/twitux-preferences.c:422
 msgid "Twitux"
 msgstr "Twitux"
 
@@ -360,15 +361,15 @@ msgid ""
 "Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
-#: ../src/twitux-about.c:84
+#: ../src/twitux-about.c:83
 msgid "A GNOME client for Twitter."
 msgstr "Un cliente GNOME para Twitter"
 
-#: ../src/twitux-about.c:85
+#: ../src/twitux-about.c:84
 msgid "Copyright © 2007 Daniel Morales"
 msgstr "Copyright © 2007 Daniel Morales"
 
-#: ../src/twitux-about.c:87
+#: ../src/twitux-about.c:86
 msgid "translator-credits"
 msgstr "Daniel Morales <daniminas@gmail.com>"
 
@@ -389,53 +390,168 @@ msgstr "tweet"
 msgid "You have %i new %s."
 msgstr "Tiene %i nuevo(s) %s."
 
-#: ../src/twitux-preferences.c:55
+#: ../src/twitux-network.c:216
+msgid "Connecting..."
+msgstr "Conectando..."
+
+#. UI
+#: ../src/twitux-network.c:277 ../src/twitux-network.c:293
+msgid "Loading timeline..."
+msgstr "Cargando timeline..."
+
+#: ../src/twitux-network.c:496
+msgid "Access denied."
+msgstr "Acceso denegado."
+
+#: ../src/twitux-network.c:499
+msgid "HTTP communication error."
+msgstr "Error de comunicación HTTP."
+
+#: ../src/twitux-network.c:502
+msgid "Internal server error."
+msgstr "Error en el servidor."
+
+#: ../src/twitux-network.c:505
+msgid "Stopped"
+msgstr "Detenido."
+
+#: ../src/twitux-network.c:535
+msgid "Failed to save cache file."
+msgstr "Error al guardar en caché."
+
+#: ../src/twitux-network.c:656
+msgid "Status Sent"
+msgstr "Estado enviado."
+
+#: ../src/twitux-network.c:674
+msgid "Message Sent"
+msgstr "Mensaje enviado"
+
+#: ../src/twitux-network.c:718
+msgid "Timeline Loaded"
+msgstr "Mi timeline"
+
+#: ../src/twitux-network.c:726
+msgid "Timeline Parser Error."
+msgstr "Error de parseo."
+
+#: ../src/twitux-network.c:772
+msgid "Users parser error."
+msgstr "Error de parseo."
+
+#: ../src/twitux-network.c:833
+msgid "Friend Added"
+msgstr "Amigo agregado"
+
+#: ../src/twitux-network.c:836
+msgid "Failed to add user"
+msgstr "Error al agregar el usuario."
+
+#: ../src/twitux-network.c:852
+msgid "Friend Removed"
+msgstr "Amigo eliminado"
+
+#: ../src/twitux-network.c:854
+msgid "Failed to remove user"
+msgstr "Error al eliminar el usuario."
+
+#. UI
+#: ../src/twitux-network.c:899
+msgid "Reloading timeline..."
+msgstr "Recargando timeline..."
+
+#: ../src/twitux-parser.c:426
+msgid "1 second ago"
+msgstr "hace 1 segundo"
+
+#: ../src/twitux-parser.c:430
+msgid "1 minute ago"
+msgstr "hace 1 minuto"
+
+#: ../src/twitux-parser.c:432
+#, c-format
+msgid "%i seconds ago"
+msgstr "hace %i segundos"
+
+#: ../src/twitux-parser.c:437
+msgid "1 hour ago"
+msgstr "hace 1 hora"
+
+#: ../src/twitux-parser.c:439
+#, c-format
+msgid "%i minutes ago"
+msgstr "hace %i minutos"
+
+#: ../src/twitux-parser.c:444
+msgid "1 day ago"
+msgstr "hace 1 día"
+
+#: ../src/twitux-parser.c:446
+#, c-format
+msgid "%i hours ago"
+msgstr "hace %i horas"
+
+#: ../src/twitux-parser.c:451
+msgid "1 month ago"
+msgstr "hace 1 mes"
+
+#: ../src/twitux-parser.c:453
+#, c-format
+msgid "%i days ago"
+msgstr "hace %i días"
+
+#: ../src/twitux-parser.c:455
+#, c-format
+msgid "%i months ago"
+msgstr "hace %i meses"
+
+#: ../src/twitux-preferences.c:61
 msgid "3 minutes"
 msgstr "3 minutos"
 
-#: ../src/twitux-preferences.c:56
+#: ../src/twitux-preferences.c:62
 msgid "5 minutes"
 msgstr "5 minutos"
 
-#: ../src/twitux-preferences.c:57
+#: ../src/twitux-preferences.c:63
 msgid "15 minutes"
 msgstr "15 minutos"
 
-#: ../src/twitux-preferences.c:58
+#: ../src/twitux-preferences.c:64
 msgid "30 minutes"
 msgstr "30 minutos"
 
-#: ../src/twitux-preferences.c:59
+#: ../src/twitux-preferences.c:65
 msgid "hour"
 msgstr "hora"
 
-#: ../src/twitux-preferences.c:201
+#: ../src/twitux-preferences.c:207
 msgid "Language"
 msgstr "Idioma"
 
-#: ../src/twitux-preferences.c:413
+#: ../src/twitux-preferences.c:419
 msgid "Public"
 msgstr "Pública"
 
-#: ../src/twitux-preferences.c:415
+#: ../src/twitux-preferences.c:421
 msgid "Mine"
 msgstr "Propia"
 
 #. Set the label
-#: ../src/twitux-send-message-dialog.c:152
-#: ../src/twitux-send-message-dialog.c:320
+#: ../src/twitux-send-message-dialog.c:154
+#: ../src/twitux-send-message-dialog.c:322
 msgid "Characters Available"
 msgstr "Caracteres Disponibles"
 
-#: ../src/twitux-send-message-dialog.c:463
+#: ../src/twitux-send-message-dialog.c:465
 msgid "_Check Word Spelling..."
 msgstr "_Comprobar ortografía"
 
-#: ../src/twitux-spell-dialog.c:85
+#: ../src/twitux-spell-dialog.c:89
 msgid "Word"
 msgstr "Palabra"
 
-#: ../src/twitux-spell-dialog.c:256
+#: ../src/twitux-spell-dialog.c:260
 msgid "Suggestions for the word"
 msgstr "Sugerencias para la palabra"
 
