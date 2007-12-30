@@ -1,3 +1,12 @@
+2007-12-30  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* configure.in:
+	* NEWS: Bump version.
+
+2007-12-30  Daniel Morales  <daniminas@gmail.com>
+
+	* Release 0.60.
+	
 2007-12-17  Daniel Morales  <daniminas@gmail.com>
 
 	* data/main.glade
