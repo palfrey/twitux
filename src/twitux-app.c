@@ -835,7 +835,7 @@ app_retrieve_default_timeline (void)
 	if (strcmp (timeline, TWITUX_API_TIMELINE_FRIENDS) == 0) {
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (priv->menu_friends),
 										TRUE);
-	} else if (strcmp (timeline, TWITUX_API_TIMELINE_FRIENDS) == 0) {
+	} else if (strcmp (timeline, TWITUX_API_TIMELINE_PUBLIC) == 0) {
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (priv->menu_public),
 										TRUE);
 	} else if (strcmp (timeline, TWITUX_API_TIMELINE_MY) == 0) {
