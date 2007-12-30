@@ -878,6 +878,10 @@ network_timeout_new (void)
 						 TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
 						 &minutes);
 
+	if (minutes == 0){
+		minutes = 3;
+	}
+
 	/* This should be the number of milliseconds */
 	reload_time = minutes * 60 * 1000;
 
