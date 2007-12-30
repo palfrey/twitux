@@ -829,7 +829,7 @@ app_retrieve_default_timeline (void)
 	/* This shouldn't happen, but just in case */
 	if (G_STR_EMPTY (timeline)) {
 		g_warning ("Default timeline in not set");
-		timeline = g_strdup (TWITUX_API_TIMELINE_PUBLIC);
+		timeline = g_strdup (TWITUX_API_TIMELINE_FRIENDS);
 	}
 
 	if (strcmp (timeline, TWITUX_API_TIMELINE_FRIENDS) == 0) {
