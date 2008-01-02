@@ -81,7 +81,7 @@ twitux_about_dialog_new (GtkWindow *parent)
 						   "authors", authors,
 						   "artists", artists,
 						   "comments", _("A GNOME client for Twitter."),
-						   "copyright", _("Copyright \xc2\xa9 2007 Daniel Morales"),
+						   "copyright", _("Copyright \xc2\xa9 2007-2008 Daniel Morales"),
 						   "license", license_trans,
 						   "translator-credits", _("translator-credits"),
 						   "version", PACKAGE_VERSION,
