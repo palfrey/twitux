@@ -71,7 +71,7 @@ twitux_add_dialog_show (GtkWindow *parent)
 
 	add = g_new0 (TwituxAdd, 1);
 
-	glade = twitux_glade_get_file ("main.glade",
+	glade = twitux_glade_get_file ("add_friend_dialog.glade",
 								   "add_friend_dialog",
 								   NULL,
 								   "add_friend_dialog", &add->dialog,

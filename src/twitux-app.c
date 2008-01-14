@@ -233,7 +233,7 @@ app_setup (void)
 
 	/* Set up interface */
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Initialising interface");
-	glade = twitux_glade_get_file ("main.glade",
+	glade = twitux_glade_get_file ("main_window.glade",
 								   "main_window",
 								   NULL,
 								   "main_window", &priv->window,
@@ -660,7 +660,7 @@ app_status_icon_create_menu (void)
 
 	priv = GET_PRIV (app);
 
-	glade = twitux_glade_get_file ("main.glade",
+	glade = twitux_glade_get_file ("tray_menu.glade",
 								   "tray_menu",
 								   NULL,
 								   "tray_menu", &priv->popup_menu,

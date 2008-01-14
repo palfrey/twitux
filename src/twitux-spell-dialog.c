@@ -239,7 +239,7 @@ twitux_spell_dialog_show (GtkWidget   *textview,
 	dialog->start = start;
 	dialog->end = end;
 
-	gui = twitux_glade_get_file ("main.glade",
+	gui = twitux_glade_get_file ("spell_dialog.glade",
 								 "spell_dialog",
 								 NULL,
 								 "spell_dialog", &dialog->window,

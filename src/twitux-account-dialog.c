@@ -114,7 +114,7 @@ twitux_account_dialog_show (GtkWindow *parent)
 
 	account = g_new0 (TwituxAccount, 1);
 
-	glade = twitux_glade_get_file ("main.glade",
+	glade = twitux_glade_get_file ("account_dialog.glade",
 								   "account_dialog",
 								   NULL,
 								   "account_dialog", &account->dialog,

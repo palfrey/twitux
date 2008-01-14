@@ -816,7 +816,7 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 
 	prefs = g_new0 (TwituxPrefs, 1);
 
-	glade = twitux_glade_get_file ("main.glade",
+	glade = twitux_glade_get_file ("preferences_dialog.glade",
 								   "preferences_dialog",
 								   NULL,
 								   "preferences_dialog", &prefs->dialog,

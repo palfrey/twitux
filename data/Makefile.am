@@ -9,8 +9,14 @@ schemas_DATA 	 = $(schemas_in_files:.schemas.in=.schemas)
 @INTLTOOL_SCHEMAS_RULE@
 
 gladedir = $(datadir)/twitux
-glade_DATA = 			\
-	main.glade
+glade_DATA = 				\
+	add_friend_dialog.glade		\
+	account_dialog.glade		\
+	main_window.glade		\
+	preferences_dialog.glade	\
+	send_message_dialog.glade	\
+	spell_dialog.glade		\
+	tray_menu.glade
 
 icondir = $(datadir)/icons/hicolor/48x48/apps
 icon_DATA = twitux.png

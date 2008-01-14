@@ -129,7 +129,7 @@ message_setup (GtkWindow  *parent)
 
 	/* Set up interface */
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Initialising message dialog");
-	glade = twitux_glade_get_file ("main.glade",
+	glade = twitux_glade_get_file ("send_message_dialog.glade",
 								   "send_message_dialog",
 								   NULL,
 								   "send_message_dialog", &priv->dialog,
