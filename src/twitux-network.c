@@ -248,7 +248,7 @@ twitux_network_post_status (const gchar *text)
 {
 	gchar *formdata;
 
-	formdata = g_strdup_printf ("status=%s", text);
+	formdata = g_strdup_printf ("source=twitux&status=%s", text);
 
 	network_post_data (TWITUX_API_POST_STATUS,
 					   formdata,

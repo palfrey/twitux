@@ -1,3 +1,8 @@
+2008-01-19  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.c: add 'source' param to get 'from twitux'
+	on twitter web.
+
 2008-01-13  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* data/account_dialog.glade:
