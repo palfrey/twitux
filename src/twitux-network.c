@@ -606,8 +606,11 @@ network_cb_on_auth (SoupSession  *session,
 	}
 
 #ifdef HAVE_GNOME_KEYRING
-	twitux_keyring_get_password (user_id,
-								 &user_passwd);
+	if (!twitux_keyring_get_password (user_id, &user_passwd))
+	{
+		twitux_app_set_statusbar_msg (
+					_("Could not retrieve password from keyring."));						 	
+	}
 #else
 	twitux_conf_get_string (conf,
 							TWITUX_PREFS_AUTH_PASSWORD,
