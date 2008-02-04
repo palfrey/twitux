@@ -44,6 +44,7 @@ G_BEGIN_DECLS
 
 #define TWITUX_PREFS_TWEETS_HOME_TIMELINE     TWITUX_PREFS_PATH "/tweets/home_timeline"
 #define TWITUX_PREFS_TWEETS_RELOAD_TIMELINES  TWITUX_PREFS_PATH "/tweets/reload_timeline"
+#define TWITUX_PREFS_TWEETS_SHOW_NAMES        TWITUX_PREFS_PATH "/tweets/names"
 
 #define TWITUX_PREFS_UI_WINDOW_HEIGHT         TWITUX_PREFS_PATH "/ui/main_window_height"
 #define TWITUX_PREFS_UI_WINDOW_WIDTH          TWITUX_PREFS_PATH "/ui/main_window_width"

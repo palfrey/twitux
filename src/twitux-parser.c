@@ -30,6 +30,7 @@
 #include <libxml/tree.h>
 
 #include <libtwitux/twitux-debug.h>
+#include <libtwitux/twitux-conf.h>
 
 #include "twitux.h"
 #include "twitux-parser.h"
@@ -188,6 +189,8 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 	gint lastTweet = 0;
 	gboolean count = TRUE;
 
+	gboolean s_username;
+
 	/* parse the xml */
 	doc = parser_twitux_parse (cache_file_uri, &root_element);
 
@@ -199,6 +202,11 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 	/* Get the twitux ListStore and clear previous */
 	store = twitux_tweet_list_get_store ();
 	gtk_list_store_clear (store);
+
+	/* Show user names or real names */
+	twitux_conf_get_bool (twitux_conf_get (),
+				  TWITUX_PREFS_TWEETS_SHOW_NAMES,
+				  &s_username);
 
 	/* get tweets or direct messages */
 	for (cur_node = root_element; cur_node; cur_node = cur_node->next) {
@@ -234,7 +242,7 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 			/* Create string for text column */
 			datetime = parser_convert_time (status->created_at);
 			tweet = g_strconcat ("<b>",
-					     status->user->name,
+					     (s_username ? status->user->screen_name:status->user->name),
 					     "</b> - ",
 					     datetime, "\n",
 					     "<small>",

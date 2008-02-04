@@ -36,7 +36,19 @@
     	   <long>Log automatically into Twitter.</long>
     	</locale>
     </schema>
-    
+
+    <schema>
+    	<key>/schemas/apps/twitux/tweets/names</key>
+    	<applyto>/apps/twitux/tweets/names</applyto>
+    	<owner>twitux</owner>
+    	<type>bool</type>
+    	<default>true</default>
+    	<locale name="C">
+    	   <short>Show user names instead real names</short>
+    	   <long>Show user names instead real names.</long>
+    	</locale>
+    </schema>
+
     <schema>
     	<key>/schemas/apps/twitux/tweets/home_timeline</key>
     	<applyto>/apps/twitux/tweets/home_timeline</applyto>
