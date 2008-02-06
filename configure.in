@@ -140,7 +140,7 @@ PKG_CHECK_MODULES(TWITUX,
 	glib-2.0 >= $GLIB_REQUIRED
 	libgnomeui-2.0 >= $LIBGNOME_REQUIRED
 	gnome-vfs-2.0 >= $LIBGNOMEVFS_REQUIRED
-	libsoup-2.2
+	libsoup-2.4
 	libnotify
 	$iso_codes_pkgconfig
 	$dbus_pkgconfig

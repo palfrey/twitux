@@ -45,43 +45,49 @@
 
 typedef struct {
 	gchar        *src;
-	GtkTreeIter  iter;
+	GtkTreeIter   iter;
 } TwituxImage;
 
 static void network_get_data		(const gchar           *url,
-									 SoupMessageCallbackFn  callback,
+									 SoupSessionCallback    callback,
 									 gpointer               data);
 static void network_post_data		(const gchar           *url,
 									 gchar                 *formdata,
-									 SoupMessageCallbackFn  callback);
+									 SoupSessionCallback    callback);
 static gboolean	network_check_http 	(gint                   status_code);
 static gchar *network_save_data		(SoupMessage           *msg,
 									 const char            *file);
 static void network_parser_free_lists (void);
 
 /* libsoup callbacks */
-static void network_cb_on_login		(SoupMessage           *msg,
+static void network_cb_on_login		(SoupSession           *session,
+									 SoupMessage           *msg,
 									 gpointer               user_data);
-static void network_cb_on_post		(SoupMessage           *msg,
+static void network_cb_on_post		(SoupSession           *session,
+									 SoupMessage           *msg,
 									 gpointer               user_data);
-static void network_cb_on_message	(SoupMessage           *msg,
+static void network_cb_on_message	(SoupSession           *session,
+									 SoupMessage           *msg,
 									 gpointer               user_data);
-static void network_cb_on_timeline	(SoupMessage           *msg,
+static void network_cb_on_timeline	(SoupSession           *session,
+									 SoupMessage           *msg,
 									 gpointer               user_data);
-static void network_cb_on_users	    (SoupMessage           *msg,
+static void network_cb_on_users	    (SoupSession           *session,
+									 SoupMessage           *msg,
 									 gpointer               user_data);
-static void network_cb_on_image		(SoupMessage           *msg,
+static void network_cb_on_image		(SoupSession           *session,
+									 SoupMessage           *msg,
 									 gpointer               user_data);
-static void network_cb_on_add		(SoupMessage           *msg,
+static void network_cb_on_add		(SoupSession           *session,
+									 SoupMessage           *msg,
 									 gpointer               user_data);
-static void network_cb_on_del		(SoupMessage           *msg,
+static void network_cb_on_del		(SoupSession           *session,
+									 SoupMessage           *msg,
 									 gpointer               user_data);
 static void network_cb_on_auth		(SoupSession           *session,
 									 SoupMessage           *msg,
-									 const char            *auth_type,
-									 const char            *auth_realm,
-									 char                 **username,
-									 char                 **password,
+									 SoupAuth              *auth,
+									 gboolean               retrying,
 									 gpointer               data);
 
 /* Autoreload timeout functions */
@@ -133,7 +139,7 @@ twitux_network_new (void)
 							 &port);
 
 		if (server && server[0]) {
-			SoupUri *suri;
+			SoupURI *suri;
 
 			check_proxy = FALSE;
 			twitux_conf_get_bool (conf,
@@ -221,10 +227,6 @@ twitux_network_login (void)
 	/* HTTP Basic Authentication */
 	g_signal_connect (soup_connection,
 					  "authenticate",
-					  G_CALLBACK (network_cb_on_auth),
-					  NULL);
-	g_signal_connect (soup_connection,
-					  "reauthenticate",
 					  G_CALLBACK (network_cb_on_auth),
 					  NULL);
 
@@ -449,7 +451,7 @@ twitux_network_del_user (TwituxUser *user)
 /* Get data from net */
 static void
 network_get_data (const gchar           *url,
-				  SoupMessageCallbackFn  callback,
+				  SoupSessionCallback    callback,
 				  gpointer               data)
 {
 	SoupMessage *msg;
@@ -466,7 +468,7 @@ network_get_data (const gchar           *url,
 static void
 network_post_data (const gchar           *url,
 				   gchar                 *formdata,
-				   SoupMessageCallbackFn  callback)
+				   SoupSessionCallback    callback)
 {
 	SoupMessage *msg;
 
@@ -474,16 +476,16 @@ network_post_data (const gchar           *url,
 
 	msg = soup_message_new ("POST", url);
 	
-	soup_message_add_header (msg->request_headers,
-							 "X-Twitter-Client", PACKAGE_NAME);
-	soup_message_add_header (msg->request_headers,
-							 "X-Twitter-Client-Version", PACKAGE_VERSION);
-	soup_message_add_header (msg->request_headers,
-							 "X-Twitter-Client-URL", TWITUX_HEADER_URL);
+	soup_message_headers_append (msg->request_headers,
+								 "X-Twitter-Client", PACKAGE_NAME);
+	soup_message_headers_append (msg->request_headers,
+								 "X-Twitter-Client-Version", PACKAGE_VERSION);
+	soup_message_headers_append (msg->request_headers,
+								 "X-Twitter-Client-URL", TWITUX_HEADER_URL);
 
 	soup_message_set_request (msg, 
 							  "application/x-www-form-urlencoded",
-							  SOUP_BUFFER_USER_OWNED,
+							  SOUP_MEMORY_TAKE,
 							  formdata,
 							  strlen (formdata));
 
@@ -529,8 +531,8 @@ network_save_data (SoupMessage *msg,
 
 	/* Save */
 	if (g_file_set_contents (tmp_file,
-							 msg->response.body,
-							 msg->response.length,
+							 msg->response_body->data,
+							 msg->response_body->length,
 							 NULL)) {
 		return tmp_file;
 	}
@@ -585,10 +587,8 @@ network_parser_free_lists ()
 static void
 network_cb_on_auth (SoupSession  *session,
 					SoupMessage  *msg,
-					const char   *auth_type,
-					const char   *auth_realm,
-					char        **username,
-					char        **password,
+					SoupAuth     *auth,
+					gboolean      retrying,
 					gpointer      data)
 {
 	TwituxConf *conf;
@@ -618,10 +618,8 @@ network_cb_on_auth (SoupSession  *session,
 #endif
 
 	/* verify that the password has been set */
-	if (!G_STR_EMPTY (user_passwd)) {
-		*username = g_strdup (user_id);
-		*password = g_strdup (user_passwd);
-	}
+	if (!G_STR_EMPTY (user_passwd))
+		soup_auth_authenticate (auth, user_id, user_passwd);
 	
 	if (user_id)
 		g_free (user_id);
@@ -633,7 +631,8 @@ network_cb_on_auth (SoupSession  *session,
 
 /* On verify credentials */
 static void
-network_cb_on_login (SoupMessage *msg,
+network_cb_on_login (SoupSession *session,
+					 SoupMessage *msg,
 					 gpointer     user_data)
 {
 	twitux_debug (DEBUG_DOMAIN,
@@ -651,13 +650,10 @@ network_cb_on_login (SoupMessage *msg,
 
 /* On post a tweet */
 static void
-network_cb_on_post (SoupMessage *msg,
+network_cb_on_post (SoupSession *session,
+					SoupMessage *msg,
 					gpointer     user_data)
 {
-	/* Free buffer memory
-	 * Review: we need to free something more? */
-	g_free (msg->request.body);
-	
 	if (network_check_http (msg->status_code)) {
 		twitux_app_set_statusbar_msg (_("Status Sent"));
 	}
@@ -669,13 +665,10 @@ network_cb_on_post (SoupMessage *msg,
 
 /* On send a direct message */
 static void
-network_cb_on_message (SoupMessage *msg,
+network_cb_on_message (SoupSession *session,
+					   SoupMessage *msg,
 					   gpointer     user_data)
 {
-	/* Free buffer memory
-	 * Review: we need to free something more? */
-	g_free (msg->request.body);
-
 	if (network_check_http (msg->status_code)) {
 		twitux_app_set_statusbar_msg (_("Message Sent"));
 	}
@@ -687,7 +680,8 @@ network_cb_on_message (SoupMessage *msg,
 
 /* On get a timeline */
 static void
-network_cb_on_timeline (SoupMessage *msg,
+network_cb_on_timeline (SoupSession *session,
+						SoupMessage *msg,
 						gpointer     user_data)
 {
 	gchar        *file;
@@ -741,7 +735,8 @@ network_cb_on_timeline (SoupMessage *msg,
 
 /* On get user followers */
 static void
-network_cb_on_users (SoupMessage *msg,
+network_cb_on_users (SoupSession *session,
+					 SoupMessage *msg,
 					 gpointer     user_data)
 {
 	gboolean  friends = GPOINTER_TO_INT(user_data);
@@ -784,7 +779,8 @@ network_cb_on_users (SoupMessage *msg,
 
 /* On get a image */
 static void
-network_cb_on_image (SoupMessage *msg,
+network_cb_on_image (SoupSession *session,
+					 SoupMessage *msg,
 					 gpointer     user_data)
 {
 	TwituxImage *image = (TwituxImage *)user_data;
@@ -796,8 +792,8 @@ network_cb_on_image (SoupMessage *msg,
 	if (network_check_http (msg->status_code)) {
 		/* Save image data */
 		if (g_file_set_contents (image->src,
-								 msg->response.body,
-								 msg->response.length,
+								 msg->response_body->data,
+								 msg->response_body->length,
 								 NULL)) {
 			/* Set image from file here (image_file) */
 			twitux_app_set_image (image->src,image->iter);
@@ -811,7 +807,8 @@ network_cb_on_image (SoupMessage *msg,
 
 /* On add a user */
 static void
-network_cb_on_add (SoupMessage *msg,
+network_cb_on_add (SoupSession *session,
+				   SoupMessage *msg,
 				   gpointer     user_data)
 {
 	TwituxUser *user;
@@ -848,7 +845,8 @@ network_cb_on_add (SoupMessage *msg,
 
 /* On remove a user */
 static void
-network_cb_on_del (SoupMessage *msg,
+network_cb_on_del (SoupSession *session,
+				   SoupMessage *msg,
 				   gpointer     user_data)
 {
 	twitux_debug (DEBUG_DOMAIN,
