@@ -1,10 +1,11 @@
 NEW in ?:
 ==============
-- 
+- Fixed #1882842, port to libsoup 2.4 api. Patch provided by Dan Winship.
+- Cleaned up code to quite some compiler warnings.
 
 NEW in 0.6:
 ==============
-- Fized #1778008, Main window does not resize.
+- Fixed #1778008, Main window does not resize.
 - Fixed #1773179, UI doesn't remember position.
 - Fixed #1775052, add spell checking support.
 - Fixed #1775053, add NetworkManager support.
