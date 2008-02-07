@@ -25,6 +25,7 @@
 
 #include <gtk/gtk.h>
 
+#include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-debug.h>
 
 #include "twitux.h"
@@ -63,7 +64,6 @@ static void
 twitux_tweet_list_class_init (TwituxTweetListClass *klass)
 {
 	GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
 	object_class->finalize = tweet_list_finalize;
 

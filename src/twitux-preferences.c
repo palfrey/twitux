@@ -26,6 +26,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 #include <glade/glade.h>
 #include <glib/gi18n.h>
@@ -81,7 +83,6 @@ enum {
 };
 
 static void     preferences_setup_widgets          (TwituxPrefs            *prefs);
-static void     preferences_language_setup         (TwituxPrefs            *prefs);
 static void     preferences_languages_add          (TwituxPrefs            *prefs);
 static void     preferences_languages_save         (TwituxPrefs            *prefs);
 static gboolean preferences_languages_save_foreach (GtkTreeModel           *model,
@@ -463,7 +464,6 @@ preferences_reload_setup (TwituxPrefs *prefs)
 	GtkListStore    *model;
 	GtkTreeIter      iter;
 	GtkCellRenderer *renderer;
-	gint             i;
 	reload_time     *options;
 
 	options = reload_list;

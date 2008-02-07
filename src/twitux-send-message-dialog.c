@@ -28,10 +28,12 @@
 #include <gtk/gtk.h>
 #include <glade/glade.h>
 
+#include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-debug.h>
 
 #include "twitux.h"
 #include "twitux-send-message-dialog.h"
+#include "twitux-spell.h"
 #include "twitux-spell-dialog.h"
 #include "twitux-glade.h"
 #include "twitux-network.h"

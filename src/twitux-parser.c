@@ -22,6 +22,9 @@
  */
 
 #include <config.h>
+
+#include <time.h>
+
 #include <gtk/gtk.h>
 #include <glib/gstdio.h>
 #include <glib/gi18n.h>
@@ -33,8 +36,9 @@
 #include <libtwitux/twitux-conf.h>
 
 #include "twitux.h"
-#include "twitux-parser.h"
 #include "twitux-app.h"
+#include "twitux-network.h"
+#include "twitux-parser.h"
 #include "twitux-tweet-list.h"
 
 #define DEBUG_DOMAIN_SETUP       "Parser" 

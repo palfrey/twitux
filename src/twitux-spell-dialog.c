@@ -38,6 +38,7 @@
 
 #include "twitux-glade.h"
 #include "twitux-send-message-dialog.h"
+#include "twitux-spell.h"
 #include "twitux-spell-dialog.h"
 
 typedef struct {

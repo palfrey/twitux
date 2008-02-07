@@ -1,5 +1,14 @@
 2008-02-07  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* src/twitux-preferences.c:
+	* src/twitux-tweet-list.c: Add includes and remove some unused crap.
+
+	* src/twitux-parser.c:
+	* src/twitux-spell-dialog.c:
+	* src/twitux-send-message-dialog.c: Add missing includes.
+
+2008-02-07  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* src/twitux-app.c: Add missing include on twitux-account-dialog.h
 
 	* src/twitux-ui-utils.h: Add missing twitux_window_get_is_visible function
