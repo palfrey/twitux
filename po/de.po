@@ -24,7 +24,7 @@ msgstr "OK, ausgeloggt."
 
 #: ../src/callbacks.c:232
 msgid "Ok, new home timeline saved."
-msgstr "OK, neue persönliche Zeitachse gespeichert."
+msgstr "OK, neue persÃ¶nliche Zeitachse gespeichert."
 
 #: ../src/callbacks.c:603
 msgid "Compressing URL..."
@@ -91,7 +91,7 @@ msgstr "Verschicke Direktnachricht..."
 
 #: ../src/gui.c:312
 msgid "Set as home timeline"
-msgstr "Als persönliche Zeitachse einrichten."
+msgstr "Als persÃ¶nliche Zeitachse einrichten."
 
 #. Menu ver
 #: ../src/gui.c:331
@@ -100,11 +100,11 @@ msgstr "_Ansicht"
 
 #: ../src/gui.c:335
 msgid "Home timeline"
-msgstr "Persönliche Zeitachse"
+msgstr "PersÃ¶nliche Zeitachse"
 
 #: ../src/gui.c:339
 msgid "Public timeline"
-msgstr "Öffentliche Zeitachse"
+msgstr "Ã–ffentliche Zeitachse"
 
 #: ../src/gui.c:343
 msgid "Friends timeline"
@@ -193,24 +193,24 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., \n"
 "59 Temple Place, Suite 330, \n"
 "Boston, MA  02111-1307  USA"
-msgstr "Dieses Programm ist freie Software, Sie können sie weitergeben und/oder\n"
-"verändern solange Sie sich an die Regeln der GNU General Public License\n"
+msgstr "Dieses Programm ist freie Software, Sie kÃ¶nnen sie weitergeben und/oder\n"
+"verÃ¤ndern solange Sie sich an die Regeln der GNU General Public License\n"
 "halten, so wie sie von der Free Software Foundation festgelegt wurden;\n"
 "entweder in Version 2 der Lizenz oder (nach Ihrem Ermessen) in jeder folgenden Lizenz.\n"
 "\n"
-"Dieses Programm wurde mit dem Ziel veröffentlicht, dass Sie es nützlich finden,\n"
+"Dieses Programm wurde mit dem Ziel verÃ¶ffentlicht, dass Sie es nÃ¼tzlich finden,\n"
 "jedoch OHNE JEDWEDE GARANTIE, sogar ohne eine implizite Garantie\n"
-"der VERKAUFBARKEIT oder der NUTZBARKEIT FÜR EINEN SPEZIELLEN ZWECK.\n"
-"Schauen Sie für weitere Informationen bitten in der GNU General Public License (GNU GPL) nach.\n"
+"der VERKAUFBARKEIT oder der NUTZBARKEIT FÃœR EINEN SPEZIELLEN ZWECK.\n"
+"Schauen Sie fÃ¼r weitere Informationen bitten in der GNU General Public License (GNU GPL) nach.\n"
 "\n"
-"Mit diesem Programm sollten Sie außerdem eine Kopie der GNU General Public License erhalten\n"
+"Mit diesem Programm sollten Sie auÃŸerdem eine Kopie der GNU General Public License erhalten\n"
 "haben. Wenn dem nicht so ist, so schreiben Sie bitte an die\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: ../src/gui.c:633
 msgid "A Twitter client for the Gnome desktop"
-msgstr "Ein Twitter-Client für den Gnome-Desktop"
+msgstr "Ein Twitter-Client fÃ¼r den Gnome-Desktop"
 
 #: ../src/gui.c:636
 msgid "Visit Twitux web site"
@@ -236,7 +236,7 @@ msgstr "%s - Verschicke eine Direktnachricht"
 
 #: ../src/gui.c:798
 msgid "<b>Select a friend:</b>"
-msgstr "<b>Wähle einen Freund:</b>"
+msgstr "<b>WÃ¤hle einen Freund:</b>"
 
 #: ../src/gui.c:807
 msgid "<b>Write the message:</b>"
@@ -244,7 +244,7 @@ msgstr "<b>Schreibe die Nachricht:</b>"
 
 #: ../src/gui.c:854
 msgid "Url to tinyze:"
-msgstr "URL für tinyurl:"
+msgstr "URL fÃ¼r tinyurl:"
 
 #: ../src/gui.c:869
 msgid "Ok"

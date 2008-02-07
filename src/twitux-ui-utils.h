@@ -24,6 +24,7 @@
 #include <gtk/gtkwidget.h>
 
 /* Windows */
+gboolean     twitux_window_get_is_visible          (GtkWindow        *window);
 gboolean     twitux_window_get_is_present          (GtkWindow        *window);
 void         twitux_window_present                 (GtkWindow        *window,
 													gboolean          steal_focus);

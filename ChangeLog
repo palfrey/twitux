@@ -1,3 +1,13 @@
+2008-02-07  Brian Pepple  <bpepple@kennedy>
+
+	* src/twitux-app.c: Add missing include on twitux-account-dialog.h
+
+	* src/twitux-ui-utils.h: Add missing twitux_window_get_is_visible function
+	to header.
+
+	* libtwitux/twitux-keyring.c (account_gnome_keyring_result_to_string):
+	Add enumercation for GNOME_KEYRING_RESULT_NO_MATCH to quite compiler.
+
 2008-02-05  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* configure.in:

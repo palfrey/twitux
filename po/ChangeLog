@@ -1,3 +1,9 @@
+2008-02-07  Brian Pepple  <bpepple@kennedy>
+
+	* fr.po:
+	* de.po: convert to UTF-8.
+	
+
 2007-12-23  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* POTFILES.in: Add twitux-network.c & twitux-parser.c

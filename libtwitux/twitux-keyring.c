@@ -54,6 +54,8 @@ account_gnome_keyring_result_to_string (GnomeKeyringResult result)
 		return "GNOME_KEYRING_RESULT_CANCELLED";
 	case GNOME_KEYRING_RESULT_ALREADY_EXISTS:
 		return "GNOME_KEYRING_RESULT_ALREADY_EXISTS";
+	case GNOME_KEYRING_RESULT_NO_MATCH:
+		return "GNOME_KEYRING_RESULT_NO_MATCH";
 	}
 
 	return "";

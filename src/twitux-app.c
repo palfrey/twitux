@@ -38,6 +38,7 @@
 
 #include "twitux.h"
 #include "twitux-about.h"
+#include "twitux-account-dialog.h"
 #include "twitux-app.h"
 #include "twitux-geometry.h"
 #include "twitux-glade.h"
@@ -221,7 +222,6 @@ static void
 app_setup (void)
 {
 	TwituxAppPriv    *priv;
-	TwituxConf       *conf;
 	GladeXML         *glade;
 	GtkWidget        *scrolled_window;
 	GtkWidget        *expand_vbox;

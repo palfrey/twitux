@@ -20,11 +20,11 @@ msgstr ""
 
 #: ../src/callbacks.c:199
 msgid "Ok, logged out."
-msgstr "OK, déconnecté."
+msgstr "OK, dÃ©connectÃ©."
 
 #: ../src/callbacks.c:232
 msgid "Ok, new home timeline saved."
-msgstr "OK, le nouvel axe de temps personnalisé est sauvé."
+msgstr "OK, le nouvel axe de temps personnalisÃ© est sauvÃ©."
 
 #: ../src/callbacks.c:603
 msgid "Compressing URL..."
@@ -88,11 +88,11 @@ msgstr "_Twitter"
 
 #: ../src/gui.c:306
 msgid "Send a direct message..."
-msgstr "Envoyer un message à un(e) ami(e)..."
+msgstr "Envoyer un message Ã  un(e) ami(e)..."
 
 #: ../src/gui.c:312
 msgid "Set as home timeline"
-msgstr "Définir un axe de temps personnalisé"
+msgstr "DÃ©finir un axe de temps personnalisÃ©"
 
 #. Menu ver
 #: ../src/gui.c:331
@@ -122,7 +122,7 @@ msgstr "Messages amicaux"
 
 #: ../src/gui.c:363
 msgid "Replies"
-msgstr "Réponses"
+msgstr "RÃ©ponses"
 
 #: ../src/gui.c:368
 msgid "My timeline"
@@ -131,11 +131,11 @@ msgstr "Mon axe de temps"
 #. Submenu opciones avanzadas
 #: ../src/gui.c:376
 msgid "Set advanced options"
-msgstr "Définir les options avancées"
+msgstr "DÃ©finir les options avancÃ©es"
 
 #: ../src/gui.c:380
 msgid "Expand messages"
-msgstr "Étendre les messages"
+msgstr "Ã‰tendre les messages"
 
 #: ../src/gui.c:383
 msgid "Show gui notifications"
@@ -161,7 +161,7 @@ msgstr "Rapporter un bug..."
 #: ../src/gui.c:507
 #, c-format
 msgid "%s - Log in"
-msgstr "%s - Connecté"
+msgstr "%s - ConnectÃ©"
 
 #: ../src/gui.c:557
 msgid "<b>Username or e-mail:</b>"
@@ -233,7 +233,7 @@ msgstr "<b>Que faites-vous ?</b>"
 #: ../src/gui.c:755
 #, c-format
 msgid "%s - Send a direct message"
-msgstr "%s - Envoyer un message à un(e) ami(e)"
+msgstr "%s - Envoyer un message Ã  un(e) ami(e)"
 
 #: ../src/gui.c:798
 msgid "<b>Select a friend:</b>"
@@ -241,11 +241,11 @@ msgstr "<b>Choisissez un(e) ami(e) :</b>"
 
 #: ../src/gui.c:807
 msgid "<b>Write the message:</b>"
-msgstr "<b>Écrivez le message :</b>"
+msgstr "<b>Ã‰crivez le message :</b>"
 
 #: ../src/gui.c:854
 msgid "Url to tinyze:"
-msgstr "URL pour tinyurl (à comprimer) :"
+msgstr "URL pour tinyurl (Ã  comprimer) :"
 
 #: ../src/gui.c:869
 msgid "Ok"
@@ -281,19 +281,19 @@ msgstr "Erreur lors de la lecture du message."
 
 #: ../src/network.c:256
 msgid "Ok, connected :)"
-msgstr "OK, connecté :)"
+msgstr "OK, connectÃ© :)"
 
 #: ../src/network.c:270
 msgid "Friends parser error."
-msgstr "Erreur lors de la récupération des amis"
+msgstr "Erreur lors de la rÃ©cupÃ©ration des amis"
 
 #: ../src/network.c:290
 msgid "Ok, parsing..."
-msgstr "OK, récupération..."
+msgstr "OK, rÃ©cupÃ©ration..."
 
 #: ../src/network.c:301
 msgid "Ok, timeline loaded."
-msgstr "OK, Axe de temps chargé."
+msgstr "OK, Axe de temps chargÃ©."
 
 #: ../src/network.c:305
 msgid "Timeline parser error."
@@ -301,23 +301,23 @@ msgstr "Erreur lors de la lecture de l'axe de temps"
 
 #: ../src/network.c:332
 msgid "Fail, wrong response."
-msgstr "Erreur, mauvaise réponse."
+msgstr "Erreur, mauvaise rÃ©ponse."
 
 #: ../src/network.c:379
 msgid "Ok, status sent! :)"
-msgstr "OK, statut envoyé ! :)"
+msgstr "OK, statut envoyÃ© ! :)"
 
 #: ../src/network.c:398
 msgid "Ok, message sent! :)"
-msgstr "OK, message envoyé ! :)"
+msgstr "OK, message envoyÃ© ! :)"
 
 #: ../src/network.c:531
 msgid "Stopped."
-msgstr "Arrêté"
+msgstr "ArrÃªtÃ©"
 
 #: ../src/network.c:537
 msgid "Access denied. Please login."
-msgstr "Accès interdit. Veuillez vous identifier."
+msgstr "AccÃ¨s interdit. Veuillez vous identifier."
 
 #: ../src/network.c:543
 msgid "HTTP communication error."
@@ -326,5 +326,5 @@ msgstr "Erreur de communication HTTP."
 #: ../src/twitter.c:476
 #, c-format
 msgid "you have %i new tweet(s) to read!"
-msgstr "Vous avez %i nouveau(x) tweet(s) à lire !"
+msgstr "Vous avez %i nouveau(x) tweet(s) Ã  lire !"
 
