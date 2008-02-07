@@ -1,4 +1,4 @@
-2008-02-07  Brian Pepple  <bpepple@kennedy>
+2008-02-07  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-app.c: Add missing include on twitux-account-dialog.h
 
