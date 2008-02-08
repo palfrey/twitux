@@ -50,11 +50,13 @@ G_BEGIN_DECLS
 #define TWITUX_PREFS_UI_WINDOW_WIDTH          TWITUX_PREFS_PATH "/ui/main_window_width"
 #define TWITUX_PREFS_UI_WIN_POS_X             TWITUX_PREFS_PATH "/ui/main_window_pos_x"
 #define TWITUX_PREFS_UI_WIN_POS_Y             TWITUX_PREFS_PATH "/ui/main_window_pos_y"
-#define TWITUX_PREFS_UI_WINDOW_HIDE           TWITUX_PREFS_PATH "/ui/hide"
+#define TWITUX_PREFS_UI_MAIN_WINDOW_HIDDEN	  TWITUX_PREFS_PATH "/ui/main_window_hidden"
 #define TWITUX_PREFS_UI_EXPAND_MESSAGES       TWITUX_PREFS_PATH "/ui/expand_messages"
 #define TWITUX_PREFS_UI_NOTIFICATION          TWITUX_PREFS_PATH "/ui/notify"
 #define TWITUX_PREFS_UI_SPELL_LANGUAGES       TWITUX_PREFS_PATH "/ui/spell_checker_languages"
 #define TWITUX_PREFS_UI_SPELL                 TWITUX_PREFS_PATH "/ui/spell"
+
+#define TWITUX_PREFS_HINTS_CLOSE_MAIN_WINDOW  TWITUX_PREFS_PATH "/hints/close_main_window"
 
 /* Proxy configuration */
 #define TWITUX_PROXY                          "/system/http_proxy"

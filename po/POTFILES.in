@@ -13,6 +13,7 @@ data/twitux.schemas.in
 
 src/twitux-about.c
 src/twitux-app.c
+src/twitux-hint.c
 src/twitux-main.c
 src/twitux-network.c
 src/twitux-parser.c

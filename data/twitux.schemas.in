@@ -122,16 +122,16 @@
      </schema>
      
      <schema>
-	<key>/schemas/apps/twitux/ui/hide</key>
-	<applyto>/apps/twitux/ui/hide</applyto>
-	<owner>twitux</owner>
-	<type>bool</type>
-	<default>false</default>
-	<locale name="C">
-	   <short>Is the main window hidden</short>
-	   <long>Is the main window hidden</long>
-	</locale>
-     </schema>
+       <key>/schemas/apps/twitux/ui/main_window_hidden</key>
+       <applyto>/apps/twitux/ui/main_window_hidden</applyto>
+       <owner>twitux</owner>
+       <type>bool</type>
+       <default>false</default>
+       <locale name="C">
+          <short>Hide main window</short>
+          <long>Hide the main window.</long>
+       </locale>
+    </schema>
      
      <schema>
 	<key>/schemas/apps/twitux/ui/expand_messages</key>
@@ -182,6 +182,21 @@
 	   <long>Enable spell checking.</long>
 	</locale>
      </schema>
+     
+     <schema>
+      <key>/schemas/apps/twitux/hints/close_main_window</key>
+      <applyto>/apps/twitux/hints/close_main_window</applyto>
+      <owner>twitux</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+        <short>Show hint about closing the main window</short>
+		<long>
+			Whether or not to show the message dialog about closing the
+      		main window with the 'x' button in the title bar.
+		</long>
+      </locale>
+    </schema>
 
   </schemalist>  
 </gconfschemafile>

@@ -105,6 +105,11 @@ static void     twitux_app_init			         (TwituxApp             *app);
 static void     app_finalize                     (GObject               *object);
 static void     app_restore_main_window_geometry (GtkWidget             *main_window);
 static void     app_setup                        (void);
+static gboolean app_main_window_quit_confirm 	 (TwituxApp             *app,
+												  GtkWidget             *window);
+static void     app_main_window_quit_confirm_cb	 (GtkWidget             *dialog,
+												  gint                   response,
+												  TwituxApp             *app);
 static void     app_main_window_destroy_cb       (GtkWidget             *window,
 												  TwituxApp             *app);
 static gboolean app_main_window_delete_event_cb  (GtkWidget             *window,
@@ -327,6 +332,47 @@ app_setup (void)
 		app_login ();
 }
 
+static gboolean
+app_main_window_quit_confirm (TwituxApp *app,
+							  GtkWidget *window)
+{
+	TwituxAppPriv *priv;
+	GtkWidget *dialog;
+	
+	priv = GET_PRIV (app);
+	
+	dialog = gtk_message_dialog_new_with_markup	(GTK_WINDOW (twitux_app_get_window ()),
+												 0,
+												 GTK_MESSAGE_WARNING,
+												 GTK_BUTTONS_OK_CANCEL,
+												 "<b>%s</b>",
+												 _("Do you really want to quit?"));
+
+	g_signal_connect (dialog, "response",
+					  G_CALLBACK (app_main_window_quit_confirm_cb),
+					  app);
+
+	gtk_widget_show (dialog);
+
+	return TRUE;
+}
+
+static void
+app_main_window_quit_confirm_cb (GtkWidget *dialog,
+								 gint       response,
+								 TwituxApp *app)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	gtk_widget_destroy (dialog);
+
+	if (response == GTK_RESPONSE_OK) {
+		gtk_widget_destroy (priv->window);
+	}
+}
+
 static void
 app_main_window_destroy_cb (GtkWidget *window, TwituxApp *app)
 {
@@ -352,7 +398,47 @@ app_main_window_delete_event_cb (GtkWidget *window,
 
 	priv = GET_PRIV (app);
 
-	/* TODO: We need to check the tray before quiting. */
+	if (gtk_status_icon_is_embedded (priv->status_icon)) {
+		twitux_hint_show (TWITUX_PREFS_HINTS_CLOSE_MAIN_WINDOW,
+						  _("Twitux is still running, it is just hidden."),
+						  _("Click on the notification area icon to show Twitux."),
+						   GTK_WINDOW (twitux_app_get_window ()),
+						   NULL, NULL);
+		
+		twitux_app_set_visibility (FALSE);
+
+		return TRUE;
+	}
+
+	if (app_main_window_quit_confirm (app, window)) {
+		/* Don't quit if we have messages open */
+		return TRUE;
+	}
+	
+	if (twitux_hint_dialog_show (TWITUX_PREFS_HINTS_CLOSE_MAIN_WINDOW,
+								_("You were about to quit!"),
+								_("Since no system or notification tray has been "
+								"found, this action would normally quit Twitux.\n\n"
+								"This is just a reminder, from now on, Twitux will "
+								"quit when performing this action unless you uncheck "
+								"the option below."),
+								GTK_WINDOW (twitux_app_get_window ()),
+								NULL, NULL)) {
+		/* Shown, we don't quit because the callback will
+		 * decide that based on the YES|NO response from the
+		 * question we are about to ask, since this behaviour
+		 * is new.
+		 */
+		return TRUE;
+	}
+
+	/* At this point, we have checked we have:
+	 *   - No tray
+	 *   - No pending messages
+	 *   - Have NOT shown the hint
+	 *
+	 * So we just quit.
+	 */
 
 	return FALSE;
 }
@@ -393,15 +479,33 @@ twitux_app_toggle_visibility (void)
 		gtk_widget_hide (priv->window);
 
 		twitux_conf_set_bool (twitux_conf_get (),
-							  TWITUX_PREFS_UI_WINDOW_HIDE,
+							  TWITUX_PREFS_UI_MAIN_WINDOW_HIDDEN,
 							  TRUE);
 	} else {
 		twitux_geometry_load_for_main_window (priv->window);
 		twitux_window_present (GTK_WINDOW (priv->window), TRUE);
 
 		twitux_conf_set_bool (twitux_conf_get (),
-							  TWITUX_PREFS_UI_WINDOW_HIDE,
+							  TWITUX_PREFS_UI_MAIN_WINDOW_HIDDEN,
 							  FALSE);
+	}
+}
+
+void
+twitux_app_set_visibility (gboolean visible)
+{
+	GtkWidget *window;
+
+	window = twitux_app_get_window ();
+
+	twitux_conf_set_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_MAIN_WINDOW_HIDDEN,
+						  !visible);
+
+	if (visible) {
+		twitux_window_present (GTK_WINDOW (window), TRUE);
+	} else {
+		gtk_widget_hide (window);
 	}
 }
 

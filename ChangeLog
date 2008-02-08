@@ -1,3 +1,12 @@
+2008-02-08  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/twitux.schemas.in:
+	* src/twitux.h:
+	* src/twitux-app.[ch]:
+	* src/twitux-hint.[ch]:
+	* src/Makefile.am: Instead of quitting application when hitting the 'X'
+	on the main window, it will instead minimize to the tray. (#1887777)
+
 2008-02-07  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-preferences.c:
