@@ -889,8 +889,6 @@ app_login (void)
 	gchar         *username;
 	gchar         *password;
 
-	priv = GET_PRIV (app);
-
 #ifdef HAVE_DBUS
 	gboolean connected = TRUE;
 
@@ -902,6 +900,8 @@ app_login (void)
 		return;
 	}
 #endif
+	
+	priv = GET_PRIV (app);
 
 	conf = twitux_conf_get ();
 	twitux_conf_get_string (conf,
@@ -1119,8 +1119,8 @@ void
 twitux_app_add_friend (TwituxUser *user)
 {
 	TwituxAppPriv *priv;
-	GtkWidget *menu;
-	GtkWidget *item;
+	GtkWidget	  *menu;
+	GtkWidget	  *item;
 
 	priv = GET_PRIV (app);
 
@@ -1184,11 +1184,10 @@ twitux_app_set_image (const gchar *file,
                       GtkTreeIter iter)
 {
 	GtkListStore *store;
-	GdkPixbuf *pixbuf;
-	GError *error = NULL;
+	GdkPixbuf	 *pixbuf;
+	GError		 *error = NULL;
 
 	pixbuf = gdk_pixbuf_new_from_file (file, &error);
-	store = twitux_tweet_list_get_store ();
 
 	if (!pixbuf){
 		twitux_debug (DEBUG_DOMAIN_SETUP, "Image error: %s: %s",
@@ -1196,6 +1195,8 @@ twitux_app_set_image (const gchar *file,
 		g_error_free (error);
 		return;
 	}
+	
+	store = twitux_tweet_list_get_store ();
 
 	gtk_list_store_set (store, &iter,
 						PIXBUF_AVATAR, pixbuf, -1);
@@ -1207,17 +1208,20 @@ twitux_app_expand_message (const gchar *name,
                            const gchar *tweet,
                            GdkPixbuf   *pixbuf)
 {
-	TwituxAppPriv *priv = GET_PRIV (app);
-	gchar *title_text;
-
-	gtk_widget_show (GTK_WIDGET (priv->expand_box));
+	TwituxAppPriv *priv;
+	gchar 		  *title_text;
+	
+	priv = GET_PRIV (app);
 
 	title_text = g_strdup_printf ("<b>%s</b> - %s", name, date);
 		
 	twitux_label_set_text (TWITUX_LABEL (priv->expand_label), tweet);
 	gtk_label_set_markup (GTK_LABEL (priv->expand_title), title_text);
+	g_free (title_text);
+	
 	if (pixbuf) {
 		gtk_image_set_from_pixbuf (GTK_IMAGE (priv->expand_image), pixbuf);
 	}
-	g_free (title_text);
+	
+	gtk_widget_show (priv->expand_box);
 }
