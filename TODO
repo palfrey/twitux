@@ -1,9 +1,6 @@
-* Working on:
--- Better login system
--- Code cleanup
-
 * To-do
--- Proxy support
--- Memory profiling of Twitux, it's leaking pretty bad.
+--	UI clean-up.  The list-view & expand window need some *serious* work so that the text isn't being clipped
+	like it currently is.
+--	Memory profiling of Twitux, it's leaking pretty bad.
 
 
