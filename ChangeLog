@@ -1,5 +1,10 @@
 2008-02-08  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* src/twitux-app.c: actually connect the configure_event signal to its
+	function. D'oh!
+
+2008-02-08  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* src/twitux-app.c: Set the main window visibility during start-up from the user's
 	gconf value.
 

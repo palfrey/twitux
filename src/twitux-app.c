@@ -262,6 +262,7 @@ app_setup (void)
 						  app,
 						  "main_window", "destroy", app_main_window_destroy_cb,
 						  "main_window", "delete_event", app_main_window_delete_event_cb,
+						  "main_window", "configure_event", app_window_configure_event_cb,
 						  "twitter_connect", "activate", app_twitter_connect_cb,
 						  "twitter_disconnect", "activate", app_twitter_disconnect_cb,
 						  "twitter_new_message", "activate", app_twitter_new_msg_cb,
