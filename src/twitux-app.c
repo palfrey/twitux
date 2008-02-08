@@ -227,10 +227,12 @@ static void
 app_setup (void)
 {
 	TwituxAppPriv    *priv;
+	TwituxConf		 *conf;
 	GladeXML         *glade;
 	GtkWidget        *scrolled_window;
 	GtkWidget        *expand_vbox;
 	gboolean          login;
+	gboolean		  hidden;
 
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Beginning....");
 
@@ -283,7 +285,7 @@ app_setup (void)
 	app_connection_items_setup (glade);
 	g_object_unref (glade);
 
-	/* Let's hide the main window */
+	/* Let's hide the main window, while we are setting up the ui */
 	gtk_widget_hide (GTK_WIDGET (priv->window));
 
 #ifdef HAVE_DBUS
@@ -296,6 +298,9 @@ app_setup (void)
 				  "Configuring notification area widget...");
 	app_status_icon_create_menu ();
 	app_status_icon_create ();
+	
+	/* Set the main window geometry */ 	 
+	app_restore_main_window_geometry (priv->window);
 
 	/* Set-up list view */
 	priv->listview = twitux_tweet_list_new ();
@@ -317,14 +322,23 @@ app_setup (void)
 	/* Check Twitux directory and images cache */
 	app_check_dir ();
 
-	/* Set the main window geometry */ 	 
-	app_restore_main_window_geometry (priv->window);
-
-	/* Show the main window */
-	gtk_widget_show (GTK_WIDGET (priv->window));
+	/* Assign the conf object to a variable since we're using it more than once */
+	conf = twitux_conf_get ();
+	
+	/* Get the gconf value for whether the window should be hidden on start-up */
+	twitux_conf_get_bool (conf,
+						  TWITUX_PREFS_UI_MAIN_WINDOW_HIDDEN,
+						  &hidden);
+	
+	/* Ok, set the window state based on the gconf value */				  
+	if (hidden) {
+		gtk_widget_hide (priv->window);
+	} else {
+		gtk_widget_show (priv->window);
+	}
 
 	/*Check to see if we should automatically login */
-	twitux_conf_get_bool (twitux_conf_get (),
+	twitux_conf_get_bool (conf,
 						  TWITUX_PREFS_AUTH_AUTO_LOGIN,
 						  &login);
 
