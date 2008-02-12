@@ -38,7 +38,7 @@ GTK_REQUIRED=2.10.0
 LIBGLADE_REQUIRED=2.0.0
 GCONF_REQUIRED=1.2.0
 LIBGNOME_REQUIRED=2.0.0
-LIBGNOMEVFS_REQUIRED=2.0.0
+LIBGIO_REQUIRED=2.15.5
 DBUS_REQUIRED=0.61
 
 dnl -----------------------------------------------------------
@@ -139,7 +139,7 @@ PKG_CHECK_MODULES(TWITUX,
 	libglade-2.0 >= $LIBGLADE_REQUIRED
 	glib-2.0 >= $GLIB_REQUIRED
 	libgnomeui-2.0 >= $LIBGNOME_REQUIRED
-	gnome-vfs-2.0 >= $LIBGNOMEVFS_REQUIRED
+	gio-2.0 >= $LIBGIO_REQUIRED
 	libsoup-2.4
 	libnotify
 	$iso_codes_pkgconfig

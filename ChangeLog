@@ -1,3 +1,9 @@
+2008-02-12  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* configure.in:
+	* src/twitux-about.c:
+	* src/twitux-label.c: Port code from gnomevfs to gio.
+
 2008-02-08  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-app.c: actually connect the configure_event signal to its

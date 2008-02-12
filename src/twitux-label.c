@@ -25,8 +25,8 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <gio/gio.h>
 #include <libsexy/sexy-url-label.h>
-#include <libgnomevfs/gnome-vfs.h>
 
 #include "twitux-label.h"
 #include "twitux-network.h"
@@ -60,17 +60,17 @@ static void
 twitux_label_init (TwituxLabel *label)
 {
 	g_signal_connect (label,
-			  "url-activated",
-			  G_CALLBACK (label_url_activated_cb),
-			  NULL);
+					  "url-activated",
+					  G_CALLBACK (label_url_activated_cb),
+					  NULL);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 	g_object_set (label,
-			"xalign", 0.0,
-			"yalign", 0.0,
-			"xpad", 6,
-			"ypad", 4,
-			NULL);
+				  "xalign", 0.0,
+				  "yalign", 0.0,
+				  "xpad", 6,
+				  "ypad", 4,
+				  NULL);
 }
 
 static void
@@ -81,17 +81,13 @@ twitux_label_finalize (GObject *object)
 
 static void
 label_url_activated_cb  (GtkWidget *url_label,
-			 gchar     *url,
-			 gpointer   user_data)
+						 gchar     *url,
+						 gpointer   user_data)
 {
-	GnomeVFSResult   result;
-
 	/* Open an URL */
-	if (!strncmp (url, "http://", 7) ||
-		!strncmp (url, "ftp://", 6)) 
+	if (!strncmp (url, "http://", 7) ||	!strncmp (url, "ftp://", 6)) 
 	{
-		result = gnome_vfs_url_show (url);
-		if (result != GNOME_VFS_OK) {
+		if (g_app_info_launch_default_for_uri (url, NULL, NULL) == FALSE) {
 			g_warning ("Couldn't show URL: '%s'", url);
 		}
 	} else {
@@ -122,7 +118,7 @@ twitux_label_set_text (TwituxLabel  *nav,
 }
 
 static char*
-label_create_href_alloc ( const char* url )
+label_create_href_alloc (const char* url)
 {
 	return g_strdup_printf ("<a href='%s'>%s</a>", url, url);
 }

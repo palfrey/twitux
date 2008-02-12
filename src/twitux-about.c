@@ -20,9 +20,9 @@
 
 #include <config.h>
 
+#include <gio/gio.h>
 #include <glib/gi18n.h>
 #include <gtk/gtkaboutdialog.h>
-#include <libgnomevfs/gnome-vfs.h>
 
 #include "twitux-about.h"
 
@@ -59,10 +59,7 @@ about_dialog_activate_link_cb (GtkAboutDialog *about,
 							   const gchar    *link,
 							   gpointer        data)
 {
-	GnomeVFSResult result;
-
-	result = gnome_vfs_url_show (link);
-	if (result != GNOME_VFS_OK) {
+	if (g_app_info_launch_default_for_uri (link, NULL, NULL) == FALSE) {
 		g_warning ("Couldn't show URL: '%s'", link);
 	}
 }
