@@ -32,8 +32,6 @@
 #include "twitux-label.h"
 #include "twitux-network.h"
 
-#define WORD_URL     1
-
 static void   twitux_label_class_init   (TwituxLabelClass *clas);
 static void   twitux_label_init         (TwituxLabel      *label);
 static void   twitux_label_finalize     (GObject          *object);
@@ -110,7 +108,7 @@ twitux_label_set_text (TwituxLabel  *nav,
 	g_free (parsed_text);
 }
 
-static gint
+static gboolean
 url_check_word (char *word, int len)
 {
 #define D(x) (x), ((sizeof (x)) - 1)
@@ -145,11 +143,11 @@ url_check_word (char *word, int len)
 					break;
 			}
 			if (j == l)
-				return WORD_URL;
+				return TRUE;
 		}
 	}
 	
-	return 0;
+	return FALSE;
 }
 
 static char*
@@ -164,16 +162,18 @@ label_msg_get_string (const char* message)
 		return NULL;
 	}
 	
+	/* TODO: Do we need to escape out <>&"' so that pango markup doesn't get confused? */
+	
 	/* surround urls with <a> markup so that sexy-url-label can link it */
 	tokens = g_strsplit_set (message, " \t\n", 0);
-	if (url_check_word (tokens[0], strlen (tokens[0])) == WORD_URL) {
+	if (url_check_word (tokens[0], strlen (tokens[0]))) {
 		result = g_strdup_printf ("<a href=\"%s\">%s</a>", tokens[0], tokens[0]);
 	} else {
 		result = g_strdup (tokens[0]);
 	}
 
 	for (i = 1; tokens[i]; i++) {
-		if (url_check_word (tokens[i], strlen (tokens[i])) == WORD_URL) {
+		if (url_check_word (tokens[i], strlen (tokens[i]))) {
 			temp = g_strdup_printf ("%s <a href=\"%s\">%s</a>", result, tokens[i], tokens[i]);
 			g_free (result);
 			result = temp;
