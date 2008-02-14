@@ -118,6 +118,7 @@ url_check_word (char *word, int len)
 		const char *s;
 		gint        len;
 	}
+	
 	prefix[] = {
 		{ D("ftp.") },
 		{ D("www.") },
