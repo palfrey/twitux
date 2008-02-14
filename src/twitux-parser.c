@@ -385,20 +385,9 @@ parser_twitux_node_status (xmlNode *a_node)
 			status->id = g_strdup ((const gchar *)tmp);
 		} else if (g_str_equal (cur_node->name, "text")) {
 			const xmlChar *msg;
-			gchar         *tmp;
 
 			msg = xmlBufferContent (buffer);
-
-			tmp = g_locale_to_utf8 ((const gchar *)msg,
-						-1,
-						NULL,
-						NULL,
-						NULL);
-
-			status->text = g_markup_escape_text (tmp,-1);
-
-			g_free (tmp);
-
+			status->text = g_markup_escape_text (msg, -1);
 		} else if (g_str_equal(cur_node->name, "sender") ||
 				   g_str_equal (cur_node->name, "user")) {
 

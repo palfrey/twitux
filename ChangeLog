@@ -1,3 +1,8 @@
+2008-02-14  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-parser.c: Why-O-why must Ubuntu never forward patches upstream?
+	Anyway here's a patch I grabbed from Ubuntu to handle utf8 responses.
+
 2008-02-13  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-label.c: Simplify the code to markup the url in a tweet.
