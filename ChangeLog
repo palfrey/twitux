@@ -1,3 +1,7 @@
+2008-02-13  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-label.c: Simplify the code to markup the url in a tweet.
+
 2008-02-12  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* configure.in:

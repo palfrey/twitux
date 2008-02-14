@@ -28,12 +28,11 @@
 #include <gio/gio.h>
 #include <libsexy/sexy-url-label.h>
 
+#include "twitux.h"
 #include "twitux-label.h"
 #include "twitux-network.h"
 
-#define ACCEPT_LETTER_URL "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:;/?@&=+$,-_.!~*'%"
-
-#define ACCEPT_LETTER_USER "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
+#define WORD_URL     1
 
 static void   twitux_label_class_init   (TwituxLabelClass *clas);
 static void   twitux_label_init         (TwituxLabel      *label);
@@ -42,7 +41,7 @@ static void   twitux_label_finalize     (GObject          *object);
 static void  label_url_activated_cb     (GtkWidget        *url_label,
                                          gchar            *url,
                                          gpointer          user_data);
-static char* label_parse_urls_alloc     (const char       *message);
+static char* label_msg_get_string       (const char       * message);
 
 G_DEFINE_TYPE (TwituxLabel, twitux_label, SEXY_TYPE_URL_LABEL);
 
@@ -110,7 +109,7 @@ twitux_label_set_text (TwituxLabel  *nav,
 	if (!text)
 		return;
 	
-	parsed_text = label_parse_urls_alloc (text);
+	parsed_text = label_msg_get_string (text);
 	
 	sexy_url_label_set_markup (SEXY_URL_LABEL (nav), parsed_text);
 	
@@ -123,79 +122,79 @@ label_create_href_alloc (const char* url)
 	return g_strdup_printf ("<a href='%s'>%s</a>", url, url);
 }
 
-
-/* FIXME: Review this function (?) */
-static char*
-label_parse_urls_alloc (const char* message)
+static gint
+url_check_word (char *word, int len)
 {
-	const char* ptr = message;
-	const char* last = ptr;
-	char* ret = NULL;
-	int len = 0;
+#define D(x) (x), ((sizeof (x)) - 1)
+	static const struct {
+		const char *s;
+		gint        len;
+	}
+	prefix[] = {
+		{ D("ftp.") },
+		{ D("www.") },
+		{ D("ftp://") },
+		{ D("http://") },
+		{ D("https://") },
+	};
+#undef D
 
-	while(*ptr) {
-		gboolean nicktl = !(strncmp(ptr, "@", 1));
-
-		if (!strncmp(ptr, "http://", 7)
-			|| !strncmp(ptr, "ftp://", 6)
-			|| nicktl) {
+	gint 		i;
 	
-			char* link;
-			char* tiny_url;
-			const char* tmp;
+	for (i = 0; i < G_N_ELEMENTS(prefix); i++) {
+		int l;
 
-			if ( nicktl ) {
-				ptr++;
+		l = prefix[i].len;
+		if (len > l) {
+			gint j;
+
+			/* This is pretty much strncasecmp(). */
+			for (j = 0; j < l; j++)	{
+				unsigned char c = word[j];
+				
+				if (tolower(c) != prefix[i].s[j])
+					break;
 			}
-
-			if (last != ptr) {
-				len += (ptr-last);
-				if (!ret) {
-					ret = malloc(len+1);
-					memset(ret, 0, len+1);
-				} else ret = realloc(ret, len+1);
-				strncat(ret, last, ptr-last);
-			}
-			tmp = ptr;
-
-			if ( nicktl ) { /* Parsing nickname */
-			  while(*tmp && strchr(ACCEPT_LETTER_USER, *tmp)) tmp++;
-			} else { /* Parsing URL */
-			  while(*tmp && strchr(ACCEPT_LETTER_URL, *tmp)) tmp++;
-			}
-
-			link = malloc(tmp-ptr+1);
-			memset(link, 0, tmp-ptr+1);
-			memcpy(link, ptr, tmp-ptr);
-
-			tiny_url = label_create_href_alloc (link);
-
-			if (tiny_url) {
-				free(link);
-				link = tiny_url;
-			}
-
-			len += strlen(link);
-
-			if (!ret) {
-				ret = malloc(len+1);
-				memset(ret, 0, len+1);
-			} else ret = realloc(ret, len+1);
-
-			strcat(ret, link);
-			free(link);
-			ptr = last = tmp;
-		} else {
-			ptr++;
+			if (j == l)
+				return WORD_URL;
 		}
 	}
-	if (last != ptr) {
-		len += (ptr-last);
-		if (!ret) {
-			ret = malloc(len+1);
-			memset(ret, 0, len+1);
-		} else ret = realloc(ret, len+1);
-		strncat(ret, last, ptr-last);
+	
+	return 0;
+}
+
+static char*
+label_msg_get_string (const char* message)
+{
+	gchar **tokens;
+	gchar  *result;
+	gchar  *temp;
+	gint 	i;
+	
+	if (G_STR_EMPTY (message)) {
+		return NULL;
 	}
-	return ret;
+	
+	/* surround urls with <a> markup so that sexy-url-label can link it */
+	tokens = g_strsplit_set (message, " \t\n", 0);
+	if (url_check_word (tokens[0], strlen (tokens[0])) == WORD_URL) {
+		result = g_strdup_printf ("<a href=\"%s\">%s</a>", tokens[0], tokens[0]);
+	} else {
+		result = g_strdup (tokens[0]);
+	}
+
+	for (i = 1; tokens[i]; i++) {
+		if (url_check_word (tokens[i], strlen (tokens[i])) == WORD_URL) {
+			temp = g_strdup_printf ("%s <a href=\"%s\">%s</a>", result, tokens[i], tokens[i]);
+			g_free (result);
+			result = temp;
+		} else {
+			temp = g_strdup_printf ("%s %s", result, tokens[i]);
+			g_free (result);
+			result = temp;
+		}
+	}
+	g_strfreev (tokens);
+	
+	return result;	
 }
