@@ -83,14 +83,8 @@ label_url_activated_cb  (GtkWidget *url_label,
 						 gchar     *url,
 						 gpointer   user_data)
 {
-	/* Open an URL */
-	if (!strncmp (url, "http://", 7) ||	!strncmp (url, "ftp://", 6)) 
-	{
-		if (g_app_info_launch_default_for_uri (url, NULL, NULL) == FALSE) {
+	if (g_app_info_launch_default_for_uri (url, NULL, NULL) == FALSE) {
 			g_warning ("Couldn't show URL: '%s'", url);
-		}
-	} else {
-		twitux_network_get_user (url);
 	}
 }
 
@@ -114,12 +108,6 @@ twitux_label_set_text (TwituxLabel  *nav,
 	sexy_url_label_set_markup (SEXY_URL_LABEL (nav), parsed_text);
 	
 	g_free (parsed_text);
-}
-
-static char*
-label_create_href_alloc (const char* url)
-{
-	return g_strdup_printf ("<a href='%s'>%s</a>", url, url);
 }
 
 static gint
