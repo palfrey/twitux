@@ -30,6 +30,7 @@
 
 #include "twitux.h"
 #include "twitux-tweet-list.h"
+#include "twitux-send-message-dialog.h"
 #include "twitux-label.h"
 #include "twitux-app.h"
 
@@ -55,7 +56,10 @@ static void   tweet_list_size_cb           (GtkWidget            *widget,
                                             gpointer              user_data);
 static void   tweet_list_changed_cb        (GtkWidget            *widget,
                                             gpointer              user_data);
-
+static void   tweet_list_activated_cb      (GtkTreeView          *tree_view,
+                                            GtkTreePath          *path,
+                                            GtkTreeViewColumn    *column,
+                                            gpointer              user_data);
 static TwituxTweetList *list = NULL;
 
 G_DEFINE_TYPE (TwituxTweetList, twitux_tweet_list, GTK_TYPE_TREE_VIEW);
@@ -89,6 +93,10 @@ twitux_tweet_list_init (TwituxTweetList *tweet)
 	g_signal_connect (tweet,
 					  "cursor-changed",
 					  G_CALLBACK (tweet_list_changed_cb),
+					  NULL);
+	g_signal_connect (tweet,
+					  "row-activated",
+					  G_CALLBACK (tweet_list_activated_cb),
 					  NULL);
 }
 
@@ -226,6 +234,33 @@ tweet_list_size_cb (GtkWidget *widget,
 	g_object_set (priv->text_renderer,
 				  "wrap-width", w,
 				  NULL);
+}
+
+static void
+tweet_list_activated_cb (GtkTreeView *tree_view,
+                         GtkTreePath *path,
+                         GtkTreeViewColumn *column,
+                         gpointer user_data)
+{
+	TwituxTweetListPriv *priv;
+	gchar *user, *message;
+	GtkTreeIter iter;
+
+	priv = GET_PRIV (list);
+
+	gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->store), &iter, path);
+
+	gtk_tree_model_get (GTK_TREE_MODEL (priv->store), &iter,
+						STRING_USER, &user,
+						-1);
+
+	message = g_strdup_printf ("@%s: ", user);
+	twitux_send_message_dialog_show (NULL);
+	twitux_message_show_friends (FALSE);
+	twitux_message_set_message (message);
+
+	g_free (user);
+	g_free (message);
 }
 
 TwituxTweetList *

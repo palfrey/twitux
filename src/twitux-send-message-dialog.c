@@ -273,6 +273,19 @@ twitux_message_show_friends (gboolean show_friends)
 	gtk_widget_hide (priv->friends_label);
 }
 
+void
+twitux_message_set_message (const gchar *message)
+{
+	TwituxMsgDialogPriv *priv = GET_PRIV (dialog);
+	GtkTextBuffer *buffer;
+
+	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->textview));
+
+	gtk_text_buffer_set_text (buffer, message, -1);
+
+	gtk_window_set_focus (GTK_WINDOW (priv->dialog), priv->textview);
+}
+
 static gchar *
 url_encode_message (gchar *text)
 {

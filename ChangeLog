@@ -1,3 +1,10 @@
+2008-02-15  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-send-message-dialog.c:
+	* src/twitux-send-message-dialog.h:
+	* src/twitux-tweet-list.c: Add a shortcut to reply tweets from timelines
+	(double click). That closes #1886311
+
 2008-02-14  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-parser.c: Why-O-why must Ubuntu never forward patches upstream?
