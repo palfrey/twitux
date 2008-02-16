@@ -24,8 +24,6 @@
 #include <config.h>
 #include <gtk/gtkmain.h>
 #include <glib/gi18n.h>
-#include <libgnome/gnome-program.h>
-#include <libgnomeui/gnome-ui-init.h>
 
 #include <libnotify/notify.h>
 
@@ -38,7 +36,6 @@ int
 main (int argc, char *argv[])
 {
 	gchar *localedir;
-	GnomeProgram *program;
 
 	localedir = twitux_paths_get_locale_path ();
 	bindtextdomain (GETTEXT_PACKAGE, localedir);
@@ -48,12 +45,7 @@ main (int argc, char *argv[])
 
 	g_set_application_name (_("Twitux"));
 
-	program = gnome_program_init ("twitux", PACKAGE_VERSION,
-								  LIBGNOMEUI_MODULE,
-								  argc, argv,
-								  GNOME_PROGRAM_STANDARD_PROPERTIES,
-								  GNOME_PARAM_HUMAN_READABLE_NAME, "Twitux",
-								  NULL);
+	gtk_init (&argc, &argv);
 
 	gtk_window_set_default_icon_name ("twitux");
 
@@ -76,7 +68,6 @@ main (int argc, char *argv[])
 
 	/* Clean up the ui */
 	g_object_unref (twitux_app_get ());
-	g_object_unref (program);
 
 	return 0;
 }

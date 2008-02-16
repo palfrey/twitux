@@ -1,5 +1,11 @@
 2008-02-14  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* configure.in:
+	* src/twitux-main.c: Drop libgnomeui requirement for now, since we aren't
+	really using any of the gnome libraries.
+
+2008-02-14  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* src/twitux-app.c:
 	* src/twitux-network.c: Use g_get_home_dir, instead of gnome_util_home_file.
 
