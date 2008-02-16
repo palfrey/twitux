@@ -32,16 +32,11 @@ G_BEGIN_DECLS
  * TwituxLabel
  */ 
 #define TWITUX_TYPE_LABEL         (twitux_label_get_type ())
-#define TWITUX_LABEL(o)           (G_TYPE_CHECK_INSTANCE_CAST ( \
-					(o), TWITUX_TYPE_LABEL, TwituxLabel))
-#define TWITUX_LABEL_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST( \
-					(k), TWITUX_TYPE_LABEL, TwituxLabelClass))
-#define TWITUX_IS_LABEL(o)        (G_TYPE_CHECK_INSTANCE_TYPE ( \
-					(o), TWITUX_TYPE_LABEL))
-#define TWITUX_IS_LABEL_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ( \
-					(k), TWITUX_TYPE_LABEL))
-#define TWITUX_LABEL_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ( \
-					(o), TWITUX_TYPE_LABEL, TwituxLabelClass))
+#define TWITUX_LABEL(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), TWITUX_TYPE_LABEL, TwituxLabel))
+#define TWITUX_LABEL_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), TWITUX_TYPE_LABEL, TwituxLabelClass))
+#define TWITUX_IS_LABEL(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), TWITUX_TYPE_LABEL))
+#define TWITUX_IS_LABEL_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), TWITUX_TYPE_LABEL))
+#define TWITUX_LABEL_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), TWITUX_TYPE_LABEL, TwituxLabelClass))
 
 typedef struct _TwituxLabel        TwituxLabel;
 typedef struct _TwituxLabelClass   TwituxLabelClass;

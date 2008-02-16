@@ -25,7 +25,6 @@
 #include <string.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
-#include <libgnome/gnome-util.h>
 #include <libsoup/soup.h>
 
 #include <libtwitux/twitux-debug.h>
@@ -384,7 +383,7 @@ twitux_network_get_image (const gchar  *url_image,
 
 	/* Build image file */
 	split_url = g_strsplit (url_image, "?", 2);
-	images_dir = gnome_util_home_file (TWITUX_CACHE_IMAGES);
+	images_dir = g_build_filename (g_get_home_dir (), ".gnome2", TWITUX_CACHE_IMAGES, NULL);
 	image_file = g_strconcat (images_dir,
 							  G_DIR_SEPARATOR_S,
 							  username,
@@ -525,9 +524,9 @@ network_save_data (SoupMessage *msg,
 	gchar *tmp_file = NULL;
 
 	/* File dir */
-	tmp_file = gnome_util_home_file (file);
+	tmp_file = g_build_filename (g_get_home_dir (), ".gnome2", file, NULL);
 
-	twitux_debug (DEBUG_DOMAIN, "Saving data to: %s",file);
+	twitux_debug (DEBUG_DOMAIN, "Saving data to: %s", tmp_file);
 
 	/* Save */
 	if (g_file_set_contents (tmp_file,

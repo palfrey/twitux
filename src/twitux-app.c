@@ -13,7 +13,8 @@
  * General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
+ * Lice
+ nse along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  *
@@ -22,11 +23,9 @@
  */
 
 #include <config.h>
+#include <sys/stat.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <libgnome/gnome-util.h>
-#include <libgnomeui/libgnomeui.h>
-
 #include <libnotify/notify.h>
 
 #include <libtwitux/twitux-debug.h>
@@ -981,10 +980,10 @@ app_check_dir (void)
 {
 	gchar    *file;
 
-	file = gnome_util_home_file (TWITUX_CACHE_IMAGES);
+	file = g_build_filename (g_get_home_dir (), ".gnome2", TWITUX_CACHE_IMAGES, NULL);
 
 	if (!g_file_test (file, G_FILE_TEST_EXISTS|G_FILE_TEST_IS_DIR)) {
-		twitux_debug (DEBUG_DOMAIN_SETUP, "Makeing directory: %s", file);
+		twitux_debug (DEBUG_DOMAIN_SETUP, "Making directory: %s", file);
 		g_mkdir_with_parents (file, S_IRUSR|S_IWUSR|S_IXUSR);
 	}
 

@@ -1,3 +1,8 @@
+2008-02-14  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-app.c:
+	* src/twitux-network.c: Use g_get_home_dir, instead of gnome_util_home_file.
+
 2008-02-15  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-send-message-dialog.c:

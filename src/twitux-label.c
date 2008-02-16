@@ -56,18 +56,19 @@ twitux_label_class_init (TwituxLabelClass *clas)
 static void
 twitux_label_init (TwituxLabel *label)
 {
-	g_signal_connect (label,
-					  "url-activated",
-					  G_CALLBACK (label_url_activated_cb),
-					  NULL);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+	
 	g_object_set (label,
 				  "xalign", 0.0,
 				  "yalign", 0.0,
 				  "xpad", 6,
 				  "ypad", 4,
 				  NULL);
+	
+	g_signal_connect (label,
+					  "url-activated",
+					  G_CALLBACK (label_url_activated_cb),
+					  NULL);
 }
 
 static void
