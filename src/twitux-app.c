@@ -160,7 +160,7 @@ static void     app_login                        (void);
 static void     app_retrieve_default_timeline    (void);
 static void     app_status_icon_create_menu      (void);
 static void     app_status_icon_create           (void);
-static void     app_check_dir                    ();
+static void     app_check_dir                    (void);
 static gboolean configure_event_timeout_cb       (GtkWidget             *widget);
 static gboolean app_window_configure_event_cb    (GtkWidget             *widget,
 												  GdkEventConfigure     *event,
@@ -447,7 +447,6 @@ app_main_window_delete_event_cb (GtkWidget *window,
 
 	/* At this point, we have checked we have:
 	 *   - No tray
-	 *   - No pending messages
 	 *   - Have NOT shown the hint
 	 *
 	 * So we just quit.
@@ -1189,7 +1188,7 @@ twitux_app_set_image (const gchar *file,
 
 	if (!pixbuf){
 		twitux_debug (DEBUG_DOMAIN_SETUP, "Image error: %s: %s",
-					                       file, error->message);
+					  file, error->message);
 		g_error_free (error);
 		return;
 	}
