@@ -45,6 +45,8 @@ main (int argc, char *argv[])
 
 	g_set_application_name (_("Twitux"));
 
+	if (!g_thread_supported ()) g_thread_init (NULL);
+
 	gtk_init (&argc, &argv);
 
 	gtk_window_set_default_icon_name ("twitux");

@@ -1,3 +1,7 @@
+2008-02-19  Daniel Morales <daniminas@gmail.com>
+
+	* src/twitux-main.c: Bugfix #1897030. Thread system not initialized!
+
 2008-02-14  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* configure.in:
