@@ -167,7 +167,7 @@ tweet_list_setup_view (TwituxTweetList *list)
 															 renderer,
 															 "markup", STRING_TEXT,
 															 NULL);
-
+	gtk_tree_view_column_set_sizing (tweet_column, GTK_TREE_VIEW_COLUMN_FIXED);
 	g_object_set (renderer,
 				  "ypad", 0,
 				  "xpad", 5,

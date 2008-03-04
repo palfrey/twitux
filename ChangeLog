@@ -1,3 +1,7 @@
+2008-03-03  Daniel Morales <daniminas@gmail.com>
+
+	* src/twitux-tweet-list.c: Better text wrapping on tweets column.
+
 2008-02-19  Daniel Morales <daniminas@gmail.com>
 
 	* src/twitux-main.c: Bugfix #1897030. Thread system not initialized!
