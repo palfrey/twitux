@@ -232,7 +232,7 @@ tweet_list_size_cb (GtkWidget *widget,
 	w = gtk_tree_view_column_get_width (priv->text_column);
 
 	g_object_set (priv->text_renderer,
-				  "wrap-width", w,
+				  "wrap-width", w-10,
 				  NULL);
 }
 
