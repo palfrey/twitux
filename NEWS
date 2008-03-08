@@ -2,6 +2,8 @@ NEW in ?:
 ==============
 - Fixed #1882842, port to libsoup 2.4 api. Patch provided by Dan Winship.
 - Fixed #1887777, minimize to tray, instead of quitting when hitting 'X' on main window.
+- Port to gio from gnomevfs.
+- Drop gnome requirements for now.
 - Cleaned up code to quite some compiler warnings.
 
 NEW in 0.6:
