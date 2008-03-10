@@ -9,31 +9,144 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-29 19:56-0200\n"
-"PO-Revision-Date: 2007-12-29 20:03-0200\n"
+"POT-Creation-Date: 2008-03-09 00:07-0200\n"
+"PO-Revision-Date: 2008-03-10 17:45-0300\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit"
 
-#: ../data/main.glade.h:1
+#: ../data/add_friend_dialog.glade.h:1
+msgid "Add a friend"
+msgstr "Agregar un amigo"
+
+#: ../data/add_friend_dialog.glade.h:2 ../data/account_dialog.glade.h:5
+msgid "_Username:"
+msgstr "_Nombre de usuario:"
+
+#: ../data/account_dialog.glade.h:1
+msgid "Automatic Login?"
+msgstr "Login automático?"
+
+#: ../data/account_dialog.glade.h:2
+msgid "Show Password"
+msgstr "Mostrar Contraseña"
+
+#: ../data/account_dialog.glade.h:3
+msgid "Twitter Account"
+msgstr "Cuenta Twitter"
+
+#: ../data/account_dialog.glade.h:4
+msgid "_Password:"
+msgstr "_Contraseña:"
+
+#: ../data/main_window.glade.h:1
+msgid "Add a friend..."
+msgstr "Agregar un amigo..."
+
+#: ../data/main_window.glade.h:2
+msgid "C_onnect"
+msgstr "C_onectarse"
+
+#: ../data/main_window.glade.h:3
+msgid "Direct Messages"
+msgstr "Mensajes Directos"
+
+#: ../data/main_window.glade.h:4
+msgid "Direct Replies"
+msgstr "Respuestas Directas"
+
+#: ../data/main_window.glade.h:5 ../src/twitux-preferences.c:426
+msgid "Friends"
+msgstr "Amigos"
+
+#: ../data/main_window.glade.h:6
+msgid "Friends Timeline"
+msgstr "Timeline de Amigos"
+
+#: ../data/main_window.glade.h:7
+msgid "My Timeline"
+msgstr "Mi Timeline"
+
+#: ../data/main_window.glade.h:8
+msgid "New Message"
+msgstr "Nuevo Mensaje"
+
+#: ../data/main_window.glade.h:9
+msgid "Public Timeline"
+msgstr "Timeline Pública"
+
+#: ../data/main_window.glade.h:10
+msgid "Send Direct Message"
+msgstr "Enviar Mensajes Directos"
+
+#: ../data/main_window.glade.h:11 ../data/twitux.desktop.in.in.h:2
+#: ../src/twitux-main.c:46 ../src/twitux-preferences.c:428
+msgid "Twitux"
+msgstr "Twitux"
+
+#: ../data/main_window.glade.h:12
+msgid "Twitux Timeline"
+msgstr "Twitux Timeline"
+
+#: ../data/main_window.glade.h:13
+msgid "_Account"
+msgstr "_Cuenta"
+
+#: ../data/main_window.glade.h:14
+msgid "_Disconnect"
+msgstr "_Desconectarse"
+
+#: ../data/main_window.glade.h:15
+msgid "_Help"
+msgstr "_Ayuda"
+
+#: ../data/main_window.glade.h:16
+msgid "_Refresh"
+msgstr "_Actualizar"
+
+#: ../data/main_window.glade.h:17
+msgid "_Settings"
+msgstr "_Preferencias"
+
+#: ../data/main_window.glade.h:18
+msgid "_Twitter"
+msgstr "_Twitter"
+
+#: ../data/main_window.glade.h:19
+msgid "_View"
+msgstr "_Ver"
+
+#: ../data/main_window.glade.h:20
+msgid "gtk-about"
+msgstr ""
+
+#: ../data/main_window.glade.h:21
+msgid "gtk-preferences"
+msgstr ""
+
+#: ../data/main_window.glade.h:22 ../data/tray_menu.glade.h:3
+msgid "gtk-quit"
+msgstr ""
+
+#: ../data/preferences_dialog.glade.h:1
 msgid "<b>General</b>"
 msgstr "<b>General</b>"
 
-#: ../data/main.glade.h:2
+#: ../data/preferences_dialog.glade.h:2
 msgid "<b>Languages</b>"
 msgstr "<b>Idiomas</b>"
 
-#: ../data/main.glade.h:3
+#: ../data/preferences_dialog.glade.h:3
 msgid "<b>Options</b>"
 msgstr "<b>Opciones</b>"
 
-#: ../data/main.glade.h:4
+#: ../data/preferences_dialog.glade.h:4
 msgid "<b>Timelines</b>"
 msgstr "<b>Timelines</b>"
 
-#: ../data/main.glade.h:5
+#: ../data/preferences_dialog.glade.h:5
 msgid ""
 "<small>The list of languages reflects only the languages for which you have "
 "a dictionary installed.</small>"
@@ -41,191 +154,82 @@ msgstr ""
 "<small>La lista de idiomas muesta solo aquellos para los cuales tienes el "
 "dirccionario instalado.</small>"
 
-#: ../data/main.glade.h:6
-msgid "<span size=\"small\">Characters Available: 160</span>"
-msgstr "<span size=\"small\">Caracteres disponibles: 160</span>"
-
-#: ../data/main.glade.h:7
-msgid "Add a friend"
-msgstr "Agregar un amigo"
-
-#: ../data/main.glade.h:8
-msgid "Add a friend..."
-msgstr "Agregar un amigo..."
-
-#: ../data/main.glade.h:9
-msgid "Automatic Login?"
-msgstr "Login automático?"
-
-#: ../data/main.glade.h:10
-msgid "C_onnect"
-msgstr "C_onectarse"
-
-#: ../data/main.glade.h:11
-msgid "Choose a friend:"
-msgstr "Selecciona un amigo:"
-
-#: ../data/main.glade.h:12
+#: ../data/preferences_dialog.glade.h:6
 msgid "Default _Timeline:"
 msgstr "Timeline _inicial:"
 
-#: ../data/main.glade.h:13
-msgid "Direct Messages"
-msgstr "Mensajes Directos"
-
-#: ../data/main.glade.h:14
-msgid "Direct Replies"
-msgstr "Respuestas Directas"
-
-#: ../data/main.glade.h:15 ../src/twitux-preferences.c:420
-msgid "Friends"
-msgstr "Amigos"
-
-#: ../data/main.glade.h:16
-msgid "Friends Timeline"
-msgstr "Timeline de Amigos"
-
-#: ../data/main.glade.h:17
+#: ../data/preferences_dialog.glade.h:7
 msgid "General"
 msgstr "General"
 
-#: ../data/main.glade.h:18
-msgid "My Timeline"
-msgstr "Mi Timeline"
-
-#: ../data/main.glade.h:19
-msgid "New Message"
-msgstr "Nuevo Mensaje"
-
-#: ../data/main.glade.h:20
+#: ../data/preferences_dialog.glade.h:8
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: ../data/main.glade.h:21
-msgid "Public Timeline"
-msgstr "Timeline Pública"
-
-#: ../data/main.glade.h:22
-msgid "Send Direct Message"
-msgstr "Enviar Mensajes Directos"
-
-#: ../data/main.glade.h:23
-msgid "Send Message"
-msgstr "Enviar Mensajes"
-
-#: ../data/main.glade.h:24
-msgid "Show Password"
-msgstr "Mostrar Contraseña"
-
-#: ../data/main.glade.h:25
-msgid "Spell Checker"
-msgstr "Corrector ortográfico"
-
-#: ../data/main.glade.h:26
+#: ../data/preferences_dialog.glade.h:9
 msgid "Spell Checking"
 msgstr "Correción ortográfica"
 
-#: ../data/main.glade.h:27
-msgid "Suggestions for the word:"
-msgstr "Sugerencias para la palabra:"
-
-#: ../data/main.glade.h:28
+#: ../data/preferences_dialog.glade.h:10
 msgid ""
 "This will show the full status message of the item selected in the list view."
 msgstr "Esto mostrará el mensaje completo."
 
-#: ../data/main.glade.h:29
-msgid "Twitter Account"
-msgstr "Cuenta Twitter"
-
-#: ../data/main.glade.h:30 ../data/twitux.desktop.in.in.h:2
-#: ../src/twitux-main.c:46 ../src/twitux-preferences.c:422
-msgid "Twitux"
-msgstr "Twitux"
-
-#: ../data/main.glade.h:31
-msgid "Twitux Timeline"
-msgstr "Twitux Timeline"
-
-#: ../data/main.glade.h:32
-msgid "_Account"
-msgstr "_Cuenta"
-
-#: ../data/main.glade.h:33
-msgid "_Disconnect"
-msgstr "_Desconectarse"
-
-#: ../data/main.glade.h:34
+#: ../data/preferences_dialog.glade.h:11
 msgid "_Display notifications when message recieved"
 msgstr "_Mostrar notificaciones gráficas"
 
-#: ../data/main.glade.h:35
+#: ../data/preferences_dialog.glade.h:12
 msgid "_Enable spell checking"
 msgstr "_Habilitar corrector ortográfico"
 
-#: ../data/main.glade.h:36
+#: ../data/preferences_dialog.glade.h:13
 msgid "_Expand messages"
 msgstr "_Expandir mensajes"
 
-#: ../data/main.glade.h:37
-msgid "_Help"
-msgstr "_Ayuda"
-
-#: ../data/main.glade.h:38
-msgid "_New Message"
-msgstr "_Nuevo Mensaje"
-
-#: ../data/main.glade.h:39
-msgid "_Password:"
-msgstr "_Contraseña:"
-
-#: ../data/main.glade.h:40
-msgid "_Refresh"
-msgstr "_Actualizar"
-
-#: ../data/main.glade.h:41
-msgid "_Replace"
-msgstr "_Reemplazar"
-
-#: ../data/main.glade.h:42
+#: ../data/preferences_dialog.glade.h:14
 msgid "_Retrieve every:"
 msgstr "_Actualizar cada:"
 
-#: ../data/main.glade.h:43
+#: ../data/preferences_dialog.glade.h:15
+msgid "_Show user names instead real names"
+msgstr "_Mostrar nombre de usuarios en lugar de nombres completos."
+
+#: ../data/send_message_dialog.glade.h:1
+msgid "<span size=\"small\">Characters Available: 160</span>"
+msgstr "<span size=\"small\">Caracteres disponibles: 160</span>"
+
+#: ../data/send_message_dialog.glade.h:2
+msgid "Choose a friend:"
+msgstr "Selecciona un amigo:"
+
+#: ../data/send_message_dialog.glade.h:3
+msgid "Send Message"
+msgstr "Enviar Mensajes"
+
+#: ../data/send_message_dialog.glade.h:4
 msgid "_Send"
 msgstr "_Enviar"
 
-#: ../data/main.glade.h:44
-msgid "_Settings"
-msgstr "_Preferencias"
+#: ../data/spell_dialog.glade.h:1
+msgid "Spell Checker"
+msgstr "Corrector ortográfico"
 
-#: ../data/main.glade.h:45
+#: ../data/spell_dialog.glade.h:2
+msgid "Suggestions for the word:"
+msgstr "Sugerencias para la palabra:"
+
+#: ../data/spell_dialog.glade.h:3
+msgid "_Replace"
+msgstr "_Reemplazar"
+
+#: ../data/tray_menu.glade.h:1
+msgid "_New Message"
+msgstr "_Nuevo Mensaje"
+
+#: ../data/tray_menu.glade.h:2
 msgid "_Show Twitux"
 msgstr "_Mostrar Twitux"
-
-#: ../data/main.glade.h:46
-msgid "_Twitter"
-msgstr "_Twitter"
-
-#: ../data/main.glade.h:47
-msgid "_Username:"
-msgstr "_Nombre de usuario:"
-
-#: ../data/main.glade.h:48
-msgid "_View"
-msgstr "_Ver"
-
-#: ../data/main.glade.h:49
-msgid "gtk-about"
-msgstr ""
-
-#: ../data/main.glade.h:50
-msgid "gtk-preferences"
-msgstr ""
-
-#: ../data/main.glade.h:51
-msgid "gtk-quit"
-msgstr ""
 
 #: ../data/twitux.desktop.in.in.h:1
 msgid "A Twitter client"
@@ -249,93 +253,115 @@ msgid "Expand messages"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:5
-msgid "Is the main window hidden"
+msgid "Hide main window"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:6
-msgid "Log automatically into Twitter"
+msgid "Hide the main window."
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:7
-msgid "Log automatically into Twitter."
+msgid "Log automatically into Twitter"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:8
-msgid "Main window X position"
+msgid "Log automatically into Twitter."
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:9
-msgid "Main window X position."
+msgid "Main window X position"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:10
-msgid "Main window Y position"
+msgid "Main window X position."
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:11
-msgid "Main window Y position."
+msgid "Main window Y position"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:12
-msgid "Main window height"
+msgid "Main window Y position."
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:13
-msgid "Main window height."
+msgid "Main window height"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:14
-msgid "Main window width"
+msgid "Main window height."
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:15
-msgid "Main window width."
+msgid "Main window width"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:16
-msgid "Minutes between timeline retrievals"
+msgid "Main window width."
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:17
+msgid "Minutes between timeline retrievals"
+msgstr ""
+
+#: ../data/twitux.schemas.in.h:18
 msgid ""
 "Minutes between timeline retrievals. Values supported are 3, 5, 15, 30, and "
 "60"
 msgstr ""
 
-#: ../data/twitux.schemas.in.h:18
-msgid "Show notification of new Twitter messages"
-msgstr ""
-
 #: ../data/twitux.schemas.in.h:19
-msgid "Show notification of new Twitter messages."
+msgid "Show hint about closing the main window"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:20
-msgid "Spell checking languages"
+msgid "Show notification of new Twitter messages"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:21
-msgid "Twitter password"
+msgid "Show notification of new Twitter messages."
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:22
-msgid "Twitter username"
+msgid "Show user names instead real names"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:23
-msgid "User's Twitter account password."
+msgid "Show user names instead real names."
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:24
-msgid "User's Twitter account username."
+msgid "Spell checking languages"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:25
-msgid "User's home timeline"
+msgid "Twitter password"
 msgstr ""
 
 #: ../data/twitux.schemas.in.h:26
+msgid "Twitter username"
+msgstr ""
+
+#: ../data/twitux.schemas.in.h:27
+msgid "User's Twitter account password."
+msgstr ""
+
+#: ../data/twitux.schemas.in.h:28
+msgid "User's Twitter account username."
+msgstr ""
+
+#: ../data/twitux.schemas.in.h:29
+msgid "User's home timeline"
+msgstr ""
+
+#: ../data/twitux.schemas.in.h:30
 msgid "User's home timeline."
+msgstr ""
+
+#: ../data/twitux.schemas.in.h:31
+msgid ""
+"Whether or not to show the message dialog about closing the main window with "
+"the 'x' button in the title bar."
 msgstr ""
 
 #: ../src/twitux-about.c:43
@@ -361,77 +387,110 @@ msgid ""
 "Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
-#: ../src/twitux-about.c:83
+#: ../src/twitux-about.c:80
 msgid "A GNOME client for Twitter."
 msgstr "Un cliente GNOME para Twitter"
 
-#: ../src/twitux-about.c:84
-msgid "Copyright © 2007 Daniel Morales"
-msgstr "Copyright © 2007 Daniel Morales"
+#: ../src/twitux-about.c:81
+msgid "Copyright © 2007-2008 Daniel Morales"
+msgstr "Copyright © 2007-2008 Daniel Morales"
 
-#: ../src/twitux-about.c:86
+#: ../src/twitux-about.c:83
 msgid "translator-credits"
 msgstr "Daniel Morales <daniminas@gmail.com>"
 
-#: ../src/twitux-app.c:983
+#: ../src/twitux-app.c:362
+msgid "Do you really want to quit?"
+msgstr "Realmente deseas cerrar?"
+
+#: ../src/twitux-app.c:416
+msgid "Twitux is still running, it is just hidden."
+msgstr "Twitux ahún se está ejecutando, solo está oculto."
+
+#: ../src/twitux-app.c:417
+msgid "Click on the notification area icon to show Twitux."
+msgstr "Click en el ícono de la bandeja del sistema para mostrar Twitux."
+
+#: ../src/twitux-app.c:432
+msgid "You were about to quit!"
+msgstr ""
+
+#: ../src/twitux-app.c:433
+msgid ""
+"Since no system or notification tray has been found, this action would "
+"normally quit Twitux.\n"
+"\n"
+"This is just a reminder, from now on, Twitux will quit when performing this "
+"action unless you uncheck the option below."
+msgstr ""
+
+#: ../src/twitux-app.c:1100
 msgid "Fetching friends..."
 msgstr "Recibiendo amigos..."
 
-#: ../src/twitux-app.c:1037
+#: ../src/twitux-app.c:1154
 msgid "tweets"
 msgstr "tweets"
 
-#: ../src/twitux-app.c:1039
+#: ../src/twitux-app.c:1156
 msgid "tweet"
 msgstr "tweet"
 
-#: ../src/twitux-app.c:1042
+#: ../src/twitux-app.c:1159
 #, c-format
 msgid "You have %i new %s."
 msgstr "Tiene %i nuevo(s) %s."
 
-#: ../src/twitux-network.c:216
+#: ../src/twitux-hint.c:87
+msgid "Do not show this again"
+msgstr "No mostrar de nuevo"
+
+#: ../src/twitux-network.c:224
 msgid "Connecting..."
 msgstr "Conectando..."
 
 #. UI
-#: ../src/twitux-network.c:277 ../src/twitux-network.c:293
+#: ../src/twitux-network.c:281 ../src/twitux-network.c:297
 msgid "Loading timeline..."
 msgstr "Cargando timeline..."
 
-#: ../src/twitux-network.c:496
+#: ../src/twitux-network.c:500
 msgid "Access denied."
 msgstr "Acceso denegado."
 
-#: ../src/twitux-network.c:499
+#: ../src/twitux-network.c:503
 msgid "HTTP communication error."
 msgstr "Error de comunicación HTTP."
 
-#: ../src/twitux-network.c:502
+#: ../src/twitux-network.c:506
 msgid "Internal server error."
 msgstr "Error en el servidor."
 
-#: ../src/twitux-network.c:505
+#: ../src/twitux-network.c:509
 msgid "Stopped"
 msgstr "Detenido."
 
-#: ../src/twitux-network.c:535
+#: ../src/twitux-network.c:539
 msgid "Failed to save cache file."
 msgstr "Error al guardar en caché."
 
-#: ../src/twitux-network.c:656
+#: ../src/twitux-network.c:611
+msgid "Could not retrieve password from keyring."
+msgstr "No se puede obtener la contraseña desde el anillo."
+
+#: ../src/twitux-network.c:657
 msgid "Status Sent"
 msgstr "Estado enviado."
 
-#: ../src/twitux-network.c:674
+#: ../src/twitux-network.c:672
 msgid "Message Sent"
 msgstr "Mensaje enviado"
 
-#: ../src/twitux-network.c:718
+#: ../src/twitux-network.c:717
 msgid "Timeline Loaded"
 msgstr "Mi timeline"
 
-#: ../src/twitux-network.c:726
+#: ../src/twitux-network.c:725
 msgid "Timeline Parser Error."
 msgstr "Error de parseo."
 
@@ -439,119 +498,119 @@ msgstr "Error de parseo."
 msgid "Users parser error."
 msgstr "Error de parseo."
 
-#: ../src/twitux-network.c:833
+#: ../src/twitux-network.c:835
 msgid "Friend Added"
 msgstr "Amigo agregado"
 
-#: ../src/twitux-network.c:836
+#: ../src/twitux-network.c:838
 msgid "Failed to add user"
 msgstr "Error al agregar el usuario."
 
-#: ../src/twitux-network.c:852
+#: ../src/twitux-network.c:855
 msgid "Friend Removed"
 msgstr "Amigo eliminado"
 
-#: ../src/twitux-network.c:854
+#: ../src/twitux-network.c:857
 msgid "Failed to remove user"
 msgstr "Error al eliminar el usuario."
 
 #. UI
-#: ../src/twitux-network.c:899
+#: ../src/twitux-network.c:906
 msgid "Reloading timeline..."
 msgstr "Recargando timeline..."
 
-#: ../src/twitux-parser.c:426
+#: ../src/twitux-parser.c:430
 msgid "1 second ago"
 msgstr "hace 1 segundo"
 
-#: ../src/twitux-parser.c:430
+#: ../src/twitux-parser.c:434
 msgid "1 minute ago"
 msgstr "hace 1 minuto"
 
-#: ../src/twitux-parser.c:432
+#: ../src/twitux-parser.c:436
 #, c-format
 msgid "%i seconds ago"
 msgstr "hace %i segundos"
 
-#: ../src/twitux-parser.c:437
+#: ../src/twitux-parser.c:441
 msgid "1 hour ago"
 msgstr "hace 1 hora"
 
-#: ../src/twitux-parser.c:439
+#: ../src/twitux-parser.c:443
 #, c-format
 msgid "%i minutes ago"
 msgstr "hace %i minutos"
 
-#: ../src/twitux-parser.c:444
+#: ../src/twitux-parser.c:448
 msgid "1 day ago"
 msgstr "hace 1 día"
 
-#: ../src/twitux-parser.c:446
+#: ../src/twitux-parser.c:450
 #, c-format
 msgid "%i hours ago"
 msgstr "hace %i horas"
 
-#: ../src/twitux-parser.c:451
+#: ../src/twitux-parser.c:455
 msgid "1 month ago"
 msgstr "hace 1 mes"
 
-#: ../src/twitux-parser.c:453
+#: ../src/twitux-parser.c:457
 #, c-format
 msgid "%i days ago"
 msgstr "hace %i días"
 
-#: ../src/twitux-parser.c:455
+#: ../src/twitux-parser.c:459
 #, c-format
 msgid "%i months ago"
 msgstr "hace %i meses"
 
-#: ../src/twitux-preferences.c:61
+#: ../src/twitux-preferences.c:64
 msgid "3 minutes"
 msgstr "3 minutos"
 
-#: ../src/twitux-preferences.c:62
+#: ../src/twitux-preferences.c:65
 msgid "5 minutes"
 msgstr "5 minutos"
 
-#: ../src/twitux-preferences.c:63
+#: ../src/twitux-preferences.c:66
 msgid "15 minutes"
 msgstr "15 minutos"
 
-#: ../src/twitux-preferences.c:64
+#: ../src/twitux-preferences.c:67
 msgid "30 minutes"
 msgstr "30 minutos"
 
-#: ../src/twitux-preferences.c:65
+#: ../src/twitux-preferences.c:68
 msgid "hour"
 msgstr "hora"
 
-#: ../src/twitux-preferences.c:207
+#: ../src/twitux-preferences.c:213
 msgid "Language"
 msgstr "Idioma"
 
-#: ../src/twitux-preferences.c:419
+#: ../src/twitux-preferences.c:425
 msgid "Public"
 msgstr "Pública"
 
-#: ../src/twitux-preferences.c:421
+#: ../src/twitux-preferences.c:427
 msgid "Mine"
 msgstr "Propia"
 
 #. Set the label
-#: ../src/twitux-send-message-dialog.c:154
-#: ../src/twitux-send-message-dialog.c:322
+#: ../src/twitux-send-message-dialog.c:156
+#: ../src/twitux-send-message-dialog.c:337
 msgid "Characters Available"
 msgstr "Caracteres Disponibles"
 
-#: ../src/twitux-send-message-dialog.c:465
+#: ../src/twitux-send-message-dialog.c:480
 msgid "_Check Word Spelling..."
 msgstr "_Comprobar ortografía"
 
-#: ../src/twitux-spell-dialog.c:89
+#: ../src/twitux-spell-dialog.c:90
 msgid "Word"
 msgstr "Palabra"
 
-#: ../src/twitux-spell-dialog.c:260
+#: ../src/twitux-spell-dialog.c:261
 msgid "Suggestions for the word"
 msgstr "Sugerencias para la palabra"
 
