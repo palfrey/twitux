@@ -7,6 +7,8 @@ NEW in 0.61:
 - Port to gio from gnomevfs. (Brian Pepple)
 - Drop gnome requirements for now. (Brian Pepple)
 - Cleaned up code to quite some compiler warnings. (Brian Pepple)
+- Added preference: show Fullnames or Usernames (Daniel Morales)
+- Added double click shortcut on tweet list to reply tweets (Daniel Morales)
 
 NEW in 0.60:
 ==============
