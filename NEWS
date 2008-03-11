@@ -1,3 +1,6 @@
+NEW in ?:
+==============
+
 NEW in 0.61:
 ==============
 - Fixed #1882842, port to libsoup 2.4 api. (Dan Winship, Brian Pepple)
