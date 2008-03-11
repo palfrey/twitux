@@ -23,6 +23,8 @@
 
 #include <config.h>
 #include <sys/stat.h>
+#include <string.h>
+
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <libnotify/notify.h>
@@ -40,6 +42,7 @@
 #include "twitux-app.h"
 #include "twitux-geometry.h"
 #include "twitux-glade.h"
+#include "twitux-hint.h"
 #include "twitux-network.h"
 #include "twitux-preferences.h"
 #include "twitux-send-message-dialog.h"
