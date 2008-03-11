@@ -33,7 +33,7 @@ dnl
 dnl -----------------------------------------------------------
 
 LIBXML_REQUIRED=2.6.16
-GLIB_REQUIRED=2.12.0
+GLIB_REQUIRED=2.15.0
 GTK_REQUIRED=2.10.0
 LIBGLADE_REQUIRED=2.0.0
 GCONF_REQUIRED=1.2.0
