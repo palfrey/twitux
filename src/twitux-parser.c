@@ -152,7 +152,7 @@ twitux_parser_single_user (const gchar *cache_file_uri)
 {
 	xmlDoc		*doc = NULL;
 	xmlNode		*root_element = NULL;
-	TwituxUser 	*user;
+	TwituxUser 	*user = NULL;
 	
 	/* parse the xml */
 	doc = parser_twitux_parse (cache_file_uri, &root_element);

@@ -19,6 +19,8 @@
  */
 
 #include <config.h>
+
+#include <gtk/gtkmain.h>
 #include <gtk/gtkwindow.h>
 
 #include "twitux-ui-utils.h"
