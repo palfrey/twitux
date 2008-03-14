@@ -1,6 +1,9 @@
 * To-do
---	UI clean-up.  The list-view & expand window need some *serious* work so that the text isn't being clipped
-	like it currently is.
---	Memory profiling of Twitux, it's leaking pretty bad.
+
+- Polish existing features, before adding more!
+- Fix send messages dialog.  It's incredibly hacky right now.
+- After initial timeline retrieval, only retrieve tweets since last retrieval,
+  and append those to the gtk_list_store
+- Memory profiling of Twitux, it's leaking pretty bad.
 
 
