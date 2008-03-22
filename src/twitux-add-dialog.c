@@ -20,24 +20,27 @@
 
 #include "config.h"
 
-#include <glade/glade.h>
+#include <gtk/gtkbuilder.h>
 #include <gtk/gtkdialog.h>
+
+#include <libtwitux/twitux-paths.h>
 
 #include "twitux.h"
 #include "twitux-add-dialog.h"
-#include "twitux-glade.h"
 #include "twitux-network.h"
 
+#define XML_FILE "add_friend_dlg.xml"
+
 typedef struct {
-	GtkWidget *friend_entry;
+	GtkWidget *entry;
 	GtkWidget *dialog;
 } TwituxAdd;
 
-static void      add_response_cb          (GtkWidget         *widget,
-										   gint               response,
-										   TwituxAdd         *add);
-static void      add_destroy_cb 	      (GtkWidget         *widget,
-										   TwituxAdd         *add);
+static void add_response_cb (GtkWidget *widget,
+							 gint       response,
+							 TwituxAdd *add);
+static void add_destroy_cb  (GtkWidget *widget,
+							 TwituxAdd *add);
 
 static void
 add_response_cb (GtkWidget     *widget,
@@ -45,8 +48,7 @@ add_response_cb (GtkWidget     *widget,
 				 TwituxAdd     *add)
 {
 	if (response == GTK_RESPONSE_OK) {
-		twitux_network_add_user (gtk_entry_get_text (
-									GTK_ENTRY (add->friend_entry)));
+		twitux_network_add_user (gtk_entry_get_text (GTK_ENTRY (add->entry)));
 	}
 	gtk_widget_destroy (widget);
 }
@@ -61,8 +63,10 @@ add_destroy_cb (GtkWidget     *widget,
 void
 twitux_add_dialog_show (GtkWindow *parent)
 {
-	static TwituxAdd     *add;
-	GladeXML             *glade;
+	static TwituxAdd *add;
+	GtkBuilder       *ui;
+	gchar            *path;
+	GError           *err = NULL;
 
 	if (add) {
 		gtk_window_present (GTK_WINDOW (add->dialog));
@@ -71,24 +75,29 @@ twitux_add_dialog_show (GtkWindow *parent)
 
 	add = g_new0 (TwituxAdd, 1);
 
-	glade = twitux_glade_get_file ("add_friend_dialog.glade",
-								   "add_friend_dialog",
-								   NULL,
-								   "add_friend_dialog", &add->dialog,
-								   "frienduser_entry", &add->friend_entry,
-								   NULL);
+	/* Create the gtkbuild and load the xml file */
+	ui = gtk_builder_new ();
+	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
+	path = twitux_paths_get_glade_path (XML_FILE);
+	gtk_builder_add_from_file (ui, path, &err);
+	g_free (path);
 
-	twitux_glade_connect (glade,
-						  add,
-						  "add_friend_dialog", "destroy", add_destroy_cb,
-						  "add_friend_dialog", "response", add_response_cb,
-						  NULL);
+	/* Grab the widgets */
+	add->dialog = GTK_WIDGET (gtk_builder_get_object (ui, "add_friend_dialog"));
+	add->entry = GTK_WIDGET (gtk_builder_get_object (ui, "frienduser_entry"));
+	
+	/* Connect the signals */
+	g_signal_connect (G_OBJECT (add->dialog), "destroy",
+					  G_CALLBACK (add_destroy_cb),
+					  add);
+	g_signal_connect (G_OBJECT (add->dialog), "response",
+					  G_CALLBACK (add_response_cb),
+					  add);
 
-	g_object_unref (glade);
-
+	/* Set the parent */
 	g_object_add_weak_pointer (G_OBJECT (add->dialog), (gpointer) &add);
-
 	gtk_window_set_transient_for (GTK_WINDOW (add->dialog), parent);
 
+	/* Now that we're done setting up, let's show the widget */
 	gtk_widget_show (add->dialog);
 }

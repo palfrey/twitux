@@ -10,12 +10,12 @@ schemas_DATA 	 = $(schemas_in_files:.schemas.in=.schemas)
 
 gladedir = $(datadir)/twitux
 glade_DATA = 				\
-	add_friend_dialog.glade		\
-	account_dialog.glade		\
+	add_friend_dlg.xml		\
+	account_dlg.xml			\
 	main_window.glade		\
-	preferences_dialog.glade	\
+	prefs_dlg.xml			\
 	send_message_dialog.glade	\
-	spell_dialog.glade		\
+	spell_dlg.xml			\
 	tray_menu.glade
 
 icondir = $(datadir)/icons/hicolor/48x48/apps

@@ -1,3 +1,20 @@
+2008-03-22  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/account_dlg.xml:
+	* data/account_dialog.glade:
+	* data/add_friend_dlg.xml:
+	* data/add_friend_dialog.glade:
+	* data/preferences_dialog.glad:
+	* data/spell_dlg.xml:
+	* data/spell_dialog.glade:
+	* data/Makefile.am:
+	* po/POTFILES.in:
+	* src/twitux-add-dialog.c:
+	* src/twitux-account-dialog.c:
+	* src/twitux-preferences.c:
+	* src/twitux-spell-dialog.c: start porting to gktbuilder
+	from libglade.
+
 2008-03-13  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* configure.in: have gettext translations match tarball name.

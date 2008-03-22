@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include <glib/gi18n.h>
+#include <gtk/gtkbuilder.h>
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkdialog.h>
 #include <gtk/gtklabel.h>
@@ -34,12 +35,14 @@
 #include <gtk/gtktreeview.h>
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtksizegroup.h>
-#include <glade/glade.h>
 
-#include "twitux-glade.h"
+#include <libtwitux/twitux-paths.h>
+
 #include "twitux-send-message-dialog.h"
 #include "twitux-spell.h"
 #include "twitux-spell-dialog.h"
+
+#define XML_FILE "spell_dlg.xml"
 
 typedef struct {
 	GtkWidget   *window;
@@ -225,8 +228,10 @@ twitux_spell_dialog_show (GtkWidget   *textview,
 						  const gchar *word)
 {
 	TwituxSpellDialog *dialog;
-	GladeXML          *gui;
+	GtkBuilder        *ui;
 	gchar             *str;
+	gchar             *path;
+	GError            *err = NULL;
 
 	g_return_if_fail (textview != NULL);
 	g_return_if_fail (word != NULL);
@@ -240,31 +245,39 @@ twitux_spell_dialog_show (GtkWidget   *textview,
 	dialog->start = start;
 	dialog->end = end;
 
-	gui = twitux_glade_get_file ("spell_dialog.glade",
-								 "spell_dialog",
-								 NULL,
-								 "spell_dialog", &dialog->window,
-								 "button_replace", &dialog->button_replace,
-								 "label_word", &dialog->label_word,
-								 "treeview_words", &dialog->treeview_words,
-								 NULL);
+	/* Create the gtkbuild and load the xml file */
+	ui = gtk_builder_new ();
+	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
+	path = twitux_paths_get_glade_path (XML_FILE);
+	gtk_builder_add_from_file (ui, path, &err);
+	g_free (path);
 
-	twitux_glade_connect (gui,
-						  dialog,
-						  "spell_dialog", "response", spell_dialog_response_cb,
-						  "spell_dialog", "destroy", spell_dialog_destroy_cb,
-						  NULL);
+	/* Grab the widgets */
+	dialog->window = GTK_WIDGET (gtk_builder_get_object (ui, "spell_dialog"));
+	dialog->button_replace =
+		GTK_WIDGET (gtk_builder_get_object (ui, "button_replace"));
+	dialog->label_word = GTK_WIDGET (gtk_builder_get_object (ui, "label_word"));
+	dialog->treeview_words =
+		GTK_WIDGET (gtk_builder_get_object (ui, "treeview_words"));
 
-	g_object_unref (gui);
+	/* Connect signals */
+	g_signal_connect (G_OBJECT (dialog->window), "response",
+					  G_CALLBACK (spell_dialog_response_cb),
+					  dialog);
+	g_signal_connect (G_OBJECT(dialog->window), "destroy",
+					  G_CALLBACK (spell_dialog_destroy_cb),
+					  dialog);
 
+	/* Set the label */
 	str = g_strdup_printf ("%s:\n<b>%s</b>",
 						   _("Suggestions for the word"),
 						   word);
-
 	gtk_label_set_markup (GTK_LABEL (dialog->label_word), str);
 	g_free (str);
 
+	/* Setup the list */
 	spell_dialog_model_setup (dialog);
 
+	/* Now let's show it */
 	gtk_widget_show (dialog->window);
 }

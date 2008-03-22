@@ -29,15 +29,16 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
-#include <glade/glade.h>
 #include <glib/gi18n.h>
 
 #include <libtwitux/twitux-conf.h>
+#include <libtwitux/twitux-paths.h>
 
 #include "twitux.h"
-#include "twitux-glade.h"
 #include "twitux-preferences.h"
 #include "twitux-spell.h"
+
+#define XML_FILE "prefs_dlg.xml"
 
 typedef struct {
 	GtkWidget *dialog;
@@ -812,7 +813,9 @@ void
 twitux_preferences_dialog_show (GtkWindow *parent)
 {
 	static TwituxPrefs *prefs;
-	GladeXML           *glade;
+	GtkBuilder         *ui;
+	gchar              *path;
+	GError             *err = NULL;
 
 	if (prefs) {
 		gtk_window_present (GTK_WINDOW (prefs->dialog));
@@ -821,30 +824,38 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 
 	prefs = g_new0 (TwituxPrefs, 1);
 
-	glade = twitux_glade_get_file ("preferences_dialog.glade",
-								   "preferences_dialog",
-								   NULL,
-								   "preferences_dialog", &prefs->dialog,
-								   "preferences_notebook", &prefs->notebook,
-								   "combobox_timeline", &prefs->combo_default_timeline,
-								   "combobox_reload", &prefs->combo_reload,
-								   "expand_checkbutton", &prefs->expand,
-								   "notify_checkbutton", &prefs->notify,
-								   "names_checkbutton", &prefs->names,
-								   "spell_checkbutton", &prefs->spell,
-								   "spell_treeview", &prefs->treeview_spell_checker,
-								   NULL);
+	/* Create the gtkbuild and load the xml file */
+	ui = gtk_builder_new ();
+	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
+	path = twitux_paths_get_glade_path (XML_FILE);
+	gtk_builder_add_from_file (ui, path, &err);
+	g_free (path);
 
-	twitux_glade_connect (glade,
-						  prefs,
-						  "preferences_dialog", "destroy", preferences_destroy_cb,
-						  "preferences_dialog", "response", preferences_response_cb,
-						  NULL);
+	/* Grab the widgets */
+	prefs->dialog = GTK_WIDGET (gtk_builder_get_object (ui, "preferences_dialog"));
+	prefs->notebook = GTK_WIDGET (gtk_builder_get_object (ui, "preferences_notebook"));
+	prefs->combo_default_timeline = 
+		GTK_WIDGET (gtk_builder_get_object (ui, "combobox_timeline"));
+	prefs->combo_reload = GTK_WIDGET (gtk_builder_get_object (ui, "combobox_reload"));
+	prefs->expand = GTK_WIDGET (gtk_builder_get_object (ui, "expand_checkbutton"));
+	prefs->notify = GTK_WIDGET (gtk_builder_get_object (ui, "notify_checkbutton"));
+	prefs->names = GTK_WIDGET (gtk_builder_get_object (ui, "names_checkbutton"));
+	prefs->spell = GTK_WIDGET (gtk_builder_get_object (ui, "spell_checkbutton"));
+	prefs->treeview_spell_checker =
+		GTK_WIDGET (gtk_builder_get_object (ui, "spell_treeview"));
 
-	g_object_unref (glade);
+	/* Connect the signals */
+	g_signal_connect (G_OBJECT (prefs->dialog), "destroy",
+					  G_CALLBACK (preferences_destroy_cb),
+					  prefs);
+		g_signal_connect (G_OBJECT (prefs->dialog), "response",
+						  G_CALLBACK (preferences_response_cb),
+						  prefs);
 
 	g_object_add_weak_pointer (G_OBJECT (prefs->dialog), (gpointer) &prefs);
+	gtk_window_set_transient_for (GTK_WINDOW (prefs->dialog), parent);
 
+	/* Set up the rest of the widget */
 	preferences_timeline_setup (prefs);
 	preferences_reload_setup (prefs);
 
@@ -854,14 +865,13 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 	preferences_languages_add (prefs);
 	preferences_languages_load (prefs);
 
+	/* If compiled with spelling support, show the notebook page */
 	if (twitux_spell_supported ()) {
 		GtkWidget *page;
 
 		page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (prefs->notebook), 1);
 		gtk_widget_show (page);
 	}
-
-	gtk_window_set_transient_for (GTK_WINDOW (prefs->dialog), parent);
 
 	gtk_widget_show (prefs->dialog);
 }
