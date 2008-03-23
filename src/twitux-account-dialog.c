@@ -24,7 +24,6 @@
 #include <gtk/gtkdialog.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtktogglebutton.h>
-#include <glade/glade.h>
 
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-paths.h>
