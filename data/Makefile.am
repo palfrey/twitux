@@ -14,7 +14,7 @@ glade_DATA = 				\
 	account_dlg.xml			\
 	main_window.glade		\
 	prefs_dlg.xml			\
-	send_message_dialog.glade	\
+	send_message_dlg.xml		\
 	spell_dlg.xml			\
 	tray_menu.glade
 

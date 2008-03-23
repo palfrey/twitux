@@ -26,20 +26,19 @@
 #include <string.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
-#include <glade/glade.h>
 
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-debug.h>
+#include <libtwitux/twitux-paths.h>
 
 #include "twitux.h"
 #include "twitux-send-message-dialog.h"
 #include "twitux-spell.h"
 #include "twitux-spell-dialog.h"
-#include "twitux-glade.h"
 #include "twitux-network.h"
 
 #define DEBUG_DOMAIN_SETUP    "SendMessage"
-#define DEBUG_QUIT
+#define XML_FILE              "send_message_dlg.xml"
 
 /* Let's use the preferred maximum character count */
 #define MAX_CHARACTER_COUNT 140
@@ -120,37 +119,45 @@ static void
 message_setup (GtkWindow  *parent)
 {
 	TwituxMsgDialogPriv   *priv;
-	GladeXML         	  *glade;
+	GtkBuilder            *ui;
 	GtkTextBuffer         *buffer;
 	const gchar           *standard_msg;
 	gchar                 *character_count;
-	GtkCellRenderer		  *renderer;
+	GtkCellRenderer       *renderer;
 	GtkListStore          *model_followers;
+	gchar                 *path;
+	GError                *err = NULL;
 	
 	priv = GET_PRIV (dialog);
 
 	/* Set up interface */
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Initialising message dialog");
-	glade = twitux_glade_get_file ("send_message_dialog.glade",
-								   "send_message_dialog",
-								   NULL,
-								   "send_message_dialog", &priv->dialog,
-								   "send_message_textview", &priv->textview,
-								   "char_label", &priv->label,
-								   "friends_combo", &priv->friends_combo,
-								   "friends_label", &priv->friends_label,
-								   "send_button", &priv->send_button,
-								   NULL);
 
-	twitux_glade_connect (glade,
-						  dialog,
-						  "send_message_dialog", "destroy", message_destroy_cb,
-						  "send_message_dialog", "response", message_response_cb,
-						  "send_message_textview", "populate_popup", message_text_populate_popup_cb,
-						  NULL);
+	/* Create the gtkbuild and load the xml file */
+	ui = gtk_builder_new ();
+	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
+	path = twitux_paths_get_glade_path (XML_FILE);
+	gtk_builder_add_from_file (ui, path, &err);
+	g_free (path);
 
-	/* Set up connected related widgets */
-	g_object_unref (glade);
+	/* Grab the widgets */
+	priv->dialog = GTK_WIDGET (gtk_builder_get_object (ui, "send_message_dialog"));
+	priv->textview = GTK_WIDGET (gtk_builder_get_object (ui, "send_message_textview"));
+	priv->label = GTK_WIDGET (gtk_builder_get_object (ui, "char_label"));
+	priv->friends_combo = GTK_WIDGET (gtk_builder_get_object (ui, "friends_combo"));
+	priv->friends_label = GTK_WIDGET (gtk_builder_get_object (ui, "friends_label"));
+	priv->send_button = GTK_WIDGET (gtk_builder_get_object (ui, "send_button"));
+
+	/* Connect the widgets */
+	g_signal_connect (G_OBJECT (priv->dialog), "destroy",
+					  G_CALLBACK (message_destroy_cb),
+					  dialog);
+	g_signal_connect (G_OBJECT (priv->dialog), "response",
+					  G_CALLBACK (message_response_cb),
+					  dialog);
+	g_signal_connect (G_OBJECT (priv->textview), "populate_popup",
+					  G_CALLBACK (message_text_populate_popup_cb),
+					  dialog);
 
 	/* Set the label */
 	standard_msg = _("Characters Available");

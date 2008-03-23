@@ -3,19 +3,22 @@
 	* data/glade/account_dialog.glade:
 	* data/glade/add_friend_dialog.glade:
 	* data/glade/preferences_dialog.glade:
+	* data/glade/send_message_dialog.glade:
 	* data/glade/spell_dialog.glade: moved to glade directory,
 	since we won't be including these in the tarball.
 
 	* data/account_dlg.xml:
 	* data/add_friend_dlg.xml:
 	* data/spell_dlg.xml:
-	* data/prefs-dlg.xml: New files.
+	* data/prefs-dlg.xml:
+	* data/send_message_dlg.xml: New files.
 
 	* data/Makefile.am:
 	* po/POTFILES.in:
 	* src/twitux-add-dialog.c:
 	* src/twitux-account-dialog.c:
 	* src/twitux-preferences.c:
+	* src/twitux-send-message-dialog.c:
 	* src/twitux-spell-dialog.c: start porting to gktbuilder
 	from libglade.
 
