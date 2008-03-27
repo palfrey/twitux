@@ -1,3 +1,13 @@
+2008-03-27  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-add-dialog.c (twitux_add_dialog_show): 
+	* src/twitux-spell-dialog.c (twitux_spell_dialog_show): 
+	* src/twitux-send-message-dialog.c (message_setup): 
+	* src/twitux-preferences.c (twitux_preferences_dialog_show): 
+	* src/twitux-account-dialog.c (twitux_account_dialog_show): 
+	Add a little error checking in case the xml file can't
+	be loaded.
+
 2008-03-22  Brian Pepple  <bpepple@fedoraproject.org>
 	
 	* data/glade/account_dialog.glade:

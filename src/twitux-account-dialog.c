@@ -108,6 +108,7 @@ twitux_account_dialog_show (GtkWindow *parent)
 	gchar                *username;
 	gchar                *password;
 	gchar                *path;
+	guint                 result;
 	gboolean              login;
 	GError               *err = NULL;
 
@@ -122,8 +123,14 @@ twitux_account_dialog_show (GtkWindow *parent)
 	ui = gtk_builder_new ();
 	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
 	path = twitux_paths_get_glade_path (XML_FILE);
-	gtk_builder_add_from_file (ui, path, &err);
+	result = gtk_builder_add_from_file (ui, path, &err);
 	g_free (path);
+
+	if (result == 0) {
+		g_warning ("Unable to get xml file: %s", err->message);
+		g_error_free (err);
+		return;
+	}
 
 	/* Grab the widgets */
 	act->dialog = GTK_WIDGET (gtk_builder_get_object (ui, "account_dialog"));
