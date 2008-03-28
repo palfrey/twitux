@@ -1,5 +1,6 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
+ * Copyright (C) 2002-2007 Imendio AB
  * Copyright (C) 2007-2008 Brian Pepple <bpepple@fedoraproject.org>
  *
  * This program is free software; you can redistribute it and/or
@@ -17,8 +18,12 @@
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  * 
- * Authors: Brian Pepple <bpepple@fedoraproject.org>
- *			Daniel Morales <daniminas@gmail.com>
+ * Authors: Mikael Hallendal <micke@imendio.com>
+ *          Richard Hult <richard@imendio.com>
+ *          Martyn Russell <martyn@imendio.com>
+ *          Geert-Jan Van den Bogaerde <geertjan@gnome.org>
+ *          Brian Pepple <bpepple@fedoraproject.org>
+ *          Daniel Morales <daniminas@gmail.com>
  */
 
 #include "config.h"
