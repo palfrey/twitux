@@ -64,9 +64,6 @@ twitux_add_dialog_show (GtkWindow *parent)
 {
 	static TwituxAdd *add;
 	GtkBuilder       *ui;
-	gchar            *path;
-	guint             result;
-	GError           *err = NULL;
 
 	if (add) {
 		gtk_window_present (GTK_WINDOW (add->dialog));

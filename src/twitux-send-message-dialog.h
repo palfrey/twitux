@@ -52,6 +52,7 @@ struct _TwituxMsgDialogClass {
         GObjectClass parent_class;
 };
 
+GType             twitux_message_get_type         (void) G_GNUC_CONST;
 void              twitux_send_message_dialog_show (GtkWindow   *parent);
 void              twitux_message_correct_word     (GtkWidget   *textview,
 									               GtkTextIter  start,

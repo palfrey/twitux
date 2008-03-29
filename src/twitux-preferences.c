@@ -815,9 +815,6 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 {
 	static TwituxPrefs *prefs;
 	GtkBuilder         *ui;
-	gchar              *path;
-	guint               result;
-	GError             *err = NULL;
 
 	if (prefs) {
 		gtk_window_present (GTK_WINDOW (prefs->dialog));

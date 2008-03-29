@@ -1,3 +1,17 @@
+2008-03-29  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-preferences.c:
+	* src/twitux-send-message-dialog.[ch]: 
+	* src/twitux-spell-dialog.c:
+	* src/twitux-label.c:
+	* src/twitux-app.c:
+	* src/twitux-tweet-list.h:
+	* src/twitux-add-dialog.c:
+	* src/twitux-account-dialog.c:
+	* src/Makefile.am: Enable more compiler warnings, and
+	clean up most of the low-hanging fruit.
+	
+
 2008-08-29  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-send-message-dialog.c:

@@ -50,6 +50,7 @@ struct _TwituxTweetListClass {
 	GtkTreeViewClass       parent_class;
 };
 
+GType                 twitux_tweet_list_get_type           (void) G_GNUC_CONST;
 TwituxTweetList *     twitux_tweet_list_new                (void);
 GtkListStore *        twitux_tweet_list_get_store          (void);
 

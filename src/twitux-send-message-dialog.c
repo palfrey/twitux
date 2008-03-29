@@ -130,9 +130,6 @@ message_setup (GtkWindow  *parent)
 	gchar                 *character_count;
 	GtkCellRenderer       *renderer;
 	GtkListStore          *model_followers;
-	gchar                 *path;
-	guint                  result;
-	GError                *err = NULL;
 	
 	priv = GET_PRIV (dialog);
 

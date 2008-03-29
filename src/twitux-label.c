@@ -140,7 +140,7 @@ url_check_word (char *word, int len)
 			for (j = 0; j < l; j++)	{
 				unsigned char c = word[j];
 				
-				if (tolower(c) != prefix[i].s[j])
+				if (g_ascii_tolower (c) != prefix[i].s[j])
 					break;
 			}
 			if (j == l)

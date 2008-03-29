@@ -166,6 +166,7 @@ static void     app_retrieve_default_timeline    (void);
 static void     app_status_icon_create_menu      (void);
 static void     app_status_icon_create           (void);
 static void     app_check_dir                    (void);
+static void     twitux_app_toggle_visibility     (void);
 static gboolean configure_event_timeout_cb       (GtkWidget             *widget);
 static gboolean app_window_configure_event_cb    (GtkWidget             *widget,
 												  GdkEventConfigure     *event,
@@ -460,17 +461,7 @@ app_main_window_delete_event_cb (GtkWidget *window,
 	return FALSE;
 }
 
-gboolean
-twitux_app_is_window_visible (void)
-{
-	TwituxAppPriv *priv;
-
-	priv = GET_PRIV (app);
-
-	return twitux_window_get_is_visible (GTK_WINDOW (priv->window));
-}
-
-void
+static void
 twitux_app_toggle_visibility (void)
 {
 	TwituxAppPriv *priv;

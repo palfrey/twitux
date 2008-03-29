@@ -107,10 +107,7 @@ twitux_account_dialog_show (GtkWindow *parent)
 	TwituxConf           *conf;
 	gchar                *username;
 	gchar                *password;
-	gchar                *path;
-	guint                 result;
 	gboolean              login;
-	GError               *err = NULL;
 
 	if (act) {
 		gtk_window_present (GTK_WINDOW (act->dialog));

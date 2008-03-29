@@ -229,9 +229,6 @@ twitux_spell_dialog_show (GtkWidget   *textview,
 	TwituxSpellDialog *dialog;
 	GtkBuilder        *ui;
 	gchar             *str;
-	gchar             *path;
-	guint              result;
-	GError            *err = NULL;
 
 	g_return_if_fail (textview != NULL);
 	g_return_if_fail (word != NULL);

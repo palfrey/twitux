@@ -4,7 +4,7 @@ AM_CPPFLAGS=						\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
 	-DDATADIR=\""$(datadir)"\"              	\
 	-DLIBDIR=\""$(libdir)"\"			\
-	$(TWITUX_CFLAGS)
+	$(TWITUX_CFLAGS)$(WARN_CFLAGS)
 
 bin_PROGRAMS = twitux
 
