@@ -21,7 +21,7 @@
  */
 
 #include <config.h>
-#include <gtk/gtk.h>
+
 #include <gtk/gtkbuilder.h>
 
 #include <libtwitux/twitux-paths.h>
@@ -33,17 +33,17 @@ xml_get_file (const gchar *filename,
               const gchar *first_widget,
               va_list      args)
 {
-	GError *err = NULL;
-	GObject **pointer;
-	const char *name;
-	GtkBuilder *ui;
-	gchar *path;
+	GtkBuilder  *ui = NULL;
+	GObject    **pointer;
+	const char  *name;
+	gchar       *path;
+	GError      *err = NULL;
 
+	/* Create gtkbuilder & load the xml file */
 	ui = gtk_builder_new ();
 	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
 	path = twitux_paths_get_glade_path (filename);
-	if (gtk_builder_add_from_file (ui, path, &err) == 0)
-	{
+	if (gtk_builder_add_from_file (ui, path, &err) == 0) {
 		g_warning ("XML file error: %s", err->message);
 		g_error_free (err);
 		g_free (path);
@@ -51,14 +51,13 @@ xml_get_file (const gchar *filename,
 	}
 	g_free (path);
 
-	for (name = first_widget; name; name = va_arg (args, char *))
-	{
+	/* Grab the widgets */
+	for (name = first_widget; name; name = va_arg (args, char *)) {
 		pointer = va_arg (args, void *);
 		
 		*pointer = gtk_builder_get_object (ui, name);
 		
-		if (!*pointer)
-		{
+		if (!*pointer) {
 			g_warning ("Widget '%s' at '%s' is missing.", name, filename);
 			continue;
 		}
@@ -94,22 +93,20 @@ twitux_xml_connect (GtkBuilder *ui,
                     gchar      *first_widget,
                     ...)
 {
+	GObject     *pointer;
+	gpointer    *callback;
 	const gchar *signal;
-	gpointer *callback;
 	const gchar *name;
-	GObject *pointer;
-	va_list args;
+	va_list      args;
 
 	va_start (args, first_widget);
 	
-	for (name = first_widget; name; name = va_arg (args, char *))
-	{
+	for (name = first_widget; name; name = va_arg (args, char *)) {
 		signal = va_arg (args, void *);
 		callback = va_arg (args, void *);
 
 		pointer = gtk_builder_get_object (ui, name);
-		if (!pointer)
-		{
+		if (!pointer) {
 			g_warning ("Missing widget '%s'", name);
 			continue;
 		}
