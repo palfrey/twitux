@@ -3,7 +3,7 @@ AM_CPPFLAGS =                                           \
 	-I$(top_srcdir)                                 \
 	-DDATADIR=\""$(datadir)"\"              	\
 	-DLOCALEDIR=\""$(datadir)/locale"\"		\
-	$(LIBTWITUX_CFLAGS)
+	$(LIBTWITUX_CFLAGS) $(WARN_CFLAGS)
 
 noinst_LTLIBRARIES = libtwitux.la
 
