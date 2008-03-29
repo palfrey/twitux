@@ -4,7 +4,8 @@
 	* src/twitux-spell-dialog.c:
 	* src/twitux-add-dialog.c:
 	* src/twitux-account-dialog.c:
-	* src/Makefile.am: Let's use twitux_xml_* functions
+	* src/twitux-preferences.c:
+	* src/Makefile.am: Let's use twitux_xml_* functions.
 
 	* src/twitux-xml.c:
 	* src/twitux-xml.h: New files

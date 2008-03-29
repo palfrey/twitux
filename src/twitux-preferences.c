@@ -1,7 +1,7 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
  * Copyright (C) 2003-2007 Imendio AB
- * Copyright (C) 2007 Brian Pepple
+ * Copyright (C) 2007-2008 Brian Pepple
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,6 +22,7 @@
  *          Richard Hult <richard@imendio.com>
  *          Martyn Russell <martyn@imendio.com>
  *			Brian Pepple <bpepple@fedoraproject.org>
+ *			Daniel Morales <daniminas@gmail.com>
  */
 
 #include "config.h"
@@ -32,9 +33,9 @@
 #include <glib/gi18n.h>
 
 #include <libtwitux/twitux-conf.h>
-#include <libtwitux/twitux-paths.h>
 
 #include "twitux.h"
+#include "twitux-xml.h"
 #include "twitux-preferences.h"
 #include "twitux-spell.h"
 
@@ -825,39 +826,26 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 
 	prefs = g_new0 (TwituxPrefs, 1);
 
-	/* Create the gtkbuild and load the xml file */
-	ui = gtk_builder_new ();
-	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
-	path = twitux_paths_get_glade_path (XML_FILE);
-	result = gtk_builder_add_from_file (ui, path, &err);
-	g_free (path);
-
-	if (result == 0) {
-		g_warning ("Unable to get xml file: %s", err->message);
-		g_error_free (err);
-		return;
-	}
-
-	/* Grab the widgets */
-	prefs->dialog = GTK_WIDGET (gtk_builder_get_object (ui, "preferences_dialog"));
-	prefs->notebook = GTK_WIDGET (gtk_builder_get_object (ui, "preferences_notebook"));
-	prefs->combo_default_timeline = 
-		GTK_WIDGET (gtk_builder_get_object (ui, "combobox_timeline"));
-	prefs->combo_reload = GTK_WIDGET (gtk_builder_get_object (ui, "combobox_reload"));
-	prefs->expand = GTK_WIDGET (gtk_builder_get_object (ui, "expand_checkbutton"));
-	prefs->notify = GTK_WIDGET (gtk_builder_get_object (ui, "notify_checkbutton"));
-	prefs->names = GTK_WIDGET (gtk_builder_get_object (ui, "names_checkbutton"));
-	prefs->spell = GTK_WIDGET (gtk_builder_get_object (ui, "spell_checkbutton"));
-	prefs->treeview_spell_checker =
-		GTK_WIDGET (gtk_builder_get_object (ui, "spell_treeview"));
+	/* Get widgets */
+	ui = twitux_xml_get_file (XML_FILE,
+						"preferences_dialog", &prefs->dialog,
+						"preferences_notebook", &prefs->notebook,
+						"combobox_timeline", &prefs->combo_default_timeline,
+						"combobox_reload", &prefs->combo_reload,
+						"expand_checkbutton", &prefs->expand,
+						"notify_checkbutton", &prefs->notify,
+						"names_checkbutton", &prefs->names,
+						"spell_checkbutton", &prefs->spell,
+						"spell_treeview", &prefs->treeview_spell_checker,
+						NULL);
 
 	/* Connect the signals */
-	g_signal_connect (G_OBJECT (prefs->dialog), "destroy",
-					  G_CALLBACK (preferences_destroy_cb),
-					  prefs);
-		g_signal_connect (G_OBJECT (prefs->dialog), "response",
-						  G_CALLBACK (preferences_response_cb),
-						  prefs);
+	twitux_xml_connect (ui, prefs,
+						"preferences_dialog", "destroy", preferences_destroy_cb,
+						"preferences_dialog", "response", preferences_response_cb,
+						NULL);
+
+	g_object_unref (ui);
 
 	g_object_add_weak_pointer (G_OBJECT (prefs->dialog), (gpointer) &prefs);
 	gtk_window_set_transient_for (GTK_WINDOW (prefs->dialog), parent);
