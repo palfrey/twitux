@@ -7,6 +7,10 @@
 	* src/twitux-preferences.c:
 	* src/Makefile.am: Let's use twitux_xml_* functions.
 
+	* data/glade/tray_menu.glade: moved to glade directory
+
+	* src/twitux-app.c: Port tray menu to GtkBuilder
+
 	* src/twitux-xml.c:
 	* src/twitux-xml.h: New files
 

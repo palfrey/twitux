@@ -16,7 +16,7 @@ glade_DATA = 				\
 	prefs_dlg.xml			\
 	send_message_dlg.xml		\
 	spell_dlg.xml			\
-	tray_menu.glade
+	tray_menu.xml
 
 icondir = $(datadir)/icons/hicolor/48x48/apps
 icon_DATA = twitux.png

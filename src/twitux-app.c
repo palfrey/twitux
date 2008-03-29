@@ -38,6 +38,7 @@
 #endif
 
 #include "twitux.h"
+#include "twitux-xml.h"
 #include "twitux-about.h"
 #include "twitux-account-dialog.h"
 #include "twitux-app.h"
@@ -86,7 +87,7 @@ struct _TwituxAppPriv {
 
 	/* Status Icon Popup Menu */
 	GtkWidget         *popup_menu;
-	GtkWidget         *popup_menu_show_app;
+	GtkToggleAction   *popup_menu_show_app;
 
 	/* Notify */
 	NotifyNotification *notification;
@@ -759,8 +760,9 @@ app_status_icon_popup_menu_cb (GtkStatusIcon *status_icon,
 
 	g_signal_handlers_block_by_func (priv->popup_menu_show_app,
 									 app_show_hide_cb, app);
-	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (priv->popup_menu_show_app),
-									show);
+
+	gtk_toggle_action_set_active (priv->popup_menu_show_app, show);
+
 	g_signal_handlers_unblock_by_func (priv->popup_menu_show_app,
 									   app_show_hide_cb, app);
 
@@ -776,28 +778,24 @@ static void
 app_status_icon_create_menu (void)
 {
 	TwituxAppPriv *priv;
-	GladeXML      *glade;
+	GtkBuilder    *ui;
 
 	priv = GET_PRIV (app);
 
-	glade = twitux_glade_get_file ("tray_menu.glade",
-								   "tray_menu",
-								   NULL,
-								   "tray_menu", &priv->popup_menu,
-								   "tray_show_app", &priv->popup_menu_show_app,
-								   NULL);
+	/* Get widgets */
+	ui = twitux_xml_get_file ("tray_menu.xml",
+						"tray_menu", &priv->popup_menu,
+						"tray_show_app", &priv->popup_menu_show_app,
+						NULL);
 
-	twitux_glade_connect (glade,
-						  app,
-						  "tray_new_message", "activate", app_twitter_new_msg_cb,
-						  "tray_quit", "activate", app_twitter_quit_cb,
-						  NULL);
+	/* Connect the signals */
+	twitux_xml_connect (ui, app,
+						"tray_new_message", "activate", app_twitter_new_msg_cb,
+						"tray_quit", "activate", app_twitter_quit_cb,
+						"tray_show_app", "toggled", app_show_hide_cb,
+						NULL);
 
-	g_signal_connect (priv->popup_menu_show_app,
-					  "toggled",
-					  G_CALLBACK (app_show_hide_cb), app);
-
-	g_object_unref (glade);
+	g_object_unref (ui);
 }
 
 static void
