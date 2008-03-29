@@ -34,9 +34,9 @@
 
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-debug.h>
-#include <libtwitux/twitux-paths.h>
 
 #include "twitux.h"
+#include "twitux-xml.h"
 #include "twitux-send-message-dialog.h"
 #include "twitux-spell.h"
 #include "twitux-spell-dialog.h"
@@ -139,37 +139,24 @@ message_setup (GtkWindow  *parent)
 	/* Set up interface */
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Initialising message dialog");
 
-	/* Create the gtkbuild and load the xml file */
-	ui = gtk_builder_new ();
-	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
-	path = twitux_paths_get_glade_path (XML_FILE);
-	result = gtk_builder_add_from_file (ui, path, &err);
-	g_free (path);
+	/* Get widgets */
+	ui = twitux_xml_get_file (XML_FILE,
+						"send_message_dialog", &priv->dialog,
+						"send_message_textview", &priv->textview,
+						"char_label", &priv->label,
+						"friends_combo", &priv->friends_combo,
+						"friends_label", &priv->friends_label,
+						"send_button", &priv->send_button,
+						NULL);
+	
+	/* Connect the signals */
+	twitux_xml_connect (ui, dialog,
+						"send_message_dialog", "destroy", message_destroy_cb,
+						"send_message_dialog", "response", message_response_cb,
+						"send_message_textview", "populate_popup", message_text_populate_popup_cb,
+						NULL);
 
-	if (result == 0) {
-		g_warning ("Unable to get xml file: %s", err->message);
-		g_error_free (err);
-		return;
-	}
-
-	/* Grab the widgets */
-	priv->dialog = GTK_WIDGET (gtk_builder_get_object (ui, "send_message_dialog"));
-	priv->textview = GTK_WIDGET (gtk_builder_get_object (ui, "send_message_textview"));
-	priv->label = GTK_WIDGET (gtk_builder_get_object (ui, "char_label"));
-	priv->friends_combo = GTK_WIDGET (gtk_builder_get_object (ui, "friends_combo"));
-	priv->friends_label = GTK_WIDGET (gtk_builder_get_object (ui, "friends_label"));
-	priv->send_button = GTK_WIDGET (gtk_builder_get_object (ui, "send_button"));
-
-	/* Connect the widgets */
-	g_signal_connect (G_OBJECT (priv->dialog), "destroy",
-					  G_CALLBACK (message_destroy_cb),
-					  dialog);
-	g_signal_connect (G_OBJECT (priv->dialog), "response",
-					  G_CALLBACK (message_response_cb),
-					  dialog);
-	g_signal_connect (G_OBJECT (priv->textview), "populate_popup",
-					  G_CALLBACK (message_text_populate_popup_cb),
-					  dialog);
+	g_object_unref (ui);
 
 	/* Set the label */
 	standard_msg = _("Characters Available");

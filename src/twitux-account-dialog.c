@@ -26,12 +26,12 @@
 #include <gtk/gtktogglebutton.h>
 
 #include <libtwitux/twitux-conf.h>
-#include <libtwitux/twitux-paths.h>
 #ifdef HAVE_GNOME_KEYRING
 #include <libtwitux/twitux-keyring.h>
 #endif
 
 #include "twitux.h"
+#include "twitux-xml.h"
 #include "twitux-account-dialog.h"
 
 #define XML_FILE "account_dlg.xml"
@@ -119,38 +119,23 @@ twitux_account_dialog_show (GtkWindow *parent)
 
 	act = g_new0 (TwituxAccount, 1);
 
-	/* Create the gtkbuild and load the xml file */
-	ui = gtk_builder_new ();
-	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
-	path = twitux_paths_get_glade_path (XML_FILE);
-	result = gtk_builder_add_from_file (ui, path, &err);
-	g_free (path);
-
-	if (result == 0) {
-		g_warning ("Unable to get xml file: %s", err->message);
-		g_error_free (err);
-		return;
-	}
-
-	/* Grab the widgets */
-	act->dialog = GTK_WIDGET (gtk_builder_get_object (ui, "account_dialog"));
-	act->username = GTK_WIDGET (gtk_builder_get_object (ui, "username_entry"));
-	act->password = GTK_WIDGET (gtk_builder_get_object (ui, "password_entry"));
-	act->auto_login =
-		GTK_WIDGET (gtk_builder_get_object (ui, "login_checkbutton"));
-	act->show_password =
-		GTK_WIDGET (gtk_builder_get_object (ui, "show_password_checkbutton"));
+	/* Get widgets */
+	ui = twitux_xml_get_file (XML_FILE,
+						"account_dialog", &act->dialog,
+						"username_entry", &act->username,
+						"password_entry", &act->password,
+						"login_checkbutton", &act->auto_login,
+						"show_password_checkbutton", &act->show_password,
+						NULL);
 
 	/* Connect the signals */
-	g_signal_connect (G_OBJECT (act->dialog), "destroy",
-					  G_CALLBACK (account_destroy_cb),
-					  act);
-	g_signal_connect (G_OBJECT (act->dialog), "response",
-					  G_CALLBACK (account_response_cb),
-					  act);
-	g_signal_connect (G_OBJECT (act->show_password), "toggled",
-					  G_CALLBACK (account_show_password_cb),
-					  act);
+	twitux_xml_connect (ui, act,
+						"account_dialog", "destroy", account_destroy_cb,
+						"account_dialog", "response", account_response_cb,
+						"show_password_checkbutton", "toggled", account_show_password_cb,
+						NULL);
+
+	g_object_unref (ui);
 
 	g_object_add_weak_pointer (G_OBJECT (act->dialog), (gpointer) &act);
 

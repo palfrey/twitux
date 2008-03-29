@@ -1,5 +1,11 @@
 2008-08-29  Daniel Morales  <daniminas@gmail.com>
 
+	* src/twitux-send-message-dialog.c:
+	* src/twitux-spell-dialog.c:
+	* src/twitux-add-dialog.c:
+	* src/twitux-account-dialog.c:
+	* src/Makefile.am: Let's use twitux_xml_* functions
+
 	* src/twitux-xml.c:
 	* src/twitux-xml.h: New files
 

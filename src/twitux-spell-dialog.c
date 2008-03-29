@@ -36,10 +36,9 @@
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtksizegroup.h>
 
-#include <libtwitux/twitux-paths.h>
-
 #include "twitux-send-message-dialog.h"
 #include "twitux-spell.h"
+#include "twitux-xml.h"
 #include "twitux-spell-dialog.h"
 
 #define XML_FILE "spell_dlg.xml"
@@ -246,34 +245,21 @@ twitux_spell_dialog_show (GtkWidget   *textview,
 	dialog->start = start;
 	dialog->end = end;
 
-	/* Create the gtkbuild and load the xml file */
-	ui = gtk_builder_new ();
-	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
-	path = twitux_paths_get_glade_path (XML_FILE);
-	result = gtk_builder_add_from_file (ui, path, &err);
-	g_free (path);
+	/* Get widgets */
+	ui = twitux_xml_get_file (XML_FILE,
+						"spell_dialog", &dialog->window,
+						"button_replace", &dialog->button_replace,
+						"label_word", &dialog->label_word,
+						"treeview_words", &dialog->treeview_words,
+						NULL);
 
-	if (result == 0) {
-		g_warning ("Unable to get xml file: %s", err->message);
-		g_error_free (err);
-		return;
-	}
+	/* Connect the signals */
+	twitux_xml_connect (ui, dialog,
+						"spell_dialog", "destroy", spell_dialog_destroy_cb,
+						"spell_dialog", "response", spell_dialog_response_cb,
+						NULL);
 
-	/* Grab the widgets */
-	dialog->window = GTK_WIDGET (gtk_builder_get_object (ui, "spell_dialog"));
-	dialog->button_replace =
-		GTK_WIDGET (gtk_builder_get_object (ui, "button_replace"));
-	dialog->label_word = GTK_WIDGET (gtk_builder_get_object (ui, "label_word"));
-	dialog->treeview_words =
-		GTK_WIDGET (gtk_builder_get_object (ui, "treeview_words"));
-
-	/* Connect signals */
-	g_signal_connect (G_OBJECT (dialog->window), "response",
-					  G_CALLBACK (spell_dialog_response_cb),
-					  dialog);
-	g_signal_connect (G_OBJECT(dialog->window), "destroy",
-					  G_CALLBACK (spell_dialog_destroy_cb),
-					  dialog);
+	g_object_unref (ui);
 
 	/* Set the label */
 	str = g_strdup_printf ("%s:\n<b>%s</b>",

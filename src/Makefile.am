@@ -22,6 +22,7 @@ twitux_SOURCES = 							\
 	twitux-app.c			twitux-app.h			\
 	twitux-geometry.c		twitux-geometry.h		\
 	twitux-glade.c			twitux-glade.h			\
+	twitux-xml.c			twitux-xml.h			\
 	twitux-hint.c			twitux-hint.h			\
 	twitux-network.c		twitux-network.h		\
 	twitux-parser.c			twitux-parser.h			\

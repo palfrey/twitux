@@ -23,9 +23,8 @@
 #include <gtk/gtkbuilder.h>
 #include <gtk/gtkdialog.h>
 
-#include <libtwitux/twitux-paths.h>
-
 #include "twitux.h"
+#include "twitux-xml.h"
 #include "twitux-add-dialog.h"
 #include "twitux-network.h"
 
@@ -76,30 +75,19 @@ twitux_add_dialog_show (GtkWindow *parent)
 
 	add = g_new0 (TwituxAdd, 1);
 
-	/* Create the gtkbuild and load the xml file */
-	ui = gtk_builder_new ();
-	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
-	path = twitux_paths_get_glade_path (XML_FILE);
-	result = gtk_builder_add_from_file (ui, path, &err);
-	g_free (path);
+	/* Get widgets */
+	ui = twitux_xml_get_file (XML_FILE,
+						"add_friend_dialog", &add->dialog,
+						"frienduser_entry", &add->entry,
+						NULL);
 
-	if (result == 0) {
-		g_warning ("Unable to get xml file: %s", err->message);
-		g_error_free (err);
-		return;
-	}
-
-	/* Grab the widgets */
-	add->dialog = GTK_WIDGET (gtk_builder_get_object (ui, "add_friend_dialog"));
-	add->entry = GTK_WIDGET (gtk_builder_get_object (ui, "frienduser_entry"));
-	
 	/* Connect the signals */
-	g_signal_connect (G_OBJECT (add->dialog), "destroy",
-					  G_CALLBACK (add_destroy_cb),
-					  add);
-	g_signal_connect (G_OBJECT (add->dialog), "response",
-					  G_CALLBACK (add_response_cb),
-					  add);
+	twitux_xml_connect (ui, add,
+						"add_friend_dialog", "destroy", add_destroy_cb,
+						"add_friend_dialog", "response", add_response_cb,
+						NULL);
+
+	g_object_unref (ui);
 
 	/* Set the parent */
 	g_object_add_weak_pointer (G_OBJECT (add->dialog), (gpointer) &add);
