@@ -420,7 +420,7 @@ parser_convert_time (const char *datetime)
 	 * Twitter time comes in english, so we have to set the time
 	 * locale to en_US, ifnot strptime fails and all function fails
 	 */
-	setlocale(LC_TIME, "en");
+	setlocale(LC_TIME, "en_US.UTF-8");
 
 	tzset ();
 	ta = gmtime (&t);

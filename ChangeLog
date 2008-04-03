@@ -1,3 +1,8 @@
+2008-04-04  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-parser.c: Close #1927666 and quiet
+	some warnings.
+
 2008-03-29  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-preferences.c:
