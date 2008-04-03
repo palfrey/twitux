@@ -23,6 +23,7 @@
 
 #include <config.h>
 
+#define _XOPEN_SOURCE
 #include <time.h>
 
 #include <gtk/gtk.h>
@@ -387,7 +388,7 @@ parser_twitux_node_status (xmlNode *a_node)
 			const xmlChar *msg;
 
 			msg = xmlBufferContent (buffer);
-			status->text = g_markup_escape_text (msg, -1);
+			status->text = g_markup_escape_text ((const char *)msg, -1);
 		} else if (g_str_equal(cur_node->name, "sender") ||
 				   g_str_equal (cur_node->name, "user")) {
 
