@@ -23,7 +23,6 @@
 
 #include <config.h>
 
-#define _XOPEN_SOURCE
 #include <time.h>
 
 #include <gtk/gtk.h>
@@ -52,6 +51,12 @@ typedef struct
 	gchar		*id;
 } TwituxStatus;
 
+/* RFC months to parse */
+const gchar *rfc_months[] = {
+	"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+	"Jul","Aug", "Sep", "Oct", "Nov", "Dec",
+	NULL
+};
 
 static TwituxUser	*parser_twitux_node_user   (xmlNode     *a_node);
 static TwituxStatus	*parser_twitux_node_status (xmlNode     *a_node);
@@ -59,6 +64,7 @@ static TwituxStatus	*parser_twitux_node_status (xmlNode     *a_node);
 static xmlDoc		*parser_twitux_parse       (const char  *cache_file,
 						   xmlNode    **first_element);
 
+static void		 strtotime                 (const char  *time,  struct tm *post);
 static gchar		*parser_convert_time       (const char	*datetime);
 
 /* id of the newest tweet showed */
@@ -427,7 +433,7 @@ parser_convert_time (const char *datetime)
 	ta->tm_isdst = -1;
 	seconds_local = mktime (ta);
 
-	strptime (datetime, "%a %b %d %T +0000 %Y", &post);
+	strtotime (datetime, &post);
 	post.tm_isdst = -1;
 	seconds_post =  mktime (&post);
 
@@ -469,6 +475,36 @@ parser_convert_time (const char *datetime)
 		}
 	}
 	return NULL;
+}
+
+static void
+strtotime (const char *time,  struct tm *post)
+{
+	gchar **split_date;
+	gchar **split_time;
+	gint    month;
+
+	if (!time)
+		return;
+
+	split_date = g_strsplit (time, " ", 6);
+	split_time = g_strsplit (split_date[3], ":", 3);
+	
+	post->tm_sec = atoi (split_time[2]);
+	post->tm_min = atoi (split_time[1]);
+	post->tm_hour = atoi (split_time[0]);
+	post->tm_mday = atoi (split_date[2]);
+	post->tm_year = atoi (split_date[5]) - 1900;
+
+	/* Parse the month */
+	for (month = 1; month <=12; month++){
+		if (g_str_equal (rfc_months[month], split_date[1]))
+			break;
+	}
+	post->tm_mon = month;
+
+	g_strfreev (split_date);
+	g_strfreev (split_time);
 }
 
 /* Free a user struct */
