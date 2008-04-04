@@ -54,8 +54,7 @@ typedef struct
 /* RFC months to parse */
 const gchar *rfc_months[] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-	"Jul","Aug", "Sep", "Oct", "Nov", "Dec",
-	NULL
+	"Jul","Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
 static TwituxUser	*parser_twitux_node_user   (xmlNode     *a_node);
@@ -492,10 +491,11 @@ strtotime (const char *time,  struct tm *post)
 	post->tm_year = atoi (split_date[5]) - 1900;
 
 	/* Parse the month */
-	for (month = 1; month <=12; month++){
+	for (month = 0; month < 12; month++){
 		if (g_str_equal (rfc_months[month], split_date[1]))
 			break;
 	}
+
 	post->tm_mon = month;
 
 	g_strfreev (split_date);
