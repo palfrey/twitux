@@ -1,0 +1,256 @@
+<?xml version="1.0" ?>
+<!--*- mode: xml -*-->
+<interface>
+<object class="GtkUIManager" id="uimanager1">
+  <child>
+    <object class="GtkActionGroup" id="actiongroup1">
+      <child>
+        <object class="GtkAction" id="twitter">
+          <property name="name">twitter</property>
+          <property name="label" translatable="yes">_Twitter</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="twitter_connect">
+          <property name="stock_id">gtk-connect</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="twitter_disconnect">
+          <property name="stock_id">gtk-disconnect</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="twitter_new_message">
+          <property name="stock_id">gtk-new</property>
+          <property name="label" translatable="yes">New Message</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="twitter_send_direct_message">
+          <property name="label" translatable="yes">Send Direct Message</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="twitter_add_friend">
+          <property name="stock_id">gtk-add</property>
+          <property name="label" translatable="yes">Add a friend...</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="twitter_refresh">
+          <property name="stock_id">gtk-refresh</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="twitter_quit">
+          <property name="stock_id">gtk-quit</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="settings1">
+          <property name="name">settings1</property>
+          <property name="label" translatable="yes">_Settings</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="settings_account">
+          <property name="label" translatable="yes">_Account</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="settings_preferences">
+          <property name="stock_id">gtk-preferences</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="view1">
+          <property name="name">view1</property>
+          <property name="label" translatable="yes">_View</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="view_public_timeline">
+          <property name="label" translatable="yes">Public Timeline</property>
+          <property name="group">view_public_timeline</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="view_friends_timeline">
+          <property name="label" translatable="yes">Friends Timeline</property>
+          <property name="group">view_public_timeline</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="view_my_timeline">
+          <property name="label" translatable="yes">My Timeline</property>
+          <property name="group">view_public_timeline</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="view_twitux_timeline">
+          <property name="label" translatable="yes">Twitux Timeline</property>
+          <property name="group">view_public_timeline</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="view_direct_messages">
+          <property name="label" translatable="yes">Direct Messages</property>
+          <property name="group">view_public_timeline</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="view_direct_replies">
+          <property name="label" translatable="yes">Direct Replies</property>
+          <property name="group">view_public_timeline</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="view_friends">
+          <property name="name">view_friends</property>
+          <property name="label" translatable="yes">Friends</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="help1">
+          <property name="name">help1</property>
+          <property name="label" translatable="yes">_Help</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="help_about">
+          <property name="stock_id">gtk-about</property>
+        </object>
+      </child>
+    </object>
+  </child>
+  <ui>
+    <menubar name="main_menubar">
+      <menu action="twitter">
+        <menuitem action="twitter_connect"/>
+        <menuitem action="twitter_disconnect"/>
+        <separator/>
+        <menuitem action="twitter_new_message"/>
+        <menuitem action="twitter_send_direct_message"/>
+        <separator/>
+        <menuitem action="twitter_add_friend"/>
+        <separator/>
+        <menuitem action="twitter_refresh"/>
+        <separator/>
+        <menuitem action="twitter_quit"/>
+      </menu>
+      <menu action="settings1">
+         <menuitem action="settings_account"/>
+         <menuitem action="settings_preferences"/>
+      </menu>
+      <menu action="view1">
+        <menuitem action="view_public_timeline"/>
+        <menuitem action="view_friends_timeline"/>
+        <menuitem action="view_my_timeline"/>
+        <menuitem action="view_twitux_timeline"/>
+        <menuitem action="view_direct_messages"/>
+        <menuitem action="view_direct_replies"/>
+        <separator/>
+        <menuitem action="view_friends"/>
+      </menu>
+      <menu action="help1">
+        <menuitem action="help_about"/>
+      </menu>
+    </menubar>
+  </ui>
+</object>
+
+<object class="GtkWindow" id="main_window">
+    <property name="width_request">230</property>
+    <property name="height_request">320</property>
+    <property name="visible">True</property>
+    <property name="title" translatable="yes">Twitux</property>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkMenuBar" constructor="uimanager1" id="main_menubar">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="main_scrolledwindow">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
+            <property name="shadow_type">GTK_SHADOW_IN</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="expand_box">
+            <property name="visible">True</property>
+            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="spacing">1</property>
+            <child>
+              <object class="GtkImage" id="expand_image">
+                <property name="visible">True</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="yalign">0</property>
+                <property name="xpad">7</property>
+                <property name="ypad">5</property>
+                <property name="stock">gtk-missing-image</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="expand_vbox">
+                <property name="visible">True</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="spacing">2</property>
+                <child>
+                  <object class="GtkLabel" id="expand_title">
+                    <property name="visible">True</property>
+                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">5</property>
+                    <property name="ypad">3</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">6</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStatusbar" id="main_statusbar">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
