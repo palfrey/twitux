@@ -38,26 +38,27 @@
 #endif
 
 #include "twitux.h"
-#include "twitux-xml.h"
 #include "twitux-about.h"
 #include "twitux-account-dialog.h"
+#include "twitux-add-dialog.h"
 #include "twitux-app.h"
 #include "twitux-geometry.h"
 #include "twitux-glade.h"
 #include "twitux-hint.h"
+#include "twitux-label.h"
 #include "twitux-network.h"
 #include "twitux-preferences.h"
 #include "twitux-send-message-dialog.h"
 #include "twitux-ui-utils.h"
+#include "twitux-xml.h"
 #include "twitux-tweet-list.h"
-#include "twitux-add-dialog.h"
-#include "twitux-label.h"
 
 #ifdef HAVE_DBUS
 #include "twitux-dbus.h"
 #endif
 
-#define GET_PRIV(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TWITUX_TYPE_APP, TwituxAppPriv))
+#define GET_PRIV(obj)           \
+	(G_TYPE_INSTANCE_GET_PRIVATE ((obj), TWITUX_TYPE_APP, TwituxAppPriv))
 
 #define DEBUG_DOMAIN_SETUP       "AppSetup"
 #define DEBUG_QUIT
@@ -108,11 +109,6 @@ static void     twitux_app_init			         (TwituxApp             *app);
 static void     app_finalize                     (GObject               *object);
 static void     app_restore_main_window_geometry (GtkWidget             *main_window);
 static void     app_setup                        (void);
-static gboolean app_main_window_quit_confirm 	 (TwituxApp             *app,
-												  GtkWidget             *window);
-static void     app_main_window_quit_confirm_cb	 (GtkWidget             *dialog,
-												  gint                   response,
-												  TwituxApp             *app);
 static void     app_main_window_destroy_cb       (GtkWidget             *window,
 												  TwituxApp             *app);
 static gboolean app_main_window_delete_event_cb  (GtkWidget             *window,
@@ -351,47 +347,6 @@ app_setup (void)
 		app_login ();
 }
 
-static gboolean
-app_main_window_quit_confirm (TwituxApp *app,
-							  GtkWidget *window)
-{
-	TwituxAppPriv *priv;
-	GtkWidget *dialog;
-	
-	priv = GET_PRIV (app);
-	
-	dialog = gtk_message_dialog_new_with_markup	(GTK_WINDOW (twitux_app_get_window ()),
-												 0,
-												 GTK_MESSAGE_WARNING,
-												 GTK_BUTTONS_OK_CANCEL,
-												 "<b>%s</b>",
-												 _("Do you really want to quit?"));
-
-	g_signal_connect (dialog, "response",
-					  G_CALLBACK (app_main_window_quit_confirm_cb),
-					  app);
-
-	gtk_widget_show (dialog);
-
-	return TRUE;
-}
-
-static void
-app_main_window_quit_confirm_cb (GtkWidget *dialog,
-								 gint       response,
-								 TwituxApp *app)
-{
-	TwituxAppPriv *priv;
-
-	priv = GET_PRIV (app);
-
-	gtk_widget_destroy (dialog);
-
-	if (response == GTK_RESPONSE_OK) {
-		gtk_widget_destroy (priv->window);
-	}
-}
-
 static void
 app_main_window_destroy_cb (GtkWidget *window, TwituxApp *app)
 {
@@ -428,11 +383,6 @@ app_main_window_delete_event_cb (GtkWidget *window,
 
 		return TRUE;
 	}
-
-	if (app_main_window_quit_confirm (app, window)) {
-		/* Don't quit if we have messages open */
-		return TRUE;
-	}
 	
 	if (twitux_hint_dialog_show (TWITUX_PREFS_HINTS_CLOSE_MAIN_WINDOW,
 								_("You were about to quit!"),
@@ -454,7 +404,6 @@ app_main_window_delete_event_cb (GtkWidget *window,
 	/* At this point, we have checked we have:
 	 *   - No tray
 	 *   - Have NOT shown the hint
-	 *
 	 * So we just quit.
 	 */
 
@@ -662,8 +611,7 @@ static void
 app_view_select_friends (GtkItem *item,
 						 TwituxApp *app)
 {
-	GList *friends;
-
+	GList         *friends;
 	TwituxAppPriv *priv;
 
 	priv = GET_PRIV (app);
@@ -866,7 +814,7 @@ app_window_configure_event_cb (GtkWidget         *widget,
 
 static void
 app_twitter_view_friend_cb (GtkMenuItem *menuitem,
-							TwituxUser *user)
+							TwituxUser  *user)
 {
 	twitux_network_get_user (user->screen_name);
 }
@@ -1023,7 +971,7 @@ app_connection_items_setup (GladeXML *glade)
 
 
 void
-twitux_app_state_on_connection (gboolean   connected)
+twitux_app_state_on_connection (gboolean connected)
 {
 	TwituxAppPriv *priv;
 	GList         *l;
@@ -1131,7 +1079,7 @@ twitux_app_show_notification (gint tweets)
 	TwituxAppPriv	*priv;
 	gchar			*msg;
 	gchar			*s;
-	gboolean		notify;
+	gboolean		 notify;
 
 	priv = GET_PRIV (app);
 
@@ -1161,7 +1109,7 @@ twitux_app_show_notification (gint tweets)
 												  NULL,
 												  priv->status_icon);
 
-	g_object_set(priv->notification, "icon-name", "twitux", NULL) ;
+	g_object_set(priv->notification, "icon-name", "twitux", NULL);
 
 	notify_notification_set_timeout (priv->notification, 3000);
 	notify_notification_show (priv->notification, NULL);
@@ -1171,7 +1119,7 @@ twitux_app_show_notification (gint tweets)
 
 void
 twitux_app_set_image (const gchar *file,
-                      GtkTreeIter iter)
+                      GtkTreeIter  iter)
 {
 	GtkListStore *store;
 	GdkPixbuf	 *pixbuf;
