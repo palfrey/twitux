@@ -1,5 +1,7 @@
 NEW in ?:
 ==============
+- Fixed #1927666, timeline date bug. (Daniel Morales)
+- Convert to GtkBuilder, and drop glade requirement. (Brian Pepple, Daniel Morales)
 
 NEW in 0.61:
 ==============
