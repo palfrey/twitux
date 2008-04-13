@@ -29,8 +29,10 @@
 #include "config.h"
 
 #include <string.h>
+
 #include <glib/gi18n.h>
-#include <gtk/gtk.h>
+#include <gtk/gtktextiter.h>
+#include <gtk/gtkwidget.h>
 
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-debug.h>
@@ -48,7 +50,8 @@
 /* Let's use the preferred maximum character count */
 #define MAX_CHARACTER_COUNT 140
 
-#define GET_PRIV(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TWITUX_TYPE_MESSAGE, TwituxMsgDialogPriv))
+#define GET_PRIV(obj)          \
+	(G_TYPE_INSTANCE_GET_PRIVATE ((obj), TWITUX_TYPE_MESSAGE, TwituxMsgDialogPriv))
 
 typedef struct {
 	GtkWidget         *textview;
@@ -74,25 +77,25 @@ static void	twitux_message_class_init		     (TwituxMsgDialogClass *klass);
 static void twitux_message_init			         (TwituxMsgDialog      *dialog);
 static void message_finalize                     (GObject              *object);
 static void message_setup                        (GtkWindow            *parent);
-static void message_set_characters_available    (GtkTextBuffer         *buffer,
-												 TwituxMsgDialog       *dialog);
-static void message_text_buffer_changed_cb      (GtkTextBuffer         *buffer,
-											     TwituxMsgDialog       *dialog);
-static void message_text_populate_popup_cb      (GtkTextView           *view,
-												 GtkMenu               *menu,
-												 TwituxMsgDialog       *dialog);
-static void message_text_check_word_spelling_cb (GtkMenuItem           *menuitem,
-												 TwituxMessageSpell    *message_spell);
-static TwituxMessageSpell *message_spell_new    (GtkWidget             *window,
-											     const gchar           *word,
-											     GtkTextIter            start,
-											     GtkTextIter            end);
-static void message_spell_free                  (TwituxMessageSpell    *message_spell);
-static void message_destroy_cb                  (GtkWidget             *widget,
-											     TwituxMsgDialog       *dialog);
-static void message_response_cb                 (GtkWidget             *widget,
-											     gint                   response,
-											     TwituxMsgDialog       *dialog);
+static void message_set_characters_available     (GtkTextBuffer        *buffer,
+												  TwituxMsgDialog      *dialog);
+static void message_text_buffer_changed_cb       (GtkTextBuffer        *buffer,
+											      TwituxMsgDialog      *dialog);
+static void message_text_populate_popup_cb       (GtkTextView          *view,
+												  GtkMenu              *menu,
+												  TwituxMsgDialog      *dialog);
+static void message_text_check_word_spelling_cb  (GtkMenuItem          *menuitem,
+												  TwituxMessageSpell   *message_spell);
+static TwituxMessageSpell *message_spell_new     (GtkWidget            *window,
+												  const gchar          *word,
+												  GtkTextIter           start,
+												  GtkTextIter           end);
+static void message_spell_free                   (TwituxMessageSpell   *message_spell);
+static void message_destroy_cb                   (GtkWidget            *widget,
+												  TwituxMsgDialog      *dialog);
+static void message_response_cb                  (GtkWidget            *widget,
+												  gint                  response,
+												  TwituxMsgDialog      *dialog);
 
 static TwituxMsgDialog  *dialog = NULL;
 
@@ -137,14 +140,15 @@ message_setup (GtkWindow  *parent)
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Initialising message dialog");
 
 	/* Get widgets */
-	ui = twitux_xml_get_file (XML_FILE,
-						"send_message_dialog", &priv->dialog,
-						"send_message_textview", &priv->textview,
-						"char_label", &priv->label,
-						"friends_combo", &priv->friends_combo,
-						"friends_label", &priv->friends_label,
-						"send_button", &priv->send_button,
-						NULL);
+	ui =
+		twitux_xml_get_file (XML_FILE,
+							 "send_message_dialog", &priv->dialog,
+							 "send_message_textview", &priv->textview,
+							 "char_label", &priv->label,
+							 "friends_combo", &priv->friends_combo,
+							 "friends_label", &priv->friends_label,
+							 "send_button", &priv->send_button,
+							 NULL);
 	
 	/* Connect the signals */
 	twitux_xml_connect (ui, dialog,
@@ -238,14 +242,15 @@ twitux_message_set_followers (GList *followers)
 
 	priv = GET_PRIV (dialog);
 
-	model_followers = GTK_LIST_STORE (
-						gtk_combo_box_get_model (
+	model_followers =
+		GTK_LIST_STORE (gtk_combo_box_get_model (
 							GTK_COMBO_BOX (priv->friends_combo)));
 
 	for (list = followers; list; list = list->next) {
 		user = (TwituxUser *)list->data;
 		gtk_list_store_append (model_followers, &iter);
-		gtk_list_store_set (model_followers, &iter,
+		gtk_list_store_set (model_followers,
+							&iter,
 							0, user->screen_name,
 							-1);
 	}
