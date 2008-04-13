@@ -68,7 +68,10 @@ struct _TwituxAppPriv {
 	TwituxTweetList   *listview;
 	GtkWidget         *statusbar;
 
-	/* Widgets that are enabled when we're connected/disconnected */
+	/*
+	 * Widgets that are enabled when
+	 * we are connected/disconnected
+	 */
 	GList             *widgets_connected;
 	GList             *widgets_disconnected;
 
@@ -107,38 +110,38 @@ struct _TwituxAppPriv {
 static void	    twitux_app_class_init			 (TwituxAppClass        *klass);
 static void     twitux_app_init			         (TwituxApp             *app);
 static void     app_finalize                     (GObject               *object);
-static void     app_restore_main_window_geometry (GtkWidget             *main_window);
+static void     restore_main_window_geometry     (GtkWidget             *main_window);
 static void     app_setup                        (void);
-static void     app_main_window_destroy_cb       (GtkWidget             *window,
+static void     main_window_destroy_cb           (GtkWidget             *window,
 												  TwituxApp             *app);
-static gboolean app_main_window_delete_event_cb  (GtkWidget             *window,
+static gboolean main_window_delete_event_cb      (GtkWidget             *window,
 												  GdkEvent              *event,
 												  TwituxApp             *app);
 static void     app_set_radio_group              (TwituxApp             *app,
 												  GtkBuilder            *ui);
-static void     app_twitter_connect_cb           (GtkWidget             *window,
+static void     app_connect_cb                   (GtkWidget             *window,
 												  TwituxApp             *app);
-static void     app_twitter_disconnect_cb        (GtkWidget             *window,
+static void     app_disconnect_cb                (GtkWidget             *window,
 												  TwituxApp             *app);
-static void     app_twitter_new_msg_cb           (GtkWidget             *window,
+static void     app_new_message_cb               (GtkWidget             *window,
 												  TwituxApp             *app);
-static void     app_twitter_send_msg_cb          (GtkWidget             *window,
+static void     app_send_direct_message_cb       (GtkWidget             *window,
 												  TwituxApp             *app);
-static void     app_twitter_quit_cb              (GtkWidget             *window,
+static void     app_quit_cb                      (GtkWidget             *window,
 												  TwituxApp             *app);
-static void     app_twitter_refresh_cb           (GtkWidget             *window,
+static void     app_refresh_cb                   (GtkWidget             *window,
 												  TwituxApp             *app);
-static void     app_settings_account_cb          (GtkWidget             *window,
+static void     app_account_cb                   (GtkWidget             *window,
 												  TwituxApp             *app);
-static void     app_settings_preferences_cb       (GtkWidget             *window,
+static void     app_preferences_cb               (GtkWidget             *window,
 												  TwituxApp             *app);
-static void     app_view_public_timeline_cb      (GtkRadioAction        *action,
+static void     app_public_timeline_cb           (GtkRadioAction        *action,
 												  GtkRadioAction        *current,
 												  TwituxApp             *app);
-static void     app_view_friends_timeline_cb     (GtkRadioAction        *action,
+static void     app_friends_timeline_cb          (GtkRadioAction        *action,
 												  GtkRadioAction        *current,
 												  TwituxApp             *app);
-static void     app_view_my_timeline_cb          (GtkRadioAction        *action,
+static void     app_mine_timeline_cb             (GtkRadioAction        *action,
 												  GtkRadioAction        *current,
 												  TwituxApp             *app);
 static void     app_view_direct_messages_cb      (GtkRadioAction        *action,
@@ -147,10 +150,10 @@ static void     app_view_direct_messages_cb      (GtkRadioAction        *action,
 static void     app_view_direct_replies_cb       (GtkRadioAction        *action,
 												  GtkRadioAction        *current,
 												  TwituxApp             *app);
-static void     app_view_twitux_timeline_cb      (GtkRadioAction        *action,
+static void     app_twitux_timeline_cb           (GtkRadioAction        *action,
 												  GtkRadioAction        *current,
 												  TwituxApp             *app);
-static void     app_help_about_cb                (GtkWidget             *window,
+static void     app_about_cb                     (GtkWidget             *window,
 												  TwituxApp             *app);
 static void     app_status_icon_activate_cb      (GtkStatusIcon         *status_icon,
 												  TwituxApp             *app);
@@ -158,11 +161,11 @@ static void     app_status_icon_popup_menu_cb    (GtkStatusIcon         *status_
 												  guint                  button,
 												  guint                  activate_time,
 												  TwituxApp             *app);
-static void     app_twitter_add_friend_cb        (GtkAction				*menuitem,
+static void     app_add_friend_cb                (GtkAction				*menuitem,
 												  TwituxApp             *app);
 static void     app_connection_items_setup       (TwituxApp             *app,
 												  GtkBuilder            *ui);
-static void     app_login                        (void);
+static void     app_login                        (TwituxApp             *app);
 static void     app_set_default_timeline         (TwituxApp             *app,
 												  gchar                 *timeline);
 static void     app_retrieve_default_timeline    (void);
@@ -230,7 +233,7 @@ app_finalize (GObject *object)
 }
 
 static void
-app_restore_main_window_geometry (GtkWidget *main_window)
+restore_main_window_geometry (GtkWidget *main_window)
 {
 	twitux_geometry_load_for_main_window (main_window);
 }
@@ -288,25 +291,25 @@ app_setup (void)
 
 	/* Connect the signals */
 	twitux_xml_connect (ui, app,
-						"main_window", "destroy", app_main_window_destroy_cb,
-						"main_window", "delete_event", app_main_window_delete_event_cb,
+						"main_window", "destroy", main_window_destroy_cb,
+						"main_window", "delete_event", main_window_delete_event_cb,
 						"main_window", "configure_event", app_window_configure_event_cb,
-						"twitter_connect", "activate", app_twitter_connect_cb,
-						"twitter_disconnect", "activate", app_twitter_disconnect_cb,
-						"twitter_new_message", "activate", app_twitter_new_msg_cb,
-						"twitter_send_direct_message", "activate", app_twitter_send_msg_cb,
-						"twitter_refresh", "activate", app_twitter_refresh_cb,
-						"twitter_quit", "activate", app_twitter_quit_cb,
-						"twitter_add_friend", "activate", app_twitter_add_friend_cb,
-						"settings_account", "activate", app_settings_account_cb,
-						"settings_preferences", "activate", app_settings_preferences_cb,
-						"view_public_timeline", "changed", app_view_public_timeline_cb,
-						"view_friends_timeline", "changed", app_view_friends_timeline_cb,
-						"view_my_timeline", "changed", app_view_my_timeline_cb,
+						"twitter_connect", "activate", app_connect_cb,
+						"twitter_disconnect", "activate", app_disconnect_cb,
+						"twitter_new_message", "activate", app_new_message_cb,
+						"twitter_send_direct_message", "activate", app_send_direct_message_cb,
+						"twitter_refresh", "activate", app_refresh_cb,
+						"twitter_quit", "activate", app_quit_cb,
+						"twitter_add_friend", "activate", app_add_friend_cb,
+						"settings_account", "activate", app_account_cb,
+						"settings_preferences", "activate", app_preferences_cb,
+						"view_public_timeline", "changed", app_public_timeline_cb,
+						"view_friends_timeline", "changed", app_friends_timeline_cb,
+						"view_my_timeline", "changed", app_mine_timeline_cb,
 						"view_direct_messages", "changed", app_view_direct_messages_cb,
 						"view_direct_replies", "changed", app_view_direct_replies_cb,
-						"view_twitux_timeline", "changed", app_view_twitux_timeline_cb,
-						"help_about", "activate", app_help_about_cb,
+						"view_twitux_timeline", "changed", app_twitux_timeline_cb,
+						"help_about", "activate", app_about_cb,
 						NULL);
 
 	/* Set up connected related widgets */
@@ -328,7 +331,7 @@ app_setup (void)
 	app_status_icon_create ();
 	
 	/* Set the main window geometry */ 	 
-	app_restore_main_window_geometry (priv->window);
+	restore_main_window_geometry (priv->window);
 
 	/* Set-up list view */
 	priv->listview = twitux_tweet_list_new ();
@@ -368,11 +371,11 @@ app_setup (void)
 						  &login);
 
 	if (login) 
-		app_login ();
+		app_login (app);
 }
 
 static void
-app_main_window_destroy_cb (GtkWidget *window, TwituxApp *app)
+main_window_destroy_cb (GtkWidget *window, TwituxApp *app)
 {
 	TwituxAppPriv *priv;
 
@@ -388,9 +391,9 @@ app_main_window_destroy_cb (GtkWidget *window, TwituxApp *app)
 }
 
 static gboolean
-app_main_window_delete_event_cb (GtkWidget *window,
-								 GdkEvent  *event,
-								 TwituxApp *app)
+main_window_delete_event_cb (GtkWidget *window,
+							 GdkEvent  *event,
+							 TwituxApp *app)
 {
 	TwituxAppPriv *priv;
 
@@ -518,23 +521,23 @@ twitux_app_set_visibility (gboolean visible)
 }
 
 static void
-app_twitter_connect_cb (GtkWidget *widget,
-						TwituxApp *app)
+app_connect_cb (GtkWidget *widget,
+				TwituxApp *app)
 {
-	app_login ();
+	app_login (app);
 }
 
 static void
-app_twitter_disconnect_cb (GtkWidget *widget,
-						   TwituxApp *app)
+app_disconnect_cb (GtkWidget *widget,
+				   TwituxApp *app)
 {
 	twitux_network_logout ();
 	twitux_app_state_on_connection (FALSE);
 }
 
 static void
-app_twitter_new_msg_cb (GtkWidget *widget,
-						TwituxApp *app)
+app_new_message_cb (GtkWidget *widget,
+					TwituxApp *app)
 {
 	TwituxAppPriv *priv;
 
@@ -545,8 +548,8 @@ app_twitter_new_msg_cb (GtkWidget *widget,
 }
 
 static void
-app_twitter_send_msg_cb (GtkWidget *widget,
-						 TwituxApp *app)
+app_send_direct_message_cb (GtkWidget *widget,
+							TwituxApp *app)
 {
 	TwituxAppPriv *priv;
 
@@ -557,8 +560,8 @@ app_twitter_send_msg_cb (GtkWidget *widget,
 }
 
 static void
-app_twitter_quit_cb (GtkWidget  *widget,
-					 TwituxApp  *app)
+app_quit_cb (GtkWidget  *widget,
+			 TwituxApp  *app)
 {
 	TwituxAppPriv *priv;
 
@@ -568,16 +571,16 @@ app_twitter_quit_cb (GtkWidget  *widget,
 }
 
 static void
-app_twitter_refresh_cb (GtkWidget *window,
-					    TwituxApp *app)
+app_refresh_cb (GtkWidget *window,
+				TwituxApp *app)
 {
 	twitux_network_refresh ();
 }
 
 static void
-app_view_public_timeline_cb (GtkRadioAction *action,
-							 GtkRadioAction *current,
-							 TwituxApp      *app)
+app_public_timeline_cb (GtkRadioAction *action,
+						GtkRadioAction *current,
+						TwituxApp      *app)
 {
 	TwituxAppPriv *priv;
 
@@ -588,9 +591,9 @@ app_view_public_timeline_cb (GtkRadioAction *action,
 }
 
 static void
-app_view_friends_timeline_cb (GtkRadioAction *action,
-							  GtkRadioAction *current,
-							  TwituxApp      *app)
+app_friends_timeline_cb (GtkRadioAction *action,
+						 GtkRadioAction *current,
+						 TwituxApp      *app)
 {
 	TwituxAppPriv *priv;
 
@@ -601,9 +604,9 @@ app_view_friends_timeline_cb (GtkRadioAction *action,
 }
 
 static void
-app_view_my_timeline_cb (GtkRadioAction *action,
-						 GtkRadioAction *current,
-						 TwituxApp      *app)
+app_mine_timeline_cb (GtkRadioAction *action,
+					  GtkRadioAction *current,
+					  TwituxApp      *app)
 {
 	TwituxAppPriv *priv;
 
@@ -640,9 +643,9 @@ app_view_direct_replies_cb (GtkRadioAction *action,
 }
 
 static void
-app_view_twitux_timeline_cb (GtkRadioAction *action, 	 
-							 GtkRadioAction *current,
-	                         TwituxApp      *app) 	 
+app_twitux_timeline_cb (GtkRadioAction *action, 	 
+						GtkRadioAction *current,
+						TwituxApp      *app)
 {
 	TwituxAppPriv *priv;
 
@@ -653,8 +656,8 @@ app_view_twitux_timeline_cb (GtkRadioAction *action,
 }
 
 static void
-app_settings_account_cb (GtkWidget *widget,
-						 TwituxApp *app)
+app_account_cb (GtkWidget *widget,
+				TwituxApp *app)
 {
 	TwituxAppPriv *priv;
 
@@ -664,8 +667,8 @@ app_settings_account_cb (GtkWidget *widget,
 }
 
 static void
-app_settings_preferences_cb (GtkWidget *widget,
-							 TwituxApp *app)
+app_preferences_cb (GtkWidget *widget,
+					TwituxApp *app)
 {
 	TwituxAppPriv *priv;
 
@@ -675,8 +678,8 @@ app_settings_preferences_cb (GtkWidget *widget,
 }
 
 static void
-app_help_about_cb (GtkWidget *widget,
-				   TwituxApp *app)
+app_about_cb (GtkWidget *widget,
+			  TwituxApp *app)
 {
 	TwituxAppPriv *priv;
 
@@ -686,8 +689,8 @@ app_help_about_cb (GtkWidget *widget,
 }
 
 static void
-app_twitter_add_friend_cb (GtkAction *item,
-						   TwituxApp *app)
+app_add_friend_cb (GtkAction *item,
+				   TwituxApp *app)
 {
 	TwituxAppPriv *priv;
 
@@ -756,8 +759,8 @@ app_status_icon_create_menu (void)
 
 	/* Connect the signals */
 	twitux_xml_connect (ui, app,
-						"tray_new_message", "activate", app_twitter_new_msg_cb,
-						"tray_quit", "activate", app_twitter_quit_cb,
+						"tray_new_message", "activate", app_new_message_cb,
+						"tray_quit", "activate", app_quit_cb,
 						"tray_show_app", "toggled", app_show_hide_cb,
 						NULL);
 
@@ -840,7 +843,7 @@ app_window_configure_event_cb (GtkWidget         *widget,
 }
 
 static void
-app_login (void)
+app_login (TwituxApp *a)
 {
 	TwituxAppPriv *priv;
 	TwituxConf    *conf;
@@ -859,7 +862,7 @@ app_login (void)
 	}
 #endif
 	
-	priv = GET_PRIV (app);
+	priv = GET_PRIV (a);
 
 	conf = twitux_conf_get ();
 	twitux_conf_get_string (conf,
@@ -924,6 +927,7 @@ app_set_default_timeline (TwituxApp *app, gchar *timeline)
 	}
 }
 
+/* Function to retrieve the users default timeline */
 static void
 app_retrieve_default_timeline (void)
 {

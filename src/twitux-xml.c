@@ -42,7 +42,7 @@ xml_get_file (const gchar *filename,
 	/* Create gtkbuilder & load the xml file */
 	ui = gtk_builder_new ();
 	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
-	path = twitux_paths_get_glade_path (filename);
+	path = twitux_paths_get_xml_path (filename);
 	if (gtk_builder_add_from_file (ui, path, &err) == 0) {
 		g_warning ("XML file error: %s", err->message);
 		g_error_free (err);

@@ -25,7 +25,7 @@
 
 G_BEGIN_DECLS
 
-gchar *twitux_paths_get_glade_path  (const gchar *filename);
+gchar *twitux_paths_get_xml_path    (const gchar *filename);
 gchar *twitux_paths_get_image_path  (const gchar *filename);
 gchar *twitux_paths_get_locale_path (void);
 

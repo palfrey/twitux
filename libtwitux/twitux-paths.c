@@ -28,7 +28,7 @@
 #define TWITUX "twitux"
 
 gchar *
-twitux_paths_get_glade_path (const gchar *filename)
+twitux_paths_get_xml_path (const gchar *filename)
 {
 	return g_build_filename (DATADIR, TWITUX, filename, NULL);
 }
