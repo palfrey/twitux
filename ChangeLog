@@ -1,5 +1,9 @@
 2008-04-13  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* src/twitux-tweet-list.c: Use only the gtk header needed.
+	
+2008-04-13  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* src/twitux-glade.[ch]: Removed.
 
 	* configure.in:

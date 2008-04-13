@@ -23,7 +23,7 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
+#include <gtk/gtktreeview.h>
 
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-debug.h>
@@ -36,7 +36,8 @@
 
 #define DEBUG_DOMAIN "TweetList"
 
-#define GET_PRIV(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TWITUX_TYPE_TWEET_LIST, TwituxTweetListPriv))
+#define GET_PRIV(obj)           \
+	(G_TYPE_INSTANCE_GET_PRIVATE ((obj), TWITUX_TYPE_TWEET_LIST, TwituxTweetListPriv))
 
 struct _TwituxTweetListPriv {
 	GtkListStore      *store;
@@ -50,7 +51,6 @@ static void   twitux_tweet_list_init       (TwituxTweetList      *tweet);
 static void   tweet_list_finalize          (GObject              *obj);
 static void   tweet_list_create_model      (TwituxTweetList      *list);
 static void   tweet_list_setup_view        (TwituxTweetList      *list);
-
 static void   tweet_list_size_cb           (GtkWidget            *widget,
                                             GtkAllocation        *allocation,
                                             gpointer              user_data);
@@ -89,15 +89,15 @@ twitux_tweet_list_init (TwituxTweetList *tweet)
 	g_signal_connect (tweet,
 					  "size_allocate",
 					  G_CALLBACK (tweet_list_size_cb),
-					  NULL);
+					  tweet);
 	g_signal_connect (tweet,
 					  "cursor-changed",
 					  G_CALLBACK (tweet_list_changed_cb),
-					  NULL);
+					  tweet);
 	g_signal_connect (tweet,
 					  "row-activated",
 					  G_CALLBACK (tweet_list_activated_cb),
-					  NULL);
+					  tweet);
 }
 
 static void
@@ -124,13 +124,14 @@ tweet_list_create_model (TwituxTweetList *list)
 		g_object_unref (priv->store);
 	}
 
-	priv->store = gtk_list_store_new (N_COLUMNS,
-									  GDK_TYPE_PIXBUF,  /* Avatar pixbuf */
-									  G_TYPE_STRING,    /* Display string */
-									  G_TYPE_STRING,    /* Author name string */
-									  G_TYPE_STRING,    /* Date string */
-									  G_TYPE_STRING,    /* Tweet string */
-									  G_TYPE_STRING);   /* Username string */
+	priv->store =
+		gtk_list_store_new (N_COLUMNS,
+							GDK_TYPE_PIXBUF,  /* Avatar pixbuf */
+							G_TYPE_STRING,    /* Display string */
+							G_TYPE_STRING,    /* Author name string */
+							G_TYPE_STRING,    /* Date string */
+							G_TYPE_STRING,    /* Tweet string */
+							G_TYPE_STRING);   /* Username string */
 
 	/* save normal model */
 	model = GTK_TREE_MODEL (priv->store);
@@ -155,19 +156,22 @@ tweet_list_setup_view (TwituxTweetList *list)
 				  NULL);
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
-	avatar_column = gtk_tree_view_column_new_with_attributes (NULL,
-															  renderer,
-															  "pixbuf", PIXBUF_AVATAR,
-															  NULL);
+	avatar_column =
+		gtk_tree_view_column_new_with_attributes (NULL,
+												  renderer,
+												  "pixbuf", PIXBUF_AVATAR,
+												  NULL);
 
 	gtk_tree_view_append_column (GTK_TREE_VIEW (list), avatar_column);
 
 	renderer = gtk_cell_renderer_text_new ();
-	tweet_column = gtk_tree_view_column_new_with_attributes (NULL,
-															 renderer,
-															 "markup", STRING_TEXT,
-															 NULL);
-	gtk_tree_view_column_set_sizing (tweet_column, GTK_TREE_VIEW_COLUMN_FIXED);
+	tweet_column =
+		gtk_tree_view_column_new_with_attributes (NULL,
+												  renderer,
+												  "markup", STRING_TEXT,
+												  NULL);
+	gtk_tree_view_column_set_sizing (tweet_column,
+									 GTK_TREE_VIEW_COLUMN_FIXED);
 	g_object_set (renderer,
 				  "ypad", 0,
 				  "xpad", 5,
@@ -183,21 +187,25 @@ tweet_list_setup_view (TwituxTweetList *list)
 
 static void
 tweet_list_changed_cb (GtkWidget *widget,
-                       gpointer user_data)
+                       gpointer   user_data)
 {
-	GtkTreeSelection    *sel;
-	gboolean             expand;
-	GtkTreeIter          iter;
+	TwituxTweetList     *t;
 	TwituxTweetListPriv *priv;
-	gchar               *name, *tweet, *date;
+	GtkTreeSelection    *sel;
+	GtkTreeIter          iter;
 	GdkPixbuf           *pixbuf;
+	gchar               *name, *tweet, *date;
+	gboolean             expand;
+
+	t = TWITUX_TWEET_LIST (user_data);
+	priv = GET_PRIV (t);
 
 	twitux_conf_get_bool (twitux_conf_get (),
-				TWITUX_PREFS_UI_EXPAND_MESSAGES, &expand);
+						  TWITUX_PREFS_UI_EXPAND_MESSAGES,
+						  &expand);
+
 	if (!expand)
 		return;
-	
-	priv = GET_PRIV (list);
 	
 	/* Get selected Iter */
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
@@ -205,7 +213,8 @@ tweet_list_changed_cb (GtkWidget *widget,
 	if (!gtk_tree_selection_get_selected (sel, NULL, &iter))
 		return;
 
-	gtk_tree_model_get (GTK_TREE_MODEL (priv->store), &iter,
+	gtk_tree_model_get (GTK_TREE_MODEL (priv->store),
+						&iter,
 						STRING_AUTHOR, &name,
 						STRING_TWEET, &tweet,
 						STRING_DATE, &date,
@@ -220,14 +229,16 @@ tweet_list_changed_cb (GtkWidget *widget,
 }
 
 static void
-tweet_list_size_cb (GtkWidget *widget,
+tweet_list_size_cb (GtkWidget     *widget,
                     GtkAllocation *allocation,
-                    gpointer user_data)
+                    gpointer       user_data)
 {
+	TwituxTweetList     *t;
 	TwituxTweetListPriv *priv;
-	gint w;
-	
-	priv = GET_PRIV (list);
+	gint                 w;
+
+	t = TWITUX_TWEET_LIST (user_data);	
+	priv = GET_PRIV (t);
 
 	w = gtk_tree_view_column_get_width (priv->text_column);
 
@@ -237,20 +248,26 @@ tweet_list_size_cb (GtkWidget *widget,
 }
 
 static void
-tweet_list_activated_cb (GtkTreeView *tree_view,
-                         GtkTreePath *path,
+tweet_list_activated_cb (GtkTreeView       *tree_view,
+                         GtkTreePath       *path,
                          GtkTreeViewColumn *column,
-                         gpointer user_data)
+                         gpointer           user_data)
 {
+	TwituxTweetList     *t;
 	TwituxTweetListPriv *priv;
-	gchar *user, *message;
-	GtkTreeIter iter;
+	gchar               *user;
+	gchar               *message;
+	GtkTreeIter          iter;
 
-	priv = GET_PRIV (list);
+	t = TWITUX_TWEET_LIST (user_data);
+	priv = GET_PRIV (t);
 
-	gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->store), &iter, path);
+	gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->store),
+							 &iter,
+							 path);
 
-	gtk_tree_model_get (GTK_TREE_MODEL (priv->store), &iter,
+	gtk_tree_model_get (GTK_TREE_MODEL (priv->store),
+						&iter,
 						STRING_USER, &user,
 						-1);
 
@@ -278,4 +295,3 @@ twitux_tweet_list_get_store (void)
 	
 	return priv->store;
 }
-
