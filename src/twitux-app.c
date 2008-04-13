@@ -43,7 +43,6 @@
 #include "twitux-add-dialog.h"
 #include "twitux-app.h"
 #include "twitux-geometry.h"
-#include "twitux-glade.h"
 #include "twitux-hint.h"
 #include "twitux-label.h"
 #include "twitux-network.h"
@@ -74,14 +73,15 @@ struct _TwituxAppPriv {
 	GList             *widgets_disconnected;
 
 	/* Timeline menu items */
-	GtkWidget         *menu_public;
-	GtkWidget         *menu_friends;
-	GtkWidget         *menu_mine;
-	GtkWidget         *menu_twitux;
-	GtkWidget         *menu_direct_messages;
-	GtkWidget         *menu_direct_replies;
+	GSList            *group;
+	GtkRadioAction    *menu_public;
+	GtkRadioAction    *menu_friends;
+	GtkRadioAction    *menu_mine;
+	GtkRadioAction    *menu_twitux;
+	GtkRadioAction    *menu_direct_messages;
+	GtkRadioAction    *menu_direct_replies;
 
-	GtkWidget         *view_friends;
+	GtkAction         *view_friends;
 
 	/* Status Icon */
 	GtkStatusIcon     *status_icon;
@@ -114,6 +114,8 @@ static void     app_main_window_destroy_cb       (GtkWidget             *window,
 static gboolean app_main_window_delete_event_cb  (GtkWidget             *window,
 												  GdkEvent              *event,
 												  TwituxApp             *app);
+static void     app_set_radio_group              (TwituxApp             *app,
+												  GtkBuilder            *ui);
 static void     app_twitter_connect_cb           (GtkWidget             *window,
 												  TwituxApp             *app);
 static void     app_twitter_disconnect_cb        (GtkWidget             *window,
@@ -130,19 +132,23 @@ static void     app_settings_account_cb          (GtkWidget             *window,
 												  TwituxApp             *app);
 static void     app_settings_preferences_cb       (GtkWidget             *window,
 												  TwituxApp             *app);
-static void     app_view_public_timeline_cb      (GtkCheckMenuItem      *item,
+static void     app_view_public_timeline_cb      (GtkRadioAction        *action,
+												  GtkRadioAction        *current,
 												  TwituxApp             *app);
-static void     app_view_friends_timeline_cb     (GtkCheckMenuItem      *item,
+static void     app_view_friends_timeline_cb     (GtkRadioAction        *action,
+												  GtkRadioAction        *current,
 												  TwituxApp             *app);
-static void     app_view_my_timeline_cb          (GtkCheckMenuItem      *item,
+static void     app_view_my_timeline_cb          (GtkRadioAction        *action,
+												  GtkRadioAction        *current,
 												  TwituxApp             *app);
-static void     app_view_direct_messages_cb      (GtkCheckMenuItem      *item,
+static void     app_view_direct_messages_cb      (GtkRadioAction        *action,
+												  GtkRadioAction        *current,
 												  TwituxApp             *app);
-static void     app_view_direct_replies_cb       (GtkCheckMenuItem      *item,
+static void     app_view_direct_replies_cb       (GtkRadioAction        *action,
+												  GtkRadioAction        *current,
 												  TwituxApp             *app);
-static void      app_view_twitux_timeline_cb     (GtkCheckMenuItem      *item,
-												  TwituxApp             *app);
-static void     app_view_select_friends          (GtkItem               *item,
+static void     app_view_twitux_timeline_cb      (GtkRadioAction        *action,
+												  GtkRadioAction        *current,
 												  TwituxApp             *app);
 static void     app_help_about_cb                (GtkWidget             *window,
 												  TwituxApp             *app);
@@ -152,12 +158,13 @@ static void     app_status_icon_popup_menu_cb    (GtkStatusIcon         *status_
 												  guint                  button,
 												  guint                  activate_time,
 												  TwituxApp             *app);
-static void     app_twitter_view_friend_cb       (GtkMenuItem           *menuitem,
-												  TwituxUser            *user);
-static void     app_twitter_add_friend_cb         (GtkMenuItem          *menuitem,
+static void     app_twitter_add_friend_cb        (GtkAction				*menuitem,
 												  TwituxApp             *app);
-static void     app_connection_items_setup       (GladeXML              *glade);
+static void     app_connection_items_setup       (TwituxApp             *app,
+												  GtkBuilder            *ui);
 static void     app_login                        (void);
+static void     app_set_default_timeline         (TwituxApp             *app,
+												  gchar                 *timeline);
 static void     app_retrieve_default_timeline    (void);
 static void     app_status_icon_create_menu      (void);
 static void     app_status_icon_create           (void);
@@ -175,7 +182,7 @@ G_DEFINE_TYPE (TwituxApp, twitux_app, G_TYPE_OBJECT);
 static void
 twitux_app_class_init (TwituxAppClass *klass)
 {
-	GObjectClass  *object_class = G_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	object_class->finalize = app_finalize;
 
@@ -190,6 +197,10 @@ twitux_app_init (TwituxApp *singleton_app)
 	app = singleton_app;
 
 	priv = GET_PRIV (app);
+
+	priv->widgets_connected = NULL;
+	priv->widgets_disconnected = NULL;
+	priv->group = NULL;
 }
 
 static void
@@ -207,6 +218,7 @@ app_finalize (GObject *object)
 
 	g_list_free (priv->widgets_connected);
 	g_list_free (priv->widgets_disconnected);
+	g_slist_free (priv->group);
 
 #ifdef HAVE_DBUS
 	twitux_dbus_nm_finalize ();
@@ -228,9 +240,10 @@ app_setup (void)
 {
 	TwituxAppPriv    *priv;
 	TwituxConf		 *conf;
-	GladeXML         *glade;
+	GtkBuilder       *ui;
 	GtkWidget        *scrolled_window;
 	GtkWidget        *expand_vbox;
+	gchar            *timeline;
 	gboolean          login;
 	gboolean		  hidden;
 
@@ -240,51 +253,65 @@ app_setup (void)
 
 	/* Set up interface */
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Initialising interface");
-	glade = twitux_glade_get_file ("main_window.glade",
-								   "main_window",
-								   NULL,
-								   "main_window", &priv->window,
-								   "main_scrolledwindow", &scrolled_window,
-								   "main_statusbar", &priv->statusbar,
-								   "view_public_timeline", &priv->menu_public,
-								   "view_friends_timeline", &priv->menu_friends,
-								   "view_my_timeline", &priv->menu_mine,
-								   "view_twitux_timeline", &priv->menu_twitux,
-								   "view_direct_messages", &priv->menu_direct_messages,
-								   "view_friends", &priv->view_friends,
-								   "expand_box", &priv->expand_box,
-								   "expand_vbox", &expand_vbox,
-								   "expand_image", &priv->expand_image,
-								   "expand_title", &priv->expand_title,
-								   NULL);
+	ui = twitux_xml_get_file ("main_window.xml",
+							  "main_window", &priv->window,
+							  "main_scrolledwindow", &scrolled_window,
+							  "main_statusbar", &priv->statusbar,
+							  "view_public_timeline", &priv->menu_public,
+							  "view_friends_timeline", &priv->menu_friends,
+							  "view_my_timeline", &priv->menu_mine,
+							  "view_twitux_timeline", &priv->menu_twitux,
+							  "view_direct_messages", &priv->menu_direct_messages,
+							  "view_direct_replies", &priv->menu_direct_replies,
+							  "view_friends", &priv->view_friends,
+							  "expand_box", &priv->expand_box,
+							  "expand_vbox", &expand_vbox,
+							  "expand_image", &priv->expand_image,
+							  "expand_title", &priv->expand_title,
+							  NULL);
 
-	twitux_glade_connect (glade,
-						  app,
-						  "main_window", "destroy", app_main_window_destroy_cb,
-						  "main_window", "delete_event", app_main_window_delete_event_cb,
-						  "main_window", "configure_event", app_window_configure_event_cb,
-						  "twitter_connect", "activate", app_twitter_connect_cb,
-						  "twitter_disconnect", "activate", app_twitter_disconnect_cb,
-						  "twitter_new_message", "activate", app_twitter_new_msg_cb,
-						  "twitter_send_direct_message", "activate", app_twitter_send_msg_cb,
-						  "twitter_refresh", "activate", app_twitter_refresh_cb,
-						  "twitter_quit", "activate", app_twitter_quit_cb,
-						  "twitter_add_friend", "activate", app_twitter_add_friend_cb,
-						  "settings_account", "activate", app_settings_account_cb,
-						  "settings_preferences", "activate", app_settings_preferences_cb,
-						  "view_public_timeline", "toggled", app_view_public_timeline_cb,
-						  "view_friends_timeline", "toggled", app_view_friends_timeline_cb,
-						  "view_my_timeline", "toggled", app_view_my_timeline_cb,
-						  "view_direct_messages", "toggled", app_view_direct_messages_cb,
-						  "view_direct_replies", "toggled", app_view_direct_replies_cb,
-						  "view_twitux_timeline", "toggled", app_view_twitux_timeline_cb,
-						  "view_friends", "select", app_view_select_friends,
-						  "help_about", "activate", app_help_about_cb,
-						  NULL);
+	/* Set group for menu radio actions */
+	app_set_radio_group (app, ui);
+
+    /* Grab the conf object */
+	conf = twitux_conf_get ();
+
+	/*
+	 * Set the default timeline.  This needs
+	 * to be done before connecting signals.
+	 */
+	twitux_conf_get_string (conf,
+							TWITUX_PREFS_TWEETS_HOME_TIMELINE,
+							&timeline);
+	app_set_default_timeline (app, timeline);
+	g_free (timeline);
+
+	/* Connect the signals */
+	twitux_xml_connect (ui, app,
+						"main_window", "destroy", app_main_window_destroy_cb,
+						"main_window", "delete_event", app_main_window_delete_event_cb,
+						"main_window", "configure_event", app_window_configure_event_cb,
+						"twitter_connect", "activate", app_twitter_connect_cb,
+						"twitter_disconnect", "activate", app_twitter_disconnect_cb,
+						"twitter_new_message", "activate", app_twitter_new_msg_cb,
+						"twitter_send_direct_message", "activate", app_twitter_send_msg_cb,
+						"twitter_refresh", "activate", app_twitter_refresh_cb,
+						"twitter_quit", "activate", app_twitter_quit_cb,
+						"twitter_add_friend", "activate", app_twitter_add_friend_cb,
+						"settings_account", "activate", app_settings_account_cb,
+						"settings_preferences", "activate", app_settings_preferences_cb,
+						"view_public_timeline", "changed", app_view_public_timeline_cb,
+						"view_friends_timeline", "changed", app_view_friends_timeline_cb,
+						"view_my_timeline", "changed", app_view_my_timeline_cb,
+						"view_direct_messages", "changed", app_view_direct_messages_cb,
+						"view_direct_replies", "changed", app_view_direct_replies_cb,
+						"view_twitux_timeline", "changed", app_view_twitux_timeline_cb,
+						"help_about", "activate", app_help_about_cb,
+						NULL);
 
 	/* Set up connected related widgets */
-	app_connection_items_setup (glade);
-	g_object_unref (glade);
+	app_connection_items_setup (app, ui);
+	g_object_unref (ui);
 
 	/* Let's hide the main window, while we are setting up the ui */
 	gtk_widget_hide (GTK_WIDGET (priv->window));
@@ -322,9 +349,6 @@ app_setup (void)
 
 	/* Check Twitux directory and images cache */
 	app_check_dir ();
-
-	/* Assign the conf object to a variable since we're using it more than once */
-	conf = twitux_conf_get ();
 	
 	/* Get the gconf value for whether the window should be hidden on start-up */
 	twitux_conf_get_bool (conf,
@@ -408,6 +432,33 @@ app_main_window_delete_event_cb (GtkWidget *window,
 	 */
 
 	return FALSE;
+}
+
+static void
+app_set_radio_group (TwituxApp  *app,
+					 GtkBuilder *ui)
+{
+	TwituxAppPriv  *priv;
+	GtkRadioAction *w;
+	gint            i;
+
+	const gchar     *radio_actions[] = {
+		"view_public_timeline",
+		"view_friends_timeline",
+		"view_my_timeline",
+		"view_twitux_timeline",
+		"view_direct_messages",
+		"view_direct_replies"
+	};
+
+	priv = GET_PRIV (app);
+
+
+	for (i = 0; i < G_N_ELEMENTS (radio_actions); i++) {
+		w = GTK_RADIO_ACTION (gtk_builder_get_object (ui, radio_actions[i]));
+		gtk_radio_action_set_group (w, priv->group);
+		priv->group = gtk_radio_action_get_group (w);
+	}
 }
 
 static void
@@ -524,106 +575,81 @@ app_twitter_refresh_cb (GtkWidget *window,
 }
 
 static void
-app_view_public_timeline_cb (GtkCheckMenuItem *item,
-							 TwituxApp        *app)
+app_view_public_timeline_cb (GtkRadioAction *action,
+							 GtkRadioAction *current,
+							 TwituxApp      *app)
 {
-	gboolean  current;
-
-	current = gtk_check_menu_item_get_active (item);
-
-	if (!current)
-		return;
-
-	twitux_network_get_timeline (TWITUX_API_TIMELINE_PUBLIC);
-}
-
-static void
-app_view_friends_timeline_cb (GtkCheckMenuItem *item,
-							  TwituxApp        *app)
-{
-	gboolean  current;
-
-	current = gtk_check_menu_item_get_active (item);
-
-	if (!current)
-		return;
-
-	twitux_network_get_timeline (TWITUX_API_TIMELINE_FRIENDS);
-}
-
-static void
-app_view_my_timeline_cb (GtkCheckMenuItem *item,
-						 TwituxApp        *app)
-{
-	gboolean  current;
-
-	current = gtk_check_menu_item_get_active (item);
-
-	if (!current)
-		return;
-
-	twitux_network_get_user (NULL);
-}
-
-static void
-app_view_direct_messages_cb (GtkCheckMenuItem *item,
-							TwituxApp        *app)
-{
-	gboolean  current;
-
-	current = gtk_check_menu_item_get_active (item);
-
-	if (!current)
-		return;
-
-	twitux_network_get_timeline (TWITUX_API_DIRECT_MESSAGES);
-}
-
-static void
-app_view_direct_replies_cb (GtkCheckMenuItem *item,
-							TwituxApp        *app)
-{
-	gboolean  current;
-
-	current = gtk_check_menu_item_get_active (item);
-
-	if (!current)
-		return;
-
-	twitux_network_get_timeline (TWITUX_API_REPLIES);
-}
-
-static void
-app_view_twitux_timeline_cb (GtkCheckMenuItem *item, 	 
-	                         TwituxApp        *app) 	 
-{ 	 
-	gboolean  current;
-
-	current = gtk_check_menu_item_get_active (item);
-	  	 
-	if (!current)
-		return;
-	  	 
-	twitux_network_get_timeline (TWITUX_API_TIMELINE_TWITUX); 	 
-}
-
-static void
-app_view_select_friends (GtkItem *item,
-						 TwituxApp *app)
-{
-	GList         *friends;
 	TwituxAppPriv *priv;
 
 	priv = GET_PRIV (app);
 
-	if (priv->friends_loaded)
-		return;
+	if (priv->menu_public == current)
+		twitux_network_get_timeline (TWITUX_API_TIMELINE_PUBLIC);
+}
 
-	friends = twitux_network_get_friends ();
-	
-	if (friends) {
-		twitux_app_set_friends (friends);
-	}
+static void
+app_view_friends_timeline_cb (GtkRadioAction *action,
+							  GtkRadioAction *current,
+							  TwituxApp      *app)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	if (priv->menu_friends == current) 
+		twitux_network_get_timeline (TWITUX_API_TIMELINE_FRIENDS);
+}
+
+static void
+app_view_my_timeline_cb (GtkRadioAction *action,
+						 GtkRadioAction *current,
+						 TwituxApp      *app)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	if (priv->menu_mine == current)
+		twitux_network_get_user (NULL);
+}
+
+static void
+app_view_direct_messages_cb (GtkRadioAction *action,
+							 GtkRadioAction *current,
+							 TwituxApp      *app)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	if (priv->menu_direct_messages == current)
+		twitux_network_get_timeline (TWITUX_API_DIRECT_MESSAGES);
+}
+
+static void
+app_view_direct_replies_cb (GtkRadioAction *action,
+							GtkRadioAction *current,
+							TwituxApp      *app)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	if (priv->menu_direct_replies == current) 
+		twitux_network_get_timeline (TWITUX_API_REPLIES);
+}
+
+static void
+app_view_twitux_timeline_cb (GtkRadioAction *action, 	 
+							 GtkRadioAction *current,
+	                         TwituxApp      *app) 	 
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	if (priv->menu_twitux == current)
+		twitux_network_get_timeline (TWITUX_API_TIMELINE_TWITUX);
 }
 
 static void
@@ -660,7 +686,7 @@ app_help_about_cb (GtkWidget *widget,
 }
 
 static void
-app_twitter_add_friend_cb (GtkMenuItem *menuitem,
+app_twitter_add_friend_cb (GtkAction *item,
 						   TwituxApp *app)
 {
 	TwituxAppPriv *priv;
@@ -722,10 +748,11 @@ app_status_icon_create_menu (void)
 	priv = GET_PRIV (app);
 
 	/* Get widgets */
-	ui = twitux_xml_get_file ("tray_menu.xml",
-						"tray_menu", &priv->popup_menu,
-						"tray_show_app", &priv->popup_menu_show_app,
-						NULL);
+	ui =
+		twitux_xml_get_file ("tray_menu.xml",
+							 "tray_menu", &priv->popup_menu,
+							 "tray_show_app", &priv->popup_menu_show_app,
+							 NULL);
 
 	/* Connect the signals */
 	twitux_xml_connect (ui, app,
@@ -813,13 +840,6 @@ app_window_configure_event_cb (GtkWidget         *widget,
 }
 
 static void
-app_twitter_view_friend_cb (GtkMenuItem *menuitem,
-							TwituxUser  *user)
-{
-	twitux_network_get_user (user->screen_name);
-}
-
-static void
 app_login (void)
 {
 	TwituxAppPriv *priv;
@@ -873,6 +893,37 @@ app_login (void)
 	g_free (password);
 }
 
+/*
+ * Function to set the default
+ * timeline in the menu.
+ */
+static void
+app_set_default_timeline (TwituxApp *app, gchar *timeline)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	/* This shouldn't happen, but just in case */
+	if (G_STR_EMPTY (timeline)) {
+		g_warning ("Default timeline in not set");
+		return;
+	}
+
+	if (strcmp (timeline, TWITUX_API_TIMELINE_FRIENDS) == 0) {
+		gtk_radio_action_set_current_value (priv->menu_friends,	1);
+	} else if (strcmp (timeline, TWITUX_API_TIMELINE_PUBLIC) == 0) {
+		gtk_radio_action_set_current_value (priv->menu_public, 1);
+	} else if (strcmp (timeline, TWITUX_API_TIMELINE_MY) == 0) {
+		gtk_radio_action_set_current_value (priv->menu_mine, 1);
+	} else if (strcmp (timeline, TWITUX_API_TIMELINE_TWITUX) == 0) {
+		gtk_radio_action_set_current_value (priv->menu_twitux, 1);
+	} else {
+		/* Let's fallback to friends timeline */
+		gtk_radio_action_set_current_value (priv->menu_friends,	1);
+	}
+}
+
 static void
 app_retrieve_default_timeline (void)
 {
@@ -885,32 +936,7 @@ app_retrieve_default_timeline (void)
 							TWITUX_PREFS_TWEETS_HOME_TIMELINE,
 							&timeline);
 
-	/* This shouldn't happen, but just in case */
-	if (G_STR_EMPTY (timeline)) {
-		g_warning ("Default timeline in not set");
-		timeline = g_strdup (TWITUX_API_TIMELINE_FRIENDS);
-	}
-
-	if (strcmp (timeline, TWITUX_API_TIMELINE_FRIENDS) == 0) {
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (priv->menu_friends),
-										TRUE);
-	} else if (strcmp (timeline, TWITUX_API_TIMELINE_PUBLIC) == 0) {
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (priv->menu_public),
-										TRUE);
-	} else if (strcmp (timeline, TWITUX_API_TIMELINE_MY) == 0) {
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (priv->menu_mine),
-										TRUE);
-	} else if (strcmp (timeline, TWITUX_API_TIMELINE_TWITUX) == 0) {
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (priv->menu_twitux),
-										TRUE);
-	} else {
-		/* Let's fallback to friends timeline */
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (priv->menu_friends),
-										TRUE);
-	}
-
 	twitux_network_get_timeline (timeline);
-  
 	g_free (timeline);
 }
 
@@ -930,7 +956,8 @@ app_check_dir (void)
 }
 
 static void
-app_connection_items_setup (GladeXML *glade)
+app_connection_items_setup (TwituxApp  *app,
+							GtkBuilder *ui)
 {
 	TwituxAppPriv *priv;
 
@@ -948,20 +975,20 @@ app_connection_items_setup (GladeXML *glade)
 	};
 
 	GList         *list;
-	GtkWidget     *w;
+	GObject       *w;
 	gint           i;
 
 	priv = GET_PRIV (app);
 
 	for (i = 0, list = NULL; i < G_N_ELEMENTS (widgets_connected); i++) {
-		w = glade_xml_get_widget (glade, widgets_connected[i]);
+		w = gtk_builder_get_object (ui, widgets_connected[i]);
 		list = g_list_prepend (list, w);
 	}
 
 	priv->widgets_connected = list;
 
 	for (i = 0, list = NULL; i < G_N_ELEMENTS (widgets_disconnected); i++) {
-		w = glade_xml_get_widget (glade, widgets_disconnected[i]);
+		w = gtk_builder_get_object (ui, widgets_disconnected[i]);
 		list = g_list_prepend (list, w);
 	}
 
@@ -979,11 +1006,11 @@ twitux_app_state_on_connection (gboolean connected)
 	priv = GET_PRIV (app);
 
 	for (l = priv->widgets_connected; l; l = l->next) {
-		gtk_widget_set_sensitive (l->data, connected);
+		g_object_set (l->data, "sensitive", connected, NULL);
 	}
 
 	for (l = priv->widgets_disconnected; l; l = l->next) {
-		gtk_widget_set_sensitive (l->data, !connected);
+		g_object_set (l->data, "sensitive", !connected, NULL);
 	}
 }
 
@@ -1011,66 +1038,6 @@ twitux_app_set_statusbar_msg (gchar *message)
 	/* conext ID will be always 1 */
 	gtk_statusbar_pop (GTK_STATUSBAR (priv->statusbar), 1);
 	gtk_statusbar_push (GTK_STATUSBAR (priv->statusbar), 1, message);
-}
-
-void
-twitux_app_set_friends (GList *friends)
-{
-	TwituxAppPriv *priv;
-	GtkWidget     *menu;
-	GtkWidget     *item;
-	GList         *list;
-	TwituxUser    *user;
-
-	priv = GET_PRIV (app);
-
-	/* Check if we have a menu */
-	menu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (priv->view_friends));
-	if (menu) {
-		/* Delete previous items */
-		gtk_container_foreach (GTK_CONTAINER (menu),
-							   (GtkCallback)gtk_widget_destroy, NULL);
-	} else {
-		/* New menu */
-		menu = gtk_menu_new ();
-	}
-
-	if (!friends) {
-		/* Temp. menu */
-		priv->friends_loaded = FALSE;
-		item = gtk_menu_item_new_with_label (_("Fetching friends..."));
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-		gtk_widget_show (item);
-	} else {
-		/* Load friends menu from list */
-		priv->friends_loaded = TRUE;
-		for (list = friends; list; list = list->next) {
-			user = (TwituxUser *)list->data;
-			twitux_app_add_friend (user);
-		}
-	}
-
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (priv->view_friends), menu);
-}
-
-void
-twitux_app_add_friend (TwituxUser *user)
-{
-	TwituxAppPriv *priv;
-	GtkWidget	  *menu;
-	GtkWidget	  *item;
-
-	priv = GET_PRIV (app);
-
-	menu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (priv->view_friends));
-
-	if (menu) {
-		item = gtk_menu_item_new_with_label (user->name);
-		g_signal_connect (item, "activate",
-						  G_CALLBACK (app_twitter_view_friend_cb), user);
-		gtk_widget_show (item);
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-	}
 }
 
 void

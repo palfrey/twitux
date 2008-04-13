@@ -639,7 +639,6 @@ network_cb_on_login (SoupSession *session,
 
 	if (network_check_http (msg->status_code)) {
 		twitux_app_state_on_connection (TRUE);
-		twitux_app_set_friends (NULL);
 		return;
 	}
 
@@ -763,7 +762,6 @@ network_cb_on_users (SoupSession *session,
 	if (users && friends){
 		/* Friends timeline retrived */
 		user_friends = users;
-		twitux_app_set_friends (users);
 	} else if (users){
 		/* Followers lisy retrived */
 		user_followers = users;
@@ -833,7 +831,6 @@ network_cb_on_add (SoupSession *session,
 	if (user) {
 		user_friends = g_list_append ( user_friends, user );
 		twitux_app_set_statusbar_msg (_("Friend Added"));
-		twitux_app_add_friend (user);
 	} else {
 		twitux_app_set_statusbar_msg (_("Failed to add user"));
 	}

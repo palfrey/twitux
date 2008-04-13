@@ -72,37 +72,37 @@
       <child>
         <object class="GtkRadioAction" id="view_public_timeline">
           <property name="label" translatable="yes">Public Timeline</property>
-          <property name="group">view_public_timeline</property>
+	  <property name="value">0</property>
         </object>
       </child>
       <child>
         <object class="GtkRadioAction" id="view_friends_timeline">
           <property name="label" translatable="yes">Friends Timeline</property>
-          <property name="group">view_public_timeline</property>
+	  <property name="value">1</property>
         </object>
       </child>
       <child>
         <object class="GtkRadioAction" id="view_my_timeline">
           <property name="label" translatable="yes">My Timeline</property>
-          <property name="group">view_public_timeline</property>
+	  <property name="value">0</property>
         </object>
       </child>
       <child>
         <object class="GtkRadioAction" id="view_twitux_timeline">
           <property name="label" translatable="yes">Twitux Timeline</property>
-          <property name="group">view_public_timeline</property>
+	  <property name="value">0</property>
         </object>
       </child>
       <child>
         <object class="GtkRadioAction" id="view_direct_messages">
           <property name="label" translatable="yes">Direct Messages</property>
-          <property name="group">view_public_timeline</property>
+	  <property name="value">0</property>
         </object>
       </child>
       <child>
         <object class="GtkRadioAction" id="view_direct_replies">
           <property name="label" translatable="yes">Direct Replies</property>
-          <property name="group">view_public_timeline</property>
+	  <property name="value">0</property>
         </object>
       </child>
       <child>

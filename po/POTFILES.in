@@ -3,11 +3,11 @@
 [encoding: UTF-8]
 data/add_friend_dlg.xml
 data/account_dlg.xml
-data/main_window.glade
+data/main_window.xml
 data/prefs_dlg.xml
 data/send_message_dlg.xml
 data/spell_dlg.xml
-data/tray_menu.glade
+data/tray_menu.xml
 data/twitux.desktop.in.in
 data/twitux.schemas.in
 

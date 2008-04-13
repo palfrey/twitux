@@ -21,20 +21,18 @@ twitux_SOURCES = 							\
 	twitux-add-dialog.c 		twitux-add-dialog.h		\
 	twitux-app.c			twitux-app.h			\
 	twitux-geometry.c		twitux-geometry.h		\
-	twitux-glade.c			twitux-glade.h			\
-	twitux-xml.c			twitux-xml.h			\
 	twitux-hint.c			twitux-hint.h			\
+	twitux-label.c			twitux-label.h			\
 	twitux-network.c		twitux-network.h		\
 	twitux-parser.c			twitux-parser.h			\
+	twitux-preferences.c		twitux-preferences.h		\
 	twitux-send-message-dialog.c	twitux-send-message-dialog.h	\
 	twitux-spell.c			twitux-spell.h			\
 	twitux-spell-dialog.c		twitux-spell-dialog.h		\
 	twitux-ui-utils.c		twitux-ui-utils.h		\
-	twitux-preferences.c		twitux-preferences.h		\
-	twitux-label.c			twitux-label.h			\
-	twitux-tweet-list.c		twitux-tweet-list.h
+	twitux-tweet-list.c		twitux-tweet-list.h		\
+	twitux-xml.c			twitux-xml.h
 
 twitux_LDADD=						\
 	$(top_builddir)/libtwitux/libtwitux.la		\
 	$(TWITUX_LIBS)
-

@@ -12,7 +12,7 @@ gladedir = $(datadir)/twitux
 glade_DATA = 				\
 	add_friend_dlg.xml		\
 	account_dlg.xml			\
-	main_window.glade		\
+	main_window.xml			\
 	prefs_dlg.xml			\
 	send_message_dlg.xml		\
 	spell_dlg.xml			\

@@ -1,3 +1,16 @@
+2008-04-13  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-glade.[ch]: Removed.
+
+	* configure.in:
+	* data/main_window.xml:
+	* po/POTFILES.in:
+	* src/twitux-app.c:
+	* src/twitux-network.c:
+	* src/Makefile.am: Finish converting to
+	GtkBuilder.  Had to remove friends submenu, which
+	will need to be added back later.
+
 2008-04-04  Daniel Morales  <daniminas@gmail.com>
 
 	* src/twitux-parser.c: Close #1927666 and quiet
