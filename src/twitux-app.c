@@ -456,7 +456,6 @@ app_set_radio_group (TwituxApp  *app,
 
 	priv = GET_PRIV (app);
 
-
 	for (i = 0; i < G_N_ELEMENTS (radio_actions); i++) {
 		w = GTK_RADIO_ACTION (gtk_builder_get_object (ui, radio_actions[i]));
 		gtk_radio_action_set_group (w, priv->group);
@@ -835,9 +834,10 @@ app_window_configure_event_cb (GtkWidget         *widget,
 		g_source_remove (priv->size_timeout_id);
 	}
 
-	priv->size_timeout_id = g_timeout_add (500,
-										   (GSourceFunc) configure_event_timeout_cb,
-										   widget);
+	priv->size_timeout_id =
+		g_timeout_add (500,
+					   (GSourceFunc) configure_event_timeout_cb,
+					   widget);
 
 	return FALSE;
 }
@@ -968,6 +968,9 @@ app_connection_items_setup (TwituxApp  *app,
 							GtkBuilder *ui)
 {
 	TwituxAppPriv *priv;
+	GList         *list;
+	GObject       *w;
+	gint           i;
 
 	const gchar   *widgets_connected[] = {
 		"twitter_disconnect",
@@ -981,10 +984,6 @@ app_connection_items_setup (TwituxApp  *app,
 	const gchar   *widgets_disconnected[] = {
 		"twitter_connect"
 	};
-
-	GList         *list;
-	GObject       *w;
-	gint           i;
 
 	priv = GET_PRIV (app);
 
@@ -1002,8 +1001,6 @@ app_connection_items_setup (TwituxApp  *app,
 
 	priv->widgets_disconnected = list;
 }
-
-
 
 void
 twitux_app_state_on_connection (gboolean connected)
