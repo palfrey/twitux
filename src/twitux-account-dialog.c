@@ -26,12 +26,12 @@
 #include <gtk/gtktogglebutton.h>
 
 #include <libtwitux/twitux-conf.h>
+#include <libtwitux/twitux-xml.h>
 #ifdef HAVE_GNOME_KEYRING
 #include <libtwitux/twitux-keyring.h>
 #endif
 
 #include "twitux.h"
-#include "twitux-xml.h"
 #include "twitux-account-dialog.h"
 
 #define XML_FILE "account_dlg.xml"

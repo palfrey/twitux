@@ -16,6 +16,7 @@ libtwitux_la_SOURCES =             			\
 	twitux-conf.c		twitux-conf.h		\
 	twitux-debug.c		twitux-debug.h		\
 	twitux-paths.c 		twitux-paths.h		\
+	twitux-xml.c		twitux-xml.h		\
 	$(keyring_impl)
 
 libtwitux_la_LIBADD =              			\

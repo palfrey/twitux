@@ -23,8 +23,9 @@
 #include <gtk/gtkbuilder.h>
 #include <gtk/gtkdialog.h>
 
+#include <libtwitux/twitux-xml.h>
+
 #include "twitux.h"
-#include "twitux-xml.h"
 #include "twitux-add-dialog.h"
 #include "twitux-network.h"
 

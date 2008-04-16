@@ -36,9 +36,9 @@
 
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-debug.h>
+#include <libtwitux/twitux-xml.h>
 
 #include "twitux.h"
-#include "twitux-xml.h"
 #include "twitux-send-message-dialog.h"
 #include "twitux-spell.h"
 #include "twitux-spell-dialog.h"

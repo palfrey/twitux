@@ -36,9 +36,10 @@
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtksizegroup.h>
 
+#include <libtwitux/twitux-xml.h>
+
 #include "twitux-send-message-dialog.h"
 #include "twitux-spell.h"
-#include "twitux-xml.h"
 #include "twitux-spell-dialog.h"
 
 #define XML_FILE "spell_dlg.xml"

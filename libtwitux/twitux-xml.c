@@ -24,8 +24,7 @@
 
 #include <gtk/gtkbuilder.h>
 
-#include <libtwitux/twitux-paths.h>
-
+#include "twitux-paths.h"
 #include "twitux-xml.h"
 
 static GtkBuilder *

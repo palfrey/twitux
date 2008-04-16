@@ -33,6 +33,7 @@
 #include <libtwitux/twitux-debug.h>
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-paths.h>
+#include <libtwitux/twitux-xml.h>
 #ifdef HAVE_GNOME_KEYRING
 #include <libtwitux/twitux-keyring.h>
 #endif
@@ -49,7 +50,6 @@
 #include "twitux-preferences.h"
 #include "twitux-send-message-dialog.h"
 #include "twitux-ui-utils.h"
-#include "twitux-xml.h"
 #include "twitux-tweet-list.h"
 
 #ifdef HAVE_DBUS

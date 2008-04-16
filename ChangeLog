@@ -1,3 +1,17 @@
+2008-04-16  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-xml.[ch]: Removed
+
+	* libtwitux/twitux-xml.[ch]:
+	* libtwitux/Makefile.am:
+	* src/twitux-preferences.c:
+	* src/twitux-send-message-dialog.c:
+	* src/twitux-spell-dialog.c:
+	* src/twitux-app.c:
+	* src/twitux-add-dialog.c:
+	* src/twitux-account-dialog.c:
+	* src/Makefile.am: Move the gtkbuilder code to libtwitux.
+
 2008-04-13  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-tweet-list.c: Use only the gtk header needed.

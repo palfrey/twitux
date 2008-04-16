@@ -33,9 +33,9 @@
 #include <glib/gi18n.h>
 
 #include <libtwitux/twitux-conf.h>
+#include <libtwitux/twitux-xml.h>
 
 #include "twitux.h"
-#include "twitux-xml.h"
 #include "twitux-preferences.h"
 #include "twitux-spell.h"
 
