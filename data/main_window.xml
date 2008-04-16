@@ -1,166 +1,182 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <!--*- mode: xml -*-->
 <interface>
-<object class="GtkUIManager" id="uimanager1">
-  <child>
-    <object class="GtkActionGroup" id="actiongroup1">
-      <child>
-        <object class="GtkAction" id="twitter">
-          <property name="name">twitter</property>
-          <property name="label" translatable="yes">_Twitter</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="twitter_connect">
-          <property name="stock_id">gtk-connect</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="twitter_disconnect">
-          <property name="stock_id">gtk-disconnect</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="twitter_new_message">
-          <property name="stock_id">gtk-new</property>
-          <property name="label" translatable="yes">New Message</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="twitter_send_direct_message">
-          <property name="label" translatable="yes">Send Direct Message</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="twitter_add_friend">
-          <property name="stock_id">gtk-add</property>
-          <property name="label" translatable="yes">Add a friend...</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="twitter_refresh">
-          <property name="stock_id">gtk-refresh</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="twitter_quit">
-          <property name="stock_id">gtk-quit</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="settings1">
-          <property name="name">settings1</property>
-          <property name="label" translatable="yes">_Settings</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="settings_account">
-          <property name="label" translatable="yes">_Account</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="settings_preferences">
-          <property name="stock_id">gtk-preferences</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="view1">
-          <property name="name">view1</property>
-          <property name="label" translatable="yes">_View</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkRadioAction" id="view_public_timeline">
-          <property name="label" translatable="yes">Public Timeline</property>
-	  <property name="value">0</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkRadioAction" id="view_friends_timeline">
-          <property name="label" translatable="yes">Friends Timeline</property>
-	  <property name="value">1</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkRadioAction" id="view_my_timeline">
-          <property name="label" translatable="yes">My Timeline</property>
-	  <property name="value">0</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkRadioAction" id="view_twitux_timeline">
-          <property name="label" translatable="yes">Twitux Timeline</property>
-	  <property name="value">0</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkRadioAction" id="view_direct_messages">
-          <property name="label" translatable="yes">Direct Messages</property>
-	  <property name="value">0</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkRadioAction" id="view_direct_replies">
-          <property name="label" translatable="yes">Direct Replies</property>
-	  <property name="value">0</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="view_friends">
-          <property name="name">view_friends</property>
-          <property name="label" translatable="yes">Friends</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="help1">
-          <property name="name">help1</property>
-          <property name="label" translatable="yes">_Help</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="help_about">
-          <property name="stock_id">gtk-about</property>
-        </object>
-      </child>
-    </object>
-  </child>
-  <ui>
-    <menubar name="main_menubar">
-      <menu action="twitter">
-        <menuitem action="twitter_connect"/>
-        <menuitem action="twitter_disconnect"/>
-        <separator/>
-        <menuitem action="twitter_new_message"/>
-        <menuitem action="twitter_send_direct_message"/>
-        <separator/>
-        <menuitem action="twitter_add_friend"/>
-        <separator/>
-        <menuitem action="twitter_refresh"/>
-        <separator/>
-        <menuitem action="twitter_quit"/>
-      </menu>
-      <menu action="settings1">
-         <menuitem action="settings_account"/>
-         <menuitem action="settings_preferences"/>
-      </menu>
-      <menu action="view1">
-        <menuitem action="view_public_timeline"/>
-        <menuitem action="view_friends_timeline"/>
-        <menuitem action="view_my_timeline"/>
-        <menuitem action="view_twitux_timeline"/>
-        <menuitem action="view_direct_messages"/>
-        <menuitem action="view_direct_replies"/>
-        <separator/>
-        <menuitem action="view_friends"/>
-      </menu>
-      <menu action="help1">
-        <menuitem action="help_about"/>
-      </menu>
-    </menubar>
-  </ui>
-</object>
-
-<object class="GtkWindow" id="main_window">
+  <object class="GtkUIManager" id="uimanager1">
+    <child>
+      <object class="GtkActionGroup" id="actiongroup1">
+        <child>
+          <object class="GtkAction" id="twitter">
+            <property name="name">twitter</property>
+            <property name="label" translatable="yes">_Twitter</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="twitter_connect">
+            <property name="stock_id">gtk-connect</property>
+            <property name="name">twitter_connect</property>
+            <property name="label" translatable="yes">C_onnect</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="twitter_disconnect">
+            <property name="stock_id">gtk-disconnect</property>
+            <property name="name">twitter_disconnect</property>
+            <property name="label" translatable="yes">_Disconnect</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="twitter_new_message">
+            <property name="stock_id">gtk-new</property>
+            <property name="name">twitter_new_message</property>
+            <property name="label" translatable="yes">New Message</property>
+          </object>
+          <accelerator key="N" modifiers="GDK_CONTROL_MASK"/>
+        </child>
+        <child>
+          <object class="GtkAction" id="twitter_send_direct_message">
+            <property name="name">twitter_send_direct_message</property>
+            <property name="label" translatable="yes">Send Direct Message</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="twitter_add_friend">
+            <property name="stock_id">gtk-add</property>
+            <property name="name">twitter_add_friend</property>
+            <property name="label" translatable="yes">Add a friend...</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="twitter_refresh">
+            <property name="stock_id">gtk-refresh</property>
+            <property name="name">twitter_refresh</property>
+            <property name="label" translatable="yes">_Refresh</property>
+          </object>
+          <accelerator key="F5" modifiers=""/>
+        </child>
+        <child>
+          <object class="GtkAction" id="twitter_quit">
+            <property name="stock_id" translatable="yes">gtk-quit</property>
+            <property name="name">twitter_quit</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="settings1">
+            <property name="name">settings1</property>
+            <property name="label" translatable="yes">_Settings</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="settings_account">
+            <property name="name">settings_account</property>
+            <property name="label" translatable="yes">_Account</property>
+          </object>
+          <accelerator key="F4" modifiers=""/>
+        </child>
+        <child>
+          <object class="GtkAction" id="settings_preferences">
+            <property name="stock_id" translatable="yes">gtk-preferences</property>
+            <property name="name">settings_preferences</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="view1">
+            <property name="name">view1</property>
+            <property name="label" translatable="yes">_View</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRadioAction" id="view_public_timeline">
+            <property name="name">view_public_timeline</property>
+            <property name="label" translatable="yes">Public Timeline</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRadioAction" id="view_friends_timeline">
+            <property name="value">1</property>
+            <property name="name">view_friends_timeline</property>
+            <property name="label" translatable="yes">Friends Timeline</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRadioAction" id="view_my_timeline">
+            <property name="name">view_my_timeline</property>
+            <property name="label" translatable="yes">My Timeline</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRadioAction" id="view_twitux_timeline">
+            <property name="name">view_twitux_timeline</property>
+            <property name="label" translatable="yes">Twitux Timeline</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRadioAction" id="view_direct_messages">
+            <property name="name">view_direct_messages</property>
+            <property name="label" translatable="yes">Direct Messages</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRadioAction" id="view_direct_replies">
+            <property name="name">view_direct_replies</property>
+            <property name="label" translatable="yes">Direct Replies</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="view_friends">
+            <property name="name">view_friends</property>
+            <property name="label" translatable="yes">Friends</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="help1">
+            <property name="name">help1</property>
+            <property name="label" translatable="yes">_Help</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="help_about">
+            <property name="stock_id" translatable="yes">gtk-about</property>
+            <property name="name">help_about</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <ui>
+      <menubar name="main_menubar">
+        <menu action="twitter">
+          <menuitem action="twitter_connect"/>
+          <menuitem action="twitter_disconnect"/>
+          <separator/>
+          <menuitem action="twitter_new_message"/>
+          <menuitem action="twitter_send_direct_message"/>
+          <separator/>
+          <menuitem action="twitter_add_friend"/>
+          <separator/>
+          <menuitem action="twitter_refresh"/>
+          <separator/>
+          <menuitem action="twitter_quit"/>
+        </menu>
+        <menu action="settings1">
+          <menuitem action="settings_account"/>
+          <menuitem action="settings_preferences"/>
+        </menu>
+        <menu action="view1">
+          <menuitem action="view_public_timeline"/>
+          <menuitem action="view_friends_timeline"/>
+          <menuitem action="view_my_timeline"/>
+          <menuitem action="view_twitux_timeline"/>
+          <menuitem action="view_direct_messages"/>
+          <menuitem action="view_direct_replies"/>
+          <separator/>
+          <menuitem action="view_friends"/>
+        </menu>
+        <menu action="help1">
+          <menuitem action="help_about"/>
+        </menu>
+      </menubar>
+    </ui>
+  </object>
+  <object class="GtkWindow" id="main_window">
     <property name="width_request">230</property>
     <property name="height_request">320</property>
     <property name="visible">True</property>
