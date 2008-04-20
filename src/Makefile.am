@@ -30,6 +30,7 @@ twitux_SOURCES = 							\
 	twitux-spell.c			twitux-spell.h			\
 	twitux-spell-dialog.c		twitux-spell-dialog.h		\
 	twitux-ui-utils.c		twitux-ui-utils.h		\
+	twitux-lists-dialog.c		twitux-lists-dialog.h		\
 	twitux-tweet-list.c		twitux-tweet-list.h
 
 twitux_LDADD=						\

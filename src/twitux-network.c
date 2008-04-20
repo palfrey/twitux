@@ -38,6 +38,7 @@
 #include "twitux-parser.h"
 #include "twitux-app.h"
 #include "twitux-send-message-dialog.h"
+#include "twitux-lists-dialog.h"
 
 #define DEBUG_DOMAIN	  "Network"
 #define TWITUX_HEADER_URL "http://twitux.sourceforge.net/client.xml"
@@ -760,10 +761,11 @@ network_cb_on_users (SoupSession *session,
 
 	/* check if it ok, and if it is a followers or following list */
 	if (users && friends){
-		/* Friends timeline retrived */
+		/* Friends retrived */
 		user_friends = users;
+		twitux_lists_dialog_load_lists (user_friends);
 	} else if (users){
-		/* Followers lisy retrived */
+		/* Followers list retrived */
 		user_followers = users;
 		twitux_message_set_followers (user_followers);
 	} else {

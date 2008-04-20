@@ -1,3 +1,15 @@
+2008-04-20  Daniel Morales  <daniminas@gmail.com>
+
+	* data/lists_dlg.xml:
+	* data/glade/lists_dialog.xml:
+	* src/twitux-lists-dialog.[ch]: New files.
+
+	* data/Makefile.am:
+	* src/twitux-network.c:
+	* src/Makefile.am:
+	* src/twitux-app.c: Add lists dialog. It's very simple now, 
+	but i think we can add some interesting functions.
+
 2008-04-16  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-xml.[ch]: Removed

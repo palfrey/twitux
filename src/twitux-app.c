@@ -49,6 +49,7 @@
 #include "twitux-network.h"
 #include "twitux-preferences.h"
 #include "twitux-send-message-dialog.h"
+#include "twitux-lists-dialog.h"
 #include "twitux-ui-utils.h"
 #include "twitux-tweet-list.h"
 
@@ -98,7 +99,6 @@ struct _TwituxAppPriv {
 
 	/* Misc */
 	guint              size_timeout_id;
-	gboolean           friends_loaded;
 	
 	/* Expand messages widgets */
 	GtkWidget         *expand_box;
@@ -152,6 +152,8 @@ static void     app_view_direct_replies_cb       (GtkRadioAction        *action,
 												  TwituxApp             *app);
 static void     app_twitux_timeline_cb           (GtkRadioAction        *action,
 												  GtkRadioAction        *current,
+												  TwituxApp             *app);
+static void     app_twitux_view_friends_cb       (GtkAction             *action,
 												  TwituxApp             *app);
 static void     app_about_cb                     (GtkWidget             *window,
 												  TwituxApp             *app);
@@ -309,6 +311,7 @@ app_setup (void)
 						"view_direct_messages", "changed", app_view_direct_messages_cb,
 						"view_direct_replies", "changed", app_view_direct_replies_cb,
 						"view_twitux_timeline", "changed", app_twitux_timeline_cb,
+						"view_friends", "activate", app_twitux_view_friends_cb,
 						"help_about", "activate", app_about_cb,
 						NULL);
 
@@ -655,6 +658,17 @@ app_twitux_timeline_cb (GtkRadioAction *action,
 }
 
 static void
+app_twitux_view_friends_cb (GtkAction *action,
+							TwituxApp *app)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	twitux_lists_dialog_show (GTK_WINDOW (priv->window));
+}
+
+static void
 app_account_cb (GtkWidget *widget,
 				TwituxApp *app)
 {
@@ -889,8 +903,6 @@ app_login (TwituxApp *a)
 		twitux_network_login ();
 		app_retrieve_default_timeline ();
 	}
-
-	priv->friends_loaded = FALSE;
 
 	g_free (username);
 	g_free (password);
