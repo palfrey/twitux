@@ -1,14 +1,14 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 [encoding: UTF-8]
-data/add_friend_dlg.xml
-data/account_dlg.xml
-data/lists_dlg.xml
-data/main_window.xml
-data/prefs_dlg.xml
-data/send_message_dlg.xml
-data/spell_dlg.xml
-data/tray_menu.xml
+[type: gettext/glade]data/add_friend_dlg.xml
+[type: gettext/glade]data/account_dlg.xml
+[type: gettext/glade]data/lists_dlg.xml
+[type: gettext/glade]data/main_window.xml
+[type: gettext/glade]data/prefs_dlg.xml
+[type: gettext/glade]data/send_message_dlg.xml
+[type: gettext/glade]data/spell_dlg.xml
+[type: gettext/glade]data/tray_menu.xml
 data/twitux.desktop.in.in
 data/twitux.schemas.in
 

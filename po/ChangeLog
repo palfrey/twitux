@@ -1,6 +1,7 @@
 2008-04-23  Daniel Morales  <daniminas@gmail.com>
 
-	* POTFILES.IN: Add data/lists_dlg.xml
+	* POTFILES.IN: Add data/lists_dlg.xml and fix
+	the filetype.
 
 2008-02-08  Brian Pepple  <bpepple@fedoraproject.org>
 
