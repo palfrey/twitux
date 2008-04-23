@@ -3,6 +3,7 @@
 [encoding: UTF-8]
 data/add_friend_dlg.xml
 data/account_dlg.xml
+data/lists_dlg.xml
 data/main_window.xml
 data/prefs_dlg.xml
 data/send_message_dlg.xml

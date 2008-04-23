@@ -14,14 +14,12 @@
           <object class="GtkAction" id="twitter_connect">
             <property name="stock_id">gtk-connect</property>
             <property name="name">twitter_connect</property>
-            <property name="label" translatable="yes">C_onnect</property>
           </object>
         </child>
         <child>
           <object class="GtkAction" id="twitter_disconnect">
             <property name="stock_id">gtk-disconnect</property>
             <property name="name">twitter_disconnect</property>
-            <property name="label" translatable="yes">_Disconnect</property>
           </object>
         </child>
         <child>
@@ -49,7 +47,6 @@
           <object class="GtkAction" id="twitter_refresh">
             <property name="stock_id">gtk-refresh</property>
             <property name="name">twitter_refresh</property>
-            <property name="label" translatable="yes">_Refresh</property>
           </object>
           <accelerator key="F5" modifiers=""/>
         </child>
