@@ -34,6 +34,48 @@
                     </child>
                   </widget>
                 </child>
+                <child>
+                  <widget class="GtkHBox" id="hbox2">
+                    <property name="visible">True</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <widget class="GtkButton" id="follow_add">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="label" translatable="yes">gtk-add</property>
+                        <property name="use_stock">True</property>
+                        <property name="response_id">0</property>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkButton" id="follow_rem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="label" translatable="yes">gtk-remove</property>
+                        <property name="use_stock">True</property>
+                        <property name="response_id">0</property>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="padding">4</property>
+                    <property name="pack_type">GTK_PACK_END</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </widget>
             </child>
             <child>

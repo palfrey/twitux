@@ -27,10 +27,10 @@
 
 #include "twitux.h"
 #include "twitux-lists-dialog.h"
+#include "twitux-add-dialog.h"
 #include "twitux-network.h"
 
 #define XML_FILE "lists_dlg.xml"
-
 
 enum {
 	FOLLOWER_USER,
@@ -45,11 +45,15 @@ typedef struct {
 	GtkTreeModel *following_store;
 } TwituxLists;
 
-static void lists_response_cb (GtkWidget   *widget,
-							   gint         response,
-							   TwituxLists *lists);
-static void lists_destroy_cb  (GtkWidget   *widget,
-							   TwituxLists *lists);
+static void lists_add_response_cb (GtkButton   *button,
+								   TwituxLists *lists);
+static void lists_rem_response_cb (GtkButton   *button,
+								   TwituxLists *lists);
+static void lists_response_cb     (GtkWidget   *widget,
+								   gint         response,
+								   TwituxLists *lists);
+static void lists_destroy_cb      (GtkWidget   *widget,
+								   TwituxLists *lists);
 
 static TwituxLists *lists;
 
@@ -68,6 +72,41 @@ lists_destroy_cb (GtkWidget    *widget,
 	g_free (lists);
 }
 
+static void
+lists_add_response_cb (GtkButton   *button,
+					   TwituxLists *lists)
+{
+	GtkWidget *window;
+
+	window = gtk_widget_get_toplevel (lists->dialog);
+
+	twitux_add_dialog_show (GTK_WINDOW (window));
+}
+
+static void
+lists_rem_response_cb (GtkButton   *button,
+					   TwituxLists *lists)
+{
+	GtkTreeSelection *sel;
+	GtkTreeIter       iter;
+	TwituxUser       *user;
+
+	/* Get selected Iter */
+	sel = gtk_tree_view_get_selection (lists->following_list);
+	
+	if (!gtk_tree_selection_get_selected (sel, NULL, &iter))
+		return;
+
+	gtk_tree_model_get (lists->following_store,
+						&iter,
+						FOLLOWER_POINTER, &user,
+						-1);
+
+	gtk_list_store_remove (GTK_LIST_STORE (lists->following_store), &iter);
+
+	twitux_network_del_user (user);
+}
+
 void
 twitux_lists_dialog_load_lists (GList *users)
 {
@@ -75,6 +114,7 @@ twitux_lists_dialog_load_lists (GList *users)
 	GtkTreeIter  iter;
 	GList       *list;
 
+	/* Following */
 	for (list = users; list; list = list->next)
 	{
 		user = (TwituxUser *)list->data;
@@ -118,6 +158,8 @@ twitux_lists_dialog_show (GtkWindow *parent)
 	twitux_xml_connect (ui, lists,
 						"lists_dialog", "destroy", lists_destroy_cb,
 						"lists_dialog", "response", lists_response_cb,
+						"follow_add", "clicked", lists_add_response_cb,
+						"follow_rem", "clicked", lists_rem_response_cb,
 						NULL);
 
 	g_object_unref (ui);

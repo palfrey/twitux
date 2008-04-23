@@ -1,7 +1,13 @@
+2008-04-22  Daniel Morales  <daniminas@gmail.com>
+
+	* data/lists_dialog.glade:
+	* data/lists_dlg.xml:
+	* src/twitux-lists-dialog.c: Add and remove users to follow.
+
 2008-04-20  Daniel Morales  <daniminas@gmail.com>
 
 	* data/lists_dlg.xml:
-	* data/glade/lists_dialog.xml:
+	* data/glade/lists_dialog.glade:
 	* src/twitux-lists-dialog.[ch]: New files.
 
 	* data/Makefile.am:
