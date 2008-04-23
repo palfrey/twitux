@@ -45,8 +45,6 @@ typedef struct {
 	GtkTreeModel *following_store;
 } TwituxLists;
 
-static void lists_add_response_cb (GtkButton   *button,
-								   TwituxLists *lists);
 static void lists_rem_response_cb (GtkButton   *button,
 								   TwituxLists *lists);
 static void lists_response_cb     (GtkWidget   *widget,
@@ -73,17 +71,6 @@ lists_destroy_cb (GtkWidget    *widget,
 }
 
 static void
-lists_add_response_cb (GtkButton   *button,
-					   TwituxLists *lists)
-{
-	GtkWidget *window;
-
-	window = gtk_widget_get_toplevel (lists->dialog);
-
-	twitux_add_dialog_show (GTK_WINDOW (window));
-}
-
-static void
 lists_rem_response_cb (GtkButton   *button,
 					   TwituxLists *lists)
 {
@@ -105,6 +92,30 @@ lists_rem_response_cb (GtkButton   *button,
 	gtk_list_store_remove (GTK_LIST_STORE (lists->following_store), &iter);
 
 	twitux_network_del_user (user);
+}
+
+static void
+list_follower_activated_cb (GtkTreeView       *tree_view,
+							GtkTreePath       *path,
+							GtkTreeViewColumn *column,
+							TwituxLists       *lists)
+{
+	GtkTreeIter  iter;
+	gchar       *username;
+
+	gtk_tree_model_get_iter (GTK_TREE_MODEL (lists->following_store),
+							 &iter,
+							 path);
+
+	gtk_tree_model_get (GTK_TREE_MODEL (lists->following_store),
+						&iter,
+						FOLLOWER_USER, &username,
+						-1);
+
+	/* Retrive timeline */
+	twitux_network_get_user (username);
+
+	g_free (username);
 }
 
 void
@@ -158,8 +169,8 @@ twitux_lists_dialog_show (GtkWindow *parent)
 	twitux_xml_connect (ui, lists,
 						"lists_dialog", "destroy", lists_destroy_cb,
 						"lists_dialog", "response", lists_response_cb,
-						"follow_add", "clicked", lists_add_response_cb,
 						"follow_rem", "clicked", lists_rem_response_cb,
+						"following_list", "row-activated", list_follower_activated_cb,
 						NULL);
 
 	g_object_unref (ui);

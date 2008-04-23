@@ -70,20 +70,6 @@
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
                     <child>
-                      <object class="GtkButton" id="follow_add">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="label" translatable="yes">gtk-add</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="padding">5</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkButton" id="follow_rem">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -95,6 +81,7 @@
                         <property name="expand">False</property>
                         <property name="fill">False</property>
                         <property name="position">1</property>
+                        <property name="padding">5</property>
                       </packing>
                     </child>
                   </object>
