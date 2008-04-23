@@ -9,144 +9,157 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-09 00:07-0200\n"
-"PO-Revision-Date: 2008-03-10 17:45-0300\n"
+"POT-Creation-Date: 2008-04-23 20:39-0300\n"
+"PO-Revision-Date: 2008-04-23 20:42-0300\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit"
 
-#: ../data/add_friend_dialog.glade.h:1
+#: ../data/add_friend_dlg.xml.h:1
 msgid "Add a friend"
 msgstr "Agregar un amigo"
 
-#: ../data/add_friend_dialog.glade.h:2 ../data/account_dialog.glade.h:5
+#: ../data/add_friend_dlg.xml.h:2 ../data/account_dlg.xml.h:5
 msgid "_Username:"
 msgstr "_Nombre de usuario:"
 
-#: ../data/account_dialog.glade.h:1
+#: ../data/account_dlg.xml.h:1
 msgid "Automatic Login?"
 msgstr "Login automático?"
 
-#: ../data/account_dialog.glade.h:2
+#: ../data/account_dlg.xml.h:2
 msgid "Show Password"
 msgstr "Mostrar Contraseña"
 
-#: ../data/account_dialog.glade.h:3
+#: ../data/account_dlg.xml.h:3
 msgid "Twitter Account"
 msgstr "Cuenta Twitter"
 
-#: ../data/account_dialog.glade.h:4
+#: ../data/account_dlg.xml.h:4
 msgid "_Password:"
 msgstr "_Contraseña:"
 
-#: ../data/main_window.glade.h:1
+#: ../data/lists_dlg.xml.h:1
+msgid "Following"
+msgstr "Siguiendo"
+
+#: ../data/lists_dlg.xml.h:2
+msgid "Name"
+msgstr "Nombre"
+
+#: ../data/lists_dlg.xml.h:3
+msgid "User"
+msgstr "Usuario"
+
+#: ../data/lists_dlg.xml.h:4
+#, fuzzy
+msgid "Users settings"
+msgstr "_Preferencias"
+
+#: ../data/lists_dlg.xml.h:5
+msgid "gtk-close"
+msgstr ""
+
+#: ../data/lists_dlg.xml.h:6
+msgid "gtk-remove"
+msgstr ""
+
+#: ../data/main_window.xml.h:1
 msgid "Add a friend..."
 msgstr "Agregar un amigo..."
 
-#: ../data/main_window.glade.h:2
-msgid "C_onnect"
-msgstr "C_onectarse"
-
-#: ../data/main_window.glade.h:3
+#: ../data/main_window.xml.h:2
 msgid "Direct Messages"
 msgstr "Mensajes Directos"
 
-#: ../data/main_window.glade.h:4
+#: ../data/main_window.xml.h:3
 msgid "Direct Replies"
 msgstr "Respuestas Directas"
 
-#: ../data/main_window.glade.h:5 ../src/twitux-preferences.c:426
+#: ../data/main_window.xml.h:4 ../src/twitux-preferences.c:428
 msgid "Friends"
 msgstr "Amigos"
 
-#: ../data/main_window.glade.h:6
+#: ../data/main_window.xml.h:5
 msgid "Friends Timeline"
 msgstr "Timeline de Amigos"
 
-#: ../data/main_window.glade.h:7
+#: ../data/main_window.xml.h:6
 msgid "My Timeline"
 msgstr "Mi Timeline"
 
-#: ../data/main_window.glade.h:8
+#: ../data/main_window.xml.h:7
 msgid "New Message"
 msgstr "Nuevo Mensaje"
 
-#: ../data/main_window.glade.h:9
+#: ../data/main_window.xml.h:8
 msgid "Public Timeline"
 msgstr "Timeline Pública"
 
-#: ../data/main_window.glade.h:10
+#: ../data/main_window.xml.h:9
 msgid "Send Direct Message"
 msgstr "Enviar Mensajes Directos"
 
-#: ../data/main_window.glade.h:11 ../data/twitux.desktop.in.in.h:2
-#: ../src/twitux-main.c:46 ../src/twitux-preferences.c:428
+#: ../data/main_window.xml.h:10 ../data/twitux.desktop.in.in.h:2
+#: ../src/twitux-main.c:46 ../src/twitux-preferences.c:430
 msgid "Twitux"
 msgstr "Twitux"
 
-#: ../data/main_window.glade.h:12
+#: ../data/main_window.xml.h:11
 msgid "Twitux Timeline"
 msgstr "Twitux Timeline"
 
-#: ../data/main_window.glade.h:13
+#: ../data/main_window.xml.h:12
 msgid "_Account"
 msgstr "_Cuenta"
 
-#: ../data/main_window.glade.h:14
-msgid "_Disconnect"
-msgstr "_Desconectarse"
-
-#: ../data/main_window.glade.h:15
+#: ../data/main_window.xml.h:13
 msgid "_Help"
 msgstr "_Ayuda"
 
-#: ../data/main_window.glade.h:16
-msgid "_Refresh"
-msgstr "_Actualizar"
-
-#: ../data/main_window.glade.h:17
+#: ../data/main_window.xml.h:14
 msgid "_Settings"
 msgstr "_Preferencias"
 
-#: ../data/main_window.glade.h:18
+#: ../data/main_window.xml.h:15
 msgid "_Twitter"
 msgstr "_Twitter"
 
-#: ../data/main_window.glade.h:19
+#: ../data/main_window.xml.h:16
 msgid "_View"
 msgstr "_Ver"
 
-#: ../data/main_window.glade.h:20
+#: ../data/main_window.xml.h:17
 msgid "gtk-about"
 msgstr ""
 
-#: ../data/main_window.glade.h:21
+#: ../data/main_window.xml.h:18
 msgid "gtk-preferences"
 msgstr ""
 
-#: ../data/main_window.glade.h:22 ../data/tray_menu.glade.h:3
+#: ../data/main_window.xml.h:19
 msgid "gtk-quit"
 msgstr ""
 
-#: ../data/preferences_dialog.glade.h:1
+#: ../data/prefs_dlg.xml.h:1
 msgid "<b>General</b>"
 msgstr "<b>General</b>"
 
-#: ../data/preferences_dialog.glade.h:2
+#: ../data/prefs_dlg.xml.h:2
 msgid "<b>Languages</b>"
 msgstr "<b>Idiomas</b>"
 
-#: ../data/preferences_dialog.glade.h:3
+#: ../data/prefs_dlg.xml.h:3
 msgid "<b>Options</b>"
 msgstr "<b>Opciones</b>"
 
-#: ../data/preferences_dialog.glade.h:4
+#: ../data/prefs_dlg.xml.h:4
 msgid "<b>Timelines</b>"
 msgstr "<b>Timelines</b>"
 
-#: ../data/preferences_dialog.glade.h:5
+#: ../data/prefs_dlg.xml.h:5
 msgid ""
 "<small>The list of languages reflects only the languages for which you have "
 "a dictionary installed.</small>"
@@ -154,80 +167,80 @@ msgstr ""
 "<small>La lista de idiomas muesta solo aquellos para los cuales tienes el "
 "dirccionario instalado.</small>"
 
-#: ../data/preferences_dialog.glade.h:6
+#: ../data/prefs_dlg.xml.h:6
 msgid "Default _Timeline:"
 msgstr "Timeline _inicial:"
 
-#: ../data/preferences_dialog.glade.h:7
+#: ../data/prefs_dlg.xml.h:7
 msgid "General"
 msgstr "General"
 
-#: ../data/preferences_dialog.glade.h:8
+#: ../data/prefs_dlg.xml.h:8
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: ../data/preferences_dialog.glade.h:9
+#: ../data/prefs_dlg.xml.h:9
 msgid "Spell Checking"
 msgstr "Correción ortográfica"
 
-#: ../data/preferences_dialog.glade.h:10
+#: ../data/prefs_dlg.xml.h:10
 msgid ""
 "This will show the full status message of the item selected in the list view."
 msgstr "Esto mostrará el mensaje completo."
 
-#: ../data/preferences_dialog.glade.h:11
+#: ../data/prefs_dlg.xml.h:11
 msgid "_Display notifications when message recieved"
 msgstr "_Mostrar notificaciones gráficas"
 
-#: ../data/preferences_dialog.glade.h:12
+#: ../data/prefs_dlg.xml.h:12
 msgid "_Enable spell checking"
 msgstr "_Habilitar corrector ortográfico"
 
-#: ../data/preferences_dialog.glade.h:13
+#: ../data/prefs_dlg.xml.h:13
 msgid "_Expand messages"
 msgstr "_Expandir mensajes"
 
-#: ../data/preferences_dialog.glade.h:14
+#: ../data/prefs_dlg.xml.h:14
 msgid "_Retrieve every:"
 msgstr "_Actualizar cada:"
 
-#: ../data/preferences_dialog.glade.h:15
+#: ../data/prefs_dlg.xml.h:15
 msgid "_Show user names instead real names"
 msgstr "_Mostrar nombre de usuarios en lugar de nombres completos."
 
-#: ../data/send_message_dialog.glade.h:1
+#: ../data/send_message_dlg.xml.h:1
 msgid "<span size=\"small\">Characters Available: 160</span>"
 msgstr "<span size=\"small\">Caracteres disponibles: 160</span>"
 
-#: ../data/send_message_dialog.glade.h:2
+#: ../data/send_message_dlg.xml.h:2
 msgid "Choose a friend:"
 msgstr "Selecciona un amigo:"
 
-#: ../data/send_message_dialog.glade.h:3
+#: ../data/send_message_dlg.xml.h:3
 msgid "Send Message"
 msgstr "Enviar Mensajes"
 
-#: ../data/send_message_dialog.glade.h:4
+#: ../data/send_message_dlg.xml.h:4
 msgid "_Send"
 msgstr "_Enviar"
 
-#: ../data/spell_dialog.glade.h:1
+#: ../data/spell_dlg.xml.h:1
 msgid "Spell Checker"
 msgstr "Corrector ortográfico"
 
-#: ../data/spell_dialog.glade.h:2
+#: ../data/spell_dlg.xml.h:2
 msgid "Suggestions for the word:"
 msgstr "Sugerencias para la palabra:"
 
-#: ../data/spell_dialog.glade.h:3
+#: ../data/spell_dlg.xml.h:3
 msgid "_Replace"
 msgstr "_Reemplazar"
 
-#: ../data/tray_menu.glade.h:1
+#: ../data/tray_menu.xml.h:1
 msgid "_New Message"
 msgstr "_Nuevo Mensaje"
 
-#: ../data/tray_menu.glade.h:2
+#: ../data/tray_menu.xml.h:2
 msgid "_Show Twitux"
 msgstr "_Mostrar Twitux"
 
@@ -399,23 +412,19 @@ msgstr "Copyright © 2007-2008 Daniel Morales"
 msgid "translator-credits"
 msgstr "Daniel Morales <daniminas@gmail.com>"
 
-#: ../src/twitux-app.c:362
-msgid "Do you really want to quit?"
-msgstr "Realmente deseas cerrar?"
-
-#: ../src/twitux-app.c:416
+#: ../src/twitux-app.c:407
 msgid "Twitux is still running, it is just hidden."
 msgstr "Twitux ahún se está ejecutando, solo está oculto."
 
-#: ../src/twitux-app.c:417
+#: ../src/twitux-app.c:408
 msgid "Click on the notification area icon to show Twitux."
 msgstr "Click en el ícono de la bandeja del sistema para mostrar Twitux."
 
-#: ../src/twitux-app.c:432
+#: ../src/twitux-app.c:418
 msgid "You were about to quit!"
 msgstr ""
 
-#: ../src/twitux-app.c:433
+#: ../src/twitux-app.c:419
 msgid ""
 "Since no system or notification tray has been found, this action would "
 "normally quit Twitux.\n"
@@ -424,57 +433,53 @@ msgid ""
 "action unless you uncheck the option below."
 msgstr ""
 
-#: ../src/twitux-app.c:1100
-msgid "Fetching friends..."
-msgstr "Recibiendo amigos..."
-
-#: ../src/twitux-app.c:1154
+#: ../src/twitux-app.c:1079
 msgid "tweets"
 msgstr "tweets"
 
-#: ../src/twitux-app.c:1156
+#: ../src/twitux-app.c:1081
 msgid "tweet"
 msgstr "tweet"
 
-#: ../src/twitux-app.c:1159
+#: ../src/twitux-app.c:1084
 #, c-format
 msgid "You have %i new %s."
 msgstr "Tiene %i nuevo(s) %s."
 
-#: ../src/twitux-hint.c:87
+#: ../src/twitux-hint.c:89
 msgid "Do not show this again"
 msgstr "No mostrar de nuevo"
 
-#: ../src/twitux-network.c:224
+#: ../src/twitux-network.c:225
 msgid "Connecting..."
 msgstr "Conectando..."
 
 #. UI
-#: ../src/twitux-network.c:281 ../src/twitux-network.c:297
+#: ../src/twitux-network.c:282 ../src/twitux-network.c:298
 msgid "Loading timeline..."
 msgstr "Cargando timeline..."
 
-#: ../src/twitux-network.c:500
+#: ../src/twitux-network.c:501
 msgid "Access denied."
 msgstr "Acceso denegado."
 
-#: ../src/twitux-network.c:503
+#: ../src/twitux-network.c:504
 msgid "HTTP communication error."
 msgstr "Error de comunicación HTTP."
 
-#: ../src/twitux-network.c:506
+#: ../src/twitux-network.c:507
 msgid "Internal server error."
 msgstr "Error en el servidor."
 
-#: ../src/twitux-network.c:509
+#: ../src/twitux-network.c:510
 msgid "Stopped"
 msgstr "Detenido."
 
-#: ../src/twitux-network.c:539
+#: ../src/twitux-network.c:540
 msgid "Failed to save cache file."
 msgstr "Error al guardar en caché."
 
-#: ../src/twitux-network.c:611
+#: ../src/twitux-network.c:612
 msgid "Could not retrieve password from keyring."
 msgstr "No se puede obtener la contraseña desde el anillo."
 
@@ -502,115 +507,129 @@ msgstr "Error de parseo."
 msgid "Friend Added"
 msgstr "Amigo agregado"
 
-#: ../src/twitux-network.c:838
+#: ../src/twitux-network.c:837
 msgid "Failed to add user"
 msgstr "Error al agregar el usuario."
 
-#: ../src/twitux-network.c:855
+#: ../src/twitux-network.c:854
 msgid "Friend Removed"
 msgstr "Amigo eliminado"
 
-#: ../src/twitux-network.c:857
+#: ../src/twitux-network.c:856
 msgid "Failed to remove user"
 msgstr "Error al eliminar el usuario."
 
 #. UI
-#: ../src/twitux-network.c:906
+#: ../src/twitux-network.c:905
 msgid "Reloading timeline..."
 msgstr "Recargando timeline..."
 
-#: ../src/twitux-parser.c:430
+#: ../src/twitux-parser.c:437
 msgid "1 second ago"
 msgstr "hace 1 segundo"
 
-#: ../src/twitux-parser.c:434
+#: ../src/twitux-parser.c:441
 msgid "1 minute ago"
 msgstr "hace 1 minuto"
 
-#: ../src/twitux-parser.c:436
+#: ../src/twitux-parser.c:443
 #, c-format
 msgid "%i seconds ago"
 msgstr "hace %i segundos"
 
-#: ../src/twitux-parser.c:441
+#: ../src/twitux-parser.c:448
 msgid "1 hour ago"
 msgstr "hace 1 hora"
 
-#: ../src/twitux-parser.c:443
+#: ../src/twitux-parser.c:450
 #, c-format
 msgid "%i minutes ago"
 msgstr "hace %i minutos"
 
-#: ../src/twitux-parser.c:448
+#: ../src/twitux-parser.c:455
 msgid "1 day ago"
 msgstr "hace 1 día"
 
-#: ../src/twitux-parser.c:450
+#: ../src/twitux-parser.c:457
 #, c-format
 msgid "%i hours ago"
 msgstr "hace %i horas"
 
-#: ../src/twitux-parser.c:455
+#: ../src/twitux-parser.c:462
 msgid "1 month ago"
 msgstr "hace 1 mes"
 
-#: ../src/twitux-parser.c:457
+#: ../src/twitux-parser.c:464
 #, c-format
 msgid "%i days ago"
 msgstr "hace %i días"
 
-#: ../src/twitux-parser.c:459
+#: ../src/twitux-parser.c:466
 #, c-format
 msgid "%i months ago"
 msgstr "hace %i meses"
 
-#: ../src/twitux-preferences.c:64
+#: ../src/twitux-preferences.c:66
 msgid "3 minutes"
 msgstr "3 minutos"
 
-#: ../src/twitux-preferences.c:65
+#: ../src/twitux-preferences.c:67
 msgid "5 minutes"
 msgstr "5 minutos"
 
-#: ../src/twitux-preferences.c:66
+#: ../src/twitux-preferences.c:68
 msgid "15 minutes"
 msgstr "15 minutos"
 
-#: ../src/twitux-preferences.c:67
+#: ../src/twitux-preferences.c:69
 msgid "30 minutes"
 msgstr "30 minutos"
 
-#: ../src/twitux-preferences.c:68
+#: ../src/twitux-preferences.c:70
 msgid "hour"
 msgstr "hora"
 
-#: ../src/twitux-preferences.c:213
+#: ../src/twitux-preferences.c:215
 msgid "Language"
 msgstr "Idioma"
 
-#: ../src/twitux-preferences.c:425
+#: ../src/twitux-preferences.c:427
 msgid "Public"
 msgstr "Pública"
 
-#: ../src/twitux-preferences.c:427
+#: ../src/twitux-preferences.c:429
 msgid "Mine"
 msgstr "Propia"
 
 #. Set the label
-#: ../src/twitux-send-message-dialog.c:156
-#: ../src/twitux-send-message-dialog.c:337
+#: ../src/twitux-send-message-dialog.c:163
+#: ../src/twitux-send-message-dialog.c:345
 msgid "Characters Available"
 msgstr "Caracteres Disponibles"
 
-#: ../src/twitux-send-message-dialog.c:480
+#: ../src/twitux-send-message-dialog.c:488
 msgid "_Check Word Spelling..."
 msgstr "_Comprobar ortografía"
 
-#: ../src/twitux-spell-dialog.c:90
+#: ../src/twitux-spell-dialog.c:93
 msgid "Word"
 msgstr "Palabra"
 
-#: ../src/twitux-spell-dialog.c:261
+#: ../src/twitux-spell-dialog.c:264
 msgid "Suggestions for the word"
 msgstr "Sugerencias para la palabra"
 
+#~ msgid "C_onnect"
+#~ msgstr "C_onectarse"
+
+#~ msgid "_Disconnect"
+#~ msgstr "_Desconectarse"
+
+#~ msgid "_Refresh"
+#~ msgstr "_Actualizar"
+
+#~ msgid "Do you really want to quit?"
+#~ msgstr "Realmente deseas cerrar?"
+
+#~ msgid "Fetching friends..."
+#~ msgstr "Recibiendo amigos..."

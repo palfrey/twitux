@@ -1,3 +1,11 @@
+2008-04-23  Daniel Morales  <daniminas@gmail.com>
+
+	* data/list_dlg.xml:
+	* src/twitux-lists-dialog.c: Retrive users
+	timelines.
+
+	* po/POTFILES.in: Fix XML filetypes.
+
 2008-04-22  Daniel Morales  <daniminas@gmail.com>
 
 	* data/lists_dialog.glade:
