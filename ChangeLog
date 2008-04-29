@@ -1,3 +1,8 @@
+2008-04-29  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-app.c: Minor 'default timeline' fix.
+	* src/twitux-preferences: Fix spell checkbutton.
+
 2008-04-23  Daniel Morales  <daniminas@gmail.com>
 
 	* data/list_dlg.xml:

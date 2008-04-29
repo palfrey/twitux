@@ -954,6 +954,7 @@ app_retrieve_default_timeline (void)
 
 	if (G_STR_EMPTY (timeline)){
 		timeline = g_strdup (TWITUX_API_TIMELINE_FRIENDS);
+		app_set_default_timeline (app, TWITUX_API_TIMELINE_FRIENDS);
 	}
 
 	twitux_network_get_timeline (timeline);
