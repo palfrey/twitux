@@ -162,7 +162,7 @@ preferences_setup_widgets (TwituxPrefs *prefs)
 									  prefs->spell);
 
 	preferences_hookup_sensitivity (prefs,
-									TWITUX_PREFS_UI_SPELL_LANGUAGES,
+									TWITUX_PREFS_UI_SPELL,
 									prefs->treeview_spell_checker);
 
 	preferences_hookup_string_combo (prefs,
