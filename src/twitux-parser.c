@@ -432,22 +432,22 @@ parser_convert_time (const char *datetime)
 	seconds_post =  mktime (&post);
 
 	diff = seconds_local-seconds_post;
-
-	if (diff < 0) {
+	
+	if (diff < 2) {
 		return g_strdup (_("1 second ago"));
 	}
 	/* Seconds */
-	if (diff == 60) {
-		return g_strdup (_("1 minute ago"));
-	} else if (diff < 60 ) {
+	if (diff < 60 ) {
 		return g_strdup_printf (_("%i seconds ago"), diff);
+	} else if (diff < 120) {
+		return g_strdup (_("1 minute ago"));
 	} else {
 		/* Minutes */
 		diff = diff/60;
-		if (diff == 60) {
-			return g_strdup (_("1 hour ago"));
-		} else if (diff < 60) {
+		if (diff < 60) {
 			return g_strdup_printf (_("%i minutes ago"), diff);
+		} else if (diff < 120) {
+			return g_strdup (_("1 hour ago"));
 		} else {
 			/* Hours */
 			diff = diff/60;
