@@ -48,8 +48,10 @@ G_BEGIN_DECLS
 #define TWITUX_PREFS_AUTH_USER_ID             TWITUX_PREFS_PATH "/auth/user_id"
 #define TWITUX_PREFS_AUTH_PASSWORD            TWITUX_PREFS_PATH "/auth/password"
 #define TWITUX_PREFS_AUTH_AUTO_LOGIN          TWITUX_PREFS_PATH "/auth/auto_login"
+#define TWITUX_PREFS_AUTH_SERVICE             TWITUX_PREFS_PATH "/auth/service"
 
 #define TWITUX_PREFS_TWEETS_HOME_TIMELINE     TWITUX_PREFS_PATH "/tweets/home_timeline"
+#define TWITUX_PREFS_TWEETS_DEFAULT_TIMELINE  TWITUX_PREFS_PATH "/tweets/default_timeline"
 #define TWITUX_PREFS_TWEETS_RELOAD_TIMELINES  TWITUX_PREFS_PATH "/tweets/reload_timeline"
 #define TWITUX_PREFS_TWEETS_SHOW_NAMES        TWITUX_PREFS_PATH "/tweets/names"
 

@@ -20,7 +20,12 @@
 
 #include "config.h"
 
-#include <gtk/gtkbuilder.h>
+#include <string.h>
+
+#include <glib/gi18n.h>
+#include <gtk/gtkcelllayout.h>
+#include <gtk/gtkcellrenderertext.h>
+#include <gtk/gtkcombobox.h>
 #include <gtk/gtkdialog.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtktogglebutton.h>
@@ -42,7 +47,14 @@ typedef struct {
 	GtkWidget *password;
 	GtkWidget *auto_login;
 	GtkWidget *show_password;
+	GtkWidget *service;
 } TwituxAccount;
+
+enum {
+	COL_COMBO_VISIBLE_NAME,
+	COL_COMBO_NAME,
+	COL_COMBO_COUNT
+};
 
 static void      account_response_cb          (GtkWidget         *widget,
 											   gint               response,
@@ -58,9 +70,25 @@ account_response_cb (GtkWidget     *widget,
 					 TwituxAccount *act)
 {
 	if (response == GTK_RESPONSE_OK) {
-		TwituxConf *conf;
+		TwituxConf   *conf;
+		gchar        *name;
+		GtkTreeModel *model;
+		GtkTreeIter   iter;
 
 		conf = twitux_conf_get ();
+
+		if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (act->service), &iter)) {
+			model = gtk_combo_box_get_model (GTK_COMBO_BOX (act->service));
+
+			gtk_tree_model_get (model, &iter,
+								COL_COMBO_NAME, &name,
+								-1);
+
+			twitux_conf_set_string (conf,
+									TWITUX_PREFS_AUTH_SERVICE,
+									name);
+			g_free (name);
+		}
 
 		twitux_conf_set_string (conf,
 								TWITUX_PREFS_AUTH_USER_ID,
@@ -99,6 +127,90 @@ account_show_password_cb (GtkWidget     *widget,
 	gtk_entry_set_visibility (GTK_ENTRY (act->password), visible);
 }
 
+static void
+account_services_setup (TwituxAccount *act)
+{
+	static const gchar *services[] = {
+		"twitter", N_("Twitter"),
+		"identi.ca", N_("Identi.ca"),
+		NULL
+	};
+
+	GtkListStore    *model;
+	GtkTreeIter      iter;
+	GtkCellRenderer *renderer;
+	gint             i;
+
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (act->service),
+								renderer, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (act->service),
+									renderer, "text", COL_COMBO_VISIBLE_NAME, NULL);
+
+	model = gtk_list_store_new (COL_COMBO_COUNT,
+								G_TYPE_STRING,
+								G_TYPE_STRING);
+
+	gtk_combo_box_set_model (GTK_COMBO_BOX (act->service),
+							 GTK_TREE_MODEL (model));
+
+	for (i = 0; services[i]; i += 2) {
+		gtk_list_store_append (model, &iter);
+		gtk_list_store_set (model, &iter,
+							COL_COMBO_VISIBLE_NAME, _(services[i + 1]),
+							COL_COMBO_NAME, services[i],
+							-1);
+	}
+
+	g_object_unref (model);
+}
+
+static void
+account_get_service (TwituxAccount *act)
+{
+	gchar        *service;
+	GtkTreeModel *model;
+	GtkTreeIter   iter;
+	gboolean      found;
+
+	if (!twitux_conf_get_string (twitux_conf_get (),
+								 TWITUX_PREFS_AUTH_SERVICE,
+								 &service)) {
+		return;
+	}
+
+	model = gtk_combo_box_get_model (GTK_COMBO_BOX (act->service));
+
+	found = FALSE;
+	if (service && gtk_tree_model_get_iter_first (model, &iter)) {
+		gchar *name;
+
+		do {
+			gtk_tree_model_get (model, &iter,
+								COL_COMBO_NAME, &name,
+								-1);
+
+			if (strcmp (name, service) == 0) {
+				found = TRUE;
+				gtk_combo_box_set_active_iter (GTK_COMBO_BOX (act->service), &iter);
+				break;
+			} else {
+				found = FALSE;
+			}
+			g_free (name);
+		} while (gtk_tree_model_iter_next (model, &iter));
+	}
+
+	/* Fallback to first one */
+	if (!found) {
+		if (gtk_tree_model_get_iter_first (model, &iter)) {
+			gtk_combo_box_set_active_iter (GTK_COMBO_BOX (act->service), &iter);
+		}
+	}
+	
+	g_free (service);
+}
+
 void
 twitux_account_dialog_show (GtkWindow *parent)
 {
@@ -118,12 +230,13 @@ twitux_account_dialog_show (GtkWindow *parent)
 
 	/* Get widgets */
 	ui = twitux_xml_get_file (XML_FILE,
-						"account_dialog", &act->dialog,
-						"username_entry", &act->username,
-						"password_entry", &act->password,
-						"login_checkbutton", &act->auto_login,
-						"show_password_checkbutton", &act->show_password,
-						NULL);
+							  "account_dialog", &act->dialog,
+							  "username_entry", &act->username,
+							  "password_entry", &act->password,
+							  "login_checkbutton", &act->auto_login,
+							  "show_password_checkbutton", &act->show_password,
+							  "combobox_service", &act->service,
+							  NULL);
 
 	/* Connect the signals */
 	twitux_xml_connect (ui, act,
@@ -137,6 +250,12 @@ twitux_account_dialog_show (GtkWindow *parent)
 	g_object_add_weak_pointer (G_OBJECT (act->dialog), (gpointer) &act);
 
 	gtk_window_set_transient_for (GTK_WINDOW (act->dialog), parent);
+
+	/* Set up services combobox */
+	account_services_setup (act);
+
+	/* Set the combobox value from gconf setting */
+	account_get_service (act);
 
 	/*
 	 * Check to see if the username & pasword are already in gconf,

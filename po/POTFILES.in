@@ -13,6 +13,7 @@ data/twitux.desktop.in.in
 data/twitux.schemas.in
 
 src/twitux-about.c
+src/twitux-account-dialog.c
 src/twitux-app.c
 src/twitux-hint.c
 src/twitux-main.c
