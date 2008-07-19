@@ -35,6 +35,13 @@ G_BEGIN_DECLS
 #define TWITUX_API_TIMELINE_USER	"http://twitter.com/statuses/user_timeline/%s.xml"
 #define TWITUX_API_TIMELINE_TWITUX	"http://twitter.com/statuses/user_timeline/twitux.xml"
 
+/* Identi.ca Timelines */
+#define IDENTICA_API_TIMELINE_PUBLIC	"http://identi.ca/api/statuses/public_timeline.xml"
+#define IDENTICA_API_TIMELINE_FRIENDS	"http://identi.ca/api/statuses/friends_timeline.xml"
+#define IDENTICA_API_TIMELINE_MY		"http://identi.ca/api/statuses/user_timeline.xml"
+#define IDENTICA_API_TIMELINE_USER		"http://identi.ca/api/statuses/user_timeline/%s.xml"
+#define IDENTICA_API_TIMELINE_TWITUX	"http://identi.ca/api/statuses/user_timeline/twitux.xml"
+
 /* Twitux GConf Keys */
 #define TWITUX_PREFS_PATH "/apps/twitux"
 
