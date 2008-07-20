@@ -39,7 +39,23 @@
 #define TWITUX_API_FOLLOWING_ADD	"http://twitter.com/friendships/create/%s.xml"
 #define TWITUX_API_FOLLOWING_DEL	"http://twitter.com/friendships/destroy/%s.xml"
 
-#define TWITUX_API_LOGIN		"http://twitter.com/account/verify_credentials.xml"
+#define TWITUX_API_LOGIN		    "http://twitter.com/account/verify_credentials.xml"
+
+/* Identi.ca API */
+
+#define IDENTICA_API_REPLIES		    "http://identi.ca/api/statuses/replies.xml"
+#define IDENTICA_API_DIRECT_MESSAGES	"http://identi.ca/api/direct_messages.xml"
+
+#define IDENTICA_API_POST_STATUS		"http://identi.ca/api/statuses/update.xml"
+#define IDENTICA_API_SEND_MESSAGE		"http://identi.ca/api/direct_messages/new.xml"
+
+#define IDENTICA_API_FOLLOWING		    "http://identi.ca/api/statuses/friends.xml"
+#define IDENTICA_API_FOLLOWERS		    "http://identi.ca/api/statuses/followers.xml"
+
+#define IDENTICA_API_FOLLOWING_ADD	    "http://identi.ca/api/friendships/create/%s.xml"
+#define IDENTICA_API_FOLLOWING_DEL	    "http://identi.ca/api/friendships/destroy/%s.xml"
+
+#define IDENTICA_API_LOGIN		        "http://identi.ca/api/account/verify_credentials.xml"
 
 /* Verify user credentials */
 void twitux_network_login		(void);

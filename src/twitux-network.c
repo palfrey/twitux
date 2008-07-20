@@ -220,6 +220,8 @@ twitux_network_stop	(void)
 void
 twitux_network_login (void)
 {
+	gchar *service;
+
 	twitux_debug (DEBUG_DOMAIN, "Begin login.. ");
 
 	twitux_app_set_statusbar_msg (_("Connecting..."));
@@ -230,8 +232,21 @@ twitux_network_login (void)
 					  G_CALLBACK (network_cb_on_auth),
 					  NULL);
 
-	/* Verify cedentials */
-	network_get_data (TWITUX_API_LOGIN, network_cb_on_login, NULL);
+	twitux_conf_get_string (twitux_conf_get (),
+							TWITUX_PREFS_AUTH_SERVICE,
+							&service);
+
+	if (strcmp (service, SERVICE_TWITTER) == 0) {
+		network_get_data (TWITUX_API_LOGIN, network_cb_on_login, NULL);
+	} else if (strcmp (service, SERVICE_IDENTICA) == 0) {
+		network_get_data (IDENTICA_API_LOGIN, network_cb_on_login, NULL);
+	} else {
+		twitux_debug (DEBUG_DOMAIN,
+					  "Unable to login. Unknown service: %s",
+					  service);
+	}
+
+	g_free (service);
 }
 
 
@@ -248,13 +263,30 @@ void twitux_network_logout (void)
 void
 twitux_network_post_status (const gchar *text)
 {
+	gchar *service;
 	gchar *formdata;
 
 	formdata = g_strdup_printf ("source=twitux&status=%s", text);
 
-	network_post_data (TWITUX_API_POST_STATUS,
-					   formdata,
-					   network_cb_on_post);
+	twitux_conf_get_string (twitux_conf_get (),
+							TWITUX_PREFS_AUTH_SERVICE,
+							&service);
+
+	if (strcmp (service, SERVICE_TWITTER) == 0) {
+		network_post_data (TWITUX_API_POST_STATUS,
+						   formdata,
+						   network_cb_on_post);
+	} else if (strcmp (service, SERVICE_IDENTICA) == 0) {
+		network_post_data (IDENTICA_API_POST_STATUS,
+						   formdata,
+						   network_cb_on_post);
+	} else {
+		twitux_debug (DEBUG_DOMAIN,
+					  "Unable to post message. Unknown service: %s",
+					  service);
+	}
+
+	g_free (service);
 }
 
 
@@ -263,13 +295,30 @@ void
 twitux_network_send_message (const gchar *friend,
 							 const gchar *text)
 {
+	gchar *service;
 	gchar *formdata;
 
 	formdata = g_strdup_printf ( "user=%s&text=%s", friend, text);
-	
-	network_post_data (TWITUX_API_SEND_MESSAGE,
-					   formdata,
-					   network_cb_on_message);
+
+	twitux_conf_get_string (twitux_conf_get (),
+							TWITUX_PREFS_AUTH_SERVICE,
+							&service);
+
+	if (strcmp (service, SERVICE_TWITTER) == 0) {
+		network_post_data (TWITUX_API_SEND_MESSAGE,
+						   formdata,
+						   network_cb_on_message);
+	} else if (strcmp (service, SERVICE_IDENTICA) == 0) {
+		network_post_data (IDENTICA_API_SEND_MESSAGE,
+						   formdata,
+						   network_cb_on_message);
+	} else {
+		twitux_debug (DEBUG_DOMAIN,
+					  "Unable to send message. Unknown service: %s",
+					  service);
+	}
+
+	g_free (service);
 }
 
 void
@@ -336,14 +385,30 @@ twitux_network_get_user (const gchar *username)
 GList *
 twitux_network_get_friends (void)
 {
+	gchar *service;
 	gboolean friends = TRUE;
 
 	if (user_friends)
 		return user_friends;
-	
-	network_get_data (TWITUX_API_FOLLOWING,
-					  network_cb_on_users,
-					  GINT_TO_POINTER(friends));
+
+	twitux_conf_get_string (twitux_conf_get (),
+							TWITUX_PREFS_AUTH_SERVICE,
+							&service);
+
+	if (strcmp (service, SERVICE_TWITTER) == 0) {
+		network_get_data (TWITUX_API_FOLLOWING,
+						  network_cb_on_users,
+						  GINT_TO_POINTER(friends));
+	} else if (strcmp (service, SERVICE_IDENTICA) == 0) {
+		network_get_data (IDENTICA_API_FOLLOWING,
+						  network_cb_on_users,
+						  GINT_TO_POINTER (friends));
+	} else {
+		twitux_debug (DEBUG_DOMAIN,
+					  "Unable to retrieve friends. Unknown service: %s",
+					  service);
+	}
+	g_free (service);
 	
 	return NULL;
 }
@@ -357,14 +422,30 @@ twitux_network_get_friends (void)
 GList *
 twitux_network_get_followers (void)
 {
+	gchar *service;
 	gboolean friends = FALSE;
 
 	if (user_followers)
 		return user_followers;
 
-	network_get_data (TWITUX_API_FOLLOWERS,
-					  network_cb_on_users,
-					  GINT_TO_POINTER(friends));
+	twitux_conf_get_string (twitux_conf_get (),
+							TWITUX_PREFS_AUTH_SERVICE,
+							&service);
+
+	if (strcmp (service, SERVICE_TWITTER) == 0) {
+		network_get_data (TWITUX_API_FOLLOWERS,
+						  network_cb_on_users,
+						  GINT_TO_POINTER (friends));
+	} else if (strcmp (service, SERVICE_IDENTICA) == 0) {
+		network_get_data (IDENTICA_API_FOLLOWERS,
+						  network_cb_on_users,
+						  GINT_TO_POINTER (friends));
+	} else {
+		twitux_debug (DEBUG_DOMAIN,
+					  "Unable to get followers. Unknown service: %s",
+					  service);
+	}
+	g_free (service);
 
 	return NULL;
 }
@@ -418,15 +499,30 @@ twitux_network_get_image (const gchar  *url_image,
 void
 twitux_network_add_user (const gchar *username)
 {
+	gchar *service;
 	gchar *url;
 	
 	if (G_STR_EMPTY (username))
 		return;
-	
-	url = g_strdup_printf (TWITUX_API_FOLLOWING_ADD, username);
+
+	twitux_conf_get_string (twitux_conf_get (),
+							TWITUX_PREFS_AUTH_SERVICE,
+							&service);
+
+	if (strcmp (service, SERVICE_TWITTER) == 0) {
+		url = g_strdup_printf (TWITUX_API_FOLLOWING_ADD, username);
+	} else if (strcmp (service, SERVICE_IDENTICA) == 0) {
+		url = g_strdup_printf (IDENTICA_API_FOLLOWING_ADD, username);
+	} else {
+		twitux_debug (DEBUG_DOMAIN,
+					  "Unable to add user.  Unknown service: %s",
+					  service);
+		g_free (service);
+		return;
+	}
+	g_free (service);
 
 	network_get_data (url, network_cb_on_add, NULL);
-
 	g_free (url);
 }
 
@@ -435,15 +531,30 @@ twitux_network_add_user (const gchar *username)
 void
 twitux_network_del_user (TwituxUser *user)
 {
+	gchar *service;
 	gchar *url;
 	
 	if (!user || !user->screen_name)
 		return;
-	
-	url = g_strdup_printf (TWITUX_API_FOLLOWING_DEL, user->screen_name);
+
+	twitux_conf_get_string (twitux_conf_get (),
+							TWITUX_PREFS_AUTH_SERVICE,
+							&service);
+
+	if (strcmp (service, SERVICE_TWITTER) == 0) {
+		url = g_strdup_printf (TWITUX_API_FOLLOWING_DEL, user->screen_name);
+	} else if (strcmp (service, SERVICE_IDENTICA) == 0) {
+		url = g_strdup_printf (IDENTICA_API_FOLLOWING_DEL, user->screen_name);
+	} else {
+		twitux_debug (DEBUG_DOMAIN,
+					  "Unable to delete user. Unknown service: %s",
+					  service);
+		g_free (service);
+		return;
+	}
+	g_free (service);
 
 	network_get_data (url, network_cb_on_del, user);
-
 	g_free (url);
 }
 

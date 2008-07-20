@@ -166,7 +166,7 @@ preferences_setup_widgets (TwituxPrefs *prefs)
 									prefs->treeview_spell_checker);
 
 	preferences_hookup_string_combo (prefs,
-									 TWITUX_PREFS_TWEETS_HOME_TIMELINE,
+									 TWITUX_PREFS_TWEETS_DEFAULT_TIMELINE,
 									 prefs->combo_default_timeline);
 
 	preferences_hookup_int_combo (prefs,
@@ -424,10 +424,10 @@ static void
 preferences_timeline_setup (TwituxPrefs *prefs)
 {
 	static const gchar *timelines[] = {
-		TWITUX_API_TIMELINE_PUBLIC, N_("Public"),
-		TWITUX_API_TIMELINE_FRIENDS, N_("Friends"),
-		TWITUX_API_TIMELINE_MY, N_("Mine"),
-		TWITUX_API_TIMELINE_TWITUX, N_("Twitux"),
+		VIEW_PUBLIC, N_("Public"),
+		VIEW_FRIENDS, N_("Friends"),
+		VIEW_MINE, N_("Mine"),
+		VIEW_TWITUX, N_("Twitux"),
 		NULL
 	};
 

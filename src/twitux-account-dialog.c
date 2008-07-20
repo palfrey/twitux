@@ -131,8 +131,8 @@ static void
 account_services_setup (TwituxAccount *act)
 {
 	static const gchar *services[] = {
-		"twitter", N_("Twitter"),
-		"identi.ca", N_("Identi.ca"),
+		SERVICE_TWITTER, N_("Twitter"),
+		SERVICE_IDENTICA, N_("Identi.ca"),
 		NULL
 	};
 

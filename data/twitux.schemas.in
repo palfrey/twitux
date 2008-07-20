@@ -69,7 +69,7 @@
     	<default>friend</default>
     	<locale name="C">
     	   <short>User's default timeline</short>
-    	   <long>User's default timeline. Allowed values are "friend" and "public"</long>
+    	   <long>User's default timeline. Allowed values are "friend", "public", "mine", and "twitux"</long>
     	</locale>
     </schema>
     

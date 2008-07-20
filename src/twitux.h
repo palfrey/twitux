@@ -28,6 +28,16 @@ G_BEGIN_DECLS
 
 #define G_STR_EMPTY(x) ((x) == NULL || (x)[0] == '\0')
 
+/* Micro-blogging services */
+#define SERVICE_TWITTER          "twitter"
+#define SERVICE_IDENTICA         "identi.ca"
+
+/* Timeline views */
+#define VIEW_FRIENDS             "friend"
+#define VIEW_PUBLIC              "public"
+#define VIEW_MINE                "mine"
+#define VIEW_TWITUX              "twitux"
+
 /* Twitter Timelines */
 #define TWITUX_API_TIMELINE_PUBLIC	"http://twitter.com/statuses/public_timeline.xml"
 #define TWITUX_API_TIMELINE_FRIENDS	"http://twitter.com/statuses/friends_timeline.xml"
@@ -50,7 +60,6 @@ G_BEGIN_DECLS
 #define TWITUX_PREFS_AUTH_AUTO_LOGIN          TWITUX_PREFS_PATH "/auth/auto_login"
 #define TWITUX_PREFS_AUTH_SERVICE             TWITUX_PREFS_PATH "/auth/service"
 
-#define TWITUX_PREFS_TWEETS_HOME_TIMELINE     TWITUX_PREFS_PATH "/tweets/home_timeline"
 #define TWITUX_PREFS_TWEETS_DEFAULT_TIMELINE  TWITUX_PREFS_PATH "/tweets/default_timeline"
 #define TWITUX_PREFS_TWEETS_RELOAD_TIMELINES  TWITUX_PREFS_PATH "/tweets/reload_timeline"
 #define TWITUX_PREFS_TWEETS_SHOW_NAMES        TWITUX_PREFS_PATH "/tweets/names"

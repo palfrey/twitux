@@ -1,3 +1,12 @@
+2008-07-20  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/twitux.schemas.in:
+	* src/twitux.h:
+	* src/twitux-account-dialog.c:
+	* src/twitux-app.c:
+	* src/twitux-network.[ch]:
+	* src/twitux-preferences.c: Add support to use identi.ca api.
+
 2008-07-19  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* data/twitux.schemas.in:
