@@ -1,24 +1,3 @@
-2008-07-20  Brian Pepple  <bpepple@fedoraproject.org>
-
-	* data/twitux.schemas.in:
-	* src/twitux.h:
-	* src/twitux-account-dialog.c:
-	* src/twitux-app.c:
-	* src/twitux-network.[ch]:
-	* src/twitux-preferences.c: Add support to use identi.ca api.
-
-2008-07-19  Brian Pepple  <bpepple@fedoraproject.org>
-
-	* data/twitux.schemas.in:
-	* src/twitux.h:
-	* src/twitux-account-dialog.c: Add service combo to account dialog.
-
-2008-07-18  Brian Pepple  <bpepple@fedoraproject.org>
-
-	* configure.in:
-	* data/account_dlg.xml:
-	* src/twitux.h: Start to add support for identi.ca.
-
 2008-05-10  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-parser.c (parser_convert_time): Fix time issue

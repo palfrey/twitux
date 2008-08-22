@@ -38,18 +38,6 @@
     </schema>
 
     <schema>
-    	<key>/schemas/apps/twitux/auth/service</key>
-    	<applyto>/apps/twitux/auth/service</applyto>
-    	<owner>twitux</owner>
-    	<type>string</type>
-    	<default>twitter</default>
-    	<locale name="C">
-    	   <short>Micro-Blogging service to use.</short>
-    	   <long>The Micro-Blogging service to use. Allowed values are "twitter" and "identi.ca"</long>
-    	</locale>
-    </schema>
-
-    <schema>
     	<key>/schemas/apps/twitux/tweets/names</key>
     	<applyto>/apps/twitux/tweets/names</applyto>
     	<owner>twitux</owner>
@@ -62,14 +50,14 @@
     </schema>
 
     <schema>
-    	<key>/schemas/apps/twitux/tweets/default_timeline</key>
-    	<applyto>/apps/twitux/tweets/default_timeline</applyto>
+    	<key>/schemas/apps/twitux/tweets/home_timeline</key>
+    	<applyto>/apps/twitux/tweets/home_timeline</applyto>
     	<owner>twitux</owner>
     	<type>string</type>
-    	<default>friend</default>
+    	<default>http://twitter.com/statuses/friends_timeline.xml</default>
     	<locale name="C">
-    	   <short>User's default timeline</short>
-    	   <long>User's default timeline. Allowed values are "friend", "public", "mine", and "twitux"</long>
+    	   <short>User's home timeline</short>
+    	   <long>User's home timeline.</long>
     	</locale>
     </schema>
     

@@ -69,9 +69,6 @@ struct _TwituxAppPriv {
 	TwituxTweetList   *listview;
 	GtkWidget         *statusbar;
 
-	/* Micro-Blogging service used */
-	gchar             *service;
-
 	/*
 	 * Widgets that are enabled when
 	 * we are connected/disconnected
@@ -206,7 +203,6 @@ twitux_app_init (TwituxApp *singleton_app)
 
 	priv = GET_PRIV (app);
 
-	priv->service = NULL;
 	priv->widgets_connected = NULL;
 	priv->widgets_disconnected = NULL;
 	priv->group = NULL;
@@ -223,10 +219,6 @@ app_finalize (GObject *object)
 
 	if (priv->size_timeout_id) {
 		g_source_remove (priv->size_timeout_id);
-	}
-
-	if (priv->service) {
-		g_free (priv->service);
 	}
 
 	g_list_free (priv->widgets_connected);
@@ -294,7 +286,7 @@ app_setup (void)
 	 * to be done before connecting signals.
 	 */
 	twitux_conf_get_string (conf,
-							TWITUX_PREFS_TWEETS_DEFAULT_TIMELINE,
+							TWITUX_PREFS_TWEETS_HOME_TIMELINE,
 							&timeline);
 	app_set_default_timeline (app, timeline);
 	g_free (timeline);
@@ -541,17 +533,8 @@ static void
 app_disconnect_cb (GtkWidget *widget,
 				   TwituxApp *app)
 {
-	TwituxAppPriv *priv;
-
-	priv = GET_PRIV (app);
-
 	twitux_network_logout ();
 	twitux_app_state_on_connection (FALSE);
-
-	if (priv->service) {
-		g_free (priv->service);
-		priv->service = NULL;
-	}
 }
 
 static void
@@ -605,16 +588,8 @@ app_public_timeline_cb (GtkRadioAction *action,
 
 	priv = GET_PRIV (app);
 
-	if (priv->menu_public == current) {
-		if (strcmp (priv->service, SERVICE_TWITTER) == 0) {
-			twitux_network_get_timeline (TWITUX_API_TIMELINE_PUBLIC);
-		} else if (strcmp (priv->service, SERVICE_IDENTICA) == 0) {
-			twitux_network_get_timeline (IDENTICA_API_TIMELINE_PUBLIC);
-		} else {
-			twitux_debug (DEBUG_DOMAIN_SETUP, "Unknown micro-blogging service: %s",
-						  priv->service);
-		}
-	}
+	if (priv->menu_public == current)
+		twitux_network_get_timeline (TWITUX_API_TIMELINE_PUBLIC);
 }
 
 static void
@@ -626,16 +601,8 @@ app_friends_timeline_cb (GtkRadioAction *action,
 
 	priv = GET_PRIV (app);
 
-	if (priv->menu_friends == current) {
-		if (strcmp (priv->service, SERVICE_TWITTER) == 0) {
-			twitux_network_get_timeline (TWITUX_API_TIMELINE_FRIENDS);
-		} else if (strcmp (priv->service, SERVICE_IDENTICA) == 0) {
-			twitux_network_get_timeline (IDENTICA_API_TIMELINE_FRIENDS);
-		} else {
-			twitux_debug (DEBUG_DOMAIN_SETUP, "Unknown micro-blogging service: %s",
-						  priv->service);
-		}
-	}
+	if (priv->menu_friends == current) 
+		twitux_network_get_timeline (TWITUX_API_TIMELINE_FRIENDS);
 }
 
 static void
@@ -686,16 +653,8 @@ app_twitux_timeline_cb (GtkRadioAction *action,
 
 	priv = GET_PRIV (app);
 
-	if (priv->menu_twitux == current) {
-		if (strcmp (priv->service, SERVICE_TWITTER) == 0) {
-			twitux_network_get_timeline (TWITUX_API_TIMELINE_TWITUX);
-		} else if (strcmp (priv->service, SERVICE_IDENTICA) == 0) {
-			twitux_network_get_timeline (IDENTICA_API_TIMELINE_TWITUX);
-		} else {
-			twitux_debug (DEBUG_DOMAIN_SETUP, "Unknown micro-blogging service: %s",
-						  priv->service);
-		}
-	}
+	if (priv->menu_twitux == current)
+		twitux_network_get_timeline (TWITUX_API_TIMELINE_TWITUX);
 }
 
 static void
@@ -919,18 +878,7 @@ app_login (TwituxApp *a)
 	
 	priv = GET_PRIV (a);
 
-	if (priv->service) {
-		g_free (priv->service);
-		priv->service = NULL;
-	}
-
 	conf = twitux_conf_get ();
-
-	/* Get the micro-blogging service */
-	twitux_conf_get_string (conf,
-							TWITUX_PREFS_AUTH_SERVICE,
-							&priv->service);
-
 	twitux_conf_get_string (conf,
 							TWITUX_PREFS_AUTH_USER_ID,
 							&username);
@@ -949,7 +897,6 @@ app_login (TwituxApp *a)
 							&password);
 #endif
 
-	/* Micro-blogging should be defined, so for now let's not check for it */
 	if (G_STR_EMPTY (username) || G_STR_EMPTY (password)) {
 		twitux_account_dialog_show (GTK_WINDOW (priv->window));
 	} else {
@@ -970,21 +917,21 @@ app_set_default_timeline (TwituxApp *app, gchar *timeline)
 {
 	TwituxAppPriv *priv;
 
+	priv = GET_PRIV (app);
+
 	/* This shouldn't happen, but just in case */
 	if (G_STR_EMPTY (timeline)) {
-		g_warning ("Default timeline in not set\n");
+		g_warning ("Default timeline in not set");
 		return;
 	}
 
-	priv = GET_PRIV (app);
-
-	if (strcmp (timeline, VIEW_FRIENDS) == 0) {
+	if (strcmp (timeline, TWITUX_API_TIMELINE_FRIENDS) == 0) {
 		gtk_radio_action_set_current_value (priv->menu_friends,	1);
-	} else if (strcmp (timeline, VIEW_PUBLIC) == 0) {
+	} else if (strcmp (timeline, TWITUX_API_TIMELINE_PUBLIC) == 0) {
 		gtk_radio_action_set_current_value (priv->menu_public, 1);
-	} else if (strcmp (timeline, VIEW_MINE) == 0) {
+	} else if (strcmp (timeline, TWITUX_API_TIMELINE_MY) == 0) {
 		gtk_radio_action_set_current_value (priv->menu_mine, 1);
-	} else if (strcmp (timeline, VIEW_TWITUX) == 0) {
+	} else if (strcmp (timeline, TWITUX_API_TIMELINE_TWITUX) == 0) {
 		gtk_radio_action_set_current_value (priv->menu_twitux, 1);
 	} else {
 		/* Let's fallback to friends timeline */
@@ -1001,25 +948,16 @@ app_retrieve_default_timeline (void)
 
 	priv = GET_PRIV (app);
 
-	if (!twitux_conf_get_string (twitux_conf_get (),
-								 TWITUX_PREFS_TWEETS_DEFAULT_TIMELINE,
-								 &timeline)) {
-		return;
+	twitux_conf_get_string (twitux_conf_get (),
+							TWITUX_PREFS_TWEETS_HOME_TIMELINE,
+							&timeline);
+
+	if (G_STR_EMPTY (timeline)){
+		timeline = g_strdup (TWITUX_API_TIMELINE_FRIENDS);
+		app_set_default_timeline (app, TWITUX_API_TIMELINE_FRIENDS);
 	}
 
-	if (strcmp (priv->service, SERVICE_TWITTER) == 0) {
-		if (strcmp (timeline, VIEW_FRIENDS) == 0) {
-			twitux_network_get_timeline (TWITUX_API_TIMELINE_FRIENDS);
-		} else if (strcmp (timeline, VIEW_PUBLIC) == 0) {
-			twitux_network_get_timeline (TWITUX_API_TIMELINE_PUBLIC);
-		}
-	} else if (strcmp (priv->service, SERVICE_IDENTICA) == 0) {
-		if (strcmp (timeline, VIEW_FRIENDS) == 0) {
-			twitux_network_get_timeline (IDENTICA_API_TIMELINE_FRIENDS);
-		} else if (strcmp (timeline, VIEW_PUBLIC) == 0) {
-			twitux_network_get_timeline (IDENTICA_API_TIMELINE_PUBLIC);
-		}
-	}
+	twitux_network_get_timeline (timeline);
 	g_free (timeline);
 }
 
