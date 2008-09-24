@@ -192,6 +192,8 @@ message_setup (GtkWindow  *parent)
 	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (priv->friends_combo),
 									renderer, "text", 0, NULL);
 
+	gtk_widget_grab_focus(GTK_WIDGET (priv->textview));
+	
 	/* Show the dialog */
 	gtk_widget_show (GTK_WIDGET (priv->dialog));
 }
