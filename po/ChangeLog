@@ -1,3 +1,7 @@
+2008-09-24  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* ja.po: added new translation.
+
 2008-04-23  Daniel Morales  <daniminas@gmail.com>
 
 	* POTFILES.IN: Add data/lists_dlg.xml and fix
