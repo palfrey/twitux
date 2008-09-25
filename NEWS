@@ -1,5 +1,6 @@
 NEW in 0.xx:
 ==============
+- Fixed #2122886, Fix date parsing on other than C/POSIX locale (Hiroshi Miura)
 - Fixed #2083410, have textview in send message dialog get focus.
 - Fixed #1961570, time issue w/ "1 hour" & "1 minute". (Derick Rethans)
 - add Japanese translation (Hiroshi Miura)

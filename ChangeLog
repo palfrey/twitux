@@ -1,3 +1,8 @@
+2008-09-25  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-parser.c: Fix date parsing on 
+	other than C/POSIX locale. (#2122886)
+
 2008-09-24  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-send-message-dialog.c (message_setup): have
