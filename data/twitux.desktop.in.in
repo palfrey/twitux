@@ -1,6 +1,5 @@
 [Desktop Entry]
 Version=1.0
-Encoding=UTF-8
 _Name=Twitux
 _Comment=A Twitter client
 Exec=twitux
