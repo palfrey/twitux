@@ -40,7 +40,6 @@ typedef struct {
 	GtkWidget *dialog;
 	GtkWidget *username;
 	GtkWidget *password;
-	GtkWidget *auto_login;
 	GtkWidget *show_password;
 } TwituxAccount;
 
@@ -74,10 +73,6 @@ account_response_cb (GtkWidget     *widget,
 								TWITUX_PREFS_AUTH_PASSWORD,
 								gtk_entry_get_text (GTK_ENTRY (act->password)));
 #endif
-
-		twitux_conf_set_bool (conf,
-							  TWITUX_PREFS_AUTH_AUTO_LOGIN,
-							  gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (act->auto_login)));
 	}
 	gtk_widget_destroy (widget);
 }
@@ -107,7 +102,6 @@ twitux_account_dialog_show (GtkWindow *parent)
 	TwituxConf           *conf;
 	gchar                *username;
 	gchar                *password;
-	gboolean              login;
 
 	if (act) {
 		gtk_window_present (GTK_WINDOW (act->dialog));
@@ -121,7 +115,6 @@ twitux_account_dialog_show (GtkWindow *parent)
 						"account_dialog", &act->dialog,
 						"username_entry", &act->username,
 						"password_entry", &act->password,
-						"login_checkbutton", &act->auto_login,
 						"show_password_checkbutton", &act->show_password,
 						NULL);
 
@@ -167,12 +160,6 @@ twitux_account_dialog_show (GtkWindow *parent)
 	gtk_entry_set_text (GTK_ENTRY (act->password), password ? password : "");
 	g_free (username);
 	g_free (password);
-
-	twitux_conf_get_bool (conf,
-						  TWITUX_PREFS_AUTH_AUTO_LOGIN,
-						  &login);
-
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (act->auto_login), login);
 
 	/* Ok, let's go ahead and show it */
 	gtk_widget_show (act->dialog);

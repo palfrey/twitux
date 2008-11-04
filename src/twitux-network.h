@@ -42,7 +42,8 @@
 #define TWITUX_API_LOGIN		"http://twitter.com/account/verify_credentials.xml"
 
 /* Verify user credentials */
-void twitux_network_login		(void);
+void twitux_network_login		(const char *username, 
+								 const char *password);
 
 /* Logout current user */
 void twitux_network_logout 		(void);

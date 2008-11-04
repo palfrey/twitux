@@ -100,6 +100,8 @@ static GList				*user_followers = NULL;
 static gboolean				 processing = FALSE;
 static gchar				*current_timeline = NULL;
 static guint				 timeout_id;
+static gchar                *global_username = NULL;
+static gchar                *global_password = NULL;
 
 /* This function must be called at startup */
 void
@@ -199,8 +201,10 @@ twitux_network_close (void)
 
 	g_object_unref (soup_connection);
 
-	if (current_timeline)
+	if (current_timeline) {
 		g_free (current_timeline);
+		current_timeline = NULL;
+	}
 
 	twitux_debug (DEBUG_DOMAIN, "Libsoup closed");
 }
@@ -218,9 +222,14 @@ twitux_network_stop	(void)
 
 /* Login in Twitter */
 void
-twitux_network_login (void)
+twitux_network_login (const char *username, const char *password)
 {
 	twitux_debug (DEBUG_DOMAIN, "Begin login.. ");
+
+	g_free (global_username);
+	global_username = g_strdup (username);
+	g_free (global_password);
+	global_password = g_strdup (password);
 
 	twitux_app_set_statusbar_msg (_("Connecting..."));
 
@@ -591,41 +600,15 @@ network_cb_on_auth (SoupSession  *session,
 					gboolean      retrying,
 					gpointer      data)
 {
-	TwituxConf *conf;
-	gchar      *user_id;
-	gchar      *user_passwd;
-
-	conf = twitux_conf_get ();
-
-	twitux_conf_get_string (conf,
-							TWITUX_PREFS_AUTH_USER_ID,
-							&user_id);
 	/* Don't bother to continue if there is no user_id */
-	if (G_STR_EMPTY (user_id)) {
+	if (G_STR_EMPTY (global_username)) {
 		return;
 	}
 
-#ifdef HAVE_GNOME_KEYRING
-	if (!twitux_keyring_get_password (user_id, &user_passwd))
-	{
-		twitux_app_set_statusbar_msg (
-					_("Could not retrieve password from keyring."));						 	
-	}
-#else
-	twitux_conf_get_string (conf,
-							TWITUX_PREFS_AUTH_PASSWORD,
-							&user_passwd);
-#endif
-
 	/* verify that the password has been set */
-	if (!G_STR_EMPTY (user_passwd))
-		soup_auth_authenticate (auth, user_id, user_passwd);
-	
-	if (user_id)
-		g_free (user_id);
-
-	if (user_passwd)
-		g_free (user_passwd);
+	if (!G_STR_EMPTY (global_password))
+		soup_auth_authenticate (auth, global_username, 
+								global_password);
 }
 
 

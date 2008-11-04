@@ -1,3 +1,13 @@
+2008-11-03  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* data/account_dlg.xml:
+	* data/prefs_dlg.xml:
+	* src/twitux-account-dialog.c:
+	* src/twitux-app.c:
+	* src/twitux-network.[ch]:
+	* src/twitux-preferences.c: Add suport for Online Accounts
+	Service (Marina Zhurakhinskaya, Colin Walters)
+
 2008-09-25  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-parser.c: Fix date parsing on 
