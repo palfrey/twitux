@@ -1,6 +1,7 @@
-NEW in 0.xx:
+NEW in 0.65:
 ==============
 - Add support for Online Accounts Service (Marina Zhurakhinskaya, Colin Walters)
+  * More info about OAS can be found here: https://fedoraproject.org/wiki/Features/OnlineAccountsService
 - Fixed #2122886, Fix date parsing on other than C/POSIX locale (Hiroshi Miura)
 - Fixed #2083410, have textview in send message dialog get focus.
 - Fixed #1961570, time issue w/ "1 hour" & "1 minute". (Derick Rethans)
