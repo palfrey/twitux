@@ -303,16 +303,20 @@ reconnect (TwituxApp *app)
 }
 
 static gboolean
-update_account(DBusGProxy *account,
-               TwituxApp *app,
-               GError **error)
+update_account (DBusGProxy  *account,
+				TwituxApp   *app,
+				GError     **error)
 {
 	TwituxAppPriv *priv;
+	gchar         *username;
+	gchar         *password;
+
+
 	priv = GET_PRIV (app);
 
-    char *username, *password;
     /* the account is changing */
-    if (priv->account && strcmp (g_strdup (dbus_g_proxy_get_path (account)), g_strdup (dbus_g_proxy_get_path (priv->account))) != 0) {
+    if (priv->account && strcmp (g_strdup (dbus_g_proxy_get_path (account)),
+								 g_strdup (dbus_g_proxy_get_path (priv->account))) != 0) {
 	    g_object_unref (priv->account);
         priv->account = NULL;
     }
@@ -349,6 +353,7 @@ update_account(DBusGProxy *account,
 							&password,
 							G_TYPE_INVALID))
         return FALSE;
+
     priv->username = username;
 	priv->password = password;
     return TRUE;
@@ -356,15 +361,17 @@ update_account(DBusGProxy *account,
 
 static void
 on_account_changed (DBusGProxy *account,
-					TwituxApp *app)
+					TwituxApp  *app)
 {
-	GError *error = NULL;
 	TwituxAppPriv *priv;
+	GError        *error = NULL;
+
 	priv = GET_PRIV (app);
 
     /* we shouldn't be getting a signal about an account that is no longer current, 
        but let's do these checks just in case */
-    if (!priv->account || strcmp (g_strdup (dbus_g_proxy_get_path (account)), g_strdup (dbus_g_proxy_get_path (priv->account))) != 0)
+    if (!priv->account || strcmp (g_strdup (dbus_g_proxy_get_path (account)),
+								  g_strdup (dbus_g_proxy_get_path (priv->account))) != 0)
 		return;
 
     if (!update_account(account, app, &error)) {
@@ -378,18 +385,18 @@ on_account_changed (DBusGProxy *account,
 static void
 on_account_disabled (DBusGProxy *accounts,
 					 const char *opath,
-					 TwituxApp *app)
+					 TwituxApp  *app)
 {
-	GError *error = NULL;
 	TwituxAppPriv *priv;
+	GError        *error = NULL;
+
 	priv = GET_PRIV (app);
 
 	if (!priv->account || strcmp (opath, g_strdup (dbus_g_proxy_get_path (priv->account))) != 0)
 		return;
 
 	if (!request_accounts (app, &error)) {
-		g_warning ("Failed to get accounts: %s",
-				   error->message);
+		g_warning ("Failed to get accounts: %s", error->message);
 		g_clear_error (&error);
 		return;
 	}
@@ -400,7 +407,7 @@ on_account_disabled (DBusGProxy *accounts,
 static void
 on_account_enabled (DBusGProxy *accounts,
 					const char *opath,
-					TwituxApp *app)
+					TwituxApp  *app)
 {
 	GError *error = NULL;
 	TwituxAppPriv *priv;
@@ -441,9 +448,9 @@ app_setup (void)
 	gboolean          login;
 	gboolean		  hidden;
 
-    GError *error = NULL;
-    guint32 result;
-    DBusGProxy *session_bus;
+    GError           *error = NULL;
+    guint32           result;
+    DBusGProxy       *session_bus;
 
 	twitux_debug (DEBUG_DOMAIN_SETUP, "Beginning....");
 
@@ -526,14 +533,16 @@ app_setup (void)
                                              "org.freedesktop.DBus",
                                              "/org/freedesktop/DBus",
                                              "org.freedesktop.DBus");
+
     if (dbus_g_proxy_call (session_bus, "StartServiceByName", &error,
                            G_TYPE_STRING, "org.gnome.OnlineAccounts", 
                            G_TYPE_UINT, 0, G_TYPE_INVALID, 
                            G_TYPE_UINT, &result, G_TYPE_INVALID)) {
-	    priv->accounts_service = dbus_g_proxy_new_for_name (dbus_g_bus_get (DBUS_BUS_SESSION, NULL),
-													        "org.gnome.OnlineAccounts",
-													        "/onlineaccounts",
-													        "org.gnome.OnlineAccounts");
+	    priv->accounts_service =
+			dbus_g_proxy_new_for_name (dbus_g_bus_get (DBUS_BUS_SESSION, NULL),
+									   "org.gnome.OnlineAccounts",
+									   "/onlineaccounts",
+									   "org.gnome.OnlineAccounts");
     }
 
 	if (priv->accounts_service) {
