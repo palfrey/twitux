@@ -1121,22 +1121,29 @@ app_window_configure_event_cb (GtkWidget         *widget,
 }
 
 static gboolean
-request_accounts (TwituxApp *app, GError **error)
+request_accounts (TwituxApp  *app,
+				  GError    **error)
 {
-	TwituxAppPriv *priv;
-	guint i;
-	GPtrArray *accounts = NULL;
-	char ** accountset;
-    gboolean succeeded = TRUE;
+	TwituxAppPriv  *priv;
+	guint           i;
+	GPtrArray      *accounts = NULL;
+	char          **accountset;
+    gboolean        succeeded = TRUE;
 
 	priv = GET_PRIV (app);
 
 	accountset = get_account_set_request (app);
 
-	g_free (priv->username);
+	if (!G_STR_EMPTY (priv->username)){
+		g_free (priv->username);
+	}
 	priv->username = NULL;
-	g_free (priv->password);
+
+	if (!G_STR_EMPTY (priv->password)) {
+		g_free (priv->password);
+	}
 	priv->password = NULL;
+
     if (priv->account) 
         g_object_unref (priv->account);
     priv->account = NULL;
@@ -1162,8 +1169,10 @@ request_accounts (TwituxApp *app, GError **error)
 static void
 request_username_password (TwituxApp *a)
 {
-	TwituxAppPriv *priv = GET_PRIV (a);
-	TwituxConf *conf;
+	TwituxAppPriv *priv;
+	TwituxConf    *conf;
+
+	priv = GET_PRIV (a);
 
 	conf = twitux_conf_get ();
 
