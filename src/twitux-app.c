@@ -181,6 +181,8 @@ static void     app_twitux_view_friends_cb       (GtkAction             *action,
 												  TwituxApp             *app);
 static void     app_about_cb                     (GtkWidget             *window,
 												  TwituxApp             *app);
+static void     app_help_contents_cb             (GtkWidget             *widget,
+												  TwituxApp             *app);
 static void     app_status_icon_activate_cb      (GtkStatusIcon         *status_icon,
 												  TwituxApp             *app);
 static void     app_status_icon_popup_menu_cb    (GtkStatusIcon         *status_icon,
@@ -511,6 +513,7 @@ app_setup (void)
 						"view_direct_messages", "changed", app_view_direct_messages_cb,
 						"view_direct_replies", "changed", app_view_direct_replies_cb,
 						"view_twitux_timeline", "changed", app_twitux_timeline_cb,
+						"help_contents", "activate", app_help_contents_cb,
 						"view_friends", "activate", app_twitux_view_friends_cb,
 						"help_about", "activate", app_about_cb,
 						NULL);
@@ -963,6 +966,17 @@ app_about_cb (GtkWidget *widget,
 	priv = GET_PRIV (app);
 
 	twitux_about_dialog_new (GTK_WINDOW (priv->window));
+}
+
+static void
+app_help_contents_cb (GtkWidget *widget,
+					  TwituxApp *app)
+{
+	TwituxAppPriv *priv;
+
+	priv = GET_PRIV (app);
+
+	twitux_help_show (GTK_WINDOW (priv->window));
 }
 
 static void

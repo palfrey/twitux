@@ -1,9 +1,10 @@
-AC_INIT([Twitux], [0.65], [http://sourceforge.net/tracker/?func=add&group_id=198704&atid=966542], [twitux])
+AC_INIT([Twitux], [0.66], [http://sourceforge.net/tracker/?func=add&group_id=198704&atid=966542], [twitux])
 AC_PREREQ(2.59)
 AC_COPYRIGHT([Copyright (C) 2007-2008 Daniel Morales])
 
 AC_CONFIG_SRCDIR([src/twitux-main.c])
 AC_CONFIG_HEADERS(config.h)
+AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-bzip2])
 
 AM_MAINTAINER_MODE
@@ -19,6 +20,7 @@ AC_HEADER_STDC
 AC_PATH_PROG(GCONFTOOL, gconftool-2)
 AM_GCONF_SOURCE_2
 
+GNOME_DOC_INIT
 IT_PROG_INTLTOOL([0.35.0])
 
 GNOME_COMPILE_WARNINGS([maximum])
@@ -34,7 +36,7 @@ dnl -----------------------------------------------------------
 
 LIBXML_REQUIRED=2.6.16
 GLIB_REQUIRED=2.15.0
-GTK_REQUIRED=2.12.0
+GTK_REQUIRED=2.14.0
 GCONF_REQUIRED=1.2.0
 LIBGNOME_REQUIRED=2.0.0
 LIBGIO_REQUIRED=2.15.5
@@ -187,6 +189,7 @@ AC_OUTPUT([
 Makefile
 data/Makefile
 data/twitux.desktop.in
+help/Makefile
 src/Makefile
 libtwitux/Makefile
 po/Makefile.in

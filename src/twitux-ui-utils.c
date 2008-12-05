@@ -20,8 +20,9 @@
 
 #include <config.h>
 
-#include <gtk/gtkmain.h>
-#include <gtk/gtkwindow.h>
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
+#include <gtk/gtkmessagedialog.h>
 
 #include "twitux-ui-utils.h"
 
@@ -87,5 +88,38 @@ twitux_window_present (GtkWindow *window,
 		gtk_window_present_with_time (window, timestamp);
 	} else {
 		gtk_window_present (window);
+	}
+}
+
+void
+twitux_help_show (GtkWindow *parent)
+{
+	GdkScreen *screen;
+	GError    *err = NULL;
+
+	screen = gtk_widget_get_screen (GTK_WIDGET (parent));
+
+	gtk_show_uri (screen,
+				  "ghelp:twitux",
+				  gtk_get_current_event_time (),
+				  &err);
+
+	if (err != NULL) {
+		GtkWidget *w;
+
+		w =	gtk_message_dialog_new (GTK_WINDOW (parent),
+									GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+									GTK_MESSAGE_ERROR,
+									GTK_BUTTONS_CLOSE,
+									_("Unable to open help file"));
+
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (w),
+												  "%s", err->message);
+
+		g_signal_connect (w, "response",
+						  G_CALLBACK (gtk_widget_destroy),
+						  NULL);
+		gtk_window_present (GTK_WINDOW (w));
+		g_error_free (err);
 	}
 }

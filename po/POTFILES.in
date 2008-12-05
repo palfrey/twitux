@@ -22,4 +22,5 @@ src/twitux-preferences.c
 src/twitux-send-message-dialog.c
 src/twitux-spell.c
 src/twitux-spell-dialog.c
+src/twitux-ui-utils.c
 
