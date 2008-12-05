@@ -1036,26 +1036,47 @@ app_status_icon_popup_menu_cb (GtkStatusIcon *status_icon,
 static void
 app_status_icon_create_menu (void)
 {
-	TwituxAppPriv *priv;
-	GtkBuilder    *ui;
+	TwituxAppPriv   *priv;
+	GtkAction       *new_msg;
+	GtkAction       *quit;
+	GtkWidget       *w;
 
 	priv = GET_PRIV (app);
 
-	/* Get widgets */
-	ui =
-		twitux_xml_get_file ("tray_menu.xml",
-							 "tray_menu", &priv->popup_menu,
-							 "tray_show_app", &priv->popup_menu_show_app,
-							 NULL);
+	priv->popup_menu_show_app = gtk_toggle_action_new ("tray_show_app",
+													   _("_Show Twitux"),
+													   NULL,
+													   NULL);
+	g_signal_connect (G_OBJECT (priv->popup_menu_show_app),
+					  "toggled", G_CALLBACK (app_show_hide_cb),
+					  app);
 
-	/* Connect the signals */
-	twitux_xml_connect (ui, app,
-						"tray_new_message", "activate", app_new_message_cb,
-						"tray_quit", "activate", app_quit_cb,
-						"tray_show_app", "toggled", app_show_hide_cb,
-						NULL);
+	new_msg = gtk_action_new ("tray_new_message",
+							  _("_New Message"),
+							  NULL,
+							  "gtk-new");
+	g_signal_connect (G_OBJECT (new_msg),
+					  "activate", G_CALLBACK (app_new_message_cb),
+					  app);
 
-	g_object_unref (ui);
+	quit = gtk_action_new ("tray_quit",
+						   _("_Quit"),
+						   NULL,
+						   "gtk-quit");
+	g_signal_connect (G_OBJECT (quit),
+					  "activate", G_CALLBACK (app_quit_cb),
+					  app);
+
+	priv->popup_menu = gtk_menu_new ();
+	w = gtk_action_create_menu_item (GTK_ACTION (priv->popup_menu_show_app));
+	gtk_menu_shell_append (GTK_MENU_SHELL (priv->popup_menu), w);
+	w = gtk_separator_menu_item_new ();
+	gtk_widget_show (w);
+	gtk_menu_shell_append (GTK_MENU_SHELL (priv->popup_menu), w);
+	w = gtk_action_create_menu_item (new_msg);
+	gtk_menu_shell_append (GTK_MENU_SHELL (priv->popup_menu), w);
+	w = gtk_action_create_menu_item (quit);
+	gtk_menu_shell_append (GTK_MENU_SHELL (priv->popup_menu), w);
 }
 
 static void

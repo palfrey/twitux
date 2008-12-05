@@ -1,5 +1,12 @@
 2008-12-04  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* data/Makefile.am (glade_DATA):
+	* src/twitux-app.c (app_status_icon_create_menu): 
+	Drop tray_menu.xml, and manually create the notification
+	area popup menu.
+	
+2008-12-04  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* Makefile.am (SUBDIRS): 
 	* data/glade/main_window.glade:
 	* data/main_window.xml:
