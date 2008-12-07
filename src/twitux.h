@@ -53,6 +53,7 @@ G_BEGIN_DECLS
 #define TWITUX_PREFS_UI_MAIN_WINDOW_HIDDEN	  TWITUX_PREFS_PATH "/ui/main_window_hidden"
 #define TWITUX_PREFS_UI_EXPAND_MESSAGES       TWITUX_PREFS_PATH "/ui/expand_messages"
 #define TWITUX_PREFS_UI_NOTIFICATION          TWITUX_PREFS_PATH "/ui/notify"
+#define TWITUX_PREFS_UI_SOUND                 TWITUX_PREFS_PATH "/ui/sound"
 #define TWITUX_PREFS_UI_SPELL_LANGUAGES       TWITUX_PREFS_PATH "/ui/spell_checker_languages"
 #define TWITUX_PREFS_UI_SPELL                 TWITUX_PREFS_PATH "/ui/spell"
 

@@ -158,6 +158,18 @@
      </schema>
 
      <schema>
+	<key>/schemas/apps/twitux/ui/sound</key>
+	<applyto>/apps/twitux/ui/sound</applyto>
+	<owner>twitux</owner>
+	<type>bool</type>
+	<default>false</default>
+	<locale name="C">
+	   <short>Sound notification of new Twitter messages</short>
+	   <long>Sound notification of new Twitter messages.</long>
+	</locale>
+     </schema>
+
+     <schema>
       <key>/schemas/apps/twitux/ui/spell_checker_languages</key>
       <applyto>/apps/twitux/ui/spell_checker_languages</applyto>
       <owner>twitux</owner>

@@ -1,3 +1,14 @@
+2008-12-06  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* configure.in: 
+	* data/prefs_dlg.xml:
+	* data/twitux.schemas.in: 
+	* src/twitux.h:
+	* src/twitux-app.c (twitux_app_show_notification): 
+	* src/twitux-preferences.c:
+	Added option to have a sound notification when a new
+	tweet arrives. (#2037880)
+
 2008-12-04  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* data/Makefile.am (glade_DATA):

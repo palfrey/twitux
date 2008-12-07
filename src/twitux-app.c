@@ -26,6 +26,7 @@
 #include <sys/stat.h>
 #include <string.h>
 
+#include <canberra-gtk.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <libnotify/notify.h>
@@ -1426,44 +1427,65 @@ void
 twitux_app_show_notification (gint tweets)
 {
 	TwituxAppPriv	*priv;
-	gchar			*msg;
-	gchar			*s;
+	TwituxConf      *conf;
 	gboolean		 notify;
+	gboolean         sound;
 
 	priv = GET_PRIV (app);
 
+	if (!gtk_status_icon_is_embedded (priv->status_icon))
+		return;
+
 	/* Check preferences */
-	twitux_conf_get_bool (twitux_conf_get (),
+	conf = twitux_conf_get ();
+	twitux_conf_get_bool (conf,
 						  TWITUX_PREFS_UI_NOTIFICATION,
 						  &notify);
 
-	if (!notify || !gtk_status_icon_is_embedded (priv->status_icon))
-		return;
+	twitux_conf_get_bool (conf,
+						  TWITUX_PREFS_UI_SOUND,
+						  &sound);	
 
-	if (tweets > 1) {
-		s = _("tweets");
-	} else {
-		s = _("tweet");
+	if (sound) {
+		ca_context_play (ca_gtk_context_get (),
+						 0,
+						 CA_PROP_APPLICATION_NAME, g_get_application_name (),
+						 CA_PROP_EVENT_ID, "message-new-instant",
+						 CA_PROP_EVENT_DESCRIPTION, _("New tweet received"),
+						 NULL);
 	}
 
-	msg = g_strdup_printf (_("You have %i new %s."), tweets, s);
+	if (notify) {
+		gchar			*msg;
+		gchar			*s;
 
-	if (priv->notification!= NULL) {
-		notify_notification_close (priv->notification, NULL);
-	}
+		if (tweets > 1) {
+			s = _("tweets");
+		} else {
+			s = _("tweet");
+		}
 
-	priv->notification =
-		notify_notification_new_with_status_icon (PACKAGE_NAME,
-												  msg,
-												  NULL,
-												  priv->status_icon);
+		msg = g_strdup_printf (_("You have %i new %s."), tweets, s);
 
-	g_object_set(priv->notification, "icon-name", "twitux", NULL);
+		if (priv->notification != NULL) {
+			notify_notification_close (priv->notification, NULL);
+		}
 
-	notify_notification_set_timeout (priv->notification, 3000);
-	notify_notification_show (priv->notification, NULL);
+		priv->notification =
+			notify_notification_new_with_status_icon (PACKAGE_NAME,
+													  msg,
+													  NULL,
+													  priv->status_icon);
+
+		g_object_set(priv->notification,
+					 "icon-name", "twitux",
+					 NULL);
+
+		notify_notification_set_timeout (priv->notification, 3000);
+		notify_notification_show (priv->notification, NULL);
 	
-	g_free (msg);
+		g_free (msg);
+	}
 }
 
 void

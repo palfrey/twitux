@@ -52,6 +52,7 @@ typedef struct {
 	GtkWidget *expand;
 	GtkWidget *autoconnect;
 	GtkWidget *notify;
+	GtkWidget *sound;
 	GtkWidget *names;
 	GtkWidget *spell;
 
@@ -161,6 +162,10 @@ preferences_setup_widgets (TwituxPrefs *prefs)
 	preferences_hookup_toggle_button (prefs,
 									  TWITUX_PREFS_UI_NOTIFICATION,
 									  prefs->notify);
+
+	preferences_hookup_toggle_button (prefs,
+									  TWITUX_PREFS_UI_SOUND,
+									  prefs->sound);
 
 	preferences_hookup_toggle_button (prefs,
 									  TWITUX_PREFS_UI_SPELL,
@@ -830,17 +835,18 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 
 	/* Get widgets */
 	ui = twitux_xml_get_file (XML_FILE,
-						"preferences_dialog", &prefs->dialog,
-						"preferences_notebook", &prefs->notebook,
-						"combobox_timeline", &prefs->combo_default_timeline,
-						"combobox_reload", &prefs->combo_reload,
-						"expand_checkbutton", &prefs->expand,
-						"autoconnect_checkbutton", &prefs->autoconnect,
-						"notify_checkbutton", &prefs->notify,
-						"names_checkbutton", &prefs->names,
-						"spell_checkbutton", &prefs->spell,
-						"spell_treeview", &prefs->treeview_spell_checker,
-						NULL);
+							  "preferences_dialog", &prefs->dialog,
+							  "preferences_notebook", &prefs->notebook,
+							  "combobox_timeline", &prefs->combo_default_timeline,
+							  "combobox_reload", &prefs->combo_reload,
+							  "expand_checkbutton", &prefs->expand,
+							  "autoconnect_checkbutton", &prefs->autoconnect,
+							  "notify_checkbutton", &prefs->notify,
+							  "names_checkbutton", &prefs->names,
+							  "spell_checkbutton", &prefs->spell,
+							  "sound_checkbutton", &prefs->sound,
+							  "spell_treeview", &prefs->treeview_spell_checker,
+							  NULL);
 
 	/* Connect the signals */
 	twitux_xml_connect (ui, prefs,
