@@ -2,9 +2,9 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
   <!ENTITY legal SYSTEM "legal.xml">
-  <!ENTITY appversion "0.62">
-  <!ENTITY manrevision "2.0">
-  <!ENTITY date "April 2008">
+  <!ENTITY appversion "0.66">
+  <!ENTITY manrevision "2.1">
+  <!ENTITY date "December 2008">
   <!ENTITY app "Twitux">
 ]>
 <!-- 
@@ -89,6 +89,16 @@
       <revision>
                 <revnumber>&app; Manual V&manrevision;</revnumber>
 		<date>&date;</date>
+		<revdescription>
+		        <para role="author">Brian Pepple
+			<email>bpepple@fedoraproject.org</email>
+			</para>
+			<para role="publisher">GNOME Documentation Project</para>
+		</revdescription>
+      </revision>
+      <revision>
+                <revnumber>&app; Manual V2.0</revnumber>
+		<date>April 2008</date>
 		<revdescription>
 		        <para role="author">Brian Pepple
 			<email>bpepple@fedoraproject.org</email>
@@ -217,13 +227,6 @@
 	    </listitem>
 	    <listitem>
 	      <para>Enter your Twitter <guilabel>Password</guilabel>.</para>
-	    </listitem>
-	    <listitem>
-	      <para>
-	        Select <guilabel>Automatic Login?</guilabel> if you
-		wish to automatically login to Twitter when you start
-		up &app;.
-	      </para>
 	    </listitem>
 	    <listitem>
 	      <para>
@@ -379,6 +382,11 @@
 	    </menuchoice>.
           </para>
 	</listitem>
+	<listitem>
+	  <para>
+	    Double-click on a tweet in the Tweet List to send a direct message.
+	  </para>
+	</listitem>
       </itemizedlist>
     </sect2> 
   </sect1>
@@ -394,18 +402,6 @@
       </menuchoice>.
       The <guilabel>Preferences</guilabel> dialog contains the following tabbed sections:
     </para> 
-    <itemizedlist> 
-      <listitem> 
-	<para> 
-	  <xref linkend="twitux-prefs-general"/>
-        </para> 
-      </listitem>
-      <listitem> 
-	<para> 
-	  <xref linkend="twitux-prefs-spelling"/>
-        </para> 
-      </listitem>
-    </itemizedlist>
 <!-- =============== Customization Subsection ================ -->
 <!-- Use a new section to describe different tabbed sections on the Settings or Preferences
 	     dialog. -->
@@ -424,15 +420,28 @@
 	      </listitem> 
 	      <listitem>
 	        <para>
-		  Select <guilabel>Display notifications when message received</guilabel> option,
+		  Select the <guilabel>Display notifications when message received</guilabel> option,
 		  to be notified when new tweets are received.
 		</para>		
+	      </listitem>
+	      <listitem>
+		<para>
+		  Select the <guilabel>Sound notification when message received</guilabel> option,
+		  to be notified when new tweets are received.
+		</para>
 	      </listitem>
 	      <listitem> 
 		<para>
 		  Select the <guilabel>Show user names instead real names</guilabel> option, to
 		  show friends Twitter user names instead of their real names.
 		</para> 
+	      </listitem>
+	      <listitem>
+		<para>
+		  Select <guilabel>Connect automatically</guilabel> if you
+		  wish to automatically log-in to Twitter when you start
+		  up &app;.
+		</para>
 	      </listitem>
 	    </itemizedlist>
 	  </listitem>

@@ -1,3 +1,7 @@
+2008-12-06  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* C/twitux.xml: Update for recent changes.
+
 2008-04-13  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* Makefile.am: 
