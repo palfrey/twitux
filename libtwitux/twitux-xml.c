@@ -22,8 +22,6 @@
 
 #include <config.h>
 
-#include <gtk/gtkbuilder.h>
-
 #include "twitux-paths.h"
 #include "twitux-xml.h"
 

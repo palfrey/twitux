@@ -21,7 +21,7 @@
 #ifndef __TWITUX_ABOUT_DIALOG_H__
 #define __TWITUX_ABOUT_DIALOG_H__
 
-#include <gtk/gtkwindow.h>
+#include <gtk/gtk.h>
 
 void twitux_about_dialog_new (GtkWindow *parent);
 

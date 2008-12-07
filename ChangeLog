@@ -1,3 +1,23 @@
+2008-12-07  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* libtwitux/twitux-keyring.h:
+	* libtwitux/twitux-xml.[ch]:
+	* src/twitux-about.[ch]:
+	* src/twitux-add-dialog.[ch]:
+	* src/tiwtux-account-dialog.[ch]:
+	* src/twitux-app.h:
+	* src/twitux-dbus.h:
+	* src/twitux-geometry.h:
+	* src/twitux-hint.[ch]:
+	* src/twitux-lists-dialog.[ch]:
+	* src/twitux-main.c: 
+	* src/twitux-preferences.[ch]:
+	* src/twitux-send-message-dialog.[ch]:
+	* src/twitux-tweet-list.[ch]:
+	* src/twitux-ui-utils.[ch]:
+	Clean up GLib and GTK+ includes. http://live.gnome.org/GnomeGoals/CleanupGTKIncludes
+
+	
 2008-12-06  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* configure.in: 

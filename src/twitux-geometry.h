@@ -24,7 +24,7 @@
 #ifndef __TWITUX_GEOMETRY_H__
 #define __TWITUX_GEOMETRY_H__
 
-#include <gtk/gtkwindow.h>
+#include <gtk/gtk.h>
 
 void twitux_geometry_load_for_main_window (GtkWidget *main_window);
 void twitux_geometry_save_for_main_window (gint       x,

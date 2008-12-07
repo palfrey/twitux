@@ -21,8 +21,6 @@
 #include <config.h>
 
 #include <glib/gi18n.h>
-#include <gtk/gtk.h>
-#include <gtk/gtkmessagedialog.h>
 
 #include "twitux-ui-utils.h"
 

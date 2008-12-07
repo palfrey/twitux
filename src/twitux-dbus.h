@@ -24,7 +24,7 @@
 #ifndef __TWITUX_DBUS_H__
 #define __TWITUX_DBUS_H__
 
-#include <glib/gtypes.h>
+#include <glib.h>
 
 gboolean twitux_dbus_nm_init      (void);
 void     twitux_dbus_nm_finalize  (void);

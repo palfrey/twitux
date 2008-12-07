@@ -20,9 +20,6 @@
  */
  
 #include <glib/gi18n.h>
-#include <gtk/gtkcheckbutton.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtkvbox.h>
 
 #include <libtwitux/twitux-conf.h>
 

@@ -31,8 +31,6 @@
 #include <string.h>
 
 #include <glib/gi18n.h>
-#include <gtk/gtktextiter.h>
-#include <gtk/gtkwidget.h>
 
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-debug.h>

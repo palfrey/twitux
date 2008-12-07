@@ -23,8 +23,6 @@
 
 #include "config.h"
 
-#include <gtk/gtktreeview.h>
-
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-debug.h>
 

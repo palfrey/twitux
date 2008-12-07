@@ -20,9 +20,6 @@
 
 #include "config.h"
 
-#include <gtk/gtkbuilder.h>
-#include <gtk/gtkdialog.h>
-
 #include <libtwitux/twitux-xml.h>
 
 #include "twitux.h"

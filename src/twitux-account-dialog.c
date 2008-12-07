@@ -20,11 +20,6 @@
 
 #include "config.h"
 
-#include <gtk/gtkbuilder.h>
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtktogglebutton.h>
-
 #include <libtwitux/twitux-conf.h>
 #include <libtwitux/twitux-xml.h>
 #ifdef HAVE_GNOME_KEYRING

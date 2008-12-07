@@ -26,10 +26,9 @@
 #define __TWITUX_APP_H__
 
 #include <glib-object.h>
-#include <glib/glist.h>
+#include <glib.h>
 
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkliststore.h>
+#include <gtk/gtk.h>
 
 #include <libtwitux/twitux-paths.h>
 

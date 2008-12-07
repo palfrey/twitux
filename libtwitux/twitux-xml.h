@@ -22,7 +22,7 @@
 #ifndef __TWITUX_XML_H__
 #define __TWITUX_XML_H__
 
-#include <gtk/gtkbuilder.h>
+#include <gtk/gtk.h>
 
 GtkBuilder *twitux_xml_get_file (const gchar *filename,
                                  const gchar *first_widget,

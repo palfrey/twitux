@@ -21,8 +21,8 @@
 #ifndef __TWITUX_FRIENDS_DIALOG_H__
 #define __TWITUX_FRIENDS_DIALOG_H__
 
-#include <gtk/gtkwindow.h>
-#include <glib/glist.h>
+#include <glib.h>
+#include <gtk/gtk.h>
 
 void twitux_lists_dialog_show       (GtkWindow *parent);
 void twitux_lists_dialog_load_lists (GList     *users);

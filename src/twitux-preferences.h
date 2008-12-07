@@ -27,7 +27,7 @@
 #ifndef __TWITUX_PREFERENCES_H__
 #define __TWITUX_PREFERENCES_H__
 
-#include <gtk/gtkwindow.h>
+#include <gtk/gtk.h>
 
 void twitux_preferences_dialog_show (GtkWindow *parent);
 

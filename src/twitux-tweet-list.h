@@ -24,7 +24,7 @@
 #ifndef __TWITUX_TWEET_LIST_H__
 #define __TWITUX_TWEET_LIST_H__
 
-#include <gtk/gtktreeview.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

@@ -29,7 +29,6 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
 #include <libtwitux/twitux-conf.h>

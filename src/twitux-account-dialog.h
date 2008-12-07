@@ -21,7 +21,7 @@
 #ifndef __TWITUX_ACCOUNT_DIALOG_H__
 #define __TWITUX_ACCOUNT_DIALOG_H__
 
-#include <gtk/gtkwindow.h>
+#include <gtk/gtk.h>
 
 void twitux_account_dialog_show (GtkWindow *parent);
 

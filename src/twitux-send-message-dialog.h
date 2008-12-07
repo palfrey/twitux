@@ -29,7 +29,7 @@
 #ifndef __TWITUX_SEND_MESSAGE_DIALOG_H__
 #define __TWITUX_SEND_MESSAGE_DILAOG_H__
 
-#include <gtk/gtkwindow.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

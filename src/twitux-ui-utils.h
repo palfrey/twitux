@@ -21,7 +21,7 @@
 #ifndef __TWITUX_UI_UTILS_H__
 #define __TWITUX_UI_UTILS_H__
 
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 
 /* Windows */
 gboolean     twitux_window_get_is_visible          (GtkWindow        *window);

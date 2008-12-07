@@ -22,7 +22,6 @@
 
 #include <gio/gio.h>
 #include <glib/gi18n.h>
-#include <gtk/gtkaboutdialog.h>
 
 #include "twitux-about.h"
 
