@@ -25,7 +25,7 @@
 
 #include "twitux-about.h"
 
-#define WEB_SITE "http://twitux.sourceforge.net/"
+#define WEB_SITE "https://sourceforge.net/projects/twitux/"
 
 const gchar *authors[] = {
 	"Daniel Morales <daniminas@gmail.com>",

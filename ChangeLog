@@ -1,5 +1,10 @@
 2008-12-13  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* src/twitux-about.c (WEB_SITE):
+	Update link to use Sourceforge summary page.
+
+2008-12-13  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* src/twitux-parser.c:
 	* src/twitux-network.[ch] (twitux_network_get_image): 
 	Handle avatars a little more sensibly. (#1963695)
