@@ -73,7 +73,6 @@ GList *twitux_network_get_followers	(void);
 
 /* Get an image from servers */
 void twitux_network_get_image (const gchar *url_image,
-			      			   const gchar *username,
 							   GtkTreeIter iter);
 
 /* Add a user to follow */

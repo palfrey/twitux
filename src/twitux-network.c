@@ -382,7 +382,6 @@ twitux_network_get_followers (void)
 /* Get an image from servers */
 void
 twitux_network_get_image (const gchar  *url_image,
-						  const gchar  *username,
 						  GtkTreeIter   iter)
 {
 	gchar	*images_dir;
@@ -391,14 +390,13 @@ twitux_network_get_image (const gchar  *url_image,
 
 	TwituxImage *image;
 
-	/* Build image file */
-	split_url = g_strsplit (url_image, "?", 2);
-	images_dir = g_build_filename (g_get_home_dir (), ".gnome2", TWITUX_CACHE_IMAGES, NULL);
+	/* Split the image url, and save using the filename */
+	split_url = g_strsplit (url_image, "/", 7);
+	images_dir = g_build_filename (g_get_home_dir (), ".gnome2",
+								   TWITUX_CACHE_IMAGES, NULL);
 	image_file = g_strconcat (images_dir,
 							  G_DIR_SEPARATOR_S,
-							  username,
-							  "-",
-							  split_url[1],
+							  split_url[6],
 							  NULL);
 
 	g_strfreev (split_url);
@@ -408,14 +406,15 @@ twitux_network_get_image (const gchar  *url_image,
 	if(g_file_test (image_file, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)) {		
 		/* Set image from file here */
 		twitux_app_set_image (image_file, iter);
-
 		g_free (image_file);
 		return;
 	}
 
 	image = g_new0 (TwituxImage, 1);
-	image->src = image_file;
+	image->src = g_strdup (image_file);
 	image->iter = iter;
+
+	g_free (image_file);
 
 	/* Note: 'image' will be freed in 'network_cb_on_image' */
 	network_get_data (url_image, network_cb_on_image, image);
