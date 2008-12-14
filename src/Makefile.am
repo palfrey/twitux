@@ -4,7 +4,9 @@ AM_CPPFLAGS=						\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
 	-DDATADIR=\""$(datadir)"\"              	\
 	-DLIBDIR=\""$(libdir)"\"			\
-	$(TWITUX_CFLAGS)$(WARN_CFLAGS)
+	$(TWITUX_CFLAGS)				\
+	$(ENCHANT_CFLAGS)				\
+	$(WARN_CFLAGS)
 
 bin_PROGRAMS = twitux
 
@@ -35,4 +37,5 @@ twitux_SOURCES = 							\
 
 twitux_LDADD=						\
 	$(top_builddir)/libtwitux/libtwitux.la		\
-	$(TWITUX_LIBS)
+	$(TWITUX_LIBS)					\
+	$(ENCHANT_LIBS)

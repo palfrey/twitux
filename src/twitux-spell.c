@@ -29,8 +29,8 @@
 
 #include <glib/gi18n.h>
 
-#ifdef HAVE_ASPELL
-#include <aspell.h>
+#ifdef HAVE_ENCHANT
+#include <enchant.h>
 #endif
 
 #include <libtwitux/twitux-debug.h>
@@ -41,12 +41,11 @@
 
 #define DEBUG_DOMAIN "Spell"
 
-#ifdef HAVE_ASPELL
+#ifdef HAVE_ENCHANT
 
 typedef struct {
-	AspellConfig       *spell_config;
-	AspellCanHaveError *spell_possible_err;
-	AspellSpeller      *spell_checker;
+	EnchantBroker *config;
+	EnchantDict   *speller;
 } SpellLanguage;
 
 #define ISO_CODES_DATADIR    ISO_CODES_PREFIX "/share/xml/iso-codes"
@@ -134,7 +133,7 @@ spell_iso_code_names_init (void)
 	gsize   buf_len;
 
 	iso_code_names = g_hash_table_new_full (g_str_hash, g_str_equal,
-						g_free, g_free);
+											g_free, g_free);
 
 	bindtextdomain ("iso_639", ISO_CODES_LOCALESDIR);
 	bind_textdomain_codeset ("iso_639", "UTF-8");
@@ -150,8 +149,8 @@ spell_iso_code_names_init (void)
 		ctx = g_markup_parse_context_new (&parser, 0, NULL, NULL);
 		if (!g_markup_parse_context_parse (ctx, buf, buf_len, &err)) {
 			g_warning ("Failed to parse '%s': %s",
-				   ISO_CODES_DATADIR"/iso_639.xml",
-				   err->message);
+					   ISO_CODES_DATADIR"/iso_639.xml",
+					   err->message);
 			g_error_free (err);
 		}
 
@@ -166,8 +165,8 @@ spell_iso_code_names_init (void)
 
 static void
 spell_notify_languages_cb (TwituxConf  *conf,
-			   const gchar *key,
-			   gpointer     user_data)
+						   const gchar *key,
+						   gpointer     user_data)
 {
 	GList *l;
 
@@ -179,8 +178,8 @@ spell_notify_languages_cb (TwituxConf  *conf,
 
 		lang = l->data;
 
-		delete_aspell_config (lang->spell_config);
-		delete_aspell_speller (lang->spell_checker);
+		enchant_broker_free_dict (lang->config, lang->speller);
+		enchant_broker_free (lang->config);
 
 		g_slice_free (SpellLanguage, lang);
 	}
@@ -223,20 +222,11 @@ spell_setup_languages (void)
 
 			lang = g_slice_new0 (SpellLanguage);
 
-			lang->spell_config = new_aspell_config();
+			lang->config = enchant_broker_init ();
+			lang->speller = enchant_broker_request_dict (lang->config, strv[i]);
 
-			aspell_config_replace (lang->spell_config, "encoding", "utf-8");
-			aspell_config_replace (lang->spell_config, "lang", strv[i++]);
-
-			lang->spell_possible_err = new_aspell_speller (lang->spell_config);
-
-			if (aspell_error_number (lang->spell_possible_err) == 0) {
-				lang->spell_checker = to_aspell_speller (lang->spell_possible_err);
-				languages = g_list_append (languages, lang);
-			} else {
-				delete_aspell_config (lang->spell_config);
-				g_slice_free (SpellLanguage, lang);
-			}
+			languages = g_list_append (languages, lang);
+			i++;
 		}
 
 		if (strv) {
@@ -266,31 +256,41 @@ twitux_spell_get_language_name (const char *code)
 	return dgettext ("iso_639", name);
 }
 
+static void
+enumerate_dicts (const gchar * const lang_tag,
+				 const gchar * const provider_name,
+				 const gchar * const provider_desc,
+				 const gchar * const provider_file,
+				 gpointer            user_data)
+{
+	GList **list = user_data;
+	gchar  *lang = g_strdup (lang_tag);
+
+	if (strchr (lang, '_')) {
+		/* cut country part out of language */
+		strchr (lang, '_')[0] = '\0';
+	}
+
+	if (g_list_find_custom (*list, lang, (GCompareFunc) strcmp)) {
+		/* this language is already part of the list */
+		g_free (lang);
+		return;
+	}
+
+	*list = g_list_append (*list, g_strdup (lang));
+}
+
 GList *
 twitux_spell_get_language_codes (void)
 {
-	AspellConfig              *config;
-	AspellDictInfoList        *dlist;
-	AspellDictInfoEnumeration *dels;
-	const AspellDictInfo      *entry;
-	GList                     *codes = NULL;
+	EnchantBroker *broker;
+	GList         *list_langs = NULL;
 
-	config = new_aspell_config ();
-	dlist = get_aspell_dict_info_list (config);
-	dels = aspell_dict_info_list_elements (dlist);
+	broker = enchant_broker_init ();
+	enchant_broker_list_dicts (broker, enumerate_dicts, &list_langs);
+	enchant_broker_free (broker);
 
-	while ((entry = aspell_dict_info_enumeration_next (dels)) != 0) {
-		if (g_list_find_custom (codes, entry->code, (GCompareFunc) strcmp)) {
-			continue;
-		}
-
-		codes = g_list_append (codes, g_strdup (entry->code));
-	}
-
-	delete_aspell_dict_info_enumeration (dels);
-	delete_aspell_config (config);
-
-	return codes;
+	return list_langs;
 }
 
 void
@@ -303,13 +303,12 @@ twitux_spell_free_language_codes (GList *codes)
 gboolean
 twitux_spell_check (const gchar *word)
 {
-	GList       *l;
-	gint         n_langs;
-	gboolean     correct = FALSE;
-	gint         len;
+	gint         enchant_result = 1;
 	const gchar *p;
-	gunichar     c;
 	gboolean     digit;
+	gunichar     c;
+	gint         len;
+	GList       *l;
 
 	g_return_val_if_fail (word != NULL, FALSE);
 
@@ -333,30 +332,27 @@ twitux_spell_check (const gchar *word)
 	}
 
 	len = strlen (word);
-	n_langs = g_list_length (languages);
 	for (l = languages; l; l = l->next) {
 		SpellLanguage *lang;
 
 		lang = l->data;
 
-		correct = aspell_speller_check (lang->spell_checker, word, len);
-		if (n_langs > 1 && correct) {
+		enchant_result = enchant_dict_check (lang->speller, word, len);
+
+		if (enchant_result == 0) {
 			break;
 		}
 	}
 
-	return correct;
+	return (enchant_result == 0);
 }
 
 GList *
 twitux_spell_get_suggestions (const gchar *word)
 {
-	GList                   *l1;
-	GList                   *l2 = NULL;
-	const AspellWordList    *suggestions;
-	AspellStringEnumeration *elements;
-	const char              *next;
-	gint                     len;
+	gint   len;
+	GList *l1;
+	GList *suggestion_list = NULL;
 
 	g_return_val_if_fail (word != NULL, NULL);
 
@@ -365,23 +361,30 @@ twitux_spell_get_suggestions (const gchar *word)
 	len = strlen (word);
 
 	for (l1 = languages; l1; l1 = l1->next) {
-		SpellLanguage *lang;
+		SpellLanguage  *lang;
+		gchar         **suggestions;
+		gsize           i;
+		gsize           number_of_suggestions;
 
 		lang = l1->data;
 
-		suggestions = aspell_speller_suggest (lang->spell_checker,
-											  word, len);
+		suggestions = enchant_dict_suggest (lang->speller,
+											word,
+											len,
+											&number_of_suggestions);
 
-		elements = aspell_word_list_elements (suggestions);
-
-		while ((next = aspell_string_enumeration_next (elements))) {
-			l2 = g_list_append (l2, g_strdup (next));
+		for (i = 0; i < number_of_suggestions; i++) {
+			suggestion_list = g_list_append (suggestion_list,
+											 g_strdup (suggestions[i]));
 		}
 
-		delete_aspell_string_enumeration (elements);
+		if (suggestions) {
+			enchant_dict_free_string_list (lang->speller, suggestions);
+		}
+
 	}
 
-	return l2;
+	return suggestion_list;
 }
 
 gboolean
@@ -397,7 +400,7 @@ twitux_spell_supported (void)
 	return TRUE;
 }
 
-#else /* not HAVE_ASPELL */
+#else /* not HAVE_ENCHANT */
 
 gboolean
 twitux_spell_supported (void)

@@ -1,8 +1,9 @@
 NEW in 0.66:
 ==============
-- Add help (Brian Pepple)
-- Add option to have sound notication when new tweets arrive . (Brian Pepple)
 - Fixed #1963695, Save avatars a little more sensibly. (Brian Pepple)
+- Use Enchant, instead of ASpell. (Brian Pepple)
+- Add option to have sound notication when new tweets arrive . (Brian Pepple)
+- Add help (Brian Pepple)
 
 NEW in 0.65:
 ==============

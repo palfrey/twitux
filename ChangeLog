@@ -1,5 +1,12 @@
 2008-12-13  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* configure.in: 
+	* src/twitux-spell.c:
+	* src/Makefile.am:
+	Use enchant for spell checking, instead of aspell.
+
+2008-12-13  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* src/twitux-about.c (WEB_SITE):
 	Update link to use Sourceforge summary page.
 
