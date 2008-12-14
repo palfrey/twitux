@@ -1,4 +1,4 @@
-NEW in 0.66:
+NEW in 0.68:
 ==============
 - Fixed #1963695, Save avatars a little more sensibly. (Brian Pepple)
 - Use Enchant, instead of ASpell. (Brian Pepple)
