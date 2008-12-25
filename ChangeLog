@@ -1,5 +1,11 @@
 2008-12-24  Brian Pepple  <bpepple@fedoraproject.org>
 
+	* src/twitux-parser.c (parser_twitux_node_status): 
+	Fix the double-escaping of < and >. (Mike Lundy)
+
+
+2008-12-24  Brian Pepple  <bpepple@fedoraproject.org>
+
 	* src/twitux-network.c (twitux_network_get_image): 
 	Fix crash when fetching images. (Mike Lundy)
 

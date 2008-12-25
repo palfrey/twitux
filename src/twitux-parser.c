@@ -28,6 +28,7 @@
  */
 #define _XOPEN_SOURCE
 #include <time.h>
+#include <string.h> /* for g_memmove - memmove */
 
 #include <gtk/gtk.h>
 #include <glib/gstdio.h>
@@ -385,10 +386,22 @@ parser_twitux_node_status (xmlNode *a_node)
 			status->id = g_strdup ((const gchar *)tmp);
 		} else if (g_str_equal (cur_node->name, "text")) {
 			const xmlChar *msg;
+			gchar *cur;
 
 			msg = xmlBufferContent (buffer);
+
 			status->text = g_markup_escape_text ((const char *)msg, -1);
-		} else if (g_str_equal(cur_node->name, "sender") ||
+
+			/* &amp;lt; becomes &lt; */
+			cur = status->text;
+			while ((cur = strstr (cur, "&amp;"))) {
+				if (strncmp (cur + 5, "lt;", 3) == 0 || strncmp (cur + 5, "gt;", 3) == 0)
+					g_memmove (cur + 1, cur + 5, strlen (cur + 5) + 1);
+				else
+					cur += 5;
+			}
+
+		} else if (g_str_equal (cur_node->name, "sender") ||
 				   g_str_equal (cur_node->name, "user")) {
 
 			status->user = parser_twitux_node_user (cur_node->children);
