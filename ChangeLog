@@ -1,3 +1,8 @@
+2008-12-24  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-network.c (twitux_network_get_image): 
+	Fix crash when fetching images. (Mike Lundy)
+
 2008-12-14  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* Release 0.68.

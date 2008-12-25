@@ -384,23 +384,22 @@ void
 twitux_network_get_image (const gchar  *url_image,
 						  GtkTreeIter   iter)
 {
-	gchar	*images_dir;
 	gchar	*image_file;
-	gchar  **split_url;
+	gchar   *image_name;
 
 	TwituxImage *image;
 
-	/* Split the image url, and save using the filename */
-	split_url = g_strsplit (url_image, "/", 7);
-	images_dir = g_build_filename (g_get_home_dir (), ".gnome2",
-								   TWITUX_CACHE_IMAGES, NULL);
-	image_file = g_strconcat (images_dir,
-							  G_DIR_SEPARATOR_S,
-							  split_url[6],
-							  NULL);
+	/* save using the filename */
+	image_name = strrchr (url_image, '/');
+	if (image_name && image_name[1] != '\0') {
+		image_name++;
+	} else {
+		image_name = "twitux_unknown_image";
+	}
 
-	g_strfreev (split_url);
-	g_free (images_dir);
+	image_file = g_build_filename (g_get_home_dir(), ".gnome2",
+								   TWITUX_CACHE_IMAGES,
+								   image_name, NULL);
 
 	/* check if image already exists */
 	if(g_file_test (image_file, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)) {		
@@ -411,10 +410,8 @@ twitux_network_get_image (const gchar  *url_image,
 	}
 
 	image = g_new0 (TwituxImage, 1);
-	image->src = g_strdup (image_file);
+	image->src  = image_file;
 	image->iter = iter;
-
-	g_free (image_file);
 
 	/* Note: 'image' will be freed in 'network_cb_on_image' */
 	network_get_data (url_image, network_cb_on_image, image);
