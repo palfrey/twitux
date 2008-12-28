@@ -1,3 +1,8 @@
+2008-12-28  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-label.c (label_msg_get_string): 
+	Use strjoin. (Mike Lundy)
+
 2008-12-24  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-parser.c (parser_twitux_node_status): 

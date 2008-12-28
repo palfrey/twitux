@@ -124,6 +124,7 @@ url_check_word (char *word, int len)
 		{ D("ftp://") },
 		{ D("http://") },
 		{ D("https://") },
+		{ D("@") },
 	};
 #undef D
 
@@ -151,6 +152,19 @@ url_check_word (char *word, int len)
 	return FALSE;
 }
 
+static gssize
+find_first_non_username(const char *str)
+{
+	gssize i;
+
+	for (i = 0; str[i]; ++i) {
+		if (!(g_ascii_isalnum(str[i]) || str[i] == '_')) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 static char*
 label_msg_get_string (const char* message)
 {
@@ -167,23 +181,35 @@ label_msg_get_string (const char* message)
 	
 	/* surround urls with <a> markup so that sexy-url-label can link it */
 	tokens = g_strsplit_set (message, " \t\n", 0);
-	if (url_check_word (tokens[0], strlen (tokens[0]))) {
-		result = g_strdup_printf ("<a href=\"%s\">%s</a>", tokens[0], tokens[0]);
-	} else {
-		result = g_strdup (tokens[0]);
-	}
-
-	for (i = 1; tokens[i]; i++) {
+	for (i = 0; tokens[i]; i++) {
 		if (url_check_word (tokens[i], strlen (tokens[i]))) {
-			temp = g_strdup_printf ("%s <a href=\"%s\">%s</a>", result, tokens[i], tokens[i]);
-			g_free (result);
-			result = temp;
-		} else {
-			temp = g_strdup_printf ("%s %s", result, tokens[i]);
-			g_free (result);
-			result = temp;
+			if (tokens[i][0] == '@') {
+				gssize end;
+
+				end  = find_first_non_username (&tokens[i][1]) + 1;
+				if (end == 0) {
+					temp =
+						g_strdup_printf ("<a href=\"http://twitter.com/%s\">%s</a>",
+										 &tokens[i][1],
+										 tokens[i]);
+				} else {
+					gchar delim;
+
+					delim = tokens[i][end];
+					tokens[i][end] = '\0';
+					temp =
+						g_strdup_printf ("<a href=\"http://twitter.com/%s\">%s</a>%c%s",
+										 &tokens[i][1], tokens[i], delim, &tokens[i][end+1]);
+				}
+			} else {
+				temp = g_strdup_printf ("<a href=\"%s\">%s</a>",
+										tokens[i], tokens[i]);
+			}
+			g_free (tokens[i]);
+			tokens[i] = temp;
 		}
 	}
+	result = g_strjoinv(" ", tokens);
 	g_strfreev (tokens);
 	
 	return result;	
