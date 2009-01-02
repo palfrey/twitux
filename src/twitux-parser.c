@@ -462,17 +462,17 @@ parser_convert_time (const char *datetime)
 		} else {
 			/* Hours */
 			diff = diff/60;
-			if (diff == 24) {
-				return g_strdup (_("1 day ago"));
-			} else if (diff < 24) {
+			if (diff < 24) {
 				return g_strdup_printf (_("%i hours ago"), diff);
+			} else if (diff < 48) {
+				return g_strdup (_("1 day ago"));
 			} else {
 				/* Days */
 				diff = diff/24;
-				if (diff == 30) {
-					return g_strdup (_("1 month ago"));
-				} else if (diff < 30) {
+				if (diff < 30) {
 					return g_strdup_printf (_("%i days ago"), diff);
+				} else if (diff < 60) {
+					return g_strdup (_("1 month ago"));
 				} else {
 					return g_strdup_printf (_("%i months ago"), (diff/30));
 				}

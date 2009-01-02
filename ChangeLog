@@ -1,3 +1,8 @@
+2009-01-01  Brian Pepple  <bpepple@fedoraproject.org>
+	
+	* src/twitux-parser.c (parser_convert_time):
+	Fix incorrect pluralising of relative time. (Deskin Miller)
+
 2008-12-28  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-label.c (label_msg_get_string): 
