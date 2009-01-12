@@ -29,11 +29,11 @@ G_BEGIN_DECLS
 #define G_STR_EMPTY(x) ((x) == NULL || (x)[0] == '\0')
 
 /* Twitter Timelines */
-#define TWITUX_API_TIMELINE_PUBLIC	"http://twitter.com/statuses/public_timeline.xml"
-#define TWITUX_API_TIMELINE_FRIENDS	"http://twitter.com/statuses/friends_timeline.xml"
-#define TWITUX_API_TIMELINE_MY		"http://twitter.com/statuses/user_timeline.xml"
-#define TWITUX_API_TIMELINE_USER	"http://twitter.com/statuses/user_timeline/%s.xml"
-#define TWITUX_API_TIMELINE_TWITUX	"http://twitter.com/statuses/user_timeline/twitux.xml"
+#define TWITUX_API_TIMELINE_PUBLIC	"https://twitter.com/statuses/public_timeline.xml"
+#define TWITUX_API_TIMELINE_FRIENDS	"https://twitter.com/statuses/friends_timeline.xml"
+#define TWITUX_API_TIMELINE_MY		"https://twitter.com/statuses/user_timeline.xml"
+#define TWITUX_API_TIMELINE_USER	"https://twitter.com/statuses/user_timeline/%s.xml"
+#define TWITUX_API_TIMELINE_TWITUX	"https://twitter.com/statuses/user_timeline/twitux.xml"
 
 /* Twitux GConf Keys */
 #define TWITUX_PREFS_PATH "/apps/twitux"

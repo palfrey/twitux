@@ -27,19 +27,19 @@
 #include "twitux-parser.h"
 
 /* Twitter API */
-#define TWITUX_API_REPLIES		"http://twitter.com/statuses/replies.xml"
-#define TWITUX_API_DIRECT_MESSAGES	"http://twitter.com/direct_messages.xml"
+#define TWITUX_API_REPLIES		"https://twitter.com/statuses/replies.xml"
+#define TWITUX_API_DIRECT_MESSAGES	"https://twitter.com/direct_messages.xml"
 
-#define TWITUX_API_POST_STATUS		"http://twitter.com/statuses/update.xml"
-#define TWITUX_API_SEND_MESSAGE		"http://twitter.com/direct_messages/new.xml"
+#define TWITUX_API_POST_STATUS		"https://twitter.com/statuses/update.xml"
+#define TWITUX_API_SEND_MESSAGE		"https://twitter.com/direct_messages/new.xml"
 
-#define TWITUX_API_FOLLOWING		"http://twitter.com/statuses/friends.xml"
-#define TWITUX_API_FOLLOWERS		"http://twitter.com/statuses/followers.xml"
+#define TWITUX_API_FOLLOWING		"https://twitter.com/statuses/friends.xml"
+#define TWITUX_API_FOLLOWERS		"https://twitter.com/statuses/followers.xml"
 
-#define TWITUX_API_FOLLOWING_ADD	"http://twitter.com/friendships/create/%s.xml"
-#define TWITUX_API_FOLLOWING_DEL	"http://twitter.com/friendships/destroy/%s.xml"
+#define TWITUX_API_FOLLOWING_ADD	"https://twitter.com/friendships/create/%s.xml"
+#define TWITUX_API_FOLLOWING_DEL	"https://twitter.com/friendships/destroy/%s.xml"
 
-#define TWITUX_API_LOGIN		"http://twitter.com/account/verify_credentials.xml"
+#define TWITUX_API_LOGIN		"https://twitter.com/account/verify_credentials.xml"
 
 /* Verify user credentials */
 void twitux_network_login		(const char *username, 

@@ -41,7 +41,7 @@
 #include "twitux-lists-dialog.h"
 
 #define DEBUG_DOMAIN	  "Network"
-#define TWITUX_HEADER_URL "http://twitux.sourceforge.net/client.xml"
+#define TWITUX_HEADER_URL "https://twitux.sourceforge.net/client.xml"
 
 typedef struct {
 	gchar        *src;

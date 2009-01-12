@@ -1,3 +1,9 @@
+2009-01-11  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux.h:
+	* src/twitux-network.[ch]:
+	Use https instead of http.
+
 2009-01-01  Brian Pepple  <bpepple@fedoraproject.org>
 	
 	* src/twitux-parser.c (parser_convert_time):
