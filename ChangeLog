@@ -2,7 +2,7 @@
 
 	* src/twitux.h:
 	* src/twitux-network.[ch]:
-	Use https instead of http.
+	Use https instead of http. (Evan McClain)
 
 2009-01-01  Brian Pepple  <bpepple@fedoraproject.org>
 	
