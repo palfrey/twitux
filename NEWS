@@ -1,3 +1,10 @@
+NEW in 0.69:
+==============
+- Display messages in notification, not count of tweets. (Thomas Thurman)
+- Use https, not http api. (Evan McClain)
+- Fix incorrect pluralising of relative time. (Deskin Miller)
+- Fix the double-escaping of < and >. (Mike Lundy)
+
 NEW in 0.68:
 ==============
 - Fixed #1963695, Save avatars a little more sensibly. (Brian Pepple)

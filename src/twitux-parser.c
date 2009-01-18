@@ -62,6 +62,8 @@ static xmlDoc		*parser_twitux_parse       (const char  *cache_file,
 												xmlNode    **first_element);
 static gchar		*parser_convert_time       (const char	*datetime);
 
+static gboolean      display_notification      (gpointer     tweet);
+
 /* id of the newest tweet showed */
 static gint			last_id = 0;
 
@@ -175,6 +177,15 @@ twitux_parser_single_user (const gchar *cache_file_uri)
 	return user;
 }
 
+static gboolean
+display_notification (gpointer tweet)
+{
+	twitux_app_show_notification (tweet);
+	g_free (tweet);
+
+	return FALSE;
+}
+
 
 /* Parse a timeline XML file */
 gboolean
@@ -196,6 +207,8 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 	gboolean count = TRUE;
 
 	gboolean s_username;
+	gint tweet_display_delay = 0;
+	const int tweet_display_interval = 5;
 
 	/* parse the xml */
 	doc = parser_twitux_parse (cache_file_uri, &root_element);
@@ -255,6 +268,14 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 					     status->text,
 					     "</small>",
 					     NULL);
+			
+			if (sid > last_id && show_notification) {
+				g_timeout_add_seconds (tweet_display_delay,
+									   display_notification,
+									   g_strdup (tweet));
+
+				tweet_display_delay += tweet_display_interval;
+			}
 
 			/* Append to ListStore */
 			gtk_list_store_append (store, &iter);
@@ -291,12 +312,6 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 		}
 
 	} /* end of loop */
-
-	/* Show UI notification */
-	if (show_notification && (nTwitts > 0) &&
-				(last_id != lastTweet)) {
-		twitux_app_show_notification (nTwitts);
-	}
 
 	/* Remember last id showed */
 	if (lastTweet > 0) {

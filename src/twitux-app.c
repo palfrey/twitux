@@ -1424,7 +1424,7 @@ twitux_app_set_statusbar_msg (gchar *message)
 }
 
 void
-twitux_app_show_notification (gint tweets)
+twitux_app_show_notification (gchar *msg)
 {
 	TwituxAppPriv	*priv;
 	TwituxConf      *conf;
@@ -1456,17 +1456,6 @@ twitux_app_show_notification (gint tweets)
 	}
 
 	if (notify) {
-		gchar			*msg;
-		gchar			*s;
-
-		if (tweets > 1) {
-			s = _("tweets");
-		} else {
-			s = _("tweet");
-		}
-
-		msg = g_strdup_printf (_("You have %i new %s."), tweets, s);
-
 		if (priv->notification != NULL) {
 			notify_notification_close (priv->notification, NULL);
 		}
@@ -1483,8 +1472,6 @@ twitux_app_show_notification (gint tweets)
 
 		notify_notification_set_timeout (priv->notification, 3000);
 		notify_notification_show (priv->notification, NULL);
-	
-		g_free (msg);
 	}
 }
 

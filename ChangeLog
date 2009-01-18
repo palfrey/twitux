@@ -1,3 +1,9 @@
+2009-01-18  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-app.[ch] (twitux_app_show_notification): 
+	* src/twitux-parser.c (twitux_parser_timeline): 
+	Display messages in notification. (Patch provided by Thomas Thurman)
+
 2009-01-11  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux.h:
