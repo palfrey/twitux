@@ -202,9 +202,7 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 
 	/* Count new tweets */
 	gboolean show_notification = (last_id > 0);
-	gint nTwitts = 0;
 	gint lastTweet = 0;
-	gboolean count = TRUE;
 
 	gboolean s_username;
 	gint tweet_display_delay = 0;
@@ -246,16 +244,6 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 			/* the first tweet parsed is the 'newest' */
 			if (lastTweet == 0){
 				lastTweet = sid;
-			}
-
-			/* Last tweet showed */
-			if (sid == last_id) {
-				count = FALSE;
-			}
-
-			/* Count new tweets */
-			if (count) {
-				nTwitts++;
 			}
 
 			/* Create string for text column */
