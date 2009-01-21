@@ -732,6 +732,7 @@ twitux_app_toggle_visibility (void)
 
 		gtk_window_get_size (GTK_WINDOW (priv->window), &w, &h);
 		gtk_window_get_position (GTK_WINDOW (priv->window), &x, &y);
+		gtk_widget_hide (priv->window);
 
 		twitux_geometry_save_for_main_window (x, y, w, h);
 
@@ -739,20 +740,14 @@ twitux_app_toggle_visibility (void)
 			g_source_remove (priv->size_timeout_id);
 			priv->size_timeout_id = 0;
 		}
-
-		gtk_widget_hide (priv->window);
-
-		twitux_conf_set_bool (twitux_conf_get (),
-							  TWITUX_PREFS_UI_MAIN_WINDOW_HIDDEN,
-							  TRUE);
 	} else {
 		twitux_geometry_load_for_main_window (priv->window);
 		twitux_window_present (GTK_WINDOW (priv->window), TRUE);
-
-		twitux_conf_set_bool (twitux_conf_get (),
-							  TWITUX_PREFS_UI_MAIN_WINDOW_HIDDEN,
-							  FALSE);
 	}
+	/* Save the window visibility state */
+	twitux_conf_set_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_MAIN_WINDOW_HIDDEN,
+						  visible);
 }
 
 void
@@ -1245,7 +1240,6 @@ static void
 app_login (TwituxApp *a)
 {
 	TwituxAppPriv *priv;
-	TwituxConf    *conf;
 
 #ifdef HAVE_DBUS
 	gboolean connected = TRUE;
@@ -1260,8 +1254,6 @@ app_login (TwituxApp *a)
 #endif
 	
 	priv = GET_PRIV (a);
-
-	conf = twitux_conf_get ();
 
 	request_username_password (a);
 
