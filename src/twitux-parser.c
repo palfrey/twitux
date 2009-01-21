@@ -58,37 +58,28 @@ typedef struct
 
 static TwituxUser	*parser_twitux_node_user   (xmlNode     *a_node);
 static TwituxStatus	*parser_twitux_node_status (xmlNode     *a_node);
-static xmlDoc		*parser_twitux_parse       (const char  *cache_file,
+static xmlDoc       *parser_twitux_parse       (const char  *data,
+												gssize       length,
 												xmlNode    **first_element);
 static gchar		*parser_convert_time       (const char	*datetime);
-
 static gboolean      display_notification      (gpointer     tweet);
 
 /* id of the newest tweet showed */
 static gint			last_id = 0;
 
 static xmlDoc*
-parser_twitux_parse (const char  *cache_file,
-		     xmlNode     **first_element)
+parser_twitux_parse (const char  *data,
+					 gssize       length,
+					 xmlNode    **first_element)
 {
 	xmlDoc	*doc = NULL;
 	xmlNode	*root_element = NULL;
 
-	/* Check if file exists (and  if is a file) */
-	if(!g_file_test (cache_file,
-			 G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)){
-		twitux_debug (DEBUG_DOMAIN_SETUP,
-					  "file doesn't exists: %s",
-					  cache_file);
-		return NULL;
-	}
-
 	/* Read the XML */
-	doc = xmlReadFile (cache_file, NULL, 0);
+	doc = xmlReadMemory (data, length, "xml", "UTF-8", 0);
 	if (doc == NULL) {
 		twitux_debug (DEBUG_DOMAIN_SETUP,
-					  "failed reading file: %s",
-					  cache_file);
+					  "failed to read xml data");
 		return NULL;
 	}
 
@@ -96,8 +87,7 @@ parser_twitux_parse (const char  *cache_file,
 	root_element = xmlDocGetRootElement (doc);
 	if (root_element == NULL) {
 		twitux_debug (DEBUG_DOMAIN_SETUP,
-				  "failed getting first element of file: %s",
-				  cache_file);
+					  "failed getting first element of xml data");
 		xmlFreeDoc (doc);
 		return NULL;
 	} else {
@@ -110,7 +100,8 @@ parser_twitux_parse (const char  *cache_file,
 
 /* Parse a user-list XML ( friends, followers,... ) */
 GList *
-twitux_parser_users_list (const gchar *cache_file_uri)
+twitux_parser_users_list (const gchar *data,
+						  gssize       length)
 {
 	xmlDoc		*doc = NULL;
 	xmlNode		*root_element = NULL;
@@ -121,7 +112,7 @@ twitux_parser_users_list (const gchar *cache_file_uri)
 	TwituxUser 	*user;
 
 	/* parse the xml */
-	doc = parser_twitux_parse (cache_file_uri, &root_element);
+	doc = parser_twitux_parse (data, length, &root_element);
 
 	if (!doc) {
 		xmlCleanupParser ();
@@ -152,14 +143,15 @@ twitux_parser_users_list (const gchar *cache_file_uri)
 
 /* Parse a xml user node. Ex: add/del users responses */
 TwituxUser *
-twitux_parser_single_user (const gchar *cache_file_uri)
+twitux_parser_single_user (const gchar *data,
+						   gssize       length)
 {
 	xmlDoc		*doc = NULL;
 	xmlNode		*root_element = NULL;
 	TwituxUser 	*user = NULL;
 	
 	/* parse the xml */
-	doc = parser_twitux_parse (cache_file_uri, &root_element);
+	doc = parser_twitux_parse (data, length, &root_element);
 
 	if (!doc) {
 		xmlCleanupParser ();
@@ -189,7 +181,8 @@ display_notification (gpointer tweet)
 
 /* Parse a timeline XML file */
 gboolean
-twitux_parser_timeline (const gchar *cache_file_uri)
+twitux_parser_timeline (const gchar *data, 
+						gssize       length)
 {
 	xmlDoc		    *doc = NULL;
 	xmlNode		    *root_element = NULL;
@@ -209,7 +202,7 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 	const int tweet_display_interval = 5;
 
 	/* parse the xml */
-	doc = parser_twitux_parse (cache_file_uri, &root_element);
+	doc = parser_twitux_parse (data, length, &root_element);
 
 	if (!doc) {
 		xmlCleanupParser ();
@@ -222,8 +215,8 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 
 	/* Show user names or real names */
 	twitux_conf_get_bool (twitux_conf_get (),
-				  TWITUX_PREFS_TWEETS_SHOW_NAMES,
-				  &s_username);
+						  TWITUX_PREFS_TWEETS_SHOW_NAMES,
+						  &s_username);
 
 	/* get tweets or direct messages */
 	for (cur_node = root_element; cur_node; cur_node = cur_node->next) {
@@ -268,12 +261,12 @@ twitux_parser_timeline (const gchar *cache_file_uri)
 			/* Append to ListStore */
 			gtk_list_store_append (store, &iter);
 			gtk_list_store_set (store, &iter,
-					STRING_TEXT, tweet,
-					STRING_AUTHOR, status->user->name,
-					STRING_DATE, datetime,
-					STRING_TWEET, status->text,
-					STRING_USER, status->user->screen_name,
-					-1);
+								STRING_TEXT, tweet,
+								STRING_AUTHOR, status->user->name,
+								STRING_DATE, datetime,
+								STRING_TWEET, status->text,
+								STRING_USER, status->user->screen_name,
+								-1);
 			
 			/* Free the text column string */
 			g_free (tweet);

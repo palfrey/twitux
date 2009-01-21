@@ -33,14 +33,17 @@ typedef struct {
 
 
 /* Returns a liststore for the main treeview to show tweets */
-gboolean twitux_parser_timeline (const gchar *cache_file_uri);
+gboolean twitux_parser_timeline (const gchar *data, 
+								 gssize       length);
 
 /* Returns a Glist with friends. Can be used to 
    build the friends menu, on direct messages dialog, etc.. */
-GList *twitux_parser_users_list (const gchar *cache_file_uri);
+GList *twitux_parser_users_list (const gchar *data,
+								 gssize       length);
 
 /* Parse a xml user node. Ex: add/del users responses */
-TwituxUser *twitux_parser_single_user (const gchar *cache_file_uri);
+TwituxUser *twitux_parser_single_user (const gchar *data,
+									   gssize       length);
 
 /* To free a User struct */
 void parser_free_user (TwituxUser *user);

@@ -55,8 +55,6 @@ static void network_post_data		(const gchar           *url,
 									 gchar                 *formdata,
 									 SoupSessionCallback    callback);
 static gboolean	network_check_http 	(gint                   status_code);
-static gchar *network_save_data		(SoupMessage           *msg,
-									 const char            *file);
 static void network_parser_free_lists (void);
 
 /* libsoup callbacks */
@@ -128,7 +126,7 @@ twitux_network_new (void)
 						  TWITUX_PROXY_USE,
 						  &check_proxy);
 
-	if(check_proxy) {
+	if (check_proxy) {
 		gchar *server, *proxy_uri;
 		gint port;
 
@@ -264,6 +262,7 @@ twitux_network_post_status (const gchar *text)
 	network_post_data (TWITUX_API_POST_STATUS,
 					   formdata,
 					   network_cb_on_post);
+	g_free (formdata);
 }
 
 
@@ -279,6 +278,7 @@ twitux_network_send_message (const gchar *friend,
 	network_post_data (TWITUX_API_SEND_MESSAGE,
 					   formdata,
 					   network_cb_on_message);
+	g_free (formdata);
 }
 
 void
@@ -410,8 +410,10 @@ twitux_network_get_image (const gchar  *url_image,
 	}
 
 	image = g_new0 (TwituxImage, 1);
-	image->src  = image_file;
+	image->src  = g_strdup (image_file);
 	image->iter = iter;
+
+	g_free (image_file);
 
 	/* Note: 'image' will be freed in 'network_cb_on_image' */
 	network_get_data (url_image, network_cb_on_image, image);
@@ -520,35 +522,6 @@ network_check_http (gint status_code)
 	
 	return FALSE;
 }
-
-
-/* Save data to disk */
-static gchar *
-network_save_data (SoupMessage *msg,
-                   const char  *file)
-{
-	gchar *tmp_file = NULL;
-
-	/* File dir */
-	tmp_file = g_build_filename (g_get_home_dir (), ".gnome2", file, NULL);
-
-	twitux_debug (DEBUG_DOMAIN, "Saving data to: %s", tmp_file);
-
-	/* Save */
-	if (g_file_set_contents (tmp_file,
-							 msg->response_body->data,
-							 msg->response_body->length,
-							 NULL)) {
-		return tmp_file;
-	}
-	
-	twitux_app_set_statusbar_msg (_("Failed to save cache file."));
-
-	g_free (tmp_file);
-
-	return NULL;
-}
-
 
 /* Callback to free every element on a User list */
 static void
@@ -662,7 +635,6 @@ network_cb_on_timeline (SoupSession *session,
 						SoupMessage *msg,
 						gpointer     user_data)
 {
-	gchar        *file;
 	gchar        *new_timeline = NULL;
 	
 	if (user_data){
@@ -684,15 +656,10 @@ network_cb_on_timeline (SoupSession *session,
 		return;
 	}
 
-	/* Save */
-	file = network_save_data (msg, TWITUX_CACHE_FILE);
-	if (!file)
-		return;
-
-	twitux_debug (DEBUG_DOMAIN, "Parsing timeline: %s",file);
+	twitux_debug (DEBUG_DOMAIN, "Parsing timeline");
 
 	/* Parse and set ListStore */
-	if (twitux_parser_timeline (file)) {
+	if (twitux_parser_timeline (msg->response_body->data, msg->response_body->length)) {
 		twitux_app_set_statusbar_msg (_("Timeline Loaded"));
 
 		if (new_timeline){
@@ -706,8 +673,6 @@ network_cb_on_timeline (SoupSession *session,
 
 	if (new_timeline)
 		g_free (new_timeline);
-
-	g_free (file);
 }
 
 
@@ -719,7 +684,6 @@ network_cb_on_users (SoupSession *session,
 {
 	gboolean  friends = GPOINTER_TO_INT(user_data);
 	GList    *users;
-	gchar    *file;
 		
 	twitux_debug (DEBUG_DOMAIN,
 				  "Users response: %i",msg->status_code);
@@ -727,16 +691,12 @@ network_cb_on_users (SoupSession *session,
 	/* Check response */
 	if (!network_check_http (msg->status_code))
 		return;
-	
-	/* Save */
-	file = network_save_data (msg, TWITUX_CACHE_USERS);
-	if (!file)
-		return;
 
 	/* parse user list */
-	twitux_debug (DEBUG_DOMAIN, "Parsing user list: %s",file);
+	twitux_debug (DEBUG_DOMAIN, "Parsing user list");
 
-	users = twitux_parser_users_list (file);
+	users = twitux_parser_users_list (msg->response_body->data,
+									  msg->response_body->length);
 
 	/* check if it ok, and if it is a followers or following list */
 	if (users && friends){
@@ -750,8 +710,6 @@ network_cb_on_users (SoupSession *session,
 	} else {
 		twitux_app_set_statusbar_msg (_("Users parser error."));
 	}
-
-	g_free (file);
 }
 
 
@@ -790,7 +748,6 @@ network_cb_on_add (SoupSession *session,
 				   gpointer     user_data)
 {
 	TwituxUser *user;
-	gchar *file;
 
 	twitux_debug (DEBUG_DOMAIN,
 				  "Add user response: %i", msg->status_code);
@@ -799,15 +756,11 @@ network_cb_on_add (SoupSession *session,
 	if (!network_check_http (msg->status_code))
 		return;
 
-	/* Save */
-	file = network_save_data (msg, TWITUX_CACHE_USERS);
-	if (!file)
-		return;
-
 	/* parse new user */
-	twitux_debug (DEBUG_DOMAIN, "Parsing new user: %s",file);
+	twitux_debug (DEBUG_DOMAIN, "Parsing new user");
 
-	user = twitux_parser_single_user (file);
+	user = twitux_parser_single_user (msg->response_body->data,
+									  msg->response_body->length);
 
 	if (user) {
 		user_friends = g_list_append ( user_friends, user );
@@ -815,8 +768,6 @@ network_cb_on_add (SoupSession *session,
 	} else {
 		twitux_app_set_statusbar_msg (_("Failed to add user"));
 	}
-	
-	g_free (file);
 }
 
 
@@ -859,7 +810,8 @@ network_timeout_new (void)
 						 TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
 						 &minutes);
 
-	if (minutes == 0){
+	/* The timeline reload interval shouldn't be less than 3 minutes */
+	if (minutes < 3) {
 		minutes = 3;
 	}
 

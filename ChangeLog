@@ -1,3 +1,10 @@
+2009-01-21  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-network.c:
+	* src/twitux-parser.[ch]: 
+	Load the timeline from memory, and don't bother saving
+	a local copy. Plug a few memory leaks also.
+
 2009-01-18  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-app.[ch] (twitux_app_show_notification): 
