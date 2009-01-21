@@ -262,7 +262,6 @@ twitux_network_post_status (const gchar *text)
 	network_post_data (TWITUX_API_POST_STATUS,
 					   formdata,
 					   network_cb_on_post);
-	g_free (formdata);
 }
 
 
@@ -278,7 +277,6 @@ twitux_network_send_message (const gchar *friend,
 	network_post_data (TWITUX_API_SEND_MESSAGE,
 					   formdata,
 					   network_cb_on_message);
-	g_free (formdata);
 }
 
 void
@@ -402,7 +400,7 @@ twitux_network_get_image (const gchar  *url_image,
 								   image_name, NULL);
 
 	/* check if image already exists */
-	if(g_file_test (image_file, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)) {		
+	if (g_file_test (image_file, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)) {		
 		/* Set image from file here */
 		twitux_app_set_image (image_file, iter);
 		g_free (image_file);

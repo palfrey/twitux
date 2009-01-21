@@ -70,8 +70,6 @@ G_BEGIN_DECLS
 
 /* File storage */
 #define TWITUX_DIRECTORY                      "twitux"
-#define TWITUX_CACHE_FILE                     TWITUX_DIRECTORY "/parser.xml"
-#define TWITUX_CACHE_USERS                    TWITUX_DIRECTORY "/userslist.xml"
 #define TWITUX_CACHE_IMAGES                   TWITUX_DIRECTORY "/avatars"
 
 /* ListStore columns */
