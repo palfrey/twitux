@@ -104,9 +104,6 @@ struct _TwituxAppPriv {
 	char              *username;
 	char              *password;
 
-	/* Notify */
-	NotifyNotification *notification;
-
 	/* Misc */
 	guint              size_timeout_id;
 	
@@ -1448,22 +1445,24 @@ twitux_app_show_notification (gchar *msg)
 	}
 
 	if (notify) {
-		if (priv->notification != NULL) {
-			notify_notification_close (priv->notification, NULL);
+		NotifyNotification *notification;
+		GError             *error = NULL;
+
+		notification = notify_notification_new (PACKAGE_NAME,
+												msg,
+												"twitux",
+												NULL);
+
+		notify_notification_set_timeout (notification, 10 * 1000);
+		notify_notification_show (notification, &error);
+
+		if (error) {
+			twitux_debug (DEBUG_DOMAIN_SETUP,
+						  "Error displaying notification: %s",
+						  error->message);
+			g_error_free (error);
 		}
-
-		priv->notification =
-			notify_notification_new_with_status_icon (PACKAGE_NAME,
-													  msg,
-													  NULL,
-													  priv->status_icon);
-
-		g_object_set(priv->notification,
-					 "icon-name", "twitux",
-					 NULL);
-
-		notify_notification_set_timeout (priv->notification, 3000);
-		notify_notification_show (priv->notification, NULL);
+		g_object_unref (G_OBJECT (notification));
 	}
 }
 
