@@ -4,6 +4,7 @@ NEW in 0.69:
 - Use https, not http api. (Evan McClain)
 - Fix incorrect pluralising of relative time. (Deskin Miller)
 - Fix the double-escaping of < and >. (Mike Lundy)
+- Fixed #1961611, character count behavior. (Brian Pepple)
 
 NEW in 0.68:
 ==============

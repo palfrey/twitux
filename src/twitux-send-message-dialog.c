@@ -160,7 +160,7 @@ message_setup (GtkWindow  *parent)
 	/* Set the label */
 	standard_msg = _("Characters Available");
 	character_count =
-		g_markup_printf_escaped ("<span size=\"small\">%s: <span foreground=\"black\">%i</span></span>",
+		g_markup_printf_escaped ("<span size=\"small\">%s: %i</span>",
 								 standard_msg, MAX_CHARACTER_COUNT);
 	gtk_label_set_markup (GTK_LABEL (priv->label), character_count);
 	g_free (character_count);
@@ -338,9 +338,6 @@ message_set_characters_available (GtkTextBuffer     *buffer,
 	i = gtk_text_buffer_get_char_count (buffer);
 
 	count = MAX_CHARACTER_COUNT - i;
-	if (count < 0) {
-		count = 0;
-	}
 
 	standard_msg = _("Characters Available");
 
@@ -351,7 +348,7 @@ message_set_characters_available (GtkTextBuffer     *buffer,
 		gtk_widget_set_sensitive (priv->send_button, FALSE);
 	} else {
 		character_count =
-			g_markup_printf_escaped ("<span size=\"small\">%s: <span foreground=\"black\">%i</span></span>",
+			g_markup_printf_escaped ("<span size=\"small\">%s: %i</span>",
 									 standard_msg, count);
 		gtk_widget_set_sensitive (priv->send_button, TRUE);
 	}

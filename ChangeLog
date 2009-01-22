@@ -1,4 +1,9 @@
 2009-01-21  Brian Pepple  <bpepple@fedoraproject.org>
+	
+	* src/twitux-send-message-dialog.c (message_set_characters_available):
+	Show character count over the 140 character maximum as '-n'. (#1961611)
+
+2009-01-21  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-network.c:
 	* src/twitux-parser.[ch]: 
