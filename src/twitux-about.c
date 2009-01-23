@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
- * Copyright (C) 2007-2008 Brian Pepple <bpepple@fedoraproject.org>
+ * Copyright (C) 2007-2009 Brian Pepple <bpepple@fedoraproject.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -77,7 +77,7 @@ twitux_about_dialog_new (GtkWindow *parent)
 						   "authors", authors,
 						   "artists", artists,
 						   "comments", _("A GNOME client for Twitter."),
-						   "copyright", _("Copyright \xc2\xa9 2007-2008 Daniel Morales"),
+						   "copyright", _("Copyright \xc2\xa9 2007-2009 Daniel Morales"),
 						   "license", license_trans,
 						   "translator-credits", _("translator-credits"),
 						   "version", PACKAGE_VERSION,
