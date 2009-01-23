@@ -1415,15 +1415,9 @@ twitux_app_set_statusbar_msg (gchar *message)
 void
 twitux_app_show_notification (gchar *msg)
 {
-	TwituxAppPriv	*priv;
 	TwituxConf      *conf;
 	gboolean		 notify;
 	gboolean         sound;
-
-	priv = GET_PRIV (app);
-
-	if (!gtk_status_icon_is_embedded (priv->status_icon))
-		return;
 
 	/* Check preferences */
 	conf = twitux_conf_get ();
