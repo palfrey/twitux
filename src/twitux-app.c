@@ -1447,7 +1447,7 @@ twitux_app_show_notification (gchar *msg)
 												"twitux",
 												NULL);
 
-		notify_notification_set_timeout (notification, 10 * 1000);
+		notify_notification_set_timeout (notification, 8 * 1000);
 		notify_notification_show (notification, &error);
 
 		if (error) {
