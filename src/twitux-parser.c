@@ -172,7 +172,7 @@ twitux_parser_single_user (const gchar *data,
 static gboolean
 display_notification (gpointer tweet)
 {
-	twitux_app_show_notification (tweet);
+	twitux_app_notify (tweet);
 	g_free (tweet);
 
 	return FALSE;
@@ -184,22 +184,27 @@ gboolean
 twitux_parser_timeline (const gchar *data, 
 						gssize       length)
 {
-	xmlDoc		    *doc = NULL;
+	xmlDoc		    *doc          = NULL;
 	xmlNode		    *root_element = NULL;
-	xmlNode		    *cur_node = NULL;
+	xmlNode		    *cur_node     = NULL;
 
-	GtkListStore 	*store = NULL;
+	GtkListStore 	*store        = NULL;
 	GtkTreeIter	     iter;
 
 	TwituxStatus 	*status;
 
 	/* Count new tweets */
-	gboolean show_notification = (last_id > 0);
-	gint lastTweet = 0;
+	gboolean         show_notification = (last_id > 0);
+	gint             lastTweet = 0;
+    /*
+	 * On multiple tweet updates we only want to 
+	 * play the sound notification once.
+	 */
+    gboolean         multiple_new_tweets = FALSE;
 
-	gboolean s_username;
-	gint tweet_display_delay = 0;
-	const int tweet_display_interval = 5;
+	gboolean         show_username;
+	gint             tweet_display_delay = 0;
+	const int        tweet_display_interval = 5;
 
 	/* parse the xml */
 	doc = parser_twitux_parse (data, length, &root_element);
@@ -216,7 +221,7 @@ twitux_parser_timeline (const gchar *data,
 	/* Show user names or real names */
 	twitux_conf_get_bool (twitux_conf_get (),
 						  TWITUX_PREFS_TWEETS_SHOW_NAMES,
-						  &s_username);
+						  &show_username);
 
 	/* get tweets or direct messages */
 	for (cur_node = root_element; cur_node; cur_node = cur_node->next) {
@@ -227,7 +232,7 @@ twitux_parser_timeline (const gchar *data,
 		    g_str_equal (cur_node->name, "direct_message")) {
 			gchar *tweet;
 			gchar *datetime;
-			gint sid;
+			gint   sid;
 
 			/* Parse node */
 			status = parser_twitux_node_status (cur_node->children);
@@ -242,15 +247,16 @@ twitux_parser_timeline (const gchar *data,
 			/* Create string for text column */
 			datetime = parser_convert_time (status->created_at);
 			tweet = g_strconcat ("<b>",
-					     (s_username ? status->user->screen_name:status->user->name),
-					     "</b> - ",
-					     datetime, "\n",
-					     "<small>",
-					     status->text,
-					     "</small>",
-					     NULL);
+								 (show_username ? status->user->screen_name:status->user->name),
+								 "</b> - ", datetime, "\n",
+								 "<small>", status->text, "</small>",
+								 NULL);
 			
 			if (sid > last_id && show_notification) {
+				if (multiple_new_tweets != TRUE) {
+					twitux_app_notify_sound ();
+					multiple_new_tweets = TRUE;
+				}
 				g_timeout_add_seconds (tweet_display_delay,
 									   display_notification,
 									   g_strdup (tweet));
@@ -305,7 +311,6 @@ twitux_parser_timeline (const gchar *data,
 
 	return TRUE;
 }
-
 
 static TwituxUser *
 parser_twitux_node_user (xmlNode *a_node)

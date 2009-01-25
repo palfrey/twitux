@@ -63,10 +63,9 @@ void				twitux_app_set_visibility				(gboolean	   visible);
 void				twitux_app_set_statusbar_msg	        (gchar        *message);
 void				twitux_app_set_friends	                (GList        *friends);
 void				twitux_app_add_friend                   (TwituxUser   *user);
-void				twitux_app_show_notification			(gchar        *msg);
-
+void                twitux_app_notify_sound                 (void);
+void				twitux_app_notify                       (gchar        *msg);
 void                twitux_app_state_on_connection          (gboolean      connected);
-
 void                twitux_app_set_image                    (const gchar  *file,
                                                              GtkTreeIter   iter);
 void                twitux_app_expand_message               (const gchar  *name,

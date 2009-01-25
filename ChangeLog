@@ -1,3 +1,10 @@
+2009-01-24  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-app.[ch] (twitux_app_notify_sound): 
+	* src/twitux-parser.c (twitux_parser_timeline): 
+	Move the sound notification to a seperate function,
+	so that we don't play sound for each new tweet.
+
 2009-01-22  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-app.c (twitux_app_show_notification):

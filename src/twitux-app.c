@@ -1413,21 +1413,13 @@ twitux_app_set_statusbar_msg (gchar *message)
 }
 
 void
-twitux_app_show_notification (gchar *msg)
+twitux_app_notify_sound (void)
 {
-	TwituxConf      *conf;
-	gboolean		 notify;
-	gboolean         sound;
+	gboolean sound;
 
-	/* Check preferences */
-	conf = twitux_conf_get ();
-	twitux_conf_get_bool (conf,
-						  TWITUX_PREFS_UI_NOTIFICATION,
-						  &notify);
-
-	twitux_conf_get_bool (conf,
+	twitux_conf_get_bool (twitux_conf_get (),
 						  TWITUX_PREFS_UI_SOUND,
-						  &sound);	
+						  &sound);
 
 	if (sound) {
 		ca_context_play (ca_gtk_context_get (),
@@ -1437,6 +1429,16 @@ twitux_app_show_notification (gchar *msg)
 						 CA_PROP_EVENT_DESCRIPTION, _("New tweet received"),
 						 NULL);
 	}
+}
+
+void
+twitux_app_notify (gchar *msg)
+{
+	gboolean notify;
+
+	twitux_conf_get_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_NOTIFICATION,
+						  &notify);
 
 	if (notify) {
 		NotifyNotification *notification;
