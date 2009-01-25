@@ -1,3 +1,7 @@
+2009-01-25  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* Release 0.69.
+
 2009-01-24  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-app.[ch] (twitux_app_notify_sound): 
