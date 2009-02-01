@@ -1,3 +1,8 @@
+2009-01-31  Daniel Morales  <daniminas@gmail.com>
+
+	* src/twitux-network.c: Bugfix to Add/Remove friends methods,
+	that are not working at all (#2109409 and LP #).
+
 2009-01-25  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* Release 0.69.

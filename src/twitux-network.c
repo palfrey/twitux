@@ -53,7 +53,8 @@ static void network_get_data		(const gchar           *url,
 									 gpointer               data);
 static void network_post_data		(const gchar           *url,
 									 gchar                 *formdata,
-									 SoupSessionCallback    callback);
+									 SoupSessionCallback    callback,
+									 gpointer               data);
 static gboolean	network_check_http 	(gint                   status_code);
 static void network_parser_free_lists (void);
 
@@ -261,7 +262,8 @@ twitux_network_post_status (const gchar *text)
 
 	network_post_data (TWITUX_API_POST_STATUS,
 					   formdata,
-					   network_cb_on_post);
+					   network_cb_on_post,
+					   NULL);
 }
 
 
@@ -276,7 +278,8 @@ twitux_network_send_message (const gchar *friend,
 	
 	network_post_data (TWITUX_API_SEND_MESSAGE,
 					   formdata,
-					   network_cb_on_message);
+					   network_cb_on_message,
+					   NULL);
 }
 
 void
@@ -430,7 +433,7 @@ twitux_network_add_user (const gchar *username)
 	
 	url = g_strdup_printf (TWITUX_API_FOLLOWING_ADD, username);
 
-	network_get_data (url, network_cb_on_add, NULL);
+	network_post_data (url, NULL, network_cb_on_add, NULL);
 
 	g_free (url);
 }
@@ -447,7 +450,7 @@ twitux_network_del_user (TwituxUser *user)
 	
 	url = g_strdup_printf (TWITUX_API_FOLLOWING_DEL, user->screen_name);
 
-	network_get_data (url, network_cb_on_del, user);
+	network_post_data (url, NULL, network_cb_on_del, user);
 
 	g_free (url);
 }
@@ -473,7 +476,8 @@ network_get_data (const gchar           *url,
 static void
 network_post_data (const gchar           *url,
 				   gchar                 *formdata,
-				   SoupSessionCallback    callback)
+				   SoupSessionCallback    callback,
+				   gpointer               data)
 {
 	SoupMessage *msg;
 
@@ -488,13 +492,16 @@ network_post_data (const gchar           *url,
 	soup_message_headers_append (msg->request_headers,
 								 "X-Twitter-Client-URL", TWITUX_HEADER_URL);
 
-	soup_message_set_request (msg, 
-							  "application/x-www-form-urlencoded",
-							  SOUP_MEMORY_TAKE,
-							  formdata,
-							  strlen (formdata));
+	if (formdata)
+	{
+		soup_message_set_request (msg, 
+								  "application/x-www-form-urlencoded",
+								  SOUP_MEMORY_TAKE,
+								  formdata,
+								  strlen (formdata));
+	}
 
-	soup_session_queue_message (soup_connection, msg, callback, NULL);
+	soup_session_queue_message (soup_connection, msg, callback, data);
 }
 
 
