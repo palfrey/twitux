@@ -9,3 +9,5 @@ DOC_FIGURES = 					\
 
 DOC_LINGUAS =
 
+DESTDIR = $(localstatedir)
+
