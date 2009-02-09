@@ -93,6 +93,9 @@ static void network_cb_on_auth		(SoupSession           *session,
 static gboolean 	network_timeout			(gpointer user_data);
 static void			network_timeout_new		(void);
 
+static gint
+network_hourly_limit 	(void);
+
 static SoupSession			*soup_connection = NULL;
 static GList				*user_friends = NULL;
 static GList				*user_followers = NULL;
@@ -101,6 +104,7 @@ static gchar				*current_timeline = NULL;
 static guint				 timeout_id;
 static gchar                *global_username = NULL;
 static gchar                *global_password = NULL;
+static gint				hourly_limit = 100; // standard twitter limit, assume by default
 
 /* This function must be called at startup */
 void
@@ -775,6 +779,24 @@ network_cb_on_add (SoupSession *session,
 	}
 }
 
+static void
+network_cb_on_limit (SoupSession *session,
+				   SoupMessage *msg,
+				   gpointer     user_data)
+{
+	/* Check response */
+	if (!network_check_http (msg->status_code))
+		return;
+
+	/* parse new user */
+	twitux_debug (DEBUG_DOMAIN, "Parsing hourly limit");
+
+	hourly_limit = twitux_parser_hourly_limit (msg->response_body->data,
+									  msg->response_body->length);
+
+	if (hourly_limit > 1000) /* crazy numbers */
+		hourly_limit = 1000;
+}
 
 /* On remove a user */
 static void
@@ -814,14 +836,28 @@ network_timeout_new (void)
 	twitux_conf_get_int (twitux_conf_get (),
 						 TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
 						 &minutes);
+	if (minutes == -1)
+	{
+		gint limit;
+		limit = network_hourly_limit();
 
-	/* The timeline reload interval shouldn't be less than 3 minutes */
-	if (minutes < 3) {
-		minutes = 3;
+		if (limit == -1)
+			limit = 5; /* pick 'small' number if limit is -1 as this indicates we're updating too fast */
+		else
+		{
+			/* Limit grabbing to 2/3rds of max possible rate */
+			limit *=2;
+			limit /=3;
+		}
+
+		reload_time = (60*60*1000)/limit;
+		if (reload_time < 20000) /* less than 20 seconds. Probably still too low, but traps some of the crazier cases */
+			reload_time = 20000;
+		twitux_debug (DEBUG_DOMAIN,
+				"Limit is %d, reload time is %d",limit,reload_time);
 	}
-
-	/* This should be the number of milliseconds */
-	reload_time = minutes * 60 * 1000;
+	else
+		reload_time = minutes * 60 * 1000;
 
 	timeout_id = g_timeout_add (reload_time,
 								network_timeout,
@@ -850,3 +886,11 @@ network_timeout (gpointer user_data)
 
 	return FALSE;
 }
+
+static gint
+network_hourly_limit 	(void)
+{
+	network_get_data (TWITUX_API_RATE_LIMIT, network_cb_on_limit, NULL);
+	return hourly_limit; // is set to default twitter limit to start with
+}
+

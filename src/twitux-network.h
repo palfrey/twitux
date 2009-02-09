@@ -41,6 +41,8 @@
 
 #define TWITUX_API_LOGIN		"https://twitter.com/account/verify_credentials.xml"
 
+#define TWITUX_API_RATE_LIMIT "https://twitter.com/account/rate_limit_status.xml"
+
 /* Verify user credentials */
 void twitux_network_login		(const char *username, 
 								 const char *password);
@@ -80,6 +82,9 @@ void twitux_network_add_user		(const gchar *username);
 
 /* Remove a user */
 void twitux_network_del_user		(TwituxUser *user);
+
+/* Check hourly limit */
+guint twitux_network_hourly_limit 	(void);
 
 /* Networking */
 void twitux_network_new			(void);
