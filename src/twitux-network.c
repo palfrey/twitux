@@ -102,7 +102,7 @@ static GList				*user_followers = NULL;
 static gboolean				 processing = FALSE;
 static gchar				*current_timeline = NULL;
 static guint				 timeout_id;
-static gchar                *global_username = NULL;
+gchar                *global_username = NULL;
 static gchar                *global_password = NULL;
 static gint				hourly_limit = 100; // standard twitter limit, assume by default
 

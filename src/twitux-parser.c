@@ -202,6 +202,7 @@ twitux_parser_timeline (const gchar *data,
 	 */
     gboolean         multiple_new_tweets = FALSE;
 
+	gboolean         self_notify;
 	gboolean         show_username;
 	gint             tweet_display_delay = 0;
 	const int        tweet_display_interval = 5;
@@ -222,6 +223,11 @@ twitux_parser_timeline (const gchar *data,
 	twitux_conf_get_bool (twitux_conf_get (),
 						  TWITUX_PREFS_TWEETS_SHOW_NAMES,
 						  &show_username);
+
+	/* Show our own updates */
+	twitux_conf_get_bool (twitux_conf_get (),
+						  TWITUX_PREFS_UI_SELF_NOTIFICATION,
+						  &self_notify);
 
 	/* get tweets or direct messages */
 	for (cur_node = root_element; cur_node; cur_node = cur_node->next) {
@@ -252,7 +258,7 @@ twitux_parser_timeline (const gchar *data,
 								 "<small>", status->text, "</small>",
 								 NULL);
 			
-			if (sid > last_id && show_notification) {
+			if (sid > last_id && show_notification && (self_notify || !g_str_equal(status->user->screen_name,global_username)!=0)) {
 				if (multiple_new_tweets != TRUE) {
 					twitux_app_notify_sound ();
 					multiple_new_tweets = TRUE;

@@ -93,5 +93,6 @@ void twitux_network_close		(void);
 
 void twitux_network_stop		(void);
 
+extern gchar                *global_username;
 
 #endif /*  __TWITUX_NETWORK_H__ */
