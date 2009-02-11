@@ -51,6 +51,7 @@ typedef struct {
 	GtkWidget *expand;
 	GtkWidget *autoconnect;
 	GtkWidget *notify;
+	GtkWidget *self_notify;
 	GtkWidget *sound;
 	GtkWidget *names;
 	GtkWidget *spell;
@@ -162,6 +163,10 @@ preferences_setup_widgets (TwituxPrefs *prefs)
 	preferences_hookup_toggle_button (prefs,
 									  TWITUX_PREFS_UI_NOTIFICATION,
 									  prefs->notify);
+
+	preferences_hookup_toggle_button (prefs,
+									  TWITUX_PREFS_UI_SELF_NOTIFICATION,
+									  prefs->self_notify);
 
 	preferences_hookup_toggle_button (prefs,
 									  TWITUX_PREFS_UI_SOUND,
@@ -797,6 +802,13 @@ preferences_int_combo_changed_cb (GtkWidget *combo,
 }
 
 static void
+preferences_self_valid_cb (GtkWidget   *widget,
+						 TwituxPrefs *prefs)
+{
+	gtk_widget_set_sensitive(prefs->self_notify, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (prefs->notify)) || gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (prefs->sound)));
+}
+
+static void
 preferences_response_cb (GtkWidget   *widget,
 						 gint         response,
 						 TwituxPrefs *prefs)
@@ -842,6 +854,7 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 							  "expand_checkbutton", &prefs->expand,
 							  "autoconnect_checkbutton", &prefs->autoconnect,
 							  "notify_checkbutton", &prefs->notify,
+							  "self_checkbutton", &prefs->self_notify,
 							  "names_checkbutton", &prefs->names,
 							  "spell_checkbutton", &prefs->spell,
 							  "sound_checkbutton", &prefs->sound,
@@ -854,8 +867,6 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 						"preferences_dialog", "response", preferences_response_cb,
 						NULL);
 
-	g_object_unref (ui);
-
 	g_object_add_weak_pointer (G_OBJECT (prefs->dialog), (gpointer) &prefs);
 	gtk_window_set_transient_for (GTK_WINDOW (prefs->dialog), parent);
 
@@ -864,6 +875,13 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 	preferences_reload_setup (prefs);
 
 	preferences_setup_widgets (prefs);
+
+	twitux_xml_connect (ui, prefs,
+						"notify_checkbutton", "toggled", preferences_self_valid_cb,
+						"sound_checkbutton", "toggled", preferences_self_valid_cb,
+						NULL);
+	preferences_self_valid_cb(NULL, prefs); // initialise the self pref
+	g_object_unref (ui);
 
 	preferences_languages_setup (prefs);
 	preferences_languages_add (prefs);
