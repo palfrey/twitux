@@ -66,6 +66,7 @@
 #define DEBUG_QUIT
 
 #define TYPE_TWITTER "twitter"
+#define MAX_SIZE 75
 
 struct _TwituxAppPriv {
 	/* Main widgets */
@@ -1469,8 +1470,25 @@ twitux_app_set_image (const gchar *file,
 	GtkListStore *store;
 	GdkPixbuf	 *pixbuf, *resized;
 	GError		 *error = NULL;
+	int height, width;
 
 	pixbuf = gdk_pixbuf_new_from_file (file, &error);
+	height = gdk_pixbuf_get_height(pixbuf);
+	width = gdk_pixbuf_get_width(pixbuf); 
+
+	if (height > MAX_SIZE || width > MAX_SIZE)
+	{
+		double ratio;
+		GdkPixbuf *scaled;
+
+		ratio = width/(height*1.0);
+		if (ratio >= 1.0) /* width is bigger */
+			scaled = gdk_pixbuf_scale_simple(pixbuf, MAX_SIZE, MAX_SIZE/ratio, GDK_INTERP_BILINEAR);
+		else
+			scaled = gdk_pixbuf_scale_simple(pixbuf, MAX_SIZE*ratio, MAX_SIZE, GDK_INTERP_BILINEAR);
+		g_object_unref(pixbuf);
+		pixbuf = scaled;
+	}
 
 	if (!pixbuf){
 		twitux_debug (DEBUG_DOMAIN_SETUP, "Image error: %s: %s",
