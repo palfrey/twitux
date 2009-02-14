@@ -1,3 +1,8 @@
+2009-02-13  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* Makefile.am:
+	Remove intltool-* from Makefile.am to make it work with newer intltool.
+
 2009-02-11  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* src/twitux-app.c:
