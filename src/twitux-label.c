@@ -150,6 +150,45 @@ do_twitter(GString *s, guint start)
 }
 
 static guint
+do_hashtag(GString *s, guint start)
+{
+	gssize end = 0;
+	gssize i;
+
+	for (i = start+1; s->str[i]; ++i) {
+		if (!(g_ascii_isalnum(s->str[i]) || s->str[i] == '_')) {
+			end = i;
+			break;
+		}
+	}
+	
+	if (end == 0) {
+		char *name = g_strdup(&s->str[start+1]);
+		g_string_truncate(s, start);
+		g_string_append_printf (s, "<a href=\"http://hashtags.org/tag/%s\">#%s</a>",
+							 name,
+							 name);
+		g_free(name);
+		return s->len;
+	} else {
+		guint ret;
+		char *name = (char*)g_malloc(end-start), *temp;
+		g_strlcpy(name, &s->str[start+1], end-start);
+
+		temp =
+			g_strdup_printf ("<a href=\"http://hashtags.org/tag/%s\">#%s</a>",
+							 name, name);
+		free(name);
+		g_string_erase(s, start, end-start);
+		g_string_insert(s, start, temp);
+		ret = start+strlen(temp);
+		g_free(temp);
+		return ret;
+	}
+}
+
+
+static guint
 do_url(GString *s, guint start)
 {
 	gssize end = -1;
@@ -215,6 +254,7 @@ label_msg_get_string (const char* message)
 		{ D("ftp://", do_url) },
 		{ D("http://", do_url) },
 		{ D("https://", do_url) },
+		{ D("#", do_hashtag) },
 	};
 #undef D
 	
