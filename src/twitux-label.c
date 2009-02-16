@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
  * Copyright (C) 2007-2008 Daniel Morales <daniminas@gmail.com>
  *
@@ -28,9 +27,12 @@
 #include <gio/gio.h>
 #include <libsexy/sexy-url-label.h>
 
+#include <libtwitux/twitux-debug.h>
 #include "twitux.h"
 #include "twitux-label.h"
 #include "twitux-network.h"
+
+#define DEBUG_DOMAIN	  "Label"
 
 static void   twitux_label_class_init   (TwituxLabelClass *clas);
 static void   twitux_label_init         (TwituxLabel      *label);
@@ -109,108 +111,131 @@ twitux_label_set_text (TwituxLabel  *nav,
 	g_free (parsed_text);
 }
 
-static gboolean
-url_check_word (char *word, int len)
+static guint
+do_twitter(GString *s, guint start)
 {
-#define D(x) (x), ((sizeof (x)) - 1)
-	static const struct {
-		const char *s;
-		gint        len;
-	}
-	
-	prefix[] = {
-		{ D("ftp.") },
-		{ D("www.") },
-		{ D("ftp://") },
-		{ D("http://") },
-		{ D("https://") },
-		{ D("@") },
-	};
-#undef D
-
-	gint 		i;
-	
-	for (i = 0; i < G_N_ELEMENTS(prefix); i++) {
-		int l;
-
-		l = prefix[i].len;
-		if (len > l) {
-			gint j;
-
-			/* This is pretty much strncasecmp(). */
-			for (j = 0; j < l; j++)	{
-				unsigned char c = word[j];
-				
-				if (g_ascii_tolower (c) != prefix[i].s[j])
-					break;
-			}
-			if (j == l)
-				return TRUE;
-		}
-	}
-	
-	return FALSE;
-}
-
-static gssize
-find_first_non_username(const char *str)
-{
+	gssize end = 0;
 	gssize i;
 
-	for (i = 0; str[i]; ++i) {
-		if (!(g_ascii_isalnum(str[i]) || str[i] == '_')) {
-			return i;
+	for (i = start+1; s->str[i]; ++i) {
+		if (!(g_ascii_isalnum(s->str[i]) || s->str[i] == '_')) {
+			end = i;
+			break;
 		}
 	}
-	return -1;
+	
+	if (end == 0) {
+		char *name = g_strdup(&s->str[start+1]);
+		g_string_truncate(s, start);
+		g_string_append_printf (s, "<a href=\"http://twitter.com/%s\">@%s</a>",
+							 name,
+							 name);
+		g_free(name);
+		return s->len;
+	} else {
+		guint ret;
+		char *name = (char*)g_malloc(end-start), *temp;
+		g_strlcpy(name, &s->str[start+1], end-start);
+
+		temp =
+			g_strdup_printf ("<a href=\"http://twitter.com/%s\">@%s</a>",
+							 name, name);
+		free(name);
+		g_string_erase(s, start, end-start);
+		g_string_insert(s, start, temp);
+		ret = start+strlen(temp);
+		g_free(temp);
+		return ret;
+	}
+}
+
+static guint
+do_url(GString *s, guint start)
+{
+	gssize end = -1;
+	gssize i;
+	for (i = start; s->str[i]; ++i) {
+		if (g_ascii_isspace(s->str[i]) || s->str[i] == '(' || s->str[i] == ')') {
+			end = i;
+			break;
+		}
+	}
+	if (end == -1) {
+		char *url = g_strdup(&s->str[start]);
+		g_string_truncate(s, start);
+		g_string_append_printf (s, "<a href=\"%s\">%s</a>",
+								url, url);
+		g_free(url);
+		return s->len;
+	} else {
+		guint ret;
+		char *url = (char*)g_malloc(end-start+1), *temp;
+		g_strlcpy(url, &s->str[start], end-start+1);
+		g_assert(start!=end);
+	
+		temp = g_strdup_printf ("<a href=\"%s\">%s</a>",
+								url, url);
+		g_free(url);
+		g_string_erase(s, start, end-start);
+		g_string_insert(s, start, temp);
+		ret = start+strlen(temp);
+		g_free(temp);
+		return ret;
+	}
 }
 
 static char*
 label_msg_get_string (const char* message)
 {
-	gchar **tokens;
-	gchar  *result;
-	gchar  *temp;
-	gint 	i;
-	
+	gint 		i, pos;
 	if (G_STR_EMPTY (message)) {
 		return NULL;
 	}
 	
 	/* TODO: Do we need to escape out <>&"' so that pango markup doesn't get confused? */
 	
-	/* surround urls with <a> markup so that sexy-url-label can link it */
-	tokens = g_strsplit_set (message, " \t\n", 0);
-	for (i = 0; tokens[i]; i++) {
-		if (url_check_word (tokens[i], strlen (tokens[i]))) {
-			if (tokens[i][0] == '@') {
-				gssize end;
+	char *fixed_msg = g_strdup(message);
+	g_strdelimit(fixed_msg, "\t\n", ' ');
 
-				end  = find_first_non_username (&tokens[i][1]) + 1;
-				if (end == 0) {
-					temp =
-						g_strdup_printf ("<a href=\"http://twitter.com/%s\">%s</a>",
-										 &tokens[i][1],
-										 tokens[i]);
-				} else {
-					gchar delim;
-
-					delim = tokens[i][end];
-					tokens[i][end] = '\0';
-					temp =
-						g_strdup_printf ("<a href=\"http://twitter.com/%s\">%s</a>%c%s",
-										 &tokens[i][1], tokens[i], delim, &tokens[i][end+1]);
+	GString *s = g_string_new(fixed_msg);
+	g_free(fixed_msg);
+	
+#define D(x, func) (x), (sizeof (x)-1), 0, func
+	struct {
+		const char *s;
+		guint len;
+		gint place;
+		guint (*func)(GString *s, guint start);
+	}
+	
+	prefix[] = {
+		{ D("@", do_twitter) },
+		{ D("ftp.", do_url) },
+		{ D("www.", do_url) },
+		{ D("ftp://", do_url) },
+		{ D("http://", do_url) },
+		{ D("https://", do_url) },
+	};
+#undef D
+	
+	for (pos = 0; pos<s->len; pos++) {
+		for (i = 0; i < G_N_ELEMENTS(prefix); i++) {
+			if (prefix[i].s[prefix[i].place] == s->str[pos])
+			{
+				prefix[i].place++;
+				if (prefix[i].place == prefix[i].len)
+				{
+					twitux_debug (DEBUG_DOMAIN, "Hit eos for %s (pointing at '%c')\n",prefix[i].s,s->str[pos-prefix[i].len+1]);
+					pos = prefix[i].func(s, pos-prefix[i].len+1);
+					prefix[i].place = 0;
+					break;
 				}
-			} else {
-				temp = g_strdup_printf ("<a href=\"%s\">%s</a>",
-										tokens[i], tokens[i]);
 			}
-			g_free (tokens[i]);
-			tokens[i] = temp;
+			else
+				prefix[i].place = 0;
 		}
 	}
-	result = g_strjoinv(" ", tokens);
-	g_strfreev (tokens);
+	twitux_debug(DEBUG_DOMAIN, "Net result is '%s'\n",s->str);
 	
-	return result;	
+	return g_string_free(s, FALSE);
 }
