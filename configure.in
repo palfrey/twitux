@@ -43,6 +43,7 @@ DBUS_REQUIRED=0.61
 LIBCANBERRA_REQUIRED=0.4
 ENCHANT_REQUIRED=1.2.0
 ISO_CODES_REQUIRED=0.35
+LIBNOTIFY_REQUIRED=0.4.1
 
 dnl -----------------------------------------------------------
 dnl D-BUS
@@ -125,7 +126,7 @@ PKG_CHECK_MODULES(TWITUX,
 	gio-2.0 >= $LIBGIO_REQUIRED
 	libcanberra-gtk >= $LIBCANBERRA_REQUIRED
 	libsoup-2.4
-	libnotify
+	libnotify >= $LIBNOTIFY_REQUIRED
 	$iso_codes_pkgconfig
 	$dbus_pkgconfig
 ])
