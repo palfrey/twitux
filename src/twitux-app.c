@@ -1444,11 +1444,13 @@ twitux_app_notify (gchar *msg)
 	if (notify) {
 		NotifyNotification *notification;
 		GError             *error = NULL;
+		TwituxAppPriv *priv;
 
-		notification = notify_notification_new (PACKAGE_NAME,
+		priv = GET_PRIV (app);
+		notification = notify_notification_new_with_status_icon (PACKAGE_NAME,
 												msg,
 												"twitux",
-												NULL);
+												priv->status_icon);
 
 		notify_notification_set_timeout (notification, 8 * 1000);
 		notify_notification_show (notification, &error);
