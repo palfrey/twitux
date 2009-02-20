@@ -258,11 +258,14 @@ void twitux_network_logout (void)
 
 /* Post a new tweet - text must be Url encoded */
 void
-twitux_network_post_status (const gchar *text)
+twitux_network_post_status (const gchar *text, gint reply_id)
 {
 	gchar *formdata;
 
-	formdata = g_strdup_printf ("source=twitux&status=%s", text);
+	if (reply_id == -1)
+		formdata = g_strdup_printf ("source=twitux&status=%s", text);
+	else
+		formdata = g_strdup_printf ("source=twitux&status=%s&in_reply_to_status_id=%d", text, reply_id);
 
 	network_post_data (TWITUX_API_POST_STATUS,
 					   formdata,

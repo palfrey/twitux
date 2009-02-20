@@ -69,6 +69,7 @@ struct _TwituxMsgDialogPriv {
 	GtkWidget         *friends_combo;
 	GtkWidget         *friends_label;
 	gboolean           show_friends;
+	gint 			   reply_id;
 };
 
 static void	twitux_message_class_init		     (TwituxMsgDialogClass *klass);
@@ -194,6 +195,9 @@ message_setup (GtkWindow  *parent)
 	
 	/* Show the dialog */
 	gtk_widget_show (GTK_WIDGET (priv->dialog));
+
+	/* Default reply id is "not a reply" */
+	priv->reply_id = -1;
 }
 
 void
@@ -293,6 +297,15 @@ twitux_message_set_message (const gchar *message)
 
 	gtk_window_set_focus (GTK_WINDOW (priv->dialog), priv->textview);
 }
+
+void
+twitux_message_set_reply_id (gint reply_id)
+{
+	TwituxMsgDialogPriv *priv = GET_PRIV (dialog);
+
+	priv->reply_id = reply_id;
+}
+
 
 static gchar *
 url_encode_message (gchar *text)
@@ -572,7 +585,7 @@ message_response_cb (GtkWidget          *widget,
 					}
 				} else {
 					/* Post a tweet */
-					twitux_network_post_status (good_msg);
+					twitux_network_post_status (good_msg, priv->reply_id);
 				}
 
 				g_free (text);

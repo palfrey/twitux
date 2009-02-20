@@ -278,6 +278,7 @@ twitux_parser_timeline (const gchar *data,
 								STRING_DATE, datetime,
 								STRING_TWEET, status->text,
 								STRING_USER, status->user->screen_name,
+								INTEGER_ID, sid,
 								-1);
 			
 			/* Free the text column string */

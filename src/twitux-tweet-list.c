@@ -129,7 +129,8 @@ tweet_list_create_model (TwituxTweetList *list)
 							G_TYPE_STRING,    /* Author name string */
 							G_TYPE_STRING,    /* Date string */
 							G_TYPE_STRING,    /* Tweet string */
-							G_TYPE_STRING);   /* Username string */
+							G_TYPE_STRING,   /* Username string */
+							G_TYPE_UINT); /* Tweet id */
 
 	/* save normal model */
 	model = GTK_TREE_MODEL (priv->store);
@@ -258,6 +259,7 @@ tweet_list_activated_cb (GtkTreeView       *tree_view,
 	TwituxTweetListPriv *priv;
 	gchar               *user;
 	gchar               *message;
+	guint                sid;
 	GtkTreeIter          iter;
 
 	t = TWITUX_TWEET_LIST (user_data);
@@ -270,11 +272,14 @@ tweet_list_activated_cb (GtkTreeView       *tree_view,
 	gtk_tree_model_get (GTK_TREE_MODEL (priv->store),
 						&iter,
 						STRING_USER, &user,
+						INTEGER_ID, &sid,
 						-1);
 
 	message = g_strdup_printf ("@%s: ", user);
+	twitux_debug(DEBUG_DOMAIN,"sid replying to is %d\n",sid);
 	twitux_send_message_dialog_show (NULL);
 	twitux_message_show_friends (FALSE);
+	twitux_message_set_reply_id (sid);
 	twitux_message_set_message (message);
 
 	g_free (user);

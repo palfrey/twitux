@@ -61,6 +61,7 @@ void              twitux_message_correct_word     (GtkWidget   *textview,
 void              twitux_message_set_followers    (GList       *followers);
 void              twitux_message_show_friends     (gboolean     show_friends);
 void              twitux_message_set_message      (const gchar *message);
+void 			  twitux_message_set_reply_id     (gint reply_id);
 G_END_DECLS
 
 #endif /* __TWITUX_SEND_MESSAGE_DIALOG_H__ */

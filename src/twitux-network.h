@@ -51,7 +51,8 @@ void twitux_network_login		(const char *username,
 void twitux_network_logout 		(void);
 
 /* Post a new tweet */
-void twitux_network_post_status		(const gchar *text);
+void twitux_network_post_status		(const gchar *text, 
+					gint reply_id);
 
 /* Post a direct message to a follower */
 void twitux_network_send_message	(const gchar *friend,
