@@ -29,6 +29,7 @@
 #define _XOPEN_SOURCE
 #include <time.h>
 #include <string.h> /* for g_memmove - memmove */
+#include <locale.h> /* for setlocale */
 
 #include <gtk/gtk.h>
 #include <glib/gstdio.h>
