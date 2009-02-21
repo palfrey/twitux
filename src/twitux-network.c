@@ -39,13 +39,14 @@
 #include "twitux-app.h"
 #include "twitux-send-message-dialog.h"
 #include "twitux-lists-dialog.h"
+#include "twitux-tweet-list.h"
 
 #define DEBUG_DOMAIN	  "Network"
 #define TWITUX_HEADER_URL "https://twitux.sourceforge.net/client.xml"
 
 typedef struct {
 	gchar        *src;
-	GtkTreeIter   iter;
+	GtkTreePath   *path;
 } TwituxImage;
 
 static void network_get_data		(const gchar           *url,
@@ -394,6 +395,7 @@ twitux_network_get_image (const gchar  *url_image,
 {
 	gchar	*image_file;
 	gchar   *image_name;
+	GtkListStore *store;
 
 	TwituxImage *image;
 
@@ -417,9 +419,10 @@ twitux_network_get_image (const gchar  *url_image,
 		return;
 	}
 
+	store = twitux_tweet_list_get_store ();
 	image = g_new0 (TwituxImage, 1);
 	image->src  = g_strdup (image_file);
-	image->iter = iter;
+	image->path = gtk_tree_model_get_path(GTK_TREE_MODEL (store), &iter);
 
 	g_free (image_file);
 
@@ -744,10 +747,16 @@ network_cb_on_image (SoupSession *session,
 								 msg->response_body->length,
 								 NULL)) {
 			/* Set image from file here (image_file) */
-			twitux_app_set_image (image->src,image->iter);
+			GtkListStore *store;
+			GtkTreeIter iter;
+
+			store = twitux_tweet_list_get_store ();
+			gtk_tree_model_get_iter(GTK_TREE_MODEL (store), &iter, image->path); 
+			twitux_app_set_image (image->src, iter);
 		}
 	}
 
+	gtk_tree_path_free (image->path);
 	g_free (image->src);
 	g_free (image);
 }
