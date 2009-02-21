@@ -279,7 +279,7 @@ tweet_list_activated_cb (GtkTreeView       *tree_view,
 	twitux_debug(DEBUG_DOMAIN,"sid replying to is %d\n",sid);
 	twitux_send_message_dialog_show (NULL);
 	twitux_message_show_friends (FALSE);
-	twitux_message_set_reply_id (sid);
+	twitux_message_set_reply_id (sid, user);
 	twitux_message_set_message (message);
 
 	g_free (user);

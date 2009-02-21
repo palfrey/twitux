@@ -70,6 +70,7 @@ struct _TwituxMsgDialogPriv {
 	GtkWidget         *friends_label;
 	gboolean           show_friends;
 	gint 			   reply_id;
+	char			  *reply_user;
 };
 
 static void	twitux_message_class_init		     (TwituxMsgDialogClass *klass);
@@ -198,6 +199,7 @@ message_setup (GtkWindow  *parent)
 
 	/* Default reply id is "not a reply" */
 	priv->reply_id = -1;
+	priv->reply_user = NULL;
 }
 
 void
@@ -299,11 +301,12 @@ twitux_message_set_message (const gchar *message)
 }
 
 void
-twitux_message_set_reply_id (gint reply_id)
+twitux_message_set_reply_id (gint reply_id, const char* reply_user)
 {
 	TwituxMsgDialogPriv *priv = GET_PRIV (dialog);
 
 	priv->reply_id = reply_id;
+	priv->reply_user = strdup(reply_user);
 }
 
 
@@ -584,6 +587,14 @@ message_response_cb (GtkWidget          *widget,
 						g_free (to_user);
 					}
 				} else {
+					if (priv->reply_id != -1) { /* reply id set. Sanity check reply user.. */
+						char * check_text = g_strdup_printf ("@%s", priv->reply_user);
+						if (g_strstr_len(text, -1, check_text) == NULL) { 
+							/* Didn't find @user text, so clear the reply_id */
+							priv->reply_id = -1;
+						}
+						g_free(check_text);
+					}
 					/* Post a tweet */
 					twitux_network_post_status (good_msg, priv->reply_id);
 				}
@@ -604,6 +615,7 @@ message_destroy_cb (GtkWidget         *widget,
 	priv = GET_PRIV (dialog);
 
 	/* Add any clean-up code here */
+	g_free(priv->reply_user);
 	
 	g_object_unref (dialog);
 	dialog = NULL;
