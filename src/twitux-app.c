@@ -1503,6 +1503,7 @@ twitux_app_set_image (const gchar *file,
 
 	store = twitux_tweet_list_get_store ();
 	gtk_list_store_set (store, &iter, PIXBUF_AVATAR, resized, -1);
+	g_object_unref(resized);
 	g_object_unref(pixbuf);
 }
 
