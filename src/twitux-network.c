@@ -848,7 +848,7 @@ network_timeout_new (void)
 	twitux_conf_get_int (twitux_conf_get (),
 						 TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
 						 &minutes);
-	if (minutes == -1)
+	if (minutes <=0) /* should only be -1, but handle the zero case as well */
 	{
 		gint limit;
 		limit = network_hourly_limit();
