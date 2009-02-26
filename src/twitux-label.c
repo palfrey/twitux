@@ -187,40 +187,56 @@ do_hashtag(GString *s, guint start)
 	}
 }
 
+static char *
+full_url(const char *url)
+{
+	if (g_strstr_len(url, -1, "www.")==url) /* www. at beginning, so need to expand url */
+		return g_strdup_printf("http://%s", url);
+	else
+		return g_strdup(url);
+}
+
 
 static guint
 do_url(GString *s, guint start)
 {
 	gssize end = -1;
 	gssize i;
+	guint ret;
+	char *url, *furl;
+
 	for (i = start; s->str[i]; ++i) {
 		if (g_ascii_isspace(s->str[i]) || s->str[i] == '(' || s->str[i] == ')') {
 			end = i;
 			break;
 		}
 	}
+
 	if (end == -1) {
-		char *url = g_strdup(&s->str[start]);
+		url = g_strdup(&s->str[start]);
+		furl = full_url(url);
 		g_string_truncate(s, start);
 		g_string_append_printf (s, "<a href=\"%s\">%s</a>",
-								url, url);
-		g_free(url);
-		return s->len;
+								furl, url);
+		ret = s->len;
 	} else {
-		guint ret;
-		char *url = (char*)g_malloc(end-start+1), *temp;
+		char *temp;
+		url = (char*)g_malloc(end-start+1);
 		g_strlcpy(url, &s->str[start], end-start+1);
 		g_assert(start!=end);
+		furl = full_url(url);
 	
 		temp = g_strdup_printf ("<a href=\"%s\">%s</a>",
-								url, url);
-		g_free(url);
+								furl, url);
 		g_string_erase(s, start, end-start);
 		g_string_insert(s, start, temp);
 		ret = start+strlen(temp);
 		g_free(temp);
-		return ret;
 	}
+
+	g_free(url);
+	g_free(furl);
+	return ret;
 }
 
 static char*
