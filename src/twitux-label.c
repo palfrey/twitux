@@ -242,7 +242,7 @@ do_url(GString *s, guint start)
 static char*
 label_msg_get_string (const char* message)
 {
-	gint 		i, pos;
+	gint 		i, j, pos;
 	if (G_STR_EMPTY (message)) {
 		return NULL;
 	}
@@ -283,7 +283,8 @@ label_msg_get_string (const char* message)
 				{
 					twitux_debug (DEBUG_DOMAIN, "Hit eos for %s (pointing at '%c')\n",prefix[i].s,s->str[pos-prefix[i].len+1]);
 					pos = prefix[i].func(s, pos-prefix[i].len+1);
-					prefix[i].place = 0;
+					for (j = 0; j < G_N_ELEMENTS(prefix); j++)
+						prefix[j].place = 0;
 					break;
 				}
 			}
