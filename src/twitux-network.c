@@ -238,7 +238,7 @@ twitux_network_login (const char *username, const char *password)
 					  G_CALLBACK (network_cb_on_auth),
 					  NULL);
 
-	/* Verify cedentials */
+	/* Verify credentials */
 	network_get_data (TWITUX_API_LOGIN, network_cb_on_login, NULL);
 }
 
