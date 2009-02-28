@@ -1479,11 +1479,11 @@ twitux_app_set_image (const gchar *file,
 		return;
 	}
 
-	resized = gdk_pixbuf_scale_simple(pixbuf, 48, 48, GDK_INTERP_BILINEAR);
-
 	store = twitux_tweet_list_get_store ();
+	resized = gdk_pixbuf_scale_simple (pixbuf, 48, 48, GDK_INTERP_BILINEAR);
 	gtk_list_store_set (store, &iter, PIXBUF_AVATAR, resized, -1);
-	g_object_unref(pixbuf);
+	g_object_unref (pixbuf);
+	g_object_unref (resized);
 }
 
 void
@@ -1494,7 +1494,7 @@ twitux_app_expand_message (const gchar *name,
 {
 	TwituxAppPriv *priv;
 	gchar 		  *title_text;
-	GdkPixbuf	*resized;
+	GdkPixbuf	  *resized;
 	
 	priv = GET_PRIV (app);
 
@@ -1505,9 +1505,9 @@ twitux_app_expand_message (const gchar *name,
 	g_free (title_text);
 	
 	if (pixbuf) {
-		resized = gdk_pixbuf_scale_simple(pixbuf, 73, 73, GDK_INTERP_BILINEAR);
+		resized = gdk_pixbuf_scale_simple (pixbuf, 73, 73, GDK_INTERP_BILINEAR);
 		gtk_image_set_from_pixbuf (GTK_IMAGE (priv->expand_image), resized);
-		g_object_unref(resized);
+		g_object_unref (resized);
 	}
 	
 	gtk_widget_show (priv->expand_box);

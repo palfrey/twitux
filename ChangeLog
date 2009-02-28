@@ -1,3 +1,8 @@
+2009-02-28  Brian Pepple  <bpepple@fedoraproject.org>
+
+	* src/twitux-app.c (twitux_app_set_image): 
+	Plug a memory leak. (From a patch provided by Kaity G. B.)
+
 2009-02-13  Brian Pepple  <bpepple@fedoraproject.org>
 
 	* Makefile.am:
