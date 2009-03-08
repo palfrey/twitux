@@ -480,11 +480,15 @@ twitux_parser_hourly_limit (const gchar *data,
 
 	if (limit !=-1 && reset !=-1) /* we got the values we need */
 	{
-		time_t seconds;
+		time_t seconds, now;
 		double speed;
 
 		/* seconds until the next reset */
-		seconds = reset-time(NULL);
+		now = time(NULL);
+		if (reset>now)
+			seconds = reset-now;
+		else /* assume really close, so 1 second */
+			seconds = 1;
 		/* max requests per second given current limit and time to next reset */
 		speed = limit/(seconds*1.0);
 
