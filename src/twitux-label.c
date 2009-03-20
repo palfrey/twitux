@@ -59,6 +59,7 @@ static void
 twitux_label_init (TwituxLabel *label)
 {
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 	
 	g_object_set (label,
 				  "xalign", 0.0,
