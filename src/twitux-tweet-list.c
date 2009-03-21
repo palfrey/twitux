@@ -227,7 +227,8 @@ tweet_list_changed_cb (GtkWidget *widget,
 	g_free (name);
 	g_free (tweet);
 	g_free (date);
-	g_object_unref(pixbuf);
+	if (pixbuf)
+		g_object_unref(pixbuf);
 }
 
 static void
