@@ -1529,6 +1529,9 @@ twitux_app_expand_message (const gchar *name,
 		gtk_image_set_from_pixbuf (GTK_IMAGE (priv->expand_image), resized);
 		g_object_unref (resized);
 	}
+	else
+		gtk_image_clear (GTK_IMAGE (priv->expand_image));
+
 	
 	gtk_widget_show (priv->expand_box);
 }
