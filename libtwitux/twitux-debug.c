@@ -80,6 +80,13 @@ twitux_debug_impl (const gchar *domain, const gchar *msg, ...)
 	for (i = 0; debug_strv && debug_strv[i]; i++) {
 		if (all_domains || strcmp (domain, debug_strv[i]) == 0) {
 			va_list args;
+			gchar *time;
+			GTimeVal now;
+
+			g_get_current_time (&now);
+			time = g_time_val_to_iso8601(&now);
+			g_print("%s - ", time);
+			g_free(time);
 
 			g_print ("%s: ", domain);
 
