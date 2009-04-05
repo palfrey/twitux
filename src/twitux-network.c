@@ -96,6 +96,8 @@ static void			network_timeout_new		(void);
 
 static gint
 network_hourly_limit 	(void);
+void
+network_parse_limit_headers(SoupMessageHeaders *hdrs);
 
 static SoupSession			*soup_connection = NULL;
 static GList				*user_friends = NULL;
@@ -643,6 +645,15 @@ network_cb_on_message (SoupSession *session,
 				  "Message response: %i",msg->status_code);
 }
 
+void
+network_parse_limit_headers(SoupMessageHeaders *hdrs)
+{
+	const char *limit = soup_message_headers_get(hdrs, "X-RateLimit-Limit");
+	const char *remaining = soup_message_headers_get(hdrs, "X-RateLimit-Remaining");
+	if (limit !=NULL && remaining != NULL)
+		twitux_debug(DEBUG_DOMAIN,
+			"Limit: %s, Remaining %s\n", limit, remaining);
+}
 
 /* On get a timeline */
 static void
@@ -670,6 +681,8 @@ network_cb_on_timeline (SoupSession *session,
 			g_free (new_timeline);
 		return;
 	}
+
+	network_parse_limit_headers(msg->response_headers);
 
 	twitux_debug (DEBUG_DOMAIN, "Parsing timeline");
 
