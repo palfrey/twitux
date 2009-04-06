@@ -383,13 +383,13 @@ message_text_buffer_changed_cb (GtkTextBuffer    *buffer,
 	gchar                 *str;
 	gboolean               spell_checker = FALSE;
 
+	message_set_characters_available (buffer, dialog);
+
 	if (!twitux_spell_supported ()) {
 		return;
 	}
 
 	priv = GET_PRIV (dialog);
-
-	message_set_characters_available (buffer, dialog);
 
 	twitux_conf_get_bool (twitux_conf_get (),
 						  TWITUX_PREFS_UI_SPELL,
