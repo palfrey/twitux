@@ -26,6 +26,7 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <libsoup/soup.h>
+#include <stdlib.h>
 
 #include <libtwitux/twitux-debug.h>
 #include <libtwitux/twitux-conf.h>
@@ -94,8 +95,6 @@ static void network_cb_on_auth		(SoupSession           *session,
 static gboolean 	network_timeout			(gpointer user_data);
 static void			network_timeout_new		(void);
 
-static gint
-network_hourly_limit 	(void);
 void
 network_parse_limit_headers(SoupMessageHeaders *hdrs);
 
@@ -648,11 +647,30 @@ network_cb_on_message (SoupSession *session,
 void
 network_parse_limit_headers(SoupMessageHeaders *hdrs)
 {
-	const char *limit = soup_message_headers_get(hdrs, "X-RateLimit-Limit");
-	const char *remaining = soup_message_headers_get(hdrs, "X-RateLimit-Remaining");
-	if (limit !=NULL && remaining != NULL)
-		twitux_debug(DEBUG_DOMAIN,
-			"Limit: %s, Remaining %s\n", limit, remaining);
+	time_t seconds, now, reset;
+	double speed;
+	gint limit;
+
+	reset = atoi(soup_message_headers_get(hdrs, "X-RateLimit-Reset"));
+	limit = atoi(soup_message_headers_get(hdrs, "X-RateLimit-Remaining"));
+	twitux_debug(DEBUG_DOMAIN, "Reset: %d, Remaining %d", reset, limit);
+
+	/* seconds until the next reset */
+	now = time(NULL);
+	if (reset>now)
+		seconds = reset-now;
+	else /* assume really close, so 1 second */
+		seconds = 1;
+	/* max requests per second given current limit and time to next reset */
+	speed = limit/(seconds*1.0);
+
+	/* requests per hour */
+	hourly_limit = speed*60*60;
+	if (hourly_limit > 1000) /* crazy numbers */
+		hourly_limit = 1000;
+
+	twitux_debug (DEBUG_DOMAIN, 
+			"Remaining limit is %d, speed is %f, seconds is %lu, hourly limit is %f",limit,speed,seconds,speed*60*60);
 }
 
 /* On get a timeline */
@@ -804,25 +822,6 @@ network_cb_on_add (SoupSession *session,
 	}
 }
 
-static void
-network_cb_on_limit (SoupSession *session,
-				   SoupMessage *msg,
-				   gpointer     user_data)
-{
-	/* Check response */
-	if (!network_check_http (msg->status_code))
-		return;
-
-	/* parse new user */
-	twitux_debug (DEBUG_DOMAIN, "Parsing hourly limit");
-
-	hourly_limit = twitux_parser_hourly_limit (msg->response_body->data,
-									  msg->response_body->length);
-
-	if (hourly_limit > 1000) /* crazy numbers */
-		hourly_limit = 1000;
-}
-
 /* On remove a user */
 static void
 network_cb_on_del (SoupSession *session,
@@ -864,7 +863,7 @@ network_timeout_new (void)
 	if (minutes <=0) /* should only be -1, but handle the zero case as well */
 	{
 		gint limit;
-		limit = network_hourly_limit();
+		limit = hourly_limit;
 
 		if (limit == -1)
 			limit = 5; /* pick 'small' number if limit is -1 as this indicates we're updating too fast */
@@ -911,11 +910,3 @@ network_timeout (gpointer user_data)
 
 	return FALSE;
 }
-
-static gint
-network_hourly_limit 	(void)
-{
-	network_get_data (TWITUX_API_RATE_LIMIT, network_cb_on_limit, NULL);
-	return hourly_limit; // is set to default twitter limit to start with
-}
-

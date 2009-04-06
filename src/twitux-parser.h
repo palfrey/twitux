@@ -45,8 +45,6 @@ GList *twitux_parser_users_list (const gchar *data,
 TwituxUser *twitux_parser_single_user (const gchar *data,
 									   gssize       length);
 
-gint twitux_parser_hourly_limit (const gchar *data,
-						  gssize       length);
 /* To free a User struct */
 void parser_free_user (TwituxUser *user);
 

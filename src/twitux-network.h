@@ -41,8 +41,6 @@
 
 #define TWITUX_API_LOGIN		"https://twitter.com/account/verify_credentials.xml"
 
-#define TWITUX_API_RATE_LIMIT "https://twitter.com/account/rate_limit_status.xml"
-
 /* Verify user credentials */
 void twitux_network_login		(const char *username, 
 								 const char *password);
