@@ -624,6 +624,9 @@ network_cb_on_post (SoupSession *session,
 	if (network_check_http (msg->status_code)) {
 		twitux_app_set_statusbar_msg (_("Status Sent"));
 	}
+	else
+		twitux_debug (DEBUG_DOMAIN,
+					 "Tweet response reason: %s",msg->reason_phrase);
 	
 	twitux_debug (DEBUG_DOMAIN,
 				  "Tweet response: %i",msg->status_code);
