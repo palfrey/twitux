@@ -383,6 +383,10 @@ message_text_buffer_changed_cb (GtkTextBuffer    *buffer,
 	gchar                 *str;
 	gboolean               spell_checker = FALSE;
 
+	if (!twitux_spell_supported ()) {
+		return;
+	}
+
 	priv = GET_PRIV (dialog);
 
 	message_set_characters_available (buffer, dialog);
@@ -396,10 +400,6 @@ message_text_buffer_changed_cb (GtkTextBuffer    *buffer,
 	if (!spell_checker) {
 		gtk_text_buffer_get_end_iter (buffer, &end);
 		gtk_text_buffer_remove_tag_by_name (buffer, "misspelled", &start, &end);
-		return;
-	}
-
-	if (!twitux_spell_supported ()) {
 		return;
 	}
 
