@@ -1,6 +1,7 @@
 New in 0.x:
 =============
 - Fixed #2587341, avatar size and memory leak. (Patch provided by Kaity G. B.)
+- Updated Japanese translation (IWAI Masaharu)
 
 NEW in 0.69:
 ==============
