@@ -1247,6 +1247,7 @@ app_login (TwituxApp *a)
 	 * Network Manager state and we are NOT connected.
 	 */
 	if (twitux_dbus_nm_get_state (&connected) && !connected) {
+		twitux_app_set_statusbar_msg(_("Disconnected"));
 		return;
 	}
 #endif
