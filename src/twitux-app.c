@@ -1386,6 +1386,22 @@ twitux_app_state_on_connection (gboolean connected)
 	for (l = priv->widgets_disconnected; l; l = l->next) {
 		g_object_set (l->data, "sensitive", !connected, NULL);
 	}
+
+	if (connected)
+	{
+		TwituxConf    *conf;
+		gboolean          login;
+
+		conf = twitux_conf_get ();
+
+		/*Check to see if we should automatically login */
+		twitux_conf_get_bool (conf,
+							  TWITUX_PREFS_AUTH_AUTO_LOGIN,
+							  &login);
+		if (login) 
+			app_login (app);
+
+	}
 }
 
 GtkWidget *
