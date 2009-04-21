@@ -107,6 +107,7 @@ static guint				 timeout_id;
 gchar                *global_username = NULL;
 static gchar                *global_password = NULL;
 static gint				hourly_limit = 100; // standard twitter limit, assume by default
+static time_t			reset_time = 0; // next reset time
 
 /* This function must be called at startup */
 void
@@ -680,6 +681,7 @@ network_parse_limit_headers(SoupMessageHeaders *hdrs)
 
 	twitux_debug (DEBUG_DOMAIN, 
 			"Remaining limit is %d, speed is %f, seconds is %lu, hourly limit is %f",limit,speed,seconds,speed*60*60);
+	reset_time = reset;
 }
 
 /* On get a timeline */
@@ -706,6 +708,8 @@ network_cb_on_timeline (SoupSession *session,
 	if (!network_check_http (msg->status_code)) {
 		if (new_timeline)
 			g_free (new_timeline);
+		if (msg->status_code == 400) // check anyway
+			network_parse_limit_headers(msg->response_headers);
 		return;
 	}
 
@@ -883,7 +887,18 @@ network_timeout_new (void)
 			limit /=3;
 		}
 
-		reload_time = (60*60*1000)/limit;
+		if (limit == 0 && reset_time != 0) // if we've run out, but we know when reset is...
+		{
+			time_t now = time(NULL);
+			if (reset_time>now)
+				reload_time = reset_time-now+3; // add a couple of extra seconds to allow for offset issues between here and twitter
+			else
+				reload_time = 5; // assume right reset time is shortly in the future;
+			reload_time *=1000; // convert to ms
+			twitux_debug(DEBUG_DOMAIN, "Ran out of limit, so waiting for reset");
+		}
+		else
+			reload_time = (60*60*1000)/limit;
 		if (reload_time < 20000) /* less than 20 seconds. Probably still too low, but traps some of the crazier cases */
 			reload_time = 20000;
 		twitux_debug (DEBUG_DOMAIN,
