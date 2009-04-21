@@ -1387,6 +1387,7 @@ twitux_app_state_on_connection (gboolean connected)
 		g_object_set (l->data, "sensitive", !connected, NULL);
 	}
 
+#if 0
 	if (connected)
 	{
 		TwituxConf    *conf;
@@ -1402,6 +1403,7 @@ twitux_app_state_on_connection (gboolean connected)
 			app_login (app);
 
 	}
+#endif
 }
 
 GtkWidget *
