@@ -115,7 +115,6 @@ twitux_network_new (void)
 {
 	TwituxConf	*conf;
 	gboolean	check_proxy = FALSE;
-	GValue timeout = {0};
  
 	/* Close previous networking */
 	if (soup_connection) {
@@ -126,10 +125,6 @@ twitux_network_new (void)
 	soup_connection = soup_session_async_new_with_options (SOUP_SESSION_MAX_CONNS,
 														   8,
 														   NULL);
-	g_value_init (&timeout, G_TYPE_UINT);
-	g_value_set_uint (&timeout, 60); // 60 seconds
-	g_object_set_property(G_OBJECT(soup_connection), "timeout", &timeout);
-
 	twitux_debug (DEBUG_DOMAIN, "Libsoup (re)started");
 
 	/* Set the proxy, if configuration is set */
