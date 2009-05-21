@@ -659,10 +659,17 @@ network_parse_limit_headers(SoupMessageHeaders *hdrs)
 {
 	time_t seconds, now, reset;
 	double speed;
+	const char *temp;
 	gint limit;
 
-	reset = atoi(soup_message_headers_get(hdrs, "X-RateLimit-Reset"));
-	limit = atoi(soup_message_headers_get(hdrs, "X-RateLimit-Remaining"));
+	temp = soup_message_headers_get(hdrs, "X-RateLimit-Reset");
+	if (temp == NULL)
+		return;
+	reset = atoi(temp);
+	temp = soup_message_headers_get(hdrs, "X-RateLimit-Remaining");
+	if (temp == NULL)
+		return;
+	limit = atoi(temp);
 	twitux_debug(DEBUG_DOMAIN, "Reset: %d, Remaining %d", reset, limit);
 
 	/* seconds until the next reset */
