@@ -12,3 +12,4 @@
 
 - Add friends+replies merged timeline
 - Add re-tweeting
+- Add Facebook support via Open Streams API (http://wiki.developers.facebook.com/index.php/Using_the_Open_Stream_API)
