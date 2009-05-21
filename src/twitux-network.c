@@ -468,6 +468,31 @@ twitux_network_del_user (TwituxUser *user)
 	g_free (url);
 }
 
+typedef struct
+{
+	SoupSessionCallback callback;
+	SoupMessage *msg;
+	gpointer data;
+	guint event;
+} GetData;
+
+static gboolean
+_network_timeout(void *data)
+{
+	GetData *gd = (GetData*)data;
+	twitux_debug (DEBUG_DOMAIN, "Get failure!");
+	soup_session_cancel_message(soup_connection, gd->msg, SOUP_STATUS_CANCELLED);
+	return FALSE;
+}
+
+static void
+_network_ok (SoupSession *session, SoupMessage *msg, gpointer user_data)
+{
+	GetData *gd = (GetData*)user_data;
+	g_source_remove (gd->event);
+	gd->callback (session, msg, gd->data);
+	g_free(gd);
+}
 
 /* Get data from net */
 static void
@@ -476,12 +501,18 @@ network_get_data (const gchar           *url,
 				  gpointer               data)
 {
 	SoupMessage *msg;
+	GetData *gd;
 
 	twitux_debug (DEBUG_DOMAIN, "Get: %s",url);
 
 	msg = soup_message_new ( "GET", url );
+	gd = g_new(GetData, 1);
+	gd->callback = callback;
+	gd->data = data;
+	gd->event = g_timeout_add_seconds(15, _network_timeout, gd);
+	gd->msg = msg;
 
-	soup_session_queue_message (soup_connection, msg, callback, data);
+	soup_session_queue_message (soup_connection, msg, _network_ok, gd);
 }
 
 
