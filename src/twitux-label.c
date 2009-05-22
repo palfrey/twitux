@@ -165,14 +165,19 @@ do_hashtag(GString *s, guint start)
 	
 	if (end == 0) {
 		char *name = g_strdup(&s->str[start+1]);
-		g_string_truncate(s, start);
-		g_string_append_printf (s, "<a href=\"http://hashtags.org/tag/%s\">#%s</a>",
-							 name,
-							 name);
+		if (strlen(name) != 0)
+		{
+			g_string_truncate(s, start);
+			g_string_append_printf (s, "<a href=\"http://hashtags.org/tag/%s\">#%s</a>",
+								 name,
+								 name);
+		}
 		g_free(name);
 		return s->len;
 	} else {
 		guint ret;
+		if (end-start == 1)
+			return s->len;
 		char *name = (char*)g_malloc(end-start), *temp;
 		g_strlcpy(name, &s->str[start+1], end-start);
 
