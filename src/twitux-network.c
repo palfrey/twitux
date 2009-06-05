@@ -108,6 +108,7 @@ gchar                *global_username = NULL;
 static gchar                *global_password = NULL;
 static gint				hourly_limit = 100; // standard twitter limit, assume by default
 static time_t			reset_time = 0; // next reset time
+static gboolean			logged_in = FALSE;
 
 /* This function must be called at startup */
 void
@@ -229,6 +230,8 @@ twitux_network_stop	(void)
 void
 twitux_network_login (const char *username, const char *password)
 {
+	if (logged_in)
+		return;
 	twitux_debug (DEBUG_DOMAIN, "Begin login.. ");
 
 	g_free (global_username);
@@ -255,6 +258,8 @@ void twitux_network_logout (void)
 	twitux_network_new ();
 	
 	twitux_debug (DEBUG_DOMAIN, "Logout");
+	
+	logged_in = FALSE;
 }
 
 
@@ -645,6 +650,7 @@ network_cb_on_login (SoupSession *session,
 				  "Login response: %i",msg->status_code);
 
 	if (network_check_http (msg->status_code)) {
+		logged_in = TRUE;
 		twitux_app_state_on_connection (TRUE);
 		return;
 	}

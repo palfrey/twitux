@@ -1387,9 +1387,7 @@ twitux_app_state_on_connection (gboolean connected)
 		g_object_set (l->data, "sensitive", !connected, NULL);
 	}
 
-#if 0
-	if (connected)
-	{
+	if (twitux_dbus_nm_get_state (&connected) && connected) {
 		TwituxConf    *conf;
 		gboolean          login;
 
@@ -1403,7 +1401,8 @@ twitux_app_state_on_connection (gboolean connected)
 			app_login (app);
 
 	}
-#endif
+	else
+		twitux_network_logout ();
 }
 
 GtkWidget *
@@ -1427,7 +1426,7 @@ twitux_app_set_statusbar_msg (gchar *message)
 	if (!priv->statusbar || !GTK_IS_STATUSBAR (priv->statusbar))
 		return;
 
-	/* conext ID will be always 1 */
+	/* context ID will be always 1 */
 	gtk_statusbar_pop (GTK_STATUSBAR (priv->statusbar), 1);
 	gtk_statusbar_push (GTK_STATUSBAR (priv->statusbar), 1, message);
 }
