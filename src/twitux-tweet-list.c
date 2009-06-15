@@ -130,7 +130,7 @@ tweet_list_create_model (TwituxTweetList *list)
 							G_TYPE_STRING,    /* Date string */
 							G_TYPE_STRING,    /* Tweet string */
 							G_TYPE_STRING,   /* Username string */
-							G_TYPE_UINT); /* Tweet id */
+							G_TYPE_UINT64); /* Tweet id */
 
 	/* save normal model */
 	model = GTK_TREE_MODEL (priv->store);

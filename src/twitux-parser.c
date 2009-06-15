@@ -66,7 +66,7 @@ static gchar		*parser_convert_time       (const char	*datetime);
 static gboolean      display_notification      (gpointer     tweet);
 
 /* id of the newest tweet showed */
-static gint			last_id = 0;
+static guint64			last_id = 0;
 
 static xmlDoc*
 parser_twitux_parse (const char  *data,
@@ -196,7 +196,7 @@ twitux_parser_timeline (const gchar *data,
 
 	/* Count new tweets */
 	gboolean         show_notification = (last_id > 0);
-	gint             lastTweet = 0;
+	guint64             lastTweet = 0;
     /*
 	 * On multiple tweet updates we only want to 
 	 * play the sound notification once.
@@ -239,12 +239,12 @@ twitux_parser_timeline (const gchar *data,
 		    g_str_equal (cur_node->name, "direct_message")) {
 			gchar *tweet;
 			gchar *datetime;
-			gint   sid;
+			guint64   sid;
 
 			/* Parse node */
 			status = parser_twitux_node_status (cur_node->children);
 
-			sid = atoi (status->id);
+			sid = g_ascii_strtoull (status->id, NULL, 10);
 			
 			/* the first tweet parsed is the 'newest' */
 			if (lastTweet == 0){
