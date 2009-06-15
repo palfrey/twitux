@@ -1387,22 +1387,24 @@ twitux_app_state_on_connection (gboolean connected)
 		g_object_set (l->data, "sensitive", !connected, NULL);
 	}
 
-	if (twitux_dbus_nm_get_state (&connected) && connected) {
-		TwituxConf    *conf;
-		gboolean          login;
+	if (twitux_dbus_nm_get_state (&connected))
+	{
+		if (connected) {
+			TwituxConf    *conf;
+			gboolean          login;
 
-		conf = twitux_conf_get ();
+			conf = twitux_conf_get ();
 
-		/*Check to see if we should automatically login */
-		twitux_conf_get_bool (conf,
-							  TWITUX_PREFS_AUTH_AUTO_LOGIN,
-							  &login);
-		if (login) 
-			app_login (app);
-
+			/*Check to see if we should automatically login */
+			twitux_conf_get_bool (conf,
+								  TWITUX_PREFS_AUTH_AUTO_LOGIN,
+								  &login);
+			if (login) 
+				app_login (app);
+		}
+		else
+			twitux_network_logout ();
 	}
-	else
-		twitux_network_logout ();
 }
 
 GtkWidget *
