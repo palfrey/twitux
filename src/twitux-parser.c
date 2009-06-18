@@ -399,7 +399,7 @@ parser_twitux_node_status (xmlNode *a_node)
 
 			msg = xmlBufferContent (buffer);
 
-			status->text = g_markup_escape_text ((const char *)msg, -1);
+			status->text = g_strdup((const char *)msg);
 
 			/* &amp;lt; becomes &lt; */
 			cur = status->text;

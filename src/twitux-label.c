@@ -282,7 +282,8 @@ label_msg_get_string (const char* message)
 	
 	for (pos = 0; pos<s->len; pos++) {
 		for (i = 0; i < G_N_ELEMENTS(prefix); i++) {
-			if (prefix[i].s[prefix[i].place] == s->str[pos])
+			/* Look for prefixes. Before a prefix, we need a space */
+			if (prefix[i].s[prefix[i].place] == s->str[pos] && (prefix[i].place>0 || pos == 0 || s->str[pos-1] == ' '))
 			{
 				prefix[i].place++;
 				if (prefix[i].place == prefix[i].len)
