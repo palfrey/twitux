@@ -399,15 +399,27 @@ parser_twitux_node_status (xmlNode *a_node)
 
 			msg = xmlBufferContent (buffer);
 
-			status->text = g_strdup((const char *)msg);
+			status->text = g_markup_escape_text((const char *)msg, -1);
 
 			/* &amp;lt; becomes &lt; */
 			cur = status->text;
 			while ((cur = strstr (cur, "&amp;"))) {
 				if (strncmp (cur + 5, "lt;", 3) == 0 || strncmp (cur + 5, "gt;", 3) == 0)
+				{
 					g_memmove (cur + 1, cur + 5, strlen (cur + 5) + 1);
-				else
-					cur += 5;
+					continue;
+				}
+				if (cur[5] == '#') // a numeric entity?
+				{
+					char *endptr;
+					gint64 ret = g_ascii_strtoll(cur+6, &endptr, 16);
+					if (ret != G_MAXINT64 && ret != G_MININT64 && endptr[0] == ';') // got a number, and a ';' afterwards
+					{
+						g_memmove (cur + 1, cur + 5, strlen (cur + 5) + 1);
+						continue;
+					}
+				}
+				cur += 5;
 			}
 
 		} else if (g_str_equal (cur_node->name, "sender") ||
