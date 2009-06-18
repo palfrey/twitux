@@ -260,7 +260,7 @@ tweet_list_activated_cb (GtkTreeView       *tree_view,
 	TwituxTweetListPriv *priv;
 	gchar               *user;
 	gchar               *message;
-	guint                sid;
+	gint64                sid;
 	GtkTreeIter          iter;
 
 	t = TWITUX_TWEET_LIST (user_data);
@@ -277,7 +277,7 @@ tweet_list_activated_cb (GtkTreeView       *tree_view,
 						-1);
 
 	message = g_strdup_printf ("@%s: ", user);
-	twitux_debug(DEBUG_DOMAIN,"sid replying to is %d\n",sid);
+	twitux_debug(DEBUG_DOMAIN,"sid replying to is %lld\n",sid);
 	twitux_send_message_dialog_show (NULL);
 	twitux_message_show_friends (FALSE);
 	twitux_message_set_reply_id (sid, user);

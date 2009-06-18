@@ -69,7 +69,7 @@ struct _TwituxMsgDialogPriv {
 	GtkWidget         *friends_combo;
 	GtkWidget         *friends_label;
 	gboolean           show_friends;
-	gint 			   reply_id;
+	gint64 			   reply_id;
 	char			  *reply_user;
 };
 
@@ -301,7 +301,7 @@ twitux_message_set_message (const gchar *message)
 }
 
 void
-twitux_message_set_reply_id (gint reply_id, const char* reply_user)
+twitux_message_set_reply_id (gint64 reply_id, const char* reply_user)
 {
 	TwituxMsgDialogPriv *priv = GET_PRIV (dialog);
 

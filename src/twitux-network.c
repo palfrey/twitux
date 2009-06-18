@@ -265,14 +265,14 @@ void twitux_network_logout (void)
 
 /* Post a new tweet - text must be Url encoded */
 void
-twitux_network_post_status (const gchar *text, gint reply_id)
+twitux_network_post_status (const gchar *text, gint64 reply_id)
 {
 	gchar *formdata;
 
 	if (reply_id == -1)
 		formdata = g_strdup_printf ("source=twitux&status=%s", text);
 	else
-		formdata = g_strdup_printf ("source=twitux&status=%s&in_reply_to_status_id=%d", text, reply_id);
+		formdata = g_strdup_printf ("source=twitux&status=%s&in_reply_to_status_id=%lld", text, reply_id);
 	twitux_debug (DEBUG_DOMAIN,
 					 "Tweeting %s",text);
 
