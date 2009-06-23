@@ -404,7 +404,7 @@ parser_twitux_node_status (xmlNode *a_node)
 			/* &amp;lt; becomes &lt; */
 			cur = status->text;
 			while ((cur = strstr (cur, "&amp;"))) {
-				if (strncmp (cur + 5, "lt;", 3) == 0 || strncmp (cur + 5, "gt;", 3) == 0)
+				if (strncmp (cur + 5, "lt;", 3) == 0 || strncmp (cur + 5, "gt;", 3) == 0 || strncmp (cur + 5, "quot;", 5) == 0)
 				{
 					g_memmove (cur + 1, cur + 5, strlen (cur + 5) + 1);
 					continue;
