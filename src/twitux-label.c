@@ -156,6 +156,9 @@ do_hashtag(GString *s, guint start)
 	gssize end = 0;
 	gssize i;
 
+	if (start!=0 && s->str[start-1]!=' ') // hashtags need a space (or beginning of tweet) before them
+		return s->len;
+
 	for (i = start+1; s->str[i]; ++i) {
 		if (!(g_ascii_isalnum(s->str[i]) || s->str[i] == '_')) {
 			end = i;
@@ -282,8 +285,8 @@ label_msg_get_string (const char* message)
 	
 	for (pos = 0; pos<s->len; pos++) {
 		for (i = 0; i < G_N_ELEMENTS(prefix); i++) {
-			/* Look for prefixes. Before a prefix, we need a space */
-			if (prefix[i].s[prefix[i].place] == s->str[pos] && (prefix[i].place>0 || pos == 0 || s->str[pos-1] == ' '))
+			/* Look for prefixes */
+			if (prefix[i].s[prefix[i].place] == s->str[pos])
 			{
 				prefix[i].place++;
 				if (prefix[i].place == prefix[i].len)
