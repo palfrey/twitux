@@ -157,7 +157,7 @@ do_hashtag(GString *s, guint start)
 	gssize i;
 
 	if (start!=0 && s->str[start-1]!=' ') // hashtags need a space (or beginning of tweet) before them
-		return s->len;
+		return start;
 
 	for (i = start+1; s->str[i]; ++i) {
 		if (!(g_ascii_isalnum(s->str[i]) || s->str[i] == '_')) {
@@ -180,7 +180,7 @@ do_hashtag(GString *s, guint start)
 	} else {
 		guint ret;
 		if (end-start == 1)
-			return s->len;
+			return start;
 		char *name = (char*)g_malloc(end-start), *temp;
 		g_strlcpy(name, &s->str[start+1], end-start);
 
