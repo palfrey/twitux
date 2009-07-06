@@ -166,7 +166,7 @@ else
 fi
 
 if test "x$enable_spell" = "xyes" -a "x$have_enchant" != "xyes"; then
-   AC_MSG_ERROR([Couldn't find spell dependencies.])
+   AC_MSG_ERROR([Couldn't find spell dependencies - $ENCHANT_PKG_ERRORS])
 fi
 
 AM_CONDITIONAL(HAVE_ENCHANT, test "x$have_enchant" = "xyes")
