@@ -55,7 +55,6 @@ G_BEGIN_DECLS
 #define TWITUX_PREFS_UI_NOTIFICATION          TWITUX_PREFS_PATH "/ui/notify"
 #define TWITUX_PREFS_UI_SELF_NOTIFICATION          TWITUX_PREFS_PATH "/ui/self_notify"
 #define TWITUX_PREFS_UI_SOUND                 TWITUX_PREFS_PATH "/ui/sound"
-#define TWITUX_PREFS_UI_SPELL_LANGUAGES       TWITUX_PREFS_PATH "/ui/spell_checker_languages"
 #define TWITUX_PREFS_UI_SPELL                 TWITUX_PREFS_PATH "/ui/spell"
 
 #define TWITUX_PREFS_HINTS_CLOSE_MAIN_WINDOW  TWITUX_PREFS_PATH "/hints/close_main_window"

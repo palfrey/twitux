@@ -36,10 +36,12 @@
 #include <libtwitux/twitux-debug.h>
 #include <libtwitux/twitux-xml.h>
 
+#ifdef HAVE_GTKSPELL 
+#include <gtkspell/gtkspell.h>
+#endif
+
 #include "twitux.h"
 #include "twitux-send-message-dialog.h"
-#include "twitux-spell.h"
-#include "twitux-spell-dialog.h"
 #include "twitux-network.h"
 
 #define DEBUG_DOMAIN_SETUP    "SendMessage"
@@ -50,14 +52,6 @@
 
 #define GET_PRIV(obj)          \
 	(G_TYPE_INSTANCE_GET_PRIVATE ((obj), TWITUX_TYPE_MESSAGE, TwituxMsgDialogPriv))
-
-typedef struct {
-	GtkWidget         *textview;
-	gchar             *word;
-
-	GtkTextIter        start;
-	GtkTextIter        end;
-} TwituxMessageSpell;
 
 struct _TwituxMsgDialogPriv {
 	/* Main widgets */
@@ -71,6 +65,8 @@ struct _TwituxMsgDialogPriv {
 	gboolean           show_friends;
 	gint64 			   reply_id;
 	char			  *reply_user;
+
+	gboolean 			   setup_done;
 };
 
 static void	twitux_message_class_init		     (TwituxMsgDialogClass *klass);
@@ -81,16 +77,6 @@ static void message_set_characters_available     (GtkTextBuffer        *buffer,
 												  TwituxMsgDialog      *dialog);
 static void message_text_buffer_changed_cb       (GtkTextBuffer        *buffer,
 											      TwituxMsgDialog      *dialog);
-static void message_text_populate_popup_cb       (GtkTextView          *view,
-												  GtkMenu              *menu,
-												  TwituxMsgDialog      *dialog);
-static void message_text_check_word_spelling_cb  (GtkMenuItem          *menuitem,
-												  TwituxMessageSpell   *message_spell);
-static TwituxMessageSpell *message_spell_new     (GtkWidget            *window,
-												  const gchar          *word,
-												  GtkTextIter           start,
-												  GtkTextIter           end);
-static void message_spell_free                   (TwituxMessageSpell   *message_spell);
 static void message_destroy_cb                   (GtkWidget            *widget,
 												  TwituxMsgDialog      *dialog);
 static void message_response_cb                  (GtkWidget            *widget,
@@ -149,12 +135,13 @@ message_setup (GtkWindow  *parent)
 							 "friends_label", &priv->friends_label,
 							 "send_button", &priv->send_button,
 							 NULL);
+	if (!priv->setup_done)
+		gtkspell_new_attach(GTK_TEXT_VIEW(priv->textview), NULL, NULL);
 	
 	/* Connect the signals */
 	twitux_xml_connect (ui, dialog,
 						"send_message_dialog", "destroy", message_destroy_cb,
 						"send_message_dialog", "response", message_response_cb,
-						"send_message_textview", "populate_popup", message_text_populate_popup_cb,
 						NULL);
 
 	g_object_unref (ui);
@@ -173,12 +160,6 @@ message_setup (GtkWindow  *parent)
 					  "changed",
 					  G_CALLBACK (message_text_buffer_changed_cb),
 					  dialog);
-
-	/* Create misspelt words identification tag */
-	gtk_text_buffer_create_tag (buffer,
-								"misspelled",
-								"underline", PANGO_UNDERLINE_ERROR,
-								NULL);
 
 	gtk_window_set_transient_for (GTK_WINDOW (priv->dialog), parent);
 
@@ -200,6 +181,8 @@ message_setup (GtkWindow  *parent)
 	/* Default reply id is "not a reply" */
 	priv->reply_id = -1;
 	priv->reply_user = NULL;
+
+	priv->setup_done = TRUE;
 }
 
 void
@@ -377,169 +360,7 @@ static void
 message_text_buffer_changed_cb (GtkTextBuffer    *buffer,
                                 TwituxMsgDialog  *dialog)
 {
-	TwituxMsgDialogPriv   *priv;
-	GtkTextIter            start;
-	GtkTextIter            end;
-	gchar                 *str;
-	gboolean               spell_checker = FALSE;
-
 	message_set_characters_available (buffer, dialog);
-
-	if (!twitux_spell_supported ()) {
-		return;
-	}
-
-	priv = GET_PRIV (dialog);
-
-	twitux_conf_get_bool (twitux_conf_get (),
-						  TWITUX_PREFS_UI_SPELL,
-						  &spell_checker);
-
-	gtk_text_buffer_get_start_iter (buffer, &start);
-
-	if (!spell_checker) {
-		gtk_text_buffer_get_end_iter (buffer, &end);
-		gtk_text_buffer_remove_tag_by_name (buffer, "misspelled", &start, &end);
-		return;
-	}
-
-	while (TRUE) {
-		gboolean correct = FALSE;
-
-		/* if at start */
-		if (gtk_text_iter_is_start (&start)) {
-			end = start;
-
-			if (!gtk_text_iter_forward_word_end (&end)) {
-				/* no whole word yet */
-				break;
-			}
-		} else {
-			if (!gtk_text_iter_forward_word_end (&end)) {
-				/* must be the end of the buffer */
-				break;
-			}
-
-			start = end;
-			gtk_text_iter_backward_word_start (&start);
-		}
-
-		str = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
-
-		/* spell check string */
-		correct = twitux_spell_check (str);
-
-		if (!correct) {
-			gtk_text_buffer_apply_tag_by_name (buffer, "misspelled",
-											   &start, &end);
-		} else {
-			gtk_text_buffer_remove_tag_by_name (buffer, "misspelled",
-												&start, &end);
-		}
-
-		g_free (str);
-
-		/* set the start iter to the end iters position */
-		start = end;
-	}
-}
-
-static void
-message_text_populate_popup_cb (GtkTextView        *view,
-								GtkMenu            *menu,
-								TwituxMsgDialog    *dialog)
-{
-	TwituxMsgDialogPriv   *priv;
-	GtkTextBuffer         *buffer;
-	GtkTextTagTable       *table;
-	GtkTextTag            *tag;
-	gint                   x,y;
-	GtkTextIter            iter, start, end;
-	GtkWidget             *item;
-	gchar                 *str = NULL;
-	TwituxMessageSpell    *message_spell;
-
-	priv = GET_PRIV (dialog);
-
-	/* Add the spell check menu item */
-	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->textview));
-	table = gtk_text_buffer_get_tag_table (buffer);
-
-	tag = gtk_text_tag_table_lookup (table, "misspelled");
-
-	gtk_widget_get_pointer (GTK_WIDGET (view), &x, &y);
-
-	gtk_text_view_window_to_buffer_coords (GTK_TEXT_VIEW (view),
-										   GTK_TEXT_WINDOW_WIDGET,
-										   x, y,
-										   &x, &y);
-
-	gtk_text_view_get_iter_at_location (GTK_TEXT_VIEW (view), &iter, x, y);
-
-	start = end = iter;
-
-	if (gtk_text_iter_backward_to_tag_toggle (&start, tag) &&
-		gtk_text_iter_forward_to_tag_toggle (&end, tag)) {
-		str = gtk_text_buffer_get_text (buffer,
-										&start, &end, FALSE);
-	}
-
-	if (G_STR_EMPTY (str)) {
-		return;
-	}
-
-	message_spell = message_spell_new (priv->textview, str, start, end);
-
-	g_object_set_data_full (G_OBJECT (menu),
-							"message_spell", message_spell,
-							(GDestroyNotify) message_spell_free);
-
-	item = gtk_separator_menu_item_new ();
-	gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	item = gtk_menu_item_new_with_mnemonic (_("_Check Word Spelling..."));
-	g_signal_connect (item,
-					  "activate",
-					  G_CALLBACK (message_text_check_word_spelling_cb),
-					  message_spell);
-	gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-}
-
-static void
-message_text_check_word_spelling_cb (GtkMenuItem        *menuitem,
-									 TwituxMessageSpell *chat_spell)
-{
-	twitux_spell_dialog_show (chat_spell->textview,
-							  chat_spell->start,
-							  chat_spell->end,
-							  chat_spell->word);
-}
-
-static TwituxMessageSpell *
-message_spell_new (GtkWidget          *textview,
-				   const gchar        *word,
-				   GtkTextIter         start,
-				   GtkTextIter         end)
-{
-	TwituxMessageSpell *message_spell;
-
-	message_spell = g_new0 (TwituxMessageSpell, 1);
-
-	message_spell->textview = textview;
-	message_spell->word = g_strdup (word);
-	message_spell->start = start;
-	message_spell->end = end;
-
-	return message_spell;
-}
-
-static void
-message_spell_free (TwituxMessageSpell *message_spell)
-{
-	g_free (message_spell->word);
-	g_free (message_spell);
 }
 
 static void

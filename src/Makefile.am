@@ -5,7 +5,7 @@ AM_CPPFLAGS=						\
 	-DDATADIR=\""$(datadir)"\"              	\
 	-DLIBDIR=\""$(libdir)"\"			\
 	$(TWITUX_CFLAGS)				\
-	$(ENCHANT_CFLAGS)				\
+	$(GTKSPELL_CFLAGS)              \
 	$(WARN_CFLAGS)
 
 bin_PROGRAMS = twitux
@@ -29,8 +29,6 @@ twitux_SOURCES = 							\
 	twitux-parser.c			twitux-parser.h			\
 	twitux-preferences.c		twitux-preferences.h		\
 	twitux-send-message-dialog.c	twitux-send-message-dialog.h	\
-	twitux-spell.c			twitux-spell.h			\
-	twitux-spell-dialog.c		twitux-spell-dialog.h		\
 	twitux-ui-utils.c		twitux-ui-utils.h		\
 	twitux-lists-dialog.c		twitux-lists-dialog.h		\
 	twitux-tweet-list.c		twitux-tweet-list.h
@@ -38,4 +36,4 @@ twitux_SOURCES = 							\
 twitux_LDADD=						\
 	$(top_builddir)/libtwitux/libtwitux.la		\
 	$(TWITUX_LIBS)					\
-	$(ENCHANT_LIBS)
+	$(GTKSPELL_LIBS)

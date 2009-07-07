@@ -36,7 +36,6 @@
 
 #include "twitux.h"
 #include "twitux-preferences.h"
-#include "twitux-spell.h"
 
 #define XML_FILE "prefs_dlg.xml"
 
@@ -88,20 +87,6 @@ enum {
 };
 
 static void     preferences_setup_widgets          (TwituxPrefs            *prefs);
-static void     preferences_languages_add          (TwituxPrefs            *prefs);
-static void     preferences_languages_save         (TwituxPrefs            *prefs);
-static gboolean preferences_languages_save_foreach (GtkTreeModel           *model,
-													GtkTreePath            *path,
-													GtkTreeIter            *iter,
-													gchar                 **languages);
-static void     preferences_languages_load         (TwituxPrefs            *prefs);
-static gboolean preferences_languages_load_foreach (GtkTreeModel           *model,
-													GtkTreePath            *path,
-													GtkTreeIter            *iter,
-													gchar                 **languages);
-static void preferences_languages_cell_toggled_cb  (GtkCellRendererToggle  *cell,
-												    gchar                  *path_string,
-												    TwituxPrefs            *prefs);
 static void     preferences_timeline_setup         (TwituxPrefs            *prefs);
 static void     preferences_widget_sync_bool       (const gchar            *key,
 													GtkWidget              *widget);
@@ -118,9 +103,6 @@ static void     preferences_notify_string_combo_cb (TwituxConf             *conf
 static void     preferences_notify_int_combo_cb    (TwituxConf             *conf,
 													const gchar            *key,
 													gpointer                user_data);
-static void     preferences_notify_sensitivity_cb  (TwituxConf             *conf,
-													const gchar            *key,
-													gpointer                user_data);
 static void     preferences_hookup_toggle_button   (TwituxPrefs            *prefs,
 													const gchar            *key,
 													GtkWidget              *widget);
@@ -128,9 +110,6 @@ static void     preferences_hookup_string_combo    (TwituxPrefs            *pref
 													const gchar            *key,
 													GtkWidget              *widget);
 static void     preferences_hookup_int_combo       (TwituxPrefs            *prefs,
-													const gchar            *key,
-													GtkWidget              *widget);
-static void     preferences_hookup_sensitivity     (TwituxPrefs            *prefs,
 													const gchar            *key,
 													GtkWidget              *widget);
 static void preferences_response_cb                (GtkWidget              *widget,
@@ -176,10 +155,6 @@ preferences_setup_widgets (TwituxPrefs *prefs)
 									  TWITUX_PREFS_UI_SPELL,
 									  prefs->spell);
 
-	preferences_hookup_sensitivity (prefs,
-									TWITUX_PREFS_UI_SPELL_LANGUAGES,
-									prefs->treeview_spell_checker);
-
 	preferences_hookup_string_combo (prefs,
 									 TWITUX_PREFS_TWEETS_HOME_TIMELINE,
 									 prefs->combo_default_timeline);
@@ -187,244 +162,6 @@ preferences_setup_widgets (TwituxPrefs *prefs)
 	preferences_hookup_int_combo (prefs,
 								  TWITUX_PREFS_TWEETS_RELOAD_TIMELINES,
 								  prefs->combo_reload);
-}
-static void
-preferences_languages_setup (TwituxPrefs *prefs)
-{
-	GtkTreeView       *view;
-	GtkListStore      *store;
-	GtkTreeSelection  *selection;
-	GtkTreeModel      *model;
-	GtkTreeViewColumn *column;
-	GtkCellRenderer   *renderer;
-	guint              col_offset;
-
-	view = GTK_TREE_VIEW (prefs->treeview_spell_checker);
-
-	store = gtk_list_store_new (COL_LANG_COUNT,
-								G_TYPE_BOOLEAN, /*enabled */
-								G_TYPE_STRING,  /* code */
-								G_TYPE_STRING); /* name */
-
-	gtk_tree_view_set_model (view, GTK_TREE_MODEL (store));
-
-	selection = gtk_tree_view_get_selection (view);
-	gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
-
-	model = GTK_TREE_MODEL (store);
-
-	renderer = gtk_cell_renderer_toggle_new ();
-	g_signal_connect (renderer, "toggled",
-					  G_CALLBACK (preferences_languages_cell_toggled_cb),
-					  prefs);
-
-	column = gtk_tree_view_column_new_with_attributes (NULL,
-													   renderer,
-													   "active", COL_LANG_ENABLED,
-													   NULL);
-
-	gtk_tree_view_append_column (view, column);
-
-	renderer = gtk_cell_renderer_text_new ();
-	col_offset = gtk_tree_view_insert_column_with_attributes (view,
-															  -1, _("Language"),
-															  renderer,
-															  "text", COL_LANG_NAME,
-															  NULL);
-
-	g_object_set_data (G_OBJECT (renderer),
-					   "column", GINT_TO_POINTER (COL_LANG_NAME));
-
-	column = gtk_tree_view_get_column (view, col_offset -1);
-	gtk_tree_view_column_set_sort_column_id (column, COL_LANG_NAME);
-	gtk_tree_view_column_set_resizable (column, FALSE);
-	gtk_tree_view_column_set_clickable (GTK_TREE_VIEW_COLUMN (column), TRUE);
-
-	g_object_unref (store);
-}
-
-static void
-preferences_languages_add (TwituxPrefs *prefs)
-{
-	GtkTreeView  *view;
-	GtkListStore *store;
-	GList        *codes;
-	GList        *l;
-
-	view = GTK_TREE_VIEW (prefs->treeview_spell_checker);
-	store = GTK_LIST_STORE (gtk_tree_view_get_model (view));
-
-	codes = twitux_spell_get_language_codes ();
-	for (l = codes; l; l = l->next) {
-		GtkTreeIter  iter;
-		const gchar *code;
-		const gchar *name;
-
-		code = l->data;
-		name = twitux_spell_get_language_name (code);
-		if (!name) {
-			continue;
-		}
-
-		gtk_list_store_append (store, &iter);
-		gtk_list_store_set (store, &iter,
-							COL_LANG_CODE, code,
-							COL_LANG_NAME, name,
-							-1);
-	}
-
-	twitux_spell_free_language_codes (codes);
-}
-
-static void
-preferences_languages_save (TwituxPrefs *prefs)
-{
-	GtkTreeView  *view;
-	GtkTreeModel *model;
-
-	gchar        *languages = NULL;
-
-	view = GTK_TREE_VIEW (prefs->treeview_spell_checker);
-	model = gtk_tree_view_get_model (view);
-
-	gtk_tree_model_foreach (model,
-							(GtkTreeModelForeachFunc)
-							preferences_languages_save_foreach,
-							&languages);
-
-	if (!languages) {
-		/* Default to english */
-		languages = g_strdup ("en");
-	}
-
-	twitux_conf_set_string (twitux_conf_get (),
-							TWITUX_PREFS_UI_SPELL_LANGUAGES,
-							languages);
-	g_free (languages);
-}
-
-static gboolean
-preferences_languages_save_foreach (GtkTreeModel  *model,
-									GtkTreePath   *path,
-									GtkTreeIter   *iter,
-									gchar        **languages)
-{
-	gboolean  enabled;
-	gchar    *code;
-
-	if (!languages) {
-		return TRUE;
-	}
-
-	gtk_tree_model_get (model, iter, COL_LANG_ENABLED, &enabled, -1);
-	if (!enabled) {
-		return FALSE;
-	}
-
-	gtk_tree_model_get (model, iter, COL_LANG_CODE, &code, -1);
-	if (!code) {
-		return FALSE;
-	}
-
-	if (!(*languages)) {
-		*languages = g_strdup (code);
-	} else {
-		gchar *str = *languages;
-		*languages = g_strdup_printf ("%s,%s", str, code);
-		g_free (str);
-	}
-
-	g_free (code);
-
-	return FALSE;
-}
-
-static void
-preferences_languages_load (TwituxPrefs *prefs)
-{
-	GtkTreeView   *view;
-	GtkTreeModel  *model;
-	gchar         *value;
-	gchar        **vlanguages;
-
-	if (!twitux_conf_get_string (twitux_conf_get (),
-								 TWITUX_PREFS_UI_SPELL_LANGUAGES,
-								 &value) || !value) {
-		return;
-	}
-
-	vlanguages = g_strsplit (value, ",", -1);
-	g_free (value);
-
-	view = GTK_TREE_VIEW (prefs->treeview_spell_checker);
-	model = gtk_tree_view_get_model (view);
-
-	gtk_tree_model_foreach (model,
-							(GtkTreeModelForeachFunc)
-							preferences_languages_load_foreach,
-							vlanguages);
-
-	g_strfreev (vlanguages);
-}
-
-static gboolean
-preferences_languages_load_foreach (GtkTreeModel  *model,
-									GtkTreePath   *path,
-									GtkTreeIter   *iter,
-									gchar        **languages)
-{
-	gchar    *code;
-	gchar    *lang;
-	gint      i;
-	gboolean  found = FALSE;
-
-	if (!languages) {
-		return TRUE;
-	}
-
-	gtk_tree_model_get (model, iter, COL_LANG_CODE, &code, -1);
-	if (!code) {
-		return FALSE;
-	}
-
-	for (i = 0, lang = languages[i]; lang; lang = languages[++i]) {
-		if (strcmp (lang, code) == 0) {
-			found = TRUE;
-		}
-	}
-
-	gtk_list_store_set (GTK_LIST_STORE (model), iter, COL_LANG_ENABLED, found, -1);
-
-	return FALSE;
-}
-
-static void
-preferences_languages_cell_toggled_cb (GtkCellRendererToggle *cell,
-									   gchar                 *path_string,
-									   TwituxPrefs           *prefs)
-{
-	GtkTreeView  *view;
-	GtkTreeModel *model;
-	GtkListStore *store;
-	GtkTreePath  *path;
-	GtkTreeIter   iter;
-	gboolean      enabled;
-
-	view = GTK_TREE_VIEW (prefs->treeview_spell_checker);
-	model = gtk_tree_view_get_model (view);
-	store = GTK_LIST_STORE (model);
-
-	path = gtk_tree_path_new_from_string (path_string);
-
-	gtk_tree_model_get_iter (model, &iter, path);
-	gtk_tree_model_get (model, &iter, COL_LANG_ENABLED, &enabled, -1);
-
-	enabled ^= 1;
-
-	gtk_list_store_set (store, &iter, COL_LANG_ENABLED, enabled, -1);
-	gtk_tree_path_free (path);
-
-	preferences_languages_save (prefs);
 }
 
 static void
@@ -624,18 +361,6 @@ preferences_notify_int_combo_cb (TwituxConf  *conf,
 }
 
 static void
-preferences_notify_sensitivity_cb (TwituxConf  *conf,
-								   const gchar *key,
-								   gpointer     user_data)
-{
-	gboolean value;
-
-	if (twitux_conf_get_bool (conf, key, &value)) {
-		gtk_widget_set_sensitive (GTK_WIDGET (user_data), value);
-	}
-}
-
-static void
 preferences_add_id (TwituxPrefs *prefs, guint id)
 {
 	prefs->notify_ids = g_list_prepend (prefs->notify_ids,
@@ -715,28 +440,6 @@ preferences_hookup_int_combo (TwituxPrefs *prefs,
 	id = twitux_conf_notify_add (twitux_conf_get (),
 								 key,
 								 preferences_notify_int_combo_cb,
-								 widget);
-
-	if (id) {
-		preferences_add_id (prefs, id);
-	}
-}
-
-static void
-preferences_hookup_sensitivity (TwituxPrefs *prefs,
-								const gchar *key,
-								GtkWidget   *widget)
-{
-	gboolean value;
-	guint    id;
-
-	if (twitux_conf_get_bool (twitux_conf_get (), key, &value)) {
-		gtk_widget_set_sensitive (widget, value);
-	}
-
-	id = twitux_conf_notify_add (twitux_conf_get (),
-								 key,
-								 preferences_notify_sensitivity_cb,
 								 widget);
 
 	if (id) {
@@ -883,17 +586,12 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 	preferences_self_valid_cb(NULL, prefs); // initialise the self pref
 	g_object_unref (ui);
 
-	preferences_languages_setup (prefs);
-	preferences_languages_add (prefs);
-	preferences_languages_load (prefs);
-
 	/* If compiled with spelling support, show the notebook page */
-	if (twitux_spell_supported ()) {
-		GtkWidget *page;
+#if HAVE_GTKSPELL
+	GtkWidget *page;
 
-		page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (prefs->notebook), 1);
-		gtk_widget_show (page);
-	}
-
+	page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (prefs->notebook), 1);
+	gtk_widget_show (page);
+#endif
 	gtk_widget_show (prefs->dialog);
 }
