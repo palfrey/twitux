@@ -1,0 +1,628 @@
+# Japanese translation of twitux
+# Copyright (C) 2008, package writer
+# This file is distributed under the same license as the twitux package.
+# Hiroshi Miura <miura@da-cha.org>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: twitux 0.69\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-03-29 21:50+0900\n"
+"PO-Revision-Date: 2009-03-29 23:15+0900\n"
+"Last-Translator: lh <jarryson#gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/add_friend_dlg.xml.h:1
+msgid "Add a friend"
+msgstr "增加好友"
+
+#: ../data/add_friend_dlg.xml.h:2 ../data/account_dlg.xml.h:4
+msgid "_Username:"
+msgstr "用户名(_U)"
+
+#: ../data/account_dlg.xml.h:1
+msgid "Show Password"
+msgstr "显示密码"
+
+#: ../data/account_dlg.xml.h:2
+msgid "Twitter Account"
+msgstr "Twitter账户"
+
+#: ../data/account_dlg.xml.h:3
+msgid "_Password:"
+msgstr "密码(_P)"
+
+#: ../data/lists_dlg.xml.h:1
+msgid "Following"
+msgstr "跟随"
+
+#: ../data/lists_dlg.xml.h:2
+msgid "Name"
+msgstr "名称"
+
+#: ../data/lists_dlg.xml.h:3
+msgid "User"
+msgstr "用户"
+
+#: ../data/lists_dlg.xml.h:4
+msgid "Users settings"
+msgstr "用户设定"
+
+#: ../data/lists_dlg.xml.h:5
+msgid "gtk-close"
+msgstr ""
+
+#: ../data/lists_dlg.xml.h:6
+msgid "gtk-remove"
+msgstr ""
+
+#: ../data/main_window.xml.h:1
+msgid "Add a friend..."
+msgstr "增加一个好友..."
+
+#: ../data/main_window.xml.h:2
+msgid "C_onnect"
+msgstr "连接(_O)"
+
+#: ../data/main_window.xml.h:3
+msgid "Direct Messages"
+msgstr "直接消息"
+
+#: ../data/main_window.xml.h:4
+msgid "Direct Replies"
+msgstr "直接回复"
+
+#: ../data/main_window.xml.h:5 ../src/twitux-preferences.c:437
+msgid "Friends"
+msgstr "好友"
+
+#: ../data/main_window.xml.h:6
+msgid "Friends Timeline"
+msgstr "好友时间线"
+
+#: ../data/main_window.xml.h:7
+msgid "My Timeline"
+msgstr "自己时间线"
+
+#: ../data/main_window.xml.h:8
+msgid "New Message"
+msgstr "新消息"
+
+#: ../data/main_window.xml.h:9
+msgid "Public Timeline"
+msgstr "公共时间线"
+
+#: ../data/main_window.xml.h:10
+msgid "Send Direct Message"
+msgstr "发送直接消息"
+
+#: ../data/main_window.xml.h:11 ../data/twitux.desktop.in.in.h:2
+#: ../src/twitux-main.c:46 ../src/twitux-preferences.c:439
+msgid "Twitux"
+msgstr ""
+
+#: ../data/main_window.xml.h:12
+msgid "Twitux Timeline"
+msgstr "Twitux时间线"
+
+#: ../data/main_window.xml.h:13
+msgid "_Account"
+msgstr "账户(_A)"
+
+#: ../data/main_window.xml.h:14
+msgid "_Contents"
+msgstr "连接(_C)"
+
+#: ../data/main_window.xml.h:15
+msgid "_Disconnect"
+msgstr "断开(_D)"
+
+#: ../data/main_window.xml.h:16
+msgid "_Help"
+msgstr "帮助(_H)"
+
+#: ../data/main_window.xml.h:17
+msgid "_Refresh"
+msgstr "刷新(_R)"
+
+#: ../data/main_window.xml.h:18
+msgid "_Settings"
+msgstr "设置(_S)"
+
+#: ../data/main_window.xml.h:19
+msgid "_Twitter"
+msgstr ""
+
+#: ../data/main_window.xml.h:20
+msgid "_View"
+msgstr "显示(_V)"
+
+#: ../data/prefs_dlg.xml.h:1
+msgid "<b>General</b>"
+msgstr "<b>一般设置</b>"
+
+#: ../data/prefs_dlg.xml.h:2
+msgid "<b>Languages</b>"
+msgstr "<b>语言</b>"
+
+#: ../data/prefs_dlg.xml.h:3
+msgid "<b>Options</b>"
+msgstr "<b>选项</b>"
+
+#: ../data/prefs_dlg.xml.h:4
+msgid "<b>Timelines</b>"
+msgstr "<b>时间线</b>"
+
+#: ../data/prefs_dlg.xml.h:5
+msgid ""
+"<small>The list of languages reflects only the languages for which you have "
+"a dictionary installed.</small>"
+msgstr ""
+""
+
+#: ../data/prefs_dlg.xml.h:6
+msgid "Default _Timeline:"
+msgstr "默认时间线(_T)"
+
+#: ../data/prefs_dlg.xml.h:7
+msgid "General"
+msgstr "一般"
+
+#: ../data/prefs_dlg.xml.h:8
+msgid "Preferences"
+msgstr "首选项"
+
+#: ../data/prefs_dlg.xml.h:9
+msgid "S_ound notification when message received"
+msgstr "收到消息使用声音提示(_O)"
+
+#: ../data/prefs_dlg.xml.h:10
+msgid "Spell Checking"
+msgstr "拼写检查"
+
+#: ../data/prefs_dlg.xml.h:11
+msgid ""
+"This will show the full status message of the item selected in the list view."
+msgstr "在列表模式中选中的项目显示完整状态信息"
+
+#: ../data/prefs_dlg.xml.h:12
+msgid "_Connect automatically"
+msgstr "自动连接(_C)"
+
+#: ../data/prefs_dlg.xml.h:13
+msgid "_Display notifications when message recieved"
+msgstr "收到消息弹出提示(_D)"
+
+#: ../data/prefs_dlg.xml.h:14
+msgid "_Enable spell checking"
+msgstr "启用拼写检查(_E)"
+
+#: ../data/prefs_dlg.xml.h:15
+msgid "_Expand messages"
+msgstr "展开消息(_E)"
+
+#: ../data/prefs_dlg.xml.h:16
+msgid "_Retrieve every:"
+msgstr "更新间隔(_R):"
+
+#: ../data/prefs_dlg.xml.h:17
+msgid "_Show user names instead of real names"
+msgstr "显示用户名而不是真实姓名(_S)"
+
+#: ../data/send_message_dlg.xml.h:1
+msgid "<span size=\"small\">Characters Available: 160</span>"
+msgstr "<span size=\"small\">剩余字符: 160</span>"
+
+#: ../data/send_message_dlg.xml.h:2
+msgid "Choose a friend:"
+msgstr "选择好友:"
+
+#: ../data/send_message_dlg.xml.h:3
+msgid "Send Message"
+msgstr "发送信息"
+
+#: ../data/send_message_dlg.xml.h:4
+msgid "_Send"
+msgstr "发送(_S)"
+
+#: ../data/spell_dlg.xml.h:1
+msgid "Spell Checker"
+msgstr "拼写检查"
+
+#: ../data/spell_dlg.xml.h:2
+msgid "Suggestions for the word:"
+msgstr "当前拼写建议:"
+
+#: ../data/spell_dlg.xml.h:3
+msgid "_Replace"
+msgstr "替换(_R)"
+
+#: ../data/twitux.desktop.in.in.h:1
+msgid "A Twitter client"
+msgstr "一个Twitter客户端"
+
+#: ../data/twitux.schemas.in.h:1
+msgid ""
+"Comma separated list of spell checker languages to use (e.g. en, fr, nl)."
+msgstr ""
+""
+
+#: ../data/twitux.schemas.in.h:2
+msgid "Enable spell checking"
+msgstr "启用拼写检查"
+
+#: ../data/twitux.schemas.in.h:3
+msgid "Enable spell checking."
+msgstr "启用拼写检查。"
+
+#: ../data/twitux.schemas.in.h:4
+msgid "Expand messages"
+msgstr "展开消息"
+
+#: ../data/twitux.schemas.in.h:5
+msgid "Hide main window"
+msgstr "隐藏主窗口"
+
+#: ../data/twitux.schemas.in.h:6
+msgid "Hide the main window."
+msgstr "隐藏主窗口。"
+
+#: ../data/twitux.schemas.in.h:7
+msgid "Log automatically into Twitter"
+msgstr "自动记录日志到Twitter"
+
+#: ../data/twitux.schemas.in.h:8
+msgid "Log automatically into Twitter."
+msgstr "自动记录日志到Twitter。"
+
+#: ../data/twitux.schemas.in.h:9
+msgid "Main window X position"
+msgstr "主窗口位置"
+
+#: ../data/twitux.schemas.in.h:10
+msgid "Main window X position."
+msgstr "主窗口位置。"
+
+#: ../data/twitux.schemas.in.h:11
+msgid "Main window Y position"
+msgstr "主窗口Y坐标"
+
+#: ../data/twitux.schemas.in.h:12
+msgid "Main window Y position."
+msgstr "主窗口Y坐标。"
+
+#: ../data/twitux.schemas.in.h:13
+msgid "Main window height"
+msgstr "主窗口高度"
+
+#: ../data/twitux.schemas.in.h:14
+msgid "Main window height."
+msgstr "主窗口高度。"
+
+#: ../data/twitux.schemas.in.h:15
+msgid "Main window width"
+msgstr "主窗口宽度"
+
+#: ../data/twitux.schemas.in.h:16
+msgid "Main window width."
+msgstr "主窗口宽度。"
+
+#: ../data/twitux.schemas.in.h:17
+msgid "Minutes between timeline retrievals"
+msgstr "时间线更新间隔（分钟）"
+
+#: ../data/twitux.schemas.in.h:18
+msgid ""
+"Minutes between timeline retrievals. Values supported are 3, 5, 15, 30, and "
+"60"
+msgstr ""
+"间隔多少分钟更新时间线。可用的值为3, 5, 15, 30, 60"
+
+#: ../data/twitux.schemas.in.h:19
+msgid "Show hint about closing the main window"
+msgstr "显示主窗口关闭提示"
+
+#: ../data/twitux.schemas.in.h:20
+msgid "Show notification of new Twitter messages"
+msgstr "有新Twitter信息时弹出提示"
+
+#: ../data/twitux.schemas.in.h:21
+msgid "Show notification of new Twitter messages."
+msgstr "有新Twitter信息时显示弹出提示。"
+
+#: ../data/twitux.schemas.in.h:22
+msgid "Show user names instead real names"
+msgstr "显示用户名而不是真实名称"
+
+#: ../data/twitux.schemas.in.h:23
+msgid "Show user names instead real names."
+msgstr "显示用户名而不是真实名称。"
+
+#: ../data/twitux.schemas.in.h:24
+msgid "Sound notification of new Twitter messages"
+msgstr "有新Twitter消息时声音提示"
+
+#: ../data/twitux.schemas.in.h:25
+msgid "Sound notification of new Twitter messages."
+msgstr "有新Twitter消息时声音提示。"
+
+#: ../data/twitux.schemas.in.h:26
+msgid "Spell checking languages"
+msgstr "拼写检查的语言"
+
+#: ../data/twitux.schemas.in.h:27
+msgid "Twitter password"
+msgstr "Twitter密码"
+
+#: ../data/twitux.schemas.in.h:28
+msgid "Twitter username"
+msgstr "Twitter用户名"
+
+#: ../data/twitux.schemas.in.h:29
+msgid "User's Twitter account password."
+msgstr "用户的Twitter账户密码。"
+
+#: ../data/twitux.schemas.in.h:30
+msgid "User's Twitter account username."
+msgstr "用户的Twitter账户的用户名。"
+
+#: ../data/twitux.schemas.in.h:31
+msgid "User's home timeline"
+msgstr "用户自己的时间线"
+
+#: ../data/twitux.schemas.in.h:32
+msgid "User's home timeline."
+msgstr "用户自己的时间线。"
+
+#: ../data/twitux.schemas.in.h:33
+msgid ""
+"Whether or not to show the message dialog about closing the main window with "
+"the 'x' button in the title bar."
+msgstr ""
+
+#: ../src/twitux-about.c:42
+msgid ""
+"Twitux is free software; you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version."
+msgstr ""
+
+#: ../src/twitux-about.c:46
+msgid ""
+"Twitux is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+
+#: ../src/twitux-about.c:50
+msgid ""
+"You should have received a copy of the GNU Lesser General Public License "
+"along with this library; if not, write to the Free Software Foundation, "
+"Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+
+#: ../src/twitux-about.c:79
+msgid "A GNOME client for Twitter."
+msgstr "一个GNOME环境的Twitter客户端\n"
+"翻译于090625，今天google被和谐"
+
+#: ../src/twitux-about.c:80
+msgid "Copyright © 2007-2009 Daniel Morales"
+msgstr "版权所有 © 2007-2009 Daniel Morales"
+
+#: ../src/twitux-about.c:82
+msgid "translator-credits"
+msgstr ""
+"翻译者-贡献"
+"lh<jarryson#gmail.com>"
+
+#: ../src/twitux-app.c:655
+msgid "Twitux is still running, it is just hidden."
+msgstr "Twitux将在后台运行。"
+
+#: ../src/twitux-app.c:656
+msgid "Click on the notification area icon to show Twitux."
+msgstr "点击通知区域图标以显示Twitux。"
+
+#: ../src/twitux-app.c:666
+msgid "You were about to quit!"
+msgstr "这将会退出！"
+
+#: ../src/twitux-app.c:667
+msgid ""
+"Since no system or notification tray has been found, this action would "
+"normally quit Twitux.\n"
+"\n"
+"This is just a reminder, from now on, Twitux will quit when performing this "
+"action unless you uncheck the option below."
+msgstr ""
+
+#: ../src/twitux-app.c:1040
+msgid "_Show Twitux"
+msgstr "显示Twitux(_S)"
+
+#: ../src/twitux-app.c:1048
+msgid "_New Message"
+msgstr "新消息(_N)"
+
+#: ../src/twitux-app.c:1056
+msgid "_Quit"
+msgstr "退出(_Q)"
+
+#: ../src/twitux-app.c:1429
+msgid "New tweet received"
+msgstr "新的消息"
+
+#: ../src/twitux-hint.c:86
+msgid "Do not show this again"
+msgstr "下次不显示。"
+
+#: ../src/twitux-network.c:233
+msgid "Connecting..."
+msgstr "连接中..."
+
+#. UI
+#: ../src/twitux-network.c:292 ../src/twitux-network.c:308
+msgid "Loading timeline..."
+msgstr "加载时间线..."
+
+#: ../src/twitux-network.c:513
+msgid "Access denied."
+msgstr "连接被拒绝。"
+
+#: ../src/twitux-network.c:516
+msgid "HTTP communication error."
+msgstr "HTTP通信错误"
+
+#: ../src/twitux-network.c:519
+msgid "Internal server error."
+msgstr "网络错误"
+
+#: ../src/twitux-network.c:522
+msgid "Stopped"
+msgstr "停止"
+
+#: ../src/twitux-network.c:614
+msgid "Status Sent"
+msgstr "状态发送"
+
+#: ../src/twitux-network.c:629
+msgid "Message Sent"
+msgstr "消息发送"
+
+#: ../src/twitux-network.c:668
+msgid "Timeline Loaded"
+msgstr "时间线加载完毕"
+
+#: ../src/twitux-network.c:676
+msgid "Timeline Parser Error."
+msgstr "时间线解析错误"
+
+#: ../src/twitux-network.c:716
+msgid "Users parser error."
+msgstr "用户解析错误"
+
+#: ../src/twitux-network.c:772
+msgid "Friend Added"
+msgstr "好友已添加"
+
+#: ../src/twitux-network.c:774
+msgid "Failed to add user"
+msgstr "添加用户失败"
+
+#: ../src/twitux-network.c:789
+msgid "Friend Removed"
+msgstr "好友已删除"
+
+#: ../src/twitux-network.c:791
+msgid "Failed to remove user"
+msgstr "删除用户失败"
+
+#. UI
+#: ../src/twitux-network.c:841
+msgid "Reloading timeline..."
+msgstr "重新加载时间线..."
+
+#: ../src/twitux-parser.c:449
+msgid "1 second ago"
+msgstr "一秒前"
+
+#: ../src/twitux-parser.c:453
+#, c-format
+msgid "%i seconds ago"
+msgstr "%i 秒前"
+
+#: ../src/twitux-parser.c:455
+msgid "1 minute ago"
+msgstr "一分钟前"
+
+#: ../src/twitux-parser.c:460
+#, c-format
+msgid "%i minutes ago"
+msgstr "%i 分钟前"
+
+#: ../src/twitux-parser.c:462
+msgid "1 hour ago"
+msgstr "一小时前"
+
+#: ../src/twitux-parser.c:467
+#, c-format
+msgid "%i hours ago"
+msgstr "%i 小时前"
+
+#: ../src/twitux-parser.c:469
+msgid "1 day ago"
+msgstr "一天前"
+
+#: ../src/twitux-parser.c:474
+#, c-format
+msgid "%i days ago"
+msgstr "%i 天前"
+
+#: ../src/twitux-parser.c:476
+msgid "1 month ago"
+msgstr "一个月前"
+
+#: ../src/twitux-parser.c:478
+#, c-format
+msgid "%i months ago"
+msgstr "%i 个月前"
+
+#: ../src/twitux-preferences.c:67
+msgid "3 minutes"
+msgstr "三分钟"
+
+#: ../src/twitux-preferences.c:68
+msgid "5 minutes"
+msgstr "5分钟"
+
+#: ../src/twitux-preferences.c:69
+msgid "15 minutes"
+msgstr "15分钟"
+
+#: ../src/twitux-preferences.c:70
+msgid "30 minutes"
+msgstr "30分钟"
+
+#: ../src/twitux-preferences.c:71
+msgid "hour"
+msgstr "小时"
+
+#: ../src/twitux-preferences.c:224
+msgid "Language"
+msgstr "语言"
+
+#: ../src/twitux-preferences.c:436
+msgid "Public"
+msgstr "公共"
+
+#: ../src/twitux-preferences.c:438
+msgid "Mine"
+msgstr "自己"
+
+#. Set the label
+#: ../src/twitux-send-message-dialog.c:161
+#: ../src/twitux-send-message-dialog.c:342
+msgid "Characters Available"
+msgstr "剩余可用字数"
+
+#: ../src/twitux-send-message-dialog.c:485
+msgid "_Check Word Spelling..."
+msgstr "正在检查拼写...(_C)"
+
+#: ../src/twitux-spell-dialog.c:93
+msgid "Word"
+msgstr "词语"
+
+#: ../src/twitux-spell-dialog.c:264
+msgid "Suggestions for the word"
+msgstr "拼写建议"
+
+#: ../src/twitux-ui-utils.c:112
+msgid "Unable to open help file"
+msgstr "无法打开帮助文件"
