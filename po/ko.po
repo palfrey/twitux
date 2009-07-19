@@ -1,0 +1,610 @@
+# Korean translation for twitux
+# Copyright (C) 2009, twitux
+# This file is distributed under the same license as the twitux package.
+# Homin Lee <ff4500@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: twitux 0.70\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-06-28 17:24+0900\n"
+"PO-Revision-Date: 2009-06-29 20:04+0900\n"
+"Last-Translator: Homin Lee <ff4500@gamil.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/add_friend_dlg.xml.h:1
+msgid "Add a friend"
+msgstr "친구 추가"
+
+#: ../data/add_friend_dlg.xml.h:2
+#: ../data/account_dlg.xml.h:4
+msgid "_Username:"
+msgstr "사용자 이름(_U):"
+
+#: ../data/account_dlg.xml.h:1
+msgid "Show Password"
+msgstr "암호 보기"
+
+#: ../data/account_dlg.xml.h:2
+msgid "Twitter Account"
+msgstr "트위터 계정"
+
+#: ../data/account_dlg.xml.h:3
+msgid "_Password:"
+msgstr "암호(_P):"
+
+#: ../data/lists_dlg.xml.h:1
+msgid "Following"
+msgstr "Following"
+
+#: ../data/lists_dlg.xml.h:2
+msgid "Name"
+msgstr "이름"
+
+#: ../data/lists_dlg.xml.h:3
+msgid "User"
+msgstr "사용자"
+
+#: ../data/lists_dlg.xml.h:4
+msgid "Users settings"
+msgstr "사용자 설정"
+
+#: ../data/lists_dlg.xml.h:5
+msgid "gtk-close"
+msgstr "gtk-close"
+
+#: ../data/lists_dlg.xml.h:6
+msgid "gtk-remove"
+msgstr "gtk-remove"
+
+#: ../data/main_window.xml.h:1
+msgid "Add a friend..."
+msgstr "친구 추가..."
+
+#: ../data/main_window.xml.h:2
+msgid "C_onnect"
+msgstr "연결(_O)"
+
+#: ../data/main_window.xml.h:3
+msgid "Direct Messages"
+msgstr "직접 메시지"
+
+#: ../data/main_window.xml.h:4
+msgid "Direct Replies"
+msgstr "직접 답글"
+
+#: ../data/main_window.xml.h:5
+#: ../src/twitux-preferences.c:437
+msgid "Friends"
+msgstr "친구"
+
+#: ../data/main_window.xml.h:6
+msgid "Friends Timeline"
+msgstr "친구들 시간배열"
+
+#: ../data/main_window.xml.h:7
+msgid "My Timeline"
+msgstr "내 시간배열"
+
+#: ../data/main_window.xml.h:8
+msgid "New Message"
+msgstr "새 메세지"
+
+#: ../data/main_window.xml.h:9
+msgid "Public Timeline"
+msgstr "공용 시간배열"
+
+#: ../data/main_window.xml.h:10
+msgid "Send Direct Message"
+msgstr "직접 메시지 보내기"
+
+#: ../data/main_window.xml.h:11
+#: ../data/twitux.desktop.in.in.h:2
+#: ../src/twitux-main.c:46
+#: ../src/twitux-preferences.c:439
+msgid "Twitux"
+msgstr "Twitux"
+
+#: ../data/main_window.xml.h:12
+msgid "Twitux Timeline"
+msgstr "Twitux 시간배열"
+
+#: ../data/main_window.xml.h:13
+msgid "_Account"
+msgstr "계정(_A)"
+
+#: ../data/main_window.xml.h:14
+msgid "_Contents"
+msgstr "연결(_C)"
+
+#: ../data/main_window.xml.h:15
+msgid "_Disconnect"
+msgstr "연결 끊기(_D)"
+
+#: ../data/main_window.xml.h:16
+msgid "_Help"
+msgstr "도움말(_H)"
+
+#: ../data/main_window.xml.h:17
+msgid "_Refresh"
+msgstr "새로고침(_R)"
+
+#: ../data/main_window.xml.h:18
+msgid "_Settings"
+msgstr "설정(_S)"
+
+#: ../data/main_window.xml.h:19
+msgid "_Twitter"
+msgstr "_Twitter"
+
+#: ../data/main_window.xml.h:20
+msgid "_View"
+msgstr "보기(_V)"
+
+#: ../data/prefs_dlg.xml.h:1
+msgid "<b>General</b>"
+msgstr "<b>일반</b>"
+
+#: ../data/prefs_dlg.xml.h:2
+msgid "<b>Languages</b>"
+msgstr "<b>언어</b>"
+
+#: ../data/prefs_dlg.xml.h:3
+msgid "<b>Options</b>"
+msgstr "<b>옵션</b>"
+
+#: ../data/prefs_dlg.xml.h:4
+msgid "<b>Timelines</b>"
+msgstr "<b>시간배열</b>"
+
+#: ../data/prefs_dlg.xml.h:5
+msgid "<small>The list of languages reflects only the languages for which you have a dictionary installed.</small>"
+msgstr "<small>여기의 언어 목록은 사전을 설치한 언어만 들어 있습니다.</small>"
+
+#: ../data/prefs_dlg.xml.h:6
+msgid "Default _Timeline:"
+msgstr "기본 시간배열(_T):"
+
+#: ../data/prefs_dlg.xml.h:7
+msgid "General"
+msgstr "일반"
+
+#: ../data/prefs_dlg.xml.h:8
+msgid "Preferences"
+msgstr "기본 설정"
+
+#: ../data/prefs_dlg.xml.h:9
+msgid "S_ound notification when message received"
+msgstr "메시지가 도착했을 때 소리로 알림(_O)"
+
+#: ../data/prefs_dlg.xml.h:10
+msgid "Spell Checking"
+msgstr "맞춤법 검사"
+
+#: ../data/prefs_dlg.xml.h:11
+msgid "This will show the full status message of the item selected in the list view."
+msgstr "리스트 뷰에서 선택된 아이템의 전체 상태 메시지를 보여 줌."
+
+#: ../data/prefs_dlg.xml.h:12
+msgid "_Connect automatically"
+msgstr "자동 연결(_C)"
+
+#: ../data/prefs_dlg.xml.h:13
+msgid "_Display notifications when message recieved"
+msgstr "메시지가 도착했을때 화면으로 알림(_D)"
+
+#: ../data/prefs_dlg.xml.h:14
+msgid "_Enable spell checking"
+msgstr "맞춤법 검사 하기(_E)"
+
+#: ../data/prefs_dlg.xml.h:15
+msgid "_Expand messages"
+msgstr "메시지 펼치기(_E)"
+
+#: ../data/prefs_dlg.xml.h:16
+msgid "_Retrieve every:"
+msgstr "모두 받기(_R):"
+
+#: ../data/prefs_dlg.xml.h:17
+msgid "_Show user names instead of real names"
+msgstr "실제 이름 말고 사용자 이름으로 보여주기(_S)"
+
+#: ../data/send_message_dlg.xml.h:1
+msgid "<span size=\"small\">Characters Available: 160</span>"
+msgstr "<span size=\"small\">남은 글자 수: 160</span>"
+
+#: ../data/send_message_dlg.xml.h:2
+msgid "Choose a friend:"
+msgstr "친구 선택:"
+
+#: ../data/send_message_dlg.xml.h:3
+msgid "Send Message"
+msgstr "메세지 보내기"
+
+#: ../data/send_message_dlg.xml.h:4
+msgid "_Send"
+msgstr "보내기(_S)"
+
+#: ../data/spell_dlg.xml.h:1
+msgid "Spell Checker"
+msgstr "맞춤법 검사"
+
+#: ../data/spell_dlg.xml.h:2
+msgid "Suggestions for the word:"
+msgstr "제안하는 단어들:"
+
+#: ../data/spell_dlg.xml.h:3
+msgid "_Replace"
+msgstr "바꾸기(_R)"
+
+#: ../data/twitux.desktop.in.in.h:1
+msgid "A Twitter client"
+msgstr "트위터 클라이언트"
+
+#: ../data/twitux.schemas.in.h:1
+msgid "Comma separated list of spell checker languages to use (e.g. en, fr, nl)."
+msgstr "맞춤법 검사 할 언어를 콤마로 구분지어 나열 (예. en, fr, nl)."
+
+#: ../data/twitux.schemas.in.h:2
+msgid "Enable spell checking"
+msgstr "맞춤법 검사 하기"
+
+#: ../data/twitux.schemas.in.h:3
+msgid "Enable spell checking."
+msgstr "맞춤법 검사 하기."
+
+#: ../data/twitux.schemas.in.h:4
+msgid "Expand messages"
+msgstr "메시지 펼치기"
+
+#: ../data/twitux.schemas.in.h:5
+msgid "Hide main window"
+msgstr "메인 창 숨김"
+
+#: ../data/twitux.schemas.in.h:6
+msgid "Hide the main window."
+msgstr "메인 창 숨김."
+
+#: ../data/twitux.schemas.in.h:7
+msgid "Log automatically into Twitter"
+msgstr "자동으로 트위터에 로그인 합니다"
+
+#: ../data/twitux.schemas.in.h:8
+msgid "Log automatically into Twitter."
+msgstr "자동으로 트위터에 로그인 합니다."
+
+#: ../data/twitux.schemas.in.h:9
+msgid "Main window X position"
+msgstr "메인 창의 가로 위치"
+
+#: ../data/twitux.schemas.in.h:10
+msgid "Main window X position."
+msgstr "메인 창의 가로 위치."
+
+#: ../data/twitux.schemas.in.h:11
+msgid "Main window Y position"
+msgstr "메인 창의 세로 위치"
+
+#: ../data/twitux.schemas.in.h:12
+msgid "Main window Y position."
+msgstr "메인 창의 세로 위치."
+
+#: ../data/twitux.schemas.in.h:13
+msgid "Main window height"
+msgstr "메인 창의 높이"
+
+#: ../data/twitux.schemas.in.h:14
+msgid "Main window height."
+msgstr "메인 창의 높이."
+
+#: ../data/twitux.schemas.in.h:15
+msgid "Main window width"
+msgstr "메인 창의 너비"
+
+#: ../data/twitux.schemas.in.h:16
+msgid "Main window width."
+msgstr "메인 창의 너비."
+
+#: ../data/twitux.schemas.in.h:17
+msgid "Minutes between timeline retrievals"
+msgstr "시간배열을 받아오는 간격 (분)"
+
+#: ../data/twitux.schemas.in.h:18
+msgid "Minutes between timeline retrievals. Values supported are 3, 5, 15, 30, and 60"
+msgstr "시간배열을 받아오는 간격(분). 유효한 값들 3, 5, 15, 30, 60"
+
+#: ../data/twitux.schemas.in.h:19
+msgid "Show hint about closing the main window"
+msgstr "메인 윈도우를 닫을때 힌트 보임"
+
+#: ../data/twitux.schemas.in.h:20
+msgid "Show notification of new Twitter messages"
+msgstr "새 트위터 메시지를 알림을 보여 줌"
+
+#: ../data/twitux.schemas.in.h:21
+msgid "Show notification of new Twitter messages."
+msgstr "새 트위터 메시지를 알림을 보여 줌."
+
+#: ../data/twitux.schemas.in.h:22
+msgid "Show user names instead real names"
+msgstr "실제 이름대신 사용자 이름을 보임"
+
+#: ../data/twitux.schemas.in.h:23
+msgid "Show user names instead real names."
+msgstr "실제 이름대신 사용자 이름을 보임."
+
+#: ../data/twitux.schemas.in.h:24
+msgid "Sound notification of new Twitter messages"
+msgstr "새 트위터 메세지를 받으면 소리 내기"
+
+#: ../data/twitux.schemas.in.h:25
+msgid "Sound notification of new Twitter messages."
+msgstr "새 트위터 메세지를 받으면 소리 내기."
+
+#: ../data/twitux.schemas.in.h:26
+msgid "Spell checking languages"
+msgstr "맞춤법을 검사 할 언어들"
+
+#: ../data/twitux.schemas.in.h:27
+msgid "Twitter password"
+msgstr "트위터 암호"
+
+#: ../data/twitux.schemas.in.h:28
+msgid "Twitter username"
+msgstr "트위터 사용자이름"
+
+#: ../data/twitux.schemas.in.h:29
+msgid "User's Twitter account password."
+msgstr "사용자의 트위터 계정 암호를 입력하십시오."
+
+#: ../data/twitux.schemas.in.h:30
+msgid "User's Twitter account username."
+msgstr "사용자의 트위터 계정 명을 입력하십시오."
+
+#: ../data/twitux.schemas.in.h:31
+msgid "User's home timeline"
+msgstr "사용자의 홈 시간배열"
+
+#: ../data/twitux.schemas.in.h:32
+msgid "User's home timeline."
+msgstr "사용자의 홈 시간배열."
+
+#: ../data/twitux.schemas.in.h:33
+msgid "Whether or not to show the message dialog about closing the main window with the 'x' button in the title bar."
+msgstr "타이틀바에서 'x'단추를 눌렀을 때, 주 윈도우를 닫는 방법에 대한 다이얼로그를 보일지 여부."
+
+#: ../src/twitux-about.c:42
+msgid "Twitux is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version."
+msgstr "Twitux is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version."
+
+#: ../src/twitux-about.c:46
+msgid "Twitux is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
+msgstr "Twitux is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
+
+#: ../src/twitux-about.c:50
+msgid "You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr "You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: ../src/twitux-about.c:79
+msgid "A GNOME client for Twitter."
+msgstr "트위터 그놈 클라이언트."
+
+#: ../src/twitux-about.c:80
+msgid "Copyright © 2007-2009 Daniel Morales"
+msgstr "Copyright © 2007-2009 Daniel Morales"
+
+#: ../src/twitux-about.c:82
+msgid "translator-credits"
+msgstr "이호민 <ff4500@gmail.com>, 2009"
+
+#: ../src/twitux-app.c:655
+msgid "Twitux is still running, it is just hidden."
+msgstr "Twitux는 숨겨진 채로 계속 실행 중 입니다."
+
+#: ../src/twitux-app.c:656
+msgid "Click on the notification area icon to show Twitux."
+msgstr "Twitux를 보려면 알림 영역의 아이콘을 클릭 하세요."
+
+#: ../src/twitux-app.c:666
+msgid "You were about to quit!"
+msgstr "정말로 끝내시겠습니까?"
+
+#: ../src/twitux-app.c:667
+msgid ""
+"Since no system or notification tray has been found, this action would normally quit Twitux.\n"
+"\n"
+"This is just a reminder, from now on, Twitux will quit when performing this action unless you uncheck the option below."
+msgstr ""
+"시스템 트레이나 알림 트레이가 발견되지 않았기 때문에, 이 동작은 Twitux를 종료합니다. \n"
+"\n"
+"이 문구는 일회성 알림으로, 아래의 옵션을 체크 해지 할 때까지 지금부터 Twitux는 이 동작을 수행할 때 종료하게 됩니다."
+
+#: ../src/twitux-app.c:1040
+msgid "_Show Twitux"
+msgstr "Twitux 보이기(_S)"
+
+#: ../src/twitux-app.c:1048
+msgid "_New Message"
+msgstr "새 메세지(_N)"
+
+#: ../src/twitux-app.c:1056
+msgid "_Quit"
+msgstr "끝내기(_Q)"
+
+#: ../src/twitux-app.c:1429
+msgid "New tweet received"
+msgstr "새로운 메세지를 받았습니다"
+
+#: ../src/twitux-hint.c:86
+msgid "Do not show this again"
+msgstr "이 대화 상자를 다시 표시하지 안 함"
+
+#: ../src/twitux-network.c:233
+msgid "Connecting..."
+msgstr "연결중..."
+
+#. UI
+#: ../src/twitux-network.c:292
+#: ../src/twitux-network.c:308
+msgid "Loading timeline..."
+msgstr "시간배열 읽는 중..."
+
+#: ../src/twitux-network.c:513
+msgid "Access denied."
+msgstr "접근이 거부되었습니다."
+
+#: ../src/twitux-network.c:516
+msgid "HTTP communication error."
+msgstr "HTTP 대화 오류."
+
+#: ../src/twitux-network.c:519
+msgid "Internal server error."
+msgstr "내부 서버 오류."
+
+#: ../src/twitux-network.c:522
+msgid "Stopped"
+msgstr "중지됨"
+
+#: ../src/twitux-network.c:614
+msgid "Status Sent"
+msgstr "상태 보냄"
+
+#: ../src/twitux-network.c:629
+msgid "Message Sent"
+msgstr "메시지 보냄"
+
+#: ../src/twitux-network.c:668
+msgid "Timeline Loaded"
+msgstr "시간배열 읽음"
+
+#: ../src/twitux-network.c:676
+msgid "Timeline Parser Error."
+msgstr "시간배열 변환중 오류."
+
+#: ../src/twitux-network.c:716
+msgid "Users parser error."
+msgstr "계정 변환중 오류."
+
+#: ../src/twitux-network.c:772
+msgid "Friend Added"
+msgstr "친구가 더해졌습니다"
+
+#: ../src/twitux-network.c:774
+msgid "Failed to add user"
+msgstr "사용자 더하기 실패"
+
+#: ../src/twitux-network.c:789
+msgid "Friend Removed"
+msgstr "친구 제거"
+
+#: ../src/twitux-network.c:791
+msgid "Failed to remove user"
+msgstr "사용자를 제거하는 데 실패했습니다"
+
+#. UI
+#: ../src/twitux-network.c:841
+msgid "Reloading timeline..."
+msgstr "시간배열 다시 읽는 중..."
+
+#: ../src/twitux-parser.c:449
+msgid "1 second ago"
+msgstr "1 초 전"
+
+#: ../src/twitux-parser.c:453
+#, c-format
+msgid "%i seconds ago"
+msgstr "%i초 전"
+
+#: ../src/twitux-parser.c:455
+msgid "1 minute ago"
+msgstr "일분 전"
+
+#: ../src/twitux-parser.c:460
+#, c-format
+msgid "%i minutes ago"
+msgstr "%i 분 전"
+
+#: ../src/twitux-parser.c:462
+msgid "1 hour ago"
+msgstr "한 시간 전"
+
+#: ../src/twitux-parser.c:467
+#, c-format
+msgid "%i hours ago"
+msgstr "%i시간 전"
+
+#: ../src/twitux-parser.c:469
+msgid "1 day ago"
+msgstr "하루 전"
+
+#: ../src/twitux-parser.c:474
+#, c-format
+msgid "%i days ago"
+msgstr "%i일 전"
+
+#: ../src/twitux-parser.c:476
+msgid "1 month ago"
+msgstr "한달 전"
+
+#: ../src/twitux-parser.c:478
+#, c-format
+msgid "%i months ago"
+msgstr "%i달 전"
+
+#: ../src/twitux-preferences.c:67
+msgid "3 minutes"
+msgstr "3분"
+
+#: ../src/twitux-preferences.c:68
+msgid "5 minutes"
+msgstr "5분"
+
+#: ../src/twitux-preferences.c:69
+msgid "15 minutes"
+msgstr "15분"
+
+#: ../src/twitux-preferences.c:70
+msgid "30 minutes"
+msgstr "30분"
+
+#: ../src/twitux-preferences.c:71
+msgid "hour"
+msgstr "시간"
+
+#: ../src/twitux-preferences.c:224
+msgid "Language"
+msgstr "언어"
+
+#: ../src/twitux-preferences.c:436
+msgid "Public"
+msgstr "공개"
+
+#: ../src/twitux-preferences.c:438
+msgid "Mine"
+msgstr "내 글"
+
+#. Set the label
+#: ../src/twitux-send-message-dialog.c:161
+#: ../src/twitux-send-message-dialog.c:342
+msgid "Characters Available"
+msgstr "남은 글자 수"
+
+#: ../src/twitux-send-message-dialog.c:485
+msgid "_Check Word Spelling..."
+msgstr "문장의 맞춤법을 검사(_C)..."
+
+#: ../src/twitux-spell-dialog.c:93
+msgid "Word"
+msgstr "단어"
+
+#: ../src/twitux-spell-dialog.c:264
+msgid "Suggestions for the word"
+msgstr "제안하는 단어들"
+
+#: ../src/twitux-ui-utils.c:112
+msgid "Unable to open help file"
+msgstr "도움말 파일을 열 수 없습니다"
+
