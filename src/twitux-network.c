@@ -707,7 +707,7 @@ network_parse_limit_headers(SoupMessageHeaders *hdrs)
 	if (temp == NULL)
 		return;
 	limit = atoi(temp);
-	twitux_debug(DEBUG_DOMAIN, "Reset: %d, Remaining %d", reset, limit);
+	twitux_debug(DEBUG_DOMAIN, "Reset: %lu, Remaining %d", reset, limit);
 
 	/* seconds until the next reset */
 	now = time(NULL);

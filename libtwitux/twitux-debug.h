@@ -46,7 +46,7 @@ G_BEGIN_DECLS
 #  endif
 #endif
 
-void twitux_debug_impl (const gchar *domain, const gchar *msg, ...);
+void twitux_debug_impl (const gchar *domain, const gchar *msg, ...) __attribute__ ((format(printf,2,3)));
 
 G_END_DECLS
 
