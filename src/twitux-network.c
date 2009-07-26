@@ -764,18 +764,14 @@ network_cb_on_timeline (SoupSession *session,
 	/* Parse and set ListStore */
 	if (twitux_parser_timeline (msg->response_body->data, msg->response_body->length)) {
 		twitux_app_set_statusbar_msg (_("Timeline Loaded"));
-
-		if (new_timeline){
-			if (current_timeline)
-				g_free (current_timeline);
-			current_timeline = g_strdup (new_timeline);
-		}
 	} else {
 		twitux_app_set_statusbar_msg (_("Timeline Parser Error."));
 	}
-
-	if (new_timeline)
-		g_free (new_timeline);
+	if (new_timeline){
+		if (current_timeline)
+			g_free (current_timeline);
+		current_timeline = new_timeline;
+	}
 }
 
 
