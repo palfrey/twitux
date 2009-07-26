@@ -302,7 +302,10 @@ void
 twitux_network_refresh (void)
 {
 	if (!current_timeline || processing)
+	{
+		twitux_debug (DEBUG_DOMAIN, "Can't refresh (ct %p, processing %d)!", current_timeline, processing);
 		return;
+	}
 
 	/* UI */
 	twitux_app_set_statusbar_msg (_("Loading timeline..."));
