@@ -41,8 +41,6 @@
 
 typedef struct {
 	GtkWidget *dialog;
-	GtkWidget *notebook;
-	GtkWidget *treeview_spell_checker;
 	GtkWidget *combo_default_timeline;
 	GtkWidget *combo_reload;
 
@@ -551,7 +549,6 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 	/* Get widgets */
 	ui = twitux_xml_get_file (XML_FILE,
 							  "preferences_dialog", &prefs->dialog,
-							  "preferences_notebook", &prefs->notebook,
 							  "combobox_timeline", &prefs->combo_default_timeline,
 							  "combobox_reload", &prefs->combo_reload,
 							  "expand_checkbutton", &prefs->expand,
@@ -561,7 +558,6 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 							  "names_checkbutton", &prefs->names,
 							  "spell_checkbutton", &prefs->spell,
 							  "sound_checkbutton", &prefs->sound,
-							  "spell_treeview", &prefs->treeview_spell_checker,
 							  NULL);
 
 	/* Connect the signals */
@@ -586,12 +582,11 @@ twitux_preferences_dialog_show (GtkWindow *parent)
 	preferences_self_valid_cb(NULL, prefs); // initialise the self pref
 	g_object_unref (ui);
 
-	/* If compiled with spelling support, show the notebook page */
-#if HAVE_GTKSPELL
-	GtkWidget *page;
-
-	page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (prefs->notebook), 1);
-	gtk_widget_show (page);
+	/* If compiled with spelling support, show the spelling checkbox */
+#ifdef HAVE_GTKSPELL
+	gtk_widget_show (prefs->spell);
+#else
+	gtk_widget_hide (prefs->spell);
 #endif
 	gtk_widget_show (prefs->dialog);
 }
