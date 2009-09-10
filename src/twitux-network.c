@@ -406,11 +406,18 @@ twitux_network_get_image (const gchar  *url_image,
 {
 	gchar	*image_file;
 	gchar   *image_name;
+	gchar   *user;
+	gchar   *temp;
 	GtkListStore *store;
 
 	TwituxImage *image;
 
-	/* save using the filename */
+	store = twitux_tweet_list_get_store ();
+	gtk_tree_model_get (GTK_TREE_MODEL (store),
+						&iter,
+						STRING_USER, &user,
+						-1);
+								/* save using the filename */
 	image_name = strrchr (url_image, '/');
 	if (image_name && image_name[1] != '\0') {
 		image_name++;
@@ -418,9 +425,13 @@ twitux_network_get_image (const gchar  *url_image,
 		image_name = "twitux_unknown_image";
 	}
 
+	temp = g_strjoin("-", user, image_name, NULL);
 	image_file = g_build_filename (g_get_home_dir(), ".gnome2",
 								   TWITUX_CACHE_IMAGES,
-								   image_name, NULL);
+								   temp, NULL);
+
+	g_free(temp);
+	g_free(user);
 
 	/* check if image already exists */
 	if (g_file_test (image_file, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)) {		
@@ -430,7 +441,6 @@ twitux_network_get_image (const gchar  *url_image,
 		return;
 	}
 
-	store = twitux_tweet_list_get_store ();
 	image = g_new0 (TwituxImage, 1);
 	image->src  = g_strdup (image_file);
 	image->path = gtk_tree_model_get_path(GTK_TREE_MODEL (store), &iter);
