@@ -320,6 +320,8 @@ twitux_network_get_timeline (const gchar *url_timeline)
 {
 	if (processing)
 		return;
+	if (!logged_in)
+		return;
 
 	parser_reset_lastid ();
 

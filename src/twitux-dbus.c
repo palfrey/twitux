@@ -199,9 +199,6 @@ twitux_dbus_nm_get_state (gboolean *connected)
 
 	g_return_val_if_fail (connected != NULL, FALSE);
 
-	/* Set the initial value of connected in case we have to return */
-	*connected = FALSE;
-
 	if (nm_proxy_restart_timeout_id) {
 		/* We are still trying to reconnect to the restarted bus */
 		return FALSE;
