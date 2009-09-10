@@ -582,13 +582,13 @@ network_check_http (gint status_code)
 	} else if(SOUP_STATUS_IS_SERVER_ERROR (status_code)) {
 		twitux_app_set_statusbar_msg (_("Internal server error."));
 
-	} else if (!SOUP_STATUS_IS_SUCCESSFUL (status_code)) {
-		twitux_app_set_statusbar_msg (_("Stopped"));
-
 	} else if (SOUP_STATUS_IS_TRANSPORT_ERROR(status_code)) {
 		twitux_app_set_statusbar_msg(_("Transport error."));
 		twitux_debug (DEBUG_DOMAIN,
 					  "Transport error: %i",status_code);
+
+	} else if (!SOUP_STATUS_IS_SUCCESSFUL (status_code)) {
+		twitux_app_set_statusbar_msg (_("Stopped"));
 
 	} else {
 		return TRUE;
