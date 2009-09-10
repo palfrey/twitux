@@ -760,17 +760,21 @@ network_cb_on_timeline (SoupSession *session,
 
 	processing = FALSE;
 
-	/* Timeout */
-	network_timeout_new ();
-
 	/* Check response */
 	if (!network_check_http (msg->status_code)) {
 		if (new_timeline)
 			g_free (new_timeline);
 		if (msg->status_code == 400) // check anyway
 			network_parse_limit_headers(msg->response_headers);
+
+		g_usleep( 5* G_USEC_PER_SEC); // wait a bit before next go
+		/* Timeout */
+		network_timeout_new ();
 		return;
 	}
+
+	/* Timeout */
+	network_timeout_new ();
 
 	network_parse_limit_headers(msg->response_headers);
 
