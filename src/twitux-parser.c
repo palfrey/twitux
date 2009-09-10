@@ -81,6 +81,7 @@ parser_twitux_parse (const char  *data,
 	if (doc == NULL) {
 		twitux_debug (DEBUG_DOMAIN_SETUP,
 					  "failed to read xml data");
+		g_file_set_contents("xml-dump", data, length, NULL);
 		return NULL;
 	}
 

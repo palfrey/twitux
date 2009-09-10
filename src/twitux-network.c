@@ -857,6 +857,8 @@ network_cb_on_image (SoupSession *session,
 			gtk_tree_model_get_iter(GTK_TREE_MODEL (store), &iter, image->path); 
 			twitux_app_set_image (image->src, iter);
 		}
+		else
+			twitux_debug (DEBUG_DOMAIN, "Unable to save to '%s'", image->src);
 	}
 
 	gtk_tree_path_free (image->path);

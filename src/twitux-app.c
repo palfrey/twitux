@@ -1435,6 +1435,7 @@ twitux_app_set_statusbar_msg (gchar *message)
 	/* context ID will be always 1 */
 	gtk_statusbar_pop (GTK_STATUSBAR (priv->statusbar), 1);
 	gtk_statusbar_push (GTK_STATUSBAR (priv->statusbar), 1, message);
+	twitux_debug (DEBUG_DOMAIN_SETUP, "Status bar message: '%s'", message);
 }
 
 void
