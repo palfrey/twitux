@@ -171,7 +171,7 @@ do_hashtag(GString *s, guint start)
 		if (strlen(name) != 0)
 		{
 			g_string_truncate(s, start);
-			g_string_append_printf (s, "<a href=\"http://hashtags.org/tag/%s\">#%s</a>",
+			g_string_append_printf (s, "<a href=\"http://search.twitter.com/search?q=%%23%s\">#%s</a>",
 								 name,
 								 name);
 		}
@@ -185,7 +185,7 @@ do_hashtag(GString *s, guint start)
 		g_strlcpy(name, &s->str[start+1], end-start);
 
 		temp =
-			g_strdup_printf ("<a href=\"http://hashtags.org/tag/%s\">#%s</a>",
+			g_strdup_printf ("<a href=\"http://search.twitter.com/search?q=%%23%s\">#%s</a>",
 							 name, name);
 		free(name);
 		g_string_erase(s, start, end-start);
