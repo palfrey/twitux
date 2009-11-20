@@ -1292,6 +1292,10 @@ app_set_default_timeline (TwituxApp *app, gchar *timeline)
 	} else {
 		/* Let's fallback to friends timeline */
 		gtk_radio_action_set_current_value (priv->menu_friends,	1);
+		/* .. and set the preference accordingly */
+		twitux_conf_set_string (twitux_conf_get (),
+								TWITUX_PREFS_TWEETS_HOME_TIMELINE,
+								TWITUX_API_TIMELINE_FRIENDS);
 	}
 }
 
