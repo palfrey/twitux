@@ -33,7 +33,8 @@ twitux_SOURCES = 							\
 	twitux-lists-dialog.c		twitux-lists-dialog.h		\
 	twitux-tweet-list.c		twitux-tweet-list.h
 
-twitux_LDADD=						\
+twitux_LDFLAGS=	-Wl,--as-needed	
+twitux_LDADD=	                 				\
 	$(top_builddir)/libtwitux/libtwitux.la		\
 	$(TWITUX_LIBS)					\
 	$(GTKSPELL_LIBS)
