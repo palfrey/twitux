@@ -51,6 +51,7 @@ struct _TwituxTweetListClass {
 };
 
 GType                 twitux_tweet_list_get_type           (void) G_GNUC_CONST;
+void                  twitux_tweet_list_retweet            (void);
 TwituxTweetList *     twitux_tweet_list_new                (void);
 GtkListStore *        twitux_tweet_list_get_store          (void);
 

@@ -148,6 +148,8 @@ static void     app_disconnect_cb                (GtkWidget             *window,
 												  TwituxApp             *app);
 static void     app_new_message_cb               (GtkWidget             *window,
 												  TwituxApp             *app);
+static void		app_retweet_cb					 (GtkWidget				*widget,
+												  TwituxApp				*app);
 static void     app_send_direct_message_cb       (GtkWidget             *window,
 												  TwituxApp             *app);
 static void     app_quit_cb                      (GtkWidget             *window,
@@ -500,6 +502,7 @@ app_setup (void)
 						"twitter_connect", "activate", app_connect_cb,
 						"twitter_disconnect", "activate", app_disconnect_cb,
 						"twitter_new_message", "activate", app_new_message_cb,
+						"twitter_retweet", "activate", app_retweet_cb,
 						"twitter_send_direct_message", "activate", app_send_direct_message_cb,
 						"twitter_refresh", "activate", app_refresh_cb,
 						"twitter_quit", "activate", app_quit_cb,
@@ -790,6 +793,13 @@ app_new_message_cb (GtkWidget *widget,
 
 	twitux_send_message_dialog_show (GTK_WINDOW (priv->window));
 	twitux_message_show_friends (FALSE);
+}
+
+static void
+app_retweet_cb (GtkWidget *widget,
+				TwituxApp *app)
+{
+	twitux_tweet_list_retweet();
 }
 
 static void

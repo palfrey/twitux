@@ -24,6 +24,9 @@
 
 #include "twitux-paths.h"
 #include "twitux-xml.h"
+#include "twitux-debug.h"
+
+#define DEBUG_DOMAIN_SETUP       "XMLSetup"
 
 static GtkBuilder *
 xml_get_file (const gchar *filename,
@@ -40,6 +43,7 @@ xml_get_file (const gchar *filename,
 	ui = gtk_builder_new ();
 	gtk_builder_set_translation_domain (ui, GETTEXT_PACKAGE);
 	path = twitux_paths_get_xml_path (filename);
+	twitux_debug (DEBUG_DOMAIN_SETUP, "Loading XML from %s", path);
 	if (gtk_builder_add_from_file (ui, path, &err) == 0) {
 		g_warning ("XML file error: %s", err->message);
 		g_error_free (err);

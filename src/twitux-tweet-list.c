@@ -287,6 +287,41 @@ tweet_list_activated_cb (GtkTreeView       *tree_view,
 	g_free (message);
 }
 
+void
+twitux_tweet_list_retweet ()
+{
+	TwituxTweetListPriv *priv;
+	GtkTreeSelection    *sel;
+	GtkTreeIter          iter;
+	GtkTreeView			*tree;
+	gchar               *user;
+	gchar               *message;
+
+	priv = GET_PRIV (list);
+
+	tree = &list->parent;
+
+	sel = gtk_tree_view_get_selection (tree);
+
+	if (!gtk_tree_selection_get_selected (sel, NULL, &iter))
+		return;
+
+	gtk_tree_model_get (GTK_TREE_MODEL (priv->store),
+							&iter,
+							STRING_USER, &user,
+							-1);
+
+	gtk_tree_model_get (GTK_TREE_MODEL (priv->store),
+							&iter,
+							STRING_TWEET, &message,
+							-1);
+
+	message = g_strdup_printf ("RT @%s: %s", user, message);
+	twitux_send_message_dialog_show (NULL);
+	twitux_message_show_friends (FALSE);
+	twitux_message_set_message (message);
+}
+
 TwituxTweetList *
 twitux_tweet_list_new (void)
 {
