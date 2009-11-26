@@ -13,4 +13,3 @@
 - Add friends+replies merged timeline (http://code.google.com/p/twitter-api/issues/detail?id=434 would help, but can also be done client-side)
 - Add re-tweeting
 - Add Facebook support via Open Streams API (http://wiki.developers.facebook.com/index.php/Using_the_Open_Stream_API)
-- Add improved RT support (see https://twitterapi.pbworks.com/Twitter-REST-API-Method:-statuses-home_timeline)

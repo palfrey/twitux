@@ -243,7 +243,24 @@ twitux_parser_timeline (const gchar *data,
 			guint64   sid;
 
 			/* Parse node */
-			status = parser_twitux_node_status (cur_node->children);
+			status = NULL;
+			if (g_str_equal (cur_node->name, "status"))
+			{
+				/* check for retweet */
+				xmlNode	*sub_node     = NULL;
+				for (sub_node = cur_node->children; sub_node; sub_node = sub_node->next) {
+					if (sub_node->type != XML_ELEMENT_NODE)
+						continue;
+					if (g_str_equal(sub_node->name, "retweeted_status"))
+					{
+						status = parser_twitux_node_status (sub_node->children);
+						break;
+					}
+				}
+			}
+			
+			if (status == NULL)
+				status = parser_twitux_node_status (cur_node->children);
 
 			sid = g_ascii_strtoull (status->id, NULL, 10);
 			
