@@ -248,13 +248,37 @@ twitux_parser_timeline (const gchar *data,
 			{
 				/* check for retweet */
 				xmlNode	*sub_node     = NULL;
-				for (sub_node = cur_node->children; sub_node; sub_node = sub_node->next) {
+				for (sub_node = cur_node->children; sub_node; sub_node = sub_node->next)
+				{
 					if (sub_node->type != XML_ELEMENT_NODE)
 						continue;
 					if (g_str_equal(sub_node->name, "retweeted_status"))
 					{
 						status = parser_twitux_node_status (sub_node->children);
-						break;
+
+						/* replace created_at in RT with cur_node created_at to avoid timeline issues */	
+						xmlNode *upper_node;
+						xmlBufferPtr	buffer;
+						buffer = xmlBufferCreate ();
+						for (upper_node = cur_node->children; upper_node; upper_node = upper_node->next) {
+							if (upper_node->type != XML_ELEMENT_NODE)
+								continue;
+							if (xmlNodeBufGetContent (buffer, upper_node) != 0)
+								continue;
+							if (g_str_equal (upper_node->name, "created_at")) {
+								const xmlChar *tmp;
+								tmp = xmlBufferContent(buffer);
+								if (status->created_at)
+								{
+									//twitux_debug (DEBUG_DOMAIN_SETUP, "Old created_at was: %s", status->created_at);
+									g_free (status->created_at);
+								}
+								status->created_at = g_strdup ((const gchar *)tmp);
+								//twitux_debug (DEBUG_DOMAIN_SETUP, "New created_at is: %s", status->created_at);
+								break;
+							}
+						}
+						xmlBufferFree (buffer);
 					}
 				}
 			}
