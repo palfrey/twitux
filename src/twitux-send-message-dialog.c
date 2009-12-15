@@ -135,8 +135,10 @@ message_setup (GtkWindow  *parent)
 							 "friends_label", &priv->friends_label,
 							 "send_button", &priv->send_button,
 							 NULL);
+#ifdef HAVE_GTKSPELL 
 	if (!priv->setup_done)
 		gtkspell_new_attach(GTK_TEXT_VIEW(priv->textview), NULL, NULL);
+#endif
 	
 	/* Connect the signals */
 	twitux_xml_connect (ui, dialog,
