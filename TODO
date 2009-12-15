@@ -11,6 +11,6 @@
 * My todos:
 
 - Add friends+replies merged timeline (http://code.google.com/p/twitter-api/issues/detail?id=434 would help, but can also be done client-side)
-- Add re-tweeting
+- Use retweet API (http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-retweet) to do retweets
 - Add Facebook support via Open Streams API (http://wiki.developers.facebook.com/index.php/Using_the_Open_Stream_API)
 - Add Lists support (see http://apiwiki.twitter.com/Twitter-REST-API-Method:-GET-lists) as extra "views"
