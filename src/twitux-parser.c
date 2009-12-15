@@ -275,7 +275,13 @@ twitux_parser_timeline (const gchar *data,
 								}
 								status->created_at = g_strdup ((const gchar *)tmp);
 								//twitux_debug (DEBUG_DOMAIN_SETUP, "New created_at is: %s", status->created_at);
-								break;
+							}
+							else if (g_str_equal (upper_node->name, "id")) {
+								const xmlChar *tmp;
+								tmp = xmlBufferContent(buffer);
+								if (status->id)
+									g_free (status->id);
+								status->id = g_strdup ((const gchar *)tmp);
 							}
 						}
 						xmlBufferFree (buffer);
