@@ -241,9 +241,11 @@ twitux_parser_timeline (const gchar *data,
 			gchar *tweet;
 			gchar *datetime;
 			guint64   sid;
+			gchar *retweet_user;
 
 			/* Parse node */
 			status = NULL;
+			retweet_user = NULL;
 			if (g_str_equal (cur_node->name, "status"))
 			{
 				/* check for retweet */
@@ -254,6 +256,8 @@ twitux_parser_timeline (const gchar *data,
 						continue;
 					if (g_str_equal(sub_node->name, "retweeted_status"))
 					{
+						status = parser_twitux_node_status (cur_node->children);
+						retweet_user = g_strdup(show_username ? status->user->screen_name:status->user->name);
 						status = parser_twitux_node_status (sub_node->children);
 
 						/* replace created_at in RT with cur_node created_at to avoid timeline issues */	
@@ -301,12 +305,24 @@ twitux_parser_timeline (const gchar *data,
 
 			/* Create string for text column */
 			datetime = parser_convert_time (status->created_at);
-			tweet = g_strconcat ("<b>",
-								 (show_username ? status->user->screen_name:status->user->name),
-								 "</b> - ", datetime, "\n",
-								 "<small>", status->text, "</small>",
-								 NULL);
-			
+			if (retweet_user)
+			{
+				tweet = g_strconcat ("<b>",
+									 (show_username ? status->user->screen_name:status->user->name),
+									 "</b>",
+									 " <small>(RT from <b>", retweet_user, "</b>)</small> - ",
+									 datetime, "\n",
+									 "<small>", status->text, "</small>",
+									 NULL);
+				g_free(retweet_user);
+			}
+			else
+				tweet = g_strconcat ("<b>",
+									 (show_username ? status->user->screen_name:status->user->name),
+									 "</b> - ", datetime, "\n",
+									 "<small>", status->text, "</small>",
+									 NULL);
+				
 			if (sid > last_id && show_notification && (self_notify || !g_str_equal(status->user->screen_name,global_username)!=0)) {
 				if (multiple_new_tweets != TRUE) {
 					twitux_app_notify_sound ();
