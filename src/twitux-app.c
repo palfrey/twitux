@@ -491,6 +491,7 @@ app_setup (void)
 	twitux_conf_get_string (conf,
 							TWITUX_PREFS_TWEETS_HOME_TIMELINE,
 							&timeline);
+	
 	app_set_default_timeline (app, timeline);
 	g_free (timeline);
 
@@ -1285,21 +1286,16 @@ app_set_default_timeline (TwituxApp *app, gchar *timeline)
 
 	priv = GET_PRIV (app);
 
-	/* This shouldn't happen, but just in case */
-	if (G_STR_EMPTY (timeline)) {
-		g_warning ("Default timeline in not set");
-		return;
-	}
-
-	if (strcmp (timeline, TWITUX_API_TIMELINE_FRIENDS) == 0) {
+	if (timeline && strcmp (timeline, TWITUX_API_TIMELINE_FRIENDS) == 0) {
 		gtk_radio_action_set_current_value (priv->menu_friends,	1);
-	} else if (strcmp (timeline, TWITUX_API_TIMELINE_PUBLIC) == 0) {
+	} else if (timeline && strcmp (timeline, TWITUX_API_TIMELINE_PUBLIC) == 0) {
 		gtk_radio_action_set_current_value (priv->menu_public, 1);
-	} else if (strcmp (timeline, TWITUX_API_TIMELINE_MY) == 0) {
+	} else if (timeline && strcmp (timeline, TWITUX_API_TIMELINE_MY) == 0) {
 		gtk_radio_action_set_current_value (priv->menu_mine, 1);
-	} else if (strcmp (timeline, TWITUX_API_TIMELINE_TWITUX) == 0) {
+	} else if (timeline && strcmp (timeline, TWITUX_API_TIMELINE_TWITUX) == 0) {
 		gtk_radio_action_set_current_value (priv->menu_twitux, 1);
 	} else {
+		//g_warning ("Default timeline is not set");
 		/* Let's fallback to friends timeline */
 		gtk_radio_action_set_current_value (priv->menu_friends,	1);
 		/* .. and set the preference accordingly */
@@ -1486,10 +1482,10 @@ twitux_app_notify (gchar *msg)
 		TwituxAppPriv *priv;
 
 		priv = GET_PRIV (app);
-		notification = notify_notification_new_with_status_icon (PACKAGE_NAME,
+		notification = notify_notification_new (PACKAGE_NAME,
 												msg,
 												"twitux",
-												priv->status_icon);
+												NULL);
 
 		notify_notification_set_timeout (notification, 8 * 1000);
 		notify_notification_show (notification, &error);
