@@ -382,7 +382,7 @@ twitux_network_get_friends (void)
 	if (user_friends)
 		return user_friends;
 	
-	network_get_data (TWITUX_API_FOLLOWING,
+	network_get_authed_data (TWITUX_API_FOLLOWING,
 					  network_cb_on_users,
 					  GINT_TO_POINTER(friends));
 	
@@ -403,7 +403,7 @@ twitux_network_get_followers (void)
 	if (user_followers)
 		return user_followers;
 
-	network_get_data (TWITUX_API_FOLLOWERS,
+	network_get_authed_data (TWITUX_API_FOLLOWERS,
 					  network_cb_on_users,
 					  GINT_TO_POINTER(friends));
 
@@ -1049,7 +1049,7 @@ network_timeout (gpointer user_data)
 				  "Auto reloading. Timeout: %i", timeout_id);
 
 	processing = TRUE;
-	network_get_data (current_timeline, network_cb_on_timeline, NULL);
+	network_get_authed_data (current_timeline, network_cb_on_timeline, NULL);
 
 	timeout_id = 0;
 
