@@ -1,0 +1,79 @@
+This package was debianized by Luis Rodrigo Gallardo Cruz <rodrigo@nul-unu.com> on
+Fri, 24 Aug 2007 14:21:33 -0500.
+
+It was downloaded from http://live.gnome.org/DanielMorales/Twitux
+
+Upstream Authors: 
+    Alvaro Daniel Morales - <daniminas@gmail.com>
+    Brian Pepple <bpepple@fedoraproject.org>
+    Richard Hult <richard@imendio.com>
+
+Copyright: 
+
+    Copyright (C) 2007-2008 - Alvaro Daniel Morales - <daniminas@gmail.com>
+    Copyright (C) 2007-2008 - Brian Pepple <bpepple@fedoraproject.org>
+    Copyright (C) 2002-2007 Imendio AB
+
+License:
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License as
+    published by the Free Software Foundation; either version 2 of the
+    License, or (at your option) any later version.
+   
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+   
+    You should have received a copy of the GNU General Public
+    License along with this program; if not, write to the
+    Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, 
+    Boston, MA 02110-1301, USA.
+ 
+
+In Debian systems, the full text of the GPL is available in
+/usr/share/common-licenses/GPL
+
+The icon (data/twitux.svg, data/twitux.png, debian/twitux.xpm) comes from the
+Open Clip Art Library http://www.openclipart.org/ 
+Its author is Architetto Francesco Rollandin <frollandin@email.it>
+and is licensed under the Creative Commons Public Domain License, as follows:
+
+    Copyright-Only Dedication (based on United States law) or Public
+    Domain Certification
+
+    The person or persons who have associated work with this document
+    (the "Dedicator" or "Certifier") hereby either (a) certifies that,
+    to the best of his knowledge, the work of authorship identified is
+    in the public domain of the country from which the work is
+    published, or (b) hereby dedicates whatever copyright the
+    dedicators holds in the work of authorship identified below (the
+    "Work") to the public domain. A certifier, moreover, dedicates any
+    copyright interest he may have in the associated work, and for
+    these purposes, is described as a "dedicator" below.
+
+    A certifier has taken reasonable steps to verify the copyright
+    status of this work. Certifier recognizes that his good faith
+    efforts may not shield him from liability if in fact the work
+    certified is not in the public domain.
+
+    Dedicator makes this dedication for the benefit of the public at
+    large and to the detriment of the Dedicator's heirs and
+    successors. Dedicator intends this dedication to be an overt act
+    of relinquishment in perpetuity of all present and future rights
+    under copyright law, whether vested or contingent, in the
+    Work. Dedicator understands that such relinquishment of all rights
+    includes the relinquishment of all rights to enforce (by lawsuit
+    or otherwise) those copyrights in the Work.
+
+    Dedicator recognizes that, once placed in the public domain, the
+    Work may be freely reproduced, distributed, transmitted, used,
+    modified, built upon, or otherwise exploited by anyone for any
+    purpose, commercial or non-commercial, and in any way, including
+    by methods that have not yet been invented or conceived.
+
+
+The Debian packaging is 
+ Copyright 2007-2008, Luis Rodrigo Gallardo Cruz <rodrigo@debian.org>
+and is licensed under the terms of the GPL.

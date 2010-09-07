@@ -1,0 +1,109 @@
+.TH GNOME "1" "January 2008" "GNOME twitux 0.60" "User Commands"
+.SH NAME
+GNOME \- A twitter client for GNOME
+.SH SYNOPSIS
+.B twitux 
+[\fIOPTION\fR...]
+.SH DESCRIPTION
+
+twitux is a GNOME client for the twitter network. You normally need to
+invoke no options when running it.
+
+Since twitux uses the GNOME keyring to store you username and
+password, you need to make sure gnome-keyring-daemon is running in
+your session before twitux tries to connect to the network. In a
+regulal GNOME session this will happen automatically, and it's only a
+concern if you want to run twitux with a different desktop environment.
+
+.TP
+\fB\-\-load\-modules\fR=\fIMODULE1\fR,MODULE2,...
+Dynamic modules to load
+.PP
+Help options
+.TP
+\-?, \fB\-\-help\fR
+Show this help message
+.TP
+\fB\-\-usage\fR
+Display brief usage message
+.PP
+GTK+
+.TP
+\fB\-\-gdk\-debug\fR=\fIFLAGS\fR
+Gdk debugging flags to set
+.TP
+\fB\-\-gdk\-no\-debug\fR=\fIFLAGS\fR
+Gdk debugging flags to unset
+.TP
+\fB\-\-display\fR=\fIDISPLAY\fR
+X display to use
+.TP
+\fB\-\-screen\fR=\fISCREEN\fR
+X screen to use
+.TP
+\fB\-\-sync\fR
+Make X calls synchronous
+.TP
+\fB\-\-name\fR=\fINAME\fR
+Program name as used by the window
+manager
+.TP
+\fB\-\-class\fR=\fICLASS\fR
+Program class as used by the window
+manager
+.TP
+\fB\-\-gtk\-debug\fR=\fIFLAGS\fR
+Gtk+ debugging flags to set
+.TP
+\fB\-\-gtk\-no\-debug\fR=\fIFLAGS\fR
+Gtk+ debugging flags to unset
+.TP
+\fB\-\-g\-fatal\-warnings\fR
+Make all warnings fatal
+.TP
+\fB\-\-gtk\-module\fR=\fIMODULE\fR
+Load an additional Gtk module
+.PP
+Bonobo activation Support
+.TP
+\fB\-\-oaf\-ior\-fd\fR=\fIFD\fR
+File descriptor to print IOR on
+.TP
+\fB\-\-oaf\-activate\-iid\fR=\fIIID\fR
+IID to activate
+.TP
+\fB\-\-oaf\-private\fR
+Prevent registering of server with OAF
+.PP
+GNOME Library
+.TP
+\fB\-\-disable\-sound\fR
+Disable sound server usage
+.TP
+\fB\-\-enable\-sound\fR
+Enable sound server usage
+.TP
+\fB\-\-espeaker\fR=\fIHOSTNAME\fR:PORT
+Host:port on which the sound server
+to use is running
+.TP
+\fB\-\-version\fR
+2.20.1.1
+.PP
+Session management
+.TP
+\fB\-\-sm\-client\-id\fR=\fIID\fR
+Specify session management ID
+.TP
+\fB\-\-sm\-config\-prefix\fR=\fIPREFIX\fR
+Specify prefix of saved configuration
+.TP
+\fB\-\-sm\-disable\fR
+Disable connection to session manager
+.PP
+GNOME GUI Library
+.TP
+\fB\-\-disable\-crash\-dialog\fR
+Disable Crash Dialog
+.SH AUTHOR
+This manpage was automatically generated from twitux's help output.

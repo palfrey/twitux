@@ -1,0 +1,19 @@
+Source: twitux
+Section: net
+Priority: optional
+Maintainer: Luis Rodrigo Gallardo Cruz <rodrigo@debian.org>
+Build-Depends: debhelper (>= 5), autotools-dev, intltool, libsexy-dev,
+ libgtk2.0-dev (>= 2.14), libgconf2-dev, libxml2-dev, libglib2.0-dev (>= 2.16),
+ libsoup2.4-dev, libnotify-dev, libxml-parser-perl,
+ iso-codes (>= 3.5), libgtkspell-dev, libgnome-keyring-dev (>= 2.23),
+ libcanberra-gtk-dev, gnome-doc-utils
+Standards-Version: 3.8.3
+Homepage: http://live.gnome.org/DanielMorales/Twitux
+
+Package: twitux
+Architecture: any
+Depends: gnome-keyring, dbus-x11, ${shlibs:Depends}, ${misc:Depends}
+Description: a Twitter client for GNOME
+ twitux is a lightweight client for the twitter messaging service,
+ featuring timeline auto updating, a tray area icon and notification
+ of new messages.

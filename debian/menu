@@ -1,0 +1,3 @@
+?package(twitux):needs="X11" section="Applications/Network/Communication"\
+  title="TwiTux" command="/usr/bin/twitux" \
+  icon="/usr/share/pixmaps/twitux.xpm"
