@@ -30,7 +30,7 @@ G_BEGIN_DECLS
 
 /* Twitter Timelines */
 #define TWITUX_API_TIMELINE_PUBLIC	"https://twitter.com/statuses/public_timeline.xml"
-#define TWITUX_API_TIMELINE_FRIENDS	"https://twitter.com/statuses/home_timeline.xml"
+#define TWITUX_API_TIMELINE_FRIENDS	"http://api.twitter.com/1/statuses/home_timeline.xml"
 #define TWITUX_API_TIMELINE_MY		"https://twitter.com/statuses/user_timeline.xml"
 #define TWITUX_API_TIMELINE_USER	"https://twitter.com/statuses/user_timeline/%s.xml"
 #define TWITUX_API_TIMELINE_TWITUX	"https://twitter.com/statuses/user_timeline/twitux.xml"

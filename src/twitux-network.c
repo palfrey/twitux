@@ -27,6 +27,7 @@
 #include <gtk/gtk.h>
 #include <libsoup/soup.h>
 #include <stdlib.h>
+#include <oauth.h>
 
 #include <libtwitux/twitux-debug.h>
 #include <libtwitux/twitux-conf.h>
@@ -51,6 +52,9 @@ typedef struct {
 } TwituxImage;
 
 static void network_get_data		(const gchar           *url,
+									 SoupSessionCallback    callback,
+									 gpointer               data);
+static void network_get_authed_data		(const gchar           *url,
 									 SoupSessionCallback    callback,
 									 gpointer               data);
 static void network_post_data		(const gchar           *url,
@@ -85,11 +89,6 @@ static void network_cb_on_add		(SoupSession           *session,
 static void network_cb_on_del		(SoupSession           *session,
 									 SoupMessage           *msg,
 									 gpointer               user_data);
-static void network_cb_on_auth		(SoupSession           *session,
-									 SoupMessage           *msg,
-									 SoupAuth              *auth,
-									 gboolean               retrying,
-									 gpointer               data);
 
 /* Autoreload timeout functions */
 static gboolean 	network_timeout			(gpointer user_data);
@@ -110,6 +109,8 @@ static gint				hourly_limit = 100; // standard twitter limit, assume by default
 static time_t			reset_time = 0; // next reset time
 static gboolean			logged_in = FALSE;
 static gboolean			logging_in = FALSE;
+static char * oauth_token = NULL;
+static char * oauth_token_secret = NULL;
 
 /* This function must be called at startup */
 void
@@ -243,14 +244,21 @@ twitux_network_login (const char *username, const char *password)
 
 	twitux_app_set_statusbar_msg (_("Connecting..."));
 
-	/* HTTP Basic Authentication */
-	g_signal_connect (soup_connection,
-					  "authenticate",
-					  G_CALLBACK (network_cb_on_auth),
-					  NULL);
-
 	/* Verify credentials */
-	network_get_data (TWITUX_API_LOGIN, network_cb_on_login, NULL);
+	
+	char *url = g_strdup_printf("%s?x_auth_mode=client_auth&x_auth_username=%s&x_auth_password=%s", 
+			TWITUX_OAUTH_ACCESS_TOKEN, global_username, global_password);
+
+	char *postargs = NULL;
+	char *signed_url = oauth_sign_url2(url, &postargs, OA_HMAC, "POST", TWITUX_CONSUMER_KEY, TWITUX_CONSUMER_SECRET, NULL, NULL);
+	g_free(url);
+	if (signed_url!=NULL)
+	{
+		twitux_debug (DEBUG_DOMAIN, "url %s", signed_url);
+		twitux_debug (DEBUG_DOMAIN, "postargs %s", postargs);
+	}
+	network_post_data(signed_url, postargs, network_cb_on_login, NULL);
+	g_free(signed_url);
 }
 
 
@@ -313,7 +321,7 @@ twitux_network_refresh (void)
 	twitux_app_set_statusbar_msg (_("Loading timeline..."));
 
 	processing = TRUE;
-	network_get_data (current_timeline, network_cb_on_timeline, NULL);
+	network_get_authed_data (current_timeline, network_cb_on_timeline, NULL);
 }
 
 /* Get and parse a timeline */
@@ -331,7 +339,7 @@ twitux_network_get_timeline (const gchar *url_timeline)
 	twitux_app_set_statusbar_msg (_("Loading timeline..."));
 
 	processing = TRUE;
-	network_get_data (url_timeline, network_cb_on_timeline, g_strdup(url_timeline));
+	network_get_authed_data (url_timeline, network_cb_on_timeline, g_strdup(url_timeline));
 }
 
 /* Get a user timeline */
@@ -537,6 +545,54 @@ network_get_data (const gchar           *url,
 	soup_session_queue_message (soup_connection, msg, _network_ok, gd);
 }
 
+/* Get data from net with oAuth authentication */
+static void
+network_get_authed_data (const gchar           *url,
+				  SoupSessionCallback    callback,
+				  gpointer               data)
+{
+	SoupMessage *msg;
+	GetData *gd;
+
+	twitux_debug (DEBUG_DOMAIN, "Get: %s",url);
+
+	msg = soup_message_new ( "GET", url );
+	gd = g_new(GetData, 1);
+	gd->callback = callback;
+	gd->data = data;
+	gd->event = g_timeout_add_seconds(15, _network_timeout, gd);
+	gd->msg = msg;
+
+	g_assert(oauth_token != NULL && oauth_token_secret != NULL);
+	char *signed_url = oauth_sign_url2(url, NULL, OA_HMAC, "GET", TWITUX_CONSUMER_KEY, TWITUX_CONSUMER_SECRET, oauth_token, oauth_token_secret);
+	twitux_debug(DEBUG_DOMAIN, "signed url: %s", signed_url);
+	char *auth = NULL;
+	char **tokens = g_strsplit(strchr(signed_url,'?')+1,"&", 10);
+	guint i;
+	for (i=0;i<g_strv_length(tokens);i++)
+	{
+		char *equals = strchr(tokens[i], '=');
+		equals[0] = '\0';
+		twitux_debug(DEBUG_DOMAIN, "header: %s => %s", tokens[i], &equals[1]);
+		if (auth == NULL)
+			auth = g_strdup_printf("%s=\"%s\"", tokens[i], &equals[1]);
+		else
+		{
+			char *oldauth = auth;
+			auth = g_strdup_printf("%s,%s=\"%s\"", auth, tokens[i], &equals[1]);
+			g_free(oldauth);
+		}
+	}
+	char *oldauth = auth;
+	auth = g_strdup_printf("OAuth realm=\"Twitter API\",%s", auth);
+	free(oldauth);
+	twitux_debug(DEBUG_DOMAIN, "auth header: '%s'", auth);
+	soup_message_headers_append(msg->request_headers, "Authorization", auth);
+	g_strfreev(tokens);
+	g_free(signed_url);
+
+	soup_session_queue_message (soup_connection, msg, _network_ok, gd);
+}
 
 /* Private: Post data to net */
 static void
@@ -635,28 +691,6 @@ network_parser_free_lists ()
 	}
 }
 
-
-
-/* HTTP Basic Authentication */
-static void
-network_cb_on_auth (SoupSession  *session,
-					SoupMessage  *msg,
-					SoupAuth     *auth,
-					gboolean      retrying,
-					gpointer      data)
-{
-	/* Don't bother to continue if there is no user_id */
-	if (G_STR_EMPTY (global_username)) {
-		return;
-	}
-
-	/* verify that the password has been set */
-	if (!G_STR_EMPTY (global_password))
-		soup_auth_authenticate (auth, global_username, 
-								global_password);
-}
-
-
 /* On verify credentials */
 static void
 network_cb_on_login (SoupSession *session,
@@ -668,11 +702,35 @@ network_cb_on_login (SoupSession *session,
 
 	logging_in = FALSE;
 	if (network_check_http (msg->status_code)) {
+		SoupBuffer *sb = soup_message_body_flatten(msg->response_body);
+		gchar ** items = g_strsplit(sb->data, "&", 3);
+		guint i;
+		for (i=0;i<g_strv_length(items);i++)
+		{
+			if (g_str_has_prefix(items[i],"oauth_token="))
+			{
+				char *equals = strchr(items[i], '=');
+				if (oauth_token != NULL)
+					g_free(oauth_token);
+				oauth_token = g_strdup(&equals[1]);
+				twitux_debug(DEBUG_DOMAIN, "Oauth token: %s", oauth_token);
+			}
+			else if (g_str_has_prefix(items[i],"oauth_token_secret="))
+			{
+				char *equals = strchr(items[i], '=');
+				if (oauth_token_secret != NULL)
+					g_free(oauth_token_secret);
+				oauth_token_secret = g_strdup(&equals[1]);
+				twitux_debug(DEBUG_DOMAIN, "Oauth secret token: %s", oauth_token_secret);
+			}
+		}
+		g_strfreev(items);
 		logged_in = TRUE;
 		twitux_app_state_on_connection (TRUE);
 		return;
 	}
 	twitux_app_state_on_connection (FALSE);
+	g_return_if_reached();
 }
 
 

@@ -41,6 +41,14 @@
 
 #define TWITUX_API_LOGIN		"https://twitter.com/account/verify_credentials.xml"
 
+#define TWITUX_OAUTH_ACCESS_TOKEN "https://api.twitter.com/oauth/access_token"
+// FIXME: these are the keys from the Twitter Android app
+#define TWITUX_CONSUMER_KEY "3nVuSoBZnx6U4vzUxf5w"
+#define TWITUX_CONSUMER_SECRET "Bcs59EFbbsdF6Sl9Ng71smgStWEGwXXKSjYvPVt7qys"
+
+//#define TWITUX_CONSUMER_KEY "OUt4uw1O8azhattd36GSw"
+//#define TWITUX_CONSUMER_SECRET "KhLeMVV1jyBojVl7CvevPafecPahhzTQgAaVPe7zy2I"
+
 /* Verify user credentials */
 void twitux_network_login		(const char *username, 
 								 const char *password);
