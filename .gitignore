@@ -43,4 +43,9 @@ libtwitux/.libs
 libtwitux/libtwitux.la
 po/.intltool-merge-cache
 src/twitux
-
+debian/twitux
+debian/twitux.debhelper.log
+debian/twitux.postinst.debhelper
+debian/twitux.postrm.debhelper
+debian/twitux.substvars
+debian/files

@@ -69,7 +69,6 @@ clean:
 	rm -f config.sub config.guess
 
 	dh_clean
-	$(MAKE) -f debian/rules unpatch
 
 install: build
 	dh_testdir

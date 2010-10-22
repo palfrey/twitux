@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 5), autotools-dev, intltool, libsexy-dev,
  libgtk2.0-dev (>= 2.14), libgconf2-dev, libxml2-dev, libglib2.0-dev (>= 2.16),
  libsoup2.4-dev, libnotify-dev, libxml-parser-perl,
  iso-codes (>= 3.5), libgtkspell-dev, libgnome-keyring-dev (>= 2.23),
- libcanberra-gtk-dev, gnome-doc-utils, liboauth-dev
+ libcanberra-gtk-dev, gnome-doc-utils, liboauth-dev, rarian-compat
 Standards-Version: 3.8.3
 Homepage: http://github.com/palfrey/twitux
 
