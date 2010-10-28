@@ -644,6 +644,8 @@ network_check_http (gint status_code)
 {
 	if (status_code == 401) {
 		twitux_app_set_statusbar_msg (_("Access denied."));
+		twitux_debug (DEBUG_DOMAIN,
+					  "Access denied: %i",status_code);		
 
 	} else if (SOUP_STATUS_IS_CLIENT_ERROR (status_code)) {
 		twitux_app_set_statusbar_msg (_("HTTP communication error."));
