@@ -61,6 +61,10 @@ static void network_post_data		(const gchar           *url,
 									 gchar                 *formdata,
 									 SoupSessionCallback    callback,
 									 gpointer               data);
+static void network_send_message	(const gchar* url,
+									SoupMessage *msg,
+									SoupSessionCallback callback,
+									gpointer data);
 static gboolean	network_check_http 	(gint                   status_code);
 static void network_parser_free_lists (void);
 
@@ -563,35 +567,7 @@ network_get_authed_data (const gchar           *url,
 	gd->event = g_timeout_add_seconds(15, _network_timeout, gd);
 	gd->msg = msg;
 
-	g_assert(oauth_token != NULL && oauth_token_secret != NULL);
-	char *signed_url = oauth_sign_url2(url, NULL, OA_HMAC, "GET", TWITUX_CONSUMER_KEY, TWITUX_CONSUMER_SECRET, oauth_token, oauth_token_secret);
-	twitux_debug(DEBUG_DOMAIN, "signed url: %s", signed_url);
-	char *auth = NULL;
-	char **tokens = g_strsplit(strchr(signed_url,'?')+1,"&", 10);
-	guint i;
-	for (i=0;i<g_strv_length(tokens);i++)
-	{
-		char *equals = strchr(tokens[i], '=');
-		equals[0] = '\0';
-		twitux_debug(DEBUG_DOMAIN, "header: %s => %s", tokens[i], &equals[1]);
-		if (auth == NULL)
-			auth = g_strdup_printf("%s=\"%s\"", tokens[i], &equals[1]);
-		else
-		{
-			char *oldauth = auth;
-			auth = g_strdup_printf("%s,%s=\"%s\"", auth, tokens[i], &equals[1]);
-			g_free(oldauth);
-		}
-	}
-	char *oldauth = auth;
-	auth = g_strdup_printf("OAuth realm=\"Twitter API\",%s", auth);
-	free(oldauth);
-	twitux_debug(DEBUG_DOMAIN, "auth header: '%s'", auth);
-	soup_message_headers_append(msg->request_headers, "Authorization", auth);
-	g_strfreev(tokens);
-	g_free(signed_url);
-
-	soup_session_queue_message (soup_connection, msg, _network_ok, gd);
+	network_send_message (url, msg, _network_ok, gd);
 }
 
 /* Private: Post data to net */
@@ -623,9 +599,44 @@ network_post_data (const gchar           *url,
 								  strlen (formdata));
 	}
 
-	soup_session_queue_message (soup_connection, msg, callback, data);
+	network_send_message (url, msg, callback, data);
 }
 
+static void 
+network_send_message(const gchar* url, SoupMessage* msg, SoupSessionCallback callback, gpointer data)
+{
+	if (oauth_token != NULL && oauth_token_secret != NULL)
+	{
+		char *signed_url = oauth_sign_url2(url, NULL, OA_HMAC, "GET", TWITUX_CONSUMER_KEY, TWITUX_CONSUMER_SECRET, oauth_token, oauth_token_secret);
+		twitux_debug(DEBUG_DOMAIN, "signed url: %s", signed_url);
+		char *auth = NULL;
+		char **tokens = g_strsplit(strchr(signed_url,'?')+1,"&", 10);
+		guint i;
+		for (i=0;i<g_strv_length(tokens);i++)
+		{
+			char *equals = strchr(tokens[i], '=');
+			equals[0] = '\0';
+			twitux_debug(DEBUG_DOMAIN, "header: %s => %s", tokens[i], &equals[1]);
+			if (auth == NULL)
+				auth = g_strdup_printf("%s=\"%s\"", tokens[i], &equals[1]);
+			else
+			{
+				char *oldauth = auth;
+				auth = g_strdup_printf("%s,%s=\"%s\"", auth, tokens[i], &equals[1]);
+				g_free(oldauth);
+			}
+		}
+		char *oldauth = auth;
+		auth = g_strdup_printf("OAuth realm=\"Twitter API\",%s", auth);
+		free(oldauth);
+		twitux_debug(DEBUG_DOMAIN, "auth header: '%s'", auth);
+		soup_message_headers_append(msg->request_headers, "Authorization", auth);
+		g_strfreev(tokens);
+		g_free(signed_url);
+	}
+
+	soup_session_queue_message (soup_connection, msg, callback, data);
+}
 
 /* Check HTTP response code */
 static gboolean
