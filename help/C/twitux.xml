@@ -164,12 +164,15 @@
 	messaging, or a third-party application such as &app;.
     </para>
   </sect2>
+  <sect2>
+	  <title>References</title>
     <para>
 	This section uses material from the Wikipedia articles
 	<ulink url="http://en.wikipedia.org/wiki/Micro-blogging">"Micro-blogging"</ulink>
 	and 
 	<ulink url="http://en.wikipedia.org/wiki/Twitter">"Twitter"</ulink>
     </para>
+  </sect2>
   </sect1>
 
 <!-- =========== Getting Started ============================== -->
@@ -276,7 +279,7 @@
     <para>
       <xref linkend="twitux-TBL-1"/> describes the components of a browser window.
     </para>
-    <table frame="topbot" id="gossip-TBL-1">
+    <table frame="topbot" id="twitux-TBL-1">
       <title>&app; Main Components</title>
 	<tgroup cols="2" colsep="0" rowsep="0">
 	<colspec colname="colspec0" colwidth="29.39*"/>
